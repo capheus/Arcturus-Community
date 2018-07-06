@@ -1,0 +1,14 @@
+*.iml
+.idea/
+target/**
+TODO.txt
+packet.pkt
+plugins/**
+src/main/resources/
+src/test/
+logging/
+target/
+config.ini
+*.txt
+logging/**
+logging/
