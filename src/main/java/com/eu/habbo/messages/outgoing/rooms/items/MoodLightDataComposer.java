@@ -56,13 +56,7 @@ public class MoodLightDataComposer extends MessageComposer
             this.response.appendInt(255);
         }
 
-        /*for(int i = moodLightData.valueCollection().size(); i < 3; i++)
-        {
-            this.response.appendInt(i);
-            this.response.appendInt(1);
-            this.response.appendString("#000000");
-            this.response.appendInt(255);
-        }*/
+
         //:test 2780 i:1 i:1 i:1 i:2 s:#FF00FF i:255
         return this.response;
     }

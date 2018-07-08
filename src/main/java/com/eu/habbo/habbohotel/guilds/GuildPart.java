@@ -5,19 +5,13 @@ import java.sql.SQLException;
 
 public class GuildPart
 {
-    /**
-     * Identifier.
-     */
+
     public final int id;
 
-    /**
-     * Part A
-     */
+
     public final String valueA;
 
-    /**
-     * Part B
-     */
+
     public final String valueB;
 
     public GuildPart(ResultSet set) throws SQLException

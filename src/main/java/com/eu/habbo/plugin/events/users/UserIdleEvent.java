@@ -16,12 +16,7 @@ public class UserIdleEvent extends UserEvent
     public final IdleReason reason;
     public boolean idle;
 
-    /**
-     * Triggered whenever the state of idle for a given Habbo changes.
-     * @param habbo The Habbo this event applies to.
-     * @param reason The cause of this event.
-     * @param idle The new idle state.
-     */
+
     public UserIdleEvent(Habbo habbo, IdleReason reason, boolean idle)
     {
         super(habbo);

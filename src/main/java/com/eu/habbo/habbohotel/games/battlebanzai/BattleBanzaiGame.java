@@ -31,24 +31,16 @@ import java.util.Map;
 
 public class BattleBanzaiGame extends Game
 {
-    /**
-     * The effect id BB effects start at.
-     */
+
     public static final int effectId = 33;
 
-    /**
-     * Points for hijacking another users tile.
-     */
+
     public static final int POINTS_HIJACK_TILE = Emulator.getConfig().getInt("hotel.banzai.points.tile.steal");
 
-    /**
-     * Points for coloring a grey tile.
-     */
+
     public static final int POINTS_FILL_TILE = Emulator.getConfig().getInt("hotel.banzai.points.tile.fill");
 
-    /**
-     * Points for locking a tile.
-     */
+
     public static final int POINTS_LOCK_TILE = Emulator.getConfig().getInt("hotel.banzai.points.tile.lock");
 
     private int timeLeft;
@@ -57,9 +49,7 @@ public class BattleBanzaiGame extends Game
 
     private int countDown;
 
-    /**
-     * All locked tiles.
-     */
+
     private final THashMap<GameTeamColors, THashSet<HabboItem>> lockedTiles;
 
     public BattleBanzaiGame(Room room)
@@ -285,9 +275,7 @@ public class BattleBanzaiGame extends Game
         this.lockedTiles.clear();
     }
 
-    /**
-     * Resets the map.
-     */
+
     protected synchronized void resetMap()
     {
         for (HabboItem item : this.room.getFloorItems())
@@ -342,11 +330,7 @@ public class BattleBanzaiGame extends Game
         }
     }
 
-    /**
-     * Locks an tile
-     * @param teamColor The color to lock.
-     * @param item The item to lock.
-     */
+
     public void tileLocked(GameTeamColors teamColor, HabboItem item, Habbo habbo)
     {
         if(item instanceof InteractionBattleBanzaiTile)
@@ -365,9 +349,7 @@ public class BattleBanzaiGame extends Game
         }
     }
 
-    /**
-     * Updates the counters in the room.
-     */
+
     public void refreshCounters()
     {
         for(GameTeam team : this.teams.values())
@@ -379,10 +361,7 @@ public class BattleBanzaiGame extends Game
         }
     }
 
-    /**
-     * Updates the counters for the given GameTeamColors in the room.
-     * @param teamColors The color that should be updated.
-     */
+
     public void refreshCounters(GameTeamColors teamColors)
     {
         int totalScore = this.teams.get(teamColors).getTotalScore();

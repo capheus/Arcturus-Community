@@ -45,76 +45,48 @@ import java.util.*;
 
 public class CatalogManager
 {
-    /**
-     * All the CatalogPages are stored in here.
-     */
+
     public final TIntObjectMap<CatalogPage> catalogPages;
 
-    /**
-     * All featured items on the frontpage.
-     */
+
     public final TIntObjectMap<CatalogFeaturedPage> catalogFeaturedPages;
 
-    /**
-     * All the recycler prizes are stored in here.
-     */
+
     public final THashMap<Integer, THashSet<Item>> prizes;
 
-    /**
-     * All the new gift wrappers are stored in here.
-     */
+
     public final THashMap<Integer, Integer> giftWrappers;
 
-    /**
-     * All the old gift wrappers (Seperate furnis) are stored in here.
-     */
+
     public final THashMap<Integer, Integer> giftFurnis;
 
-    /**
-     * All the items that can be claimed as club rewards are stored in here.
-     */
+
     public final THashSet<CatalogItem> clubItems;
 
-    /**
-     * All Habbo Club subcription offers.
-     */
+
     public final THashMap<Integer, ClubOffer> clubOffers;
 
-    /**
-     * All clothing definitions
-     */
+
     public final THashMap<Integer, ClothItem> clothing;
 
-    /**
-     * Offer definitions.
-     */
+
     public final TIntIntHashMap offerDefs;
 
-    /**
-     * All vouchers are stored in here.
-     */
+
     private final List<Voucher> vouchers;
 
-    /**
-     * The box that should be given as ecotron reward.
-     */
+
     public final Item ecotronItem;
 
-    /**
-     * The numbers available for limited furniture.
-     */
+
     public final THashMap<Integer, CatalogLimitedConfiguration> limitedNumbers;
 
-    /**
-     * The amount of items that are on sale.
-     */
+
     public static int catalogItemAmount;
 
     public final THashMap<Integer, CalendarRewardObject> calendarRewards;
 
-    /**
-     * Mapped all page definitions.
-     */
+
     public static final THashMap<String, Class<? extends CatalogPage>> pageDefinitions = new THashMap<String, Class<? extends CatalogPage>>()
     {
         {
@@ -188,9 +160,7 @@ public class CatalogManager
         Emulator.getLogging().logStart("Catalog Manager -> Loaded! ("+(System.currentTimeMillis() - millis)+" MS)");
     }
 
-    /**
-     * Initializes the CatalogManager.
-     */
+
     public synchronized void initialize()
     {
         Emulator.getPluginManager().fireEvent(new EmulatorLoadCatalogManagerEvent());
@@ -251,10 +221,7 @@ public class CatalogManager
         }
     }
 
-    /**
-     * Load all CatalogPages
-     * @throws SQLException
-     */
+
     private synchronized void loadCatalogPages() throws SQLException
     {
         this.catalogPages.clear();
@@ -324,10 +291,7 @@ public class CatalogManager
         Emulator.getLogging().logStart("Loaded " + this.catalogPages.size() + " Catalog Pages!");
     }
 
-    /**
-     * Loads the featured catalog pages.
-     * @throws SQLException
-     */
+
     private synchronized void loadCatalogFeaturedPages() throws SQLException
     {
         this.catalogFeaturedPages.clear();
@@ -353,10 +317,7 @@ public class CatalogManager
             Emulator.getLogging().logSQLException(e);
         }
     }
-    /**
-     * Load all CatalogItems
-     * @throws SQLException
-     */
+
     private synchronized void loadCatalogItems() throws SQLException
     {
         this.clubItems.clear();
@@ -444,10 +405,7 @@ public class CatalogManager
         }
     }
 
-    /**
-     * Load all vouchers.
-     * @throws SQLException
-     */
+
     private void loadVouchers() throws SQLException
     {
         synchronized (this.vouchers)
@@ -464,10 +422,7 @@ public class CatalogManager
         }
     }
 
-    /**
-     * Load the recycler.
-     * @throws SQLException
-     */
+
     public void loadRecycler() throws SQLException
     {
         synchronized (this.prizes)
@@ -501,10 +456,7 @@ public class CatalogManager
         }
     }
 
-    /**
-     * Load all gift wrappers (And old gift furnis)
-     * @throws SQLException
-     */
+
     public void loadGiftWrappers() throws SQLException
     {
         synchronized (this.giftWrappers)
@@ -561,9 +513,7 @@ public class CatalogManager
         }
     }
 
-    /**
-     * Loads all clothing.
-     */
+
     private void loadClothing()
     {
         synchronized (this.clothing)
@@ -597,11 +547,7 @@ public class CatalogManager
         return null;
     }
 
-    /**
-     * Looks up the given code for any voucher that matches it.
-     * @param code The code to look up.
-     * @return The voucher that uses the code. NULL when not found.
-     */
+
     public Voucher getVoucher(String code)
     {
         synchronized (this.vouchers)
@@ -617,11 +563,7 @@ public class CatalogManager
         return null;
     }
 
-    /**
-     * Redeem a vouchercode for the given GameClient.
-     * @param client The GameClient that receives the rewards.
-     * @param voucherCode The voucher code.
-     */
+
     public void redeemVoucher(GameClient client, String voucherCode)
     {
         Voucher voucher = Emulator.getGameEnvironment().getCatalogManager().getVoucher(voucherCode);
@@ -663,11 +605,7 @@ public class CatalogManager
         client.sendResponse(new RedeemVoucherErrorComposer(RedeemVoucherErrorComposer.INVALID_CODE));
     }
 
-    /**
-     * Deletes an voucher from the database and emulator cache.
-     * @param voucher The voucher to delete.
-     * @return True when the voucher has been deleted.
-     */
+
     public boolean deleteVoucher(Voucher voucher)
     {
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM vouchers WHERE code = ?"))
@@ -689,11 +627,7 @@ public class CatalogManager
         return false;
     }
 
-    /**
-     * Gets the CatalogPage for the given page Id
-     * @param pageId The page Id to lookup.
-     * @return The CatalogPage matching the page Id. NULL When not found.
-     */
+
     public CatalogPage getCatalogPage(int pageId)
     {
         return this.catalogPages.get(pageId);
@@ -724,11 +658,7 @@ public class CatalogManager
         }
     }
 
-    /**
-     * Finds the catalog item associated with the id.
-     * @param id
-     * @return
-     */
+
     public CatalogItem getCatalogItem(int id)
     {
         final CatalogItem[] item = {null};
@@ -749,12 +679,7 @@ public class CatalogManager
         return item[0];
     }
 
-    /**
-     * Gets all the sub pages for the given CatalogPage.
-     * @param parentId The page the sub pages have to bee looked up for.
-     * @param habbo The Habbo that has access to these pages.
-     * @return The selected pages.
-     */
+
     public List<CatalogPage> getCatalogPages(int parentId, final Habbo habbo)
     {
         final List<CatalogPage> pages = new ArrayList<CatalogPage>();
@@ -782,10 +707,7 @@ public class CatalogManager
         return this.catalogFeaturedPages;
     }
 
-    /**
-     * @param itemId The CatalogItem that should be lookup.
-     * @return The CatalogItem for the id. NULL when not found.
-     */
+
     public CatalogItem getClubItem(int itemId)
     {
         synchronized (this.clubItems)
@@ -800,12 +722,7 @@ public class CatalogManager
         return null;
     }
 
-    /**
-     * Moves a catalog item to the a different CatalogPage.
-     * @param item The CatalogItem to move.
-     * @param pageId The unique identifier of the page.
-     * @return True if the move has been succesfully.
-     */
+
     public boolean moveCatalogItem(CatalogItem item, int pageId)
     {
         CatalogPage page = this.getCatalogPage(item.getPageId());
@@ -824,9 +741,7 @@ public class CatalogManager
         return true;
     }
 
-    /**
-     * @return Random recycler reward.
-     */
+
     public Item getRandomRecyclerPrize()
     {
         int level = 1;
@@ -860,17 +775,7 @@ public class CatalogManager
         return null;
     }
 
-    /**
-     * Creates a new catalog page.
-     * @param caption The caption of the page.
-     * @param captionSave Save caption.
-     * @param roomId The id of the room if the page is a room bundle.
-     * @param icon The icon of the page.
-     * @param layout The layout of the page.
-     * @param minRank The minimum rank that is required to view the page.
-     * @param parentId The id of the parent page.
-     * @return The created CatalogPage.
-     */
+
     public CatalogPage createCatalogPage(String caption, String captionSave, int roomId, int icon, CatalogPageLayouts layout, int minRank, int parentId)
     {
         CatalogPage catalogPage = null;
@@ -933,10 +838,7 @@ public class CatalogManager
         return catalogPage;
     }
 
-    /**
-     * @param item The CatalogItem to find the limited configuration for.
-     * @return The limited configuration for the CatalogItem.
-     */
+
     public CatalogLimitedConfiguration getLimitedConfig(CatalogItem item)
     {
         synchronized (this.limitedNumbers)
@@ -945,11 +847,7 @@ public class CatalogManager
         }
     }
 
-    /**
-     * Creates or updates the CatalogLimitedConfiguration for the given CatalogItem.
-     * @param item The CatalogItem to create or update hte CatalogLimitedConfiguration for.
-     * @return The created or updated CatalogLimitedConfiguration.
-     */
+
     public CatalogLimitedConfiguration createOrUpdateLimitedConfig(CatalogItem item)
     {
         if (item.isLimited())
@@ -987,9 +885,7 @@ public class CatalogManager
         return null;
     }
 
-    /**
-     * Disposes the CatalogManager.
-     */
+
     public void dispose()
     {
         TIntObjectIterator<CatalogPage> pageIterator = this.catalogPages.iterator();
@@ -1011,15 +907,7 @@ public class CatalogManager
         Emulator.getLogging().logShutdownLine("Catalog Manager -> Disposed!");
     }
 
-    /**
-     * Purchases a catalog item.
-     * @param page The page to purchase from.
-     * @param item The CatalogItem to purchase.
-     * @param habbo The Habbo that purchased this CatalogItem.
-     * @param amount The amount of times the item should be bought.
-     * @param extradata Any extradataassociated.
-     * @param free Determines if this purchase is free and thus no credits / points will be deducted.
-     */
+
     public void purchaseItem(CatalogPage page, CatalogItem item, Habbo habbo, int amount, String extradata, boolean free)
     {
         Item cBaseItem = null;
@@ -1079,12 +967,7 @@ public class CatalogManager
 
             THashSet<HabboItem> itemsList = new THashSet<HabboItem>();
 
-            /*
-                Scripting protection that prevents users from buying multiple items
-                when offer is not enabled for the item.
 
-                Automatically creates a new ModToolIssue and sends it to the online moderators.
-             */
             if(amount > 1 && !item.isHaveOffer())
             {
                 String message = Emulator.getTexts().getValue("scripter.warning.catalog.amount").replace("%username%", habbo.getHabboInfo().getUsername()).replace("%itemname%", item.getName()).replace("%pagename%", page.getCaption());

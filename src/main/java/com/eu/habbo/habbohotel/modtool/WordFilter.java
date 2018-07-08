@@ -72,12 +72,7 @@ public class WordFilter
         }
     }
 
-    /**
-     * Normalises a string to replace all weird unicode characters to regular characters.
-     * May dispose certain characters (Like Chinese)
-     * @param message The {@String} to normalise.
-     * @return A String with only regular characters.
-     */
+
     public String normalise(String message)
     {
         return Normalizer.normalize(message, Normalizer.Form.NFD)

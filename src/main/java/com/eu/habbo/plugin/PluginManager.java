@@ -106,11 +106,7 @@ public class PluginManager
         }
     }
 
-    /**
-     * Register a new event listener for the given HabboPlugin
-     * @param plugin The HabboPlugin to register this event for.
-     * @param listener The EventListener this plugin should handle.
-     */
+
     public void registerEvents(HabboPlugin plugin, EventListener listener)
     {
         synchronized (plugin.registeredEvents)
@@ -140,10 +136,7 @@ public class PluginManager
         }
     }
 
-    /**
-     * Fires an event and passes it down to all plugins handling it.
-     * @param event The event to be passed down.
-     */
+
     public Event fireEvent(Event event)
     {
         for (Method method : this.methods)
@@ -200,12 +193,7 @@ public class PluginManager
         return event;
     }
 
-    /**
-     * Checks wether an event has been registered.
-     * @param clazz The event class that has to be checked.
-     * @param pluginsOnly Wether this should only be checked in plugin events and thus ignoring emulator events.
-     * @return Wether the event is registered.
-     */
+
     public boolean isRegistered(Class<? extends Event> clazz, boolean pluginsOnly)
     {
         TObjectHashIterator<HabboPlugin> iterator = this.plugins.iterator();
@@ -237,9 +225,7 @@ public class PluginManager
         return false;
     }
 
-    /**
-     * Disposes the plugin manager.
-     */
+
     public void dispose()
     {
         this.disposePlugins();

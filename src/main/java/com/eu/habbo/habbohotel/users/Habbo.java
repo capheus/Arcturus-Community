@@ -126,9 +126,7 @@ public class Habbo implements Runnable
         this.client = client;
     }
 
-    /*
-        Called upon succesfull SSO Login. NOT socket connection.
-     */
+
     public void connect()
     {
         if (!Emulator.getConfig().getBoolean("networking.tcp.proxy"))
@@ -215,34 +213,19 @@ public class Habbo implements Runnable
         }
     }
 
-    /**
-     * Checks if the Habbo has the allowed permission.
-     *
-     * @param key The permission to check.
-     * @return True if the Habbo has the permission.
-     */
+
     public boolean hasPermission(String key)
     {
         return hasPermission(key, false);
     }
 
-    /**
-     * Checks if the Habbo has the allowed permission.
-     *
-     * @param key The permission to check.
-     * @param hasRoomRights True if the Habbo is the room owner.
-     * @return True if the Habbo has the permission.
-     */
+
     public boolean hasPermission(String key, boolean hasRoomRights)
     {
         return Emulator.getGameEnvironment().getPermissionsManager().hasPermission(this, key, hasRoomRights);
     }
 
-    /**
-     * Gives credits to the Habbo and updates the credits balance in game.
-     *
-     * @param credits The amount of credits to give.
-     */
+
     public void giveCredits(int credits)
     {
         if (credits == 0)
@@ -256,11 +239,7 @@ public class Habbo implements Runnable
         this.client.sendResponse(new UserCreditsComposer(this.client.getHabbo()));
     }
 
-    /**
-     * Gives pixels to the Habbo and updates the pixels balance in game.
-     *
-     * @param pixels The amount of pixels to give.
-     */
+
     public void givePixels(int pixels)
     {
         if (pixels == 0)
@@ -275,22 +254,13 @@ public class Habbo implements Runnable
         this.client.sendResponse(new UserCurrencyComposer(this.client.getHabbo()));
     }
 
-    /**
-     * Gives points to the Habbo and updates the points balance in game.
-     *
-     * @param points The amount of points to give.
-     */
+
     public void givePoints(int points)
     {
         this.givePoints(Emulator.getConfig().getInt("seasonal.primary.type"), points);
     }
 
-    /**
-     * Gives points to the Habbo and updates the points balance in game.
-     *
-     * @param type The points type to give.
-     * @param points The amount of points to give.
-     */
+
     public void givePoints(int type, int points)
     {
         if (points == 0)
@@ -304,22 +274,13 @@ public class Habbo implements Runnable
         this.client.sendResponse(new UserPointsComposer(this.client.getHabbo().getHabboInfo().getCurrencyAmount(type), event.points, event.type));
     }
 
-    /**
-     * Whispers a message to the Habbo.
-     *
-     * @param message The message to whisper.
-     */
+
     public void whisper(String message)
     {
         this.whisper(message, this.habboStats.chatColor);
     }
 
-    /**
-     * Whispers a message to the Habbo.
-     *
-     * @param message The message to whisper.
-     * @param bubble The chat bubble type to use.
-     */
+
     public void whisper(String message, RoomChatMessageBubbles bubble)
     {
         if (this.getRoomUnit().isInRoom())
@@ -328,22 +289,13 @@ public class Habbo implements Runnable
         }
     }
 
-    /**
-     * Makes the Habbo talk in the room.
-     *
-     * @param message The message to say.
-     */
+
     public void talk(String message)
     {
         this.talk(message, this.habboStats.chatColor);
     }
 
-    /**
-     * Makes the Habbo talk in the room.
-     *
-     * @param message The message to say.
-     * @param bubble The chat bubble type to use.
-     */
+
     public void talk(String message, RoomChatMessageBubbles bubble)
     {
         if (this.getRoomUnit().isInRoom())
@@ -352,22 +304,13 @@ public class Habbo implements Runnable
         }
     }
 
-    /**
-     * Makes the Habbo shout in the room.
-     *
-     * @param message The message to shout.
-     */
+
     public void shout(String message)
     {
         this.shout(message, this.habboStats.chatColor);
     }
 
-    /**
-     * Makes the Habbo shout in the room.
-     *
-     * @param message The message to shout.
-     * @param bubble The chat bubble type to use.
-     */
+
     public void shout(String message, RoomChatMessageBubbles bubble)
     {
         if (this.getRoomUnit().isInRoom())
@@ -376,51 +319,31 @@ public class Habbo implements Runnable
         }
     }
 
-    /**
-     * Sends an alert to the Habbo.
-     *
-     * @param message The message the alert contains.
-     */
+
     public void alert(String message)
     {
         this.client.sendResponse(new GenericAlertComposer(message));
     }
 
-    /**
-     * Sends an old style alert to the Habbo.
-     *
-     * @param messages The messages the alert contains.
-     */
+
     public void alert(String[] messages)
     {
         this.client.sendResponse(new MessagesForYouComposer(messages));
     }
 
-    /**
-     * Sends an alert with url to the Habbo.
-     *
-     * @param message The message the alert contains.
-     * @param url The URL the alert contains.
-     */
+
     public void alertWithUrl(String message, String url)
     {
         this.client.sendResponse(new StaffAlertWithLinkComposer(message, url));
     }
 
-    /**
-     * Forwards the Habbo to a room.
-     *
-     * @param id The id of the room to go to.
-     */
+
     public void goToRoom(int id)
     {
         this.client.sendResponse(new ForwardToRoomComposer(id));
     }
 
-    /**
-     * Adds a new furniture to the inventory and also updates the client.
-     * @param item The furniture to add.
-     */
+
     public void addFurniture(HabboItem item)
     {
         this.habboInventory.getItemsComponent().addItem(item);
@@ -428,10 +351,7 @@ public class Habbo implements Runnable
         this.client.sendResponse(new InventoryRefreshComposer());
     }
 
-    /**
-     * Adds new furniture to the inventory and also updates the client.
-     * @param items The furniture to add.
-     */
+
     public void addFurniture(THashSet<HabboItem> items)
     {
         this.habboInventory.getItemsComponent().addItems(items);
@@ -439,40 +359,28 @@ public class Habbo implements Runnable
         this.client.sendResponse(new InventoryRefreshComposer());
     }
 
-    /**
-     * Removes a furniture from the inventory and also updates the client.
-     * @param item The furniture to remove.
-     */
+
     public void removeFurniture(HabboItem item)
     {
         this.habboInventory.getItemsComponent().removeHabboItem(item);
         this.client.sendResponse(new RemoveHabboItemComposer(item.getId()));
     }
 
-    /**
-     * Adds a bot to the HabboInventory.
-     * @param bot The bot to add.
-     */
+
     public void addBot(Bot bot)
     {
         this.habboInventory.getBotsComponent().addBot(bot);
         this.client.sendResponse(new AddBotComposer(bot));
     }
 
-    /**
-     * Removes a bot from the HabboInventory.
-     * @param bot The bot to remove.
-     */
+
     public void removeBot(Bot bot)
     {
         this.habboInventory.getBotsComponent().removeBot(bot);
         this.client.sendResponse(new RemoveBotComposer(bot));
     }
 
-    /**
-     * Deletes a bot from the database. Also picks it up from the room or removes it from the inventory.
-     * @param bot The Bot to delete.
-     */
+
     public void deleteBot(Bot bot)
     {
         this.removeBot(bot);
@@ -480,31 +388,21 @@ public class Habbo implements Runnable
         Emulator.getGameEnvironment().getBotManager().deleteBot(bot);
     }
 
-    /**
-     * Adds a pet to the HabboInventory.
-     * @param pet The Pet to add.
-     */
+
     public void addPet(Pet pet)
     {
         this.habboInventory.getPetsComponent().addPet(pet);
         this.client.sendResponse(new AddPetComposer(pet));
     }
 
-    /**
-     * Removes a pet from the HabboInventory.
-     * @param pet The Pet to remove.
-     */
+
     public void removePet(Pet pet)
     {
         this.habboInventory.getPetsComponent().removePet(pet);
         this.client.sendResponse(new RemovePetComposer(pet));
     }
 
-    /**
-     * Creates a new badge and adds it to the HabboInventory.
-     * @param code The badgecode to use.
-     * @return true if succesfully added. False otherwise.
-     */
+
     public boolean addBadge(String code)
     {
         if (this.habboInventory.getBadgesComponent().getBadge(code) == null)
@@ -518,10 +416,7 @@ public class Habbo implements Runnable
         return false;
     }
 
-    /**
-     * Deletes a badge from the database and removes it from the inventory.
-     * @param badge The Badge to delete.
-     */
+
     public void deleteBadge(HabboBadge badge)
     {
         this.habboInventory.getBadgesComponent().removeBadge(badge);

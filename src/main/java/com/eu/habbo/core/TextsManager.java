@@ -9,9 +9,7 @@ import java.util.Properties;
 
 public class TextsManager
 {
-    /**
-     * All emulator texts are stored in this object.
-     */
+
     private final Properties texts;
 
     public TextsManager()
@@ -33,10 +31,7 @@ public class TextsManager
         }
     }
 
-    /**
-     * Reloads all texts from the database.
-     * @throws Exception
-     */
+
     public void reload() throws Exception
     {
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM emulator_texts"))
@@ -59,22 +54,13 @@ public class TextsManager
         }
     }
 
-    /**
-     * Gets the string value for a specific key.
-     * @param key The key to find the value for.
-     * @return The string value for the key. Returns an empty string if not found.
-     */
+
     public String getValue(String key)
     {
         return getValue(key, "");
     }
 
-    /**
-     * Gets the string value for a specific key.
-     * @param key The key to find the value for.
-     * @param defaultValue The value that will be returned when the key is not found.
-     * @return The string value for the key. Returns defaultValue when not found.
-     */
+
     public String getValue(String key, String defaultValue)
     {
         if (!this.texts.containsKey(key)) {
@@ -83,22 +69,13 @@ public class TextsManager
         return this.texts.getProperty(key, defaultValue);
     }
 
-    /**
-     * Gets the boolean value for a specific key.
-     * @param key The key to find the value for.
-     * @return The boolean value for the key. Returns false if not found.
-     */
+
     public boolean getBoolean(String key)
     {
         return getBoolean(key, false);
     }
 
-    /**
-     * Gets the boolean value for a specific key.
-     * @param key The key to find the value for.
-     * @param defaultValue The value that will be returned when the key is not found.
-     * @return The boolean value for the key. Returns defaultValue when not found.
-     */
+
     public boolean getBoolean(String key, Boolean defaultValue)
     {
         try
@@ -112,22 +89,13 @@ public class TextsManager
         return defaultValue;
     }
 
-    /**
-     * Gets the int value for a specific key.
-     * @param key The key to find the value for.
-     * @return The int value for the key. Returns 0 if not found.
-     */
+
     public int getInt(String key)
     {
         return getInt(key, 0);
     }
 
-    /**
-     * Gets the int value for a specific key.
-     * @param key The key to find the value for.
-     * @param defaultValue The value that will be returned when the key is not found.
-     * @return The int value for the key. Returns defaultValue when not found.
-     */
+
     public int getInt(String key, Integer defaultValue)
     {
         try
@@ -141,11 +109,7 @@ public class TextsManager
         return defaultValue;
     }
 
-    /**
-     * Updates the give key.
-     * @param key The key to update.
-     * @param value The new value.
-     */
+
     public void update(String key, String value)
     {
         this.texts.setProperty(key, value);

@@ -14,9 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 25-8-2014 18:11.
- */
+
 public class FriendRequestEvent extends MessageHandler
 {
     @Override

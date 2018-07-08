@@ -5,9 +5,7 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserDataComposer;
 import com.eu.habbo.messages.outgoing.users.UpdateUserLookComposer;
 
-/**
- * Kudos to Wouto on RaGEZONE
- */
+
 public class FacelessCommand extends Command
 {
     public FacelessCommand()

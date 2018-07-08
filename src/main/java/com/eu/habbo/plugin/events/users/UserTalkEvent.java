@@ -8,11 +8,7 @@ public class UserTalkEvent extends UserEvent
 {
     public final RoomChatMessage chatMessage;
     public final RoomChatType chatType;
-    /**
-     * @param habbo The Habbo this event applies to.
-     * @param chatMessage
-     * @param chatType
-     */
+
     public UserTalkEvent(Habbo habbo, RoomChatMessage chatMessage, RoomChatType chatType)
     {
         super(habbo);

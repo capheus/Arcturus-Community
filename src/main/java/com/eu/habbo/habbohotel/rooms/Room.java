@@ -1066,17 +1066,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             message.appendString(s);
         }
 
-        /*if(g != null)
-        {
-            message.appendInt(58);
-            message.appendInt(g.getId());
-            message.appendString(g.getName());
-            message.appendString(g.getBadge());
-        }
-        else
-        {
-            message.appendInt(56);
-        }*/
+
 
         int base = 0;
 
@@ -1386,9 +1376,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                             if (allowFurniture || (!allowFurniture && !stackContainsRoller))
                             {
-                                /**
-                                 * Redneck way to prevent checking ifregistered each time.
-                                 */
+
                                 Event furnitureRolledEvent = null;
 
                                 if (Emulator.getPluginManager().isRegistered(FurnitureRolledEvent.class, true))
@@ -2792,10 +2780,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.removeHabboItem(this.getHabboItem(id));
     }
 
-    /**
-     * Removes an {@see HabboItem} from the list of room items. Does not visually remove it from the room.
-     * @param item The item to remove.
-     */
+
     public void removeHabboItem(HabboItem item)
     {
         if (item != null)
@@ -2967,14 +2952,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         }
 
-        /*items.addAll(this.roomSpecialTypes.getBanzaiTeleporters());
-        items.addAll(this.roomSpecialTypes.getNests());
-        items.addAll(this.roomSpecialTypes.getPetDrinks());
-        items.addAll(this.roomSpecialTypes.getPetFoods());
-        items.addAll(this.roomSpecialTypes.getRollers());
-        items.addAll(this.roomSpecialTypes.getTriggers());
-        items.addAll(this.roomSpecialTypes.getEffects());
-        items.addAll(this.roomSpecialTypes.getConditions());*/
+
 
             return items;
 
@@ -4773,17 +4751,13 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.pickUpItem(item, null);
     }
 
-    /**
-     * Ejects all furniture from the room not belonging to the room owner.
-     */
+
     public void ejectAll()
     {
         this.ejectAll(null);
     }
 
-    /**
-     * @param habbo The Habbo to exclude to eject its items.
-     */
+
     public void ejectAll(Habbo habbo)
     {
         THashMap<Integer, THashSet<HabboItem>> userItemsMap = new THashMap<Integer, THashSet<HabboItem>>();
@@ -4997,9 +4971,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 }
             }
 
-            /*
-            SELECT SUM(score + team_score) as total_score, COUNT(*) as wins, users.username, score, GROUP_CONCAT(users.username) as usernames FROM room_game_scores INNER JOIN users ON room_game_scores.user_id = users.id WHERE room_id = 0 GROUP BY game_start_timestamp, game_name, team_id ORDER BY total_score ASC, wins DESC LIMIT 10
-             */
+
             if(scoreType == WiredHighscoreScoreType.CLASSIC)
             {
                 query += "GROUP BY game_start_timestamp, user_id, team_id ORDER BY total_score DESC";

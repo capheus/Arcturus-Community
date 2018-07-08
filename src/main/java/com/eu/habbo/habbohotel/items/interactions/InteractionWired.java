@@ -15,6 +15,8 @@ import java.sql.SQLException;
 
 public abstract class InteractionWired extends HabboItem
 {
+    private long cooldown;
+
     InteractionWired(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
@@ -100,5 +102,25 @@ public abstract class InteractionWired extends HabboItem
     {
         this.setExtradata(this.getExtradata().equals("1") ? "0" : "1");
         room.sendComposer(new ItemStateComposer(this).compose());
+    }
+
+
+    protected long requiredCooldown()
+    {
+        return 500;
+    }
+
+
+
+    public boolean canExecute(long newMillis)
+    {
+        if (newMillis - this.cooldown < this.requiredCooldown())
+        {
+            this.cooldown = newMillis;
+            return false;
+        }
+
+        this.cooldown = newMillis;
+        return true;
     }
 }

@@ -10,14 +10,10 @@ import java.sql.Statement;
 
 public class Database
 {
-    /**
-     * Database datasource.
-     */
+
     private HikariDataSource dataSource;
 
-    /**
-     * Database connection pool.
-     */
+
     private DatabasePool databasePool;
     
     public Database(ConfigurationManager config)
@@ -54,9 +50,7 @@ public class Database
         Emulator.getLogging().logStart("Database -> Connected! (" + (System.currentTimeMillis() - millis) + " MS)");
     }
 
-    /**
-     * Disposes the database and closes all connections to the database.
-     */
+
     public void dispose()
     {
         if (this.databasePool != null)

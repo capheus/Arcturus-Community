@@ -5,19 +5,13 @@ import java.sql.SQLException;
 
 public class ClothItem
 {
-    /**
-     * Identifier.
-     */
+
     public int id;
 
-    /**
-     * Name
-     */
+
     public String name;
 
-    /**
-     * Set
-     */
+
     public int[] setId;
 
     public ClothItem(ResultSet set) throws SQLException

@@ -47,10 +47,7 @@ public class InteractionFreezeTimer extends InteractionGameTimer
         super.onClick(client, room, objects);
     }
 
-    /**
-     * Overrides from the InteractionGameTimer class.
-     * @return The specific game class which should be linked to this timer.
-     */
+
     @Override
     public Class<? extends Game> getGameType()
     {

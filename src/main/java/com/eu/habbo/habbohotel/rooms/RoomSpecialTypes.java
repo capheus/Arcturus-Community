@@ -71,9 +71,7 @@ public class RoomSpecialTypes
         this.cycleTasks = new THashSet<>(0);
     }
 
-    /*
-        Banzai Teleporter
-     */
+
     public InteractionBattleBanzaiTeleporter getBanzaiTeleporter(int itemId)
     {
         return this.banzaiTeleporters.get(itemId);
@@ -108,9 +106,7 @@ public class RoomSpecialTypes
         }
     }
 
-    /*
-        Nests
-     */
+
     public InteractionNest getNest(int itemId)
     {
         return this.nests.get(itemId);
@@ -137,9 +133,7 @@ public class RoomSpecialTypes
         }
     }
 
-    /*
-        Pet Drinks
-     */
+
     public InteractionPetDrink getPetDrink(int itemId)
     {
         return this.petDrinks.get(itemId);
@@ -166,9 +160,7 @@ public class RoomSpecialTypes
         }
     }
 
-    /*
-        Pet Foods.
-     */
+
     public InteractionPetFood getPetFood(int itemId)
     {
         return this.petFoods.get(itemId);
@@ -195,9 +187,7 @@ public class RoomSpecialTypes
         }
     }
 
-    /*
-        Pet Toys.
-     */
+
     public InteractionPetToy getPetToy(int itemId)
     {
         return this.petToys.get(itemId);
@@ -224,9 +214,7 @@ public class RoomSpecialTypes
         }
     }
 
-    /*
-        Rollers
-     */
+
     public InteractionRoller getRoller(int itemId)
     {
         synchronized (this.rollers)
@@ -256,9 +244,7 @@ public class RoomSpecialTypes
         return rollers;
     }
 
-    /*
-            Wired Triggers
-         */
+
     public InteractionWiredTrigger getTrigger(int itemId)
     {
         synchronized (this.wiredTriggers)
@@ -339,9 +325,7 @@ public class RoomSpecialTypes
         }
     }
 
-    /*
-        Wired Effects
-     */
+
     public InteractionWiredEffect getEffect(int itemId)
     {
         synchronized (this.wiredEffects)
@@ -422,9 +406,7 @@ public class RoomSpecialTypes
         }
     }
 
-    /*
-        Wired Conditions
-     */
+
     public InteractionWiredCondition getCondition(int itemId)
     {
         synchronized (this.wiredConditions)
@@ -508,9 +490,7 @@ public class RoomSpecialTypes
         }
     }
 
-    /*
-        Wired Extra
-     */
+
     public THashSet<InteractionWiredExtra> getExtras(int x, int y)
     {
         synchronized (this.wiredExtras)
@@ -561,9 +541,7 @@ public class RoomSpecialTypes
         return false;
     }
 
-    /*
-        GameScoreboards
-     */
+
     public InteractionGameScoreboard getGameScorebord(int itemId)
     {
         return this.gameScoreboards.get(itemId);
@@ -690,9 +668,7 @@ public class RoomSpecialTypes
         }
     }
 
-    /*
-        GameGates
-     */
+
     public InteractionGameGate getGameGate(int itemId)
     {
         return this.gameGates.get(itemId);
@@ -744,9 +720,7 @@ public class RoomSpecialTypes
         }
     }
 
-    /*
-        GameTimers
-    */
+
     public InteractionGameTimer getGameTimer(int itemId)
     {
         return this.gameTimers.get(itemId);
@@ -803,9 +777,7 @@ public class RoomSpecialTypes
         }
     }
 
-    /*
-        Freeze Exit Tile
-    */
+
     public InteractionFreezeExitTile getFreezeExitTile()
     {
         for(InteractionFreezeExitTile t : this.freezeExitTile.values())

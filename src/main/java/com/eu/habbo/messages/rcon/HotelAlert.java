@@ -6,9 +6,7 @@ import com.google.gson.Gson;
 
 public class HotelAlert extends RCONMessage<HotelAlert.JSONHotelAlert>
 {
-    /**
-     * Sends an hotel alert.
-     */
+
     public HotelAlert()
     {
         super(JSONHotelAlert.class);

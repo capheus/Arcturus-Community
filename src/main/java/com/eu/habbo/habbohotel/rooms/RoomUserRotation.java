@@ -1,8 +1,6 @@
 package com.eu.habbo.habbohotel.rooms;
 
-/**
- * Created on 13-9-2014 17:14.
- */
+
 public enum RoomUserRotation {
     NORTH(0),
     NORTH_EAST(1),

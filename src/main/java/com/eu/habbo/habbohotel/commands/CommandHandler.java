@@ -140,10 +140,7 @@ public class CommandHandler
         addCommand(new TestCommand());
     }
 
-    /**
-     * Adds a new command to the commands list.
-     * @param command The command to be added.
-     */
+
     public static void addCommand(Command command)
     {
         if(command == null)
@@ -152,10 +149,7 @@ public class CommandHandler
         commands.put(command.getClass().getName(), command);
     }
 
-    /**
-     * Adds a new command to the commands list.
-     * @param command The command class to be added.
-     */
+
     public static void addCommand(Class<? extends Command> command)
     {
         try
@@ -170,13 +164,7 @@ public class CommandHandler
         }
     }
 
-    /**
-     * Handles a command executed by the connected GameClient.
-     * This includes handling the petcommands aswell.
-     * @param gameClient The GameClient that executed the command.
-     * @param commandLine The whole sentence the GameClient used including the start:
-     * @return Wether the command has been succesfully executed.
-     */
+
     public static boolean handleCommand(GameClient gameClient, String commandLine)
     {
         if(gameClient != null)
@@ -290,11 +278,7 @@ public class CommandHandler
         return false;
     }
 
-    /**
-     * Returns an arraylist of all commands that the given rank has access to based on the permissions that have been set.
-     * @param rankId The rank ID to search commands for.
-     * @return ArrayList of commands.
-     */
+
     public List<Command> getCommandsForRank(int rankId)
     {
         List<Command> allowedCommands = new ArrayList<Command>();
@@ -335,9 +319,7 @@ public class CommandHandler
         return null;
     }
 
-    /**
-     * Disposes the CommandHandler.
-     */
+
     public void dispose()
     {
         commands.clear();
@@ -345,9 +327,7 @@ public class CommandHandler
         Emulator.getLogging().logShutdownLine("Command Handler -> Disposed!");
     }
 
-    /**
-     * Sort all commands based on their permission in alphabetical order.
-     */
+
     private static final Comparator<Command> ALPHABETICAL_ORDER = new Comparator<Command>() {
         public int compare(Command c1, Command c2) {
             int res = String.CASE_INSENSITIVE_ORDER.compare(c1.permission, c2.permission);

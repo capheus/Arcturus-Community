@@ -7,10 +7,7 @@ public class SupportTicketEvent extends SupportEvent
 {
     public final ModToolIssue ticket;
 
-    /**
-     * @param moderator There is no moderator for this event.
-     * @param ticket The ticket creatd.
-     */
+
     public SupportTicketEvent(Habbo moderator, ModToolIssue ticket)
     {
         super(moderator);

@@ -24,27 +24,19 @@ import java.util.Map;
 
 public class AchievementManager
 {
-    /**
-     * All the achievements in the hotel are stored in this map where:
-     * String = name of the achievement (Without ACH_ & Roman number.
-     * Achievement = Instance of the Achievement class.
-     */
+
     private final THashMap<String, Achievement> achievements;
 
     private final THashMap<TalentTrackType, LinkedHashMap<Integer, TalentTrackLevel>> talentTrackLevels;
 
-    /**
-     * The AchievementManager, shit happens here.
-     */
+
     public AchievementManager()
     {
         this.achievements = new THashMap<>();
         this.talentTrackLevels = new THashMap<>();
     }
 
-    /**
-     * Reloads the achievement manager.
-     */
+
     public void reload()
     {
         long millis = System.currentTimeMillis();
@@ -109,21 +101,13 @@ public class AchievementManager
         Emulator.getLogging().logStart("Achievement Manager -> Loaded! ("+(System.currentTimeMillis() - millis)+" MS)");
     }
 
-    /**
-     * Find an achievement by name.
-     * @param name The achievement to find.
-     * @return The achievement
-     */
+
     public Achievement getAchievement(String name)
     {
         return this.achievements.get(name);
     }
 
-    /**
-     * Find an achievement by id
-     * @param id The achievement id to find.
-     * @return The achievement
-     */
+
     public Achievement getAchievement(int id)
     {
         synchronized (this.achievements)
@@ -182,22 +166,13 @@ public class AchievementManager
     }
 
 
-    /**
-     * Progresses an Habbo's achievement by 1.
-     * @param habbo The Habbo whose achievement should be progressed.
-     * @param achievement The Achievement to be progressed.
-     */
+
     public static void progressAchievement(Habbo habbo, Achievement achievement)
     {
         progressAchievement(habbo, achievement, 1);
     }
 
-    /**
-     * Progresses an Habbo's achievement by an given amount.
-     * @param habbo The Habbo whose achievement should be progressed.
-     * @param achievement The Achievement to be progressed.
-     * @param amount The amount that should be progressed.
-     */
+
     public static void progressAchievement(Habbo habbo, Achievement achievement, int amount)
     {
         if (achievement == null)
@@ -317,12 +292,7 @@ public class AchievementManager
         }
     }
 
-    /**
-     * Checks wether the given Habbo has achieved a certain Achievement.
-     * @param habbo The Habbo to check.
-     * @param achievement The Achievement to check.
-     * @return True when the given Habbo has achieved the Achievement.
-     */
+
     public static boolean hasAchieved(Habbo habbo, Achievement achievement)
     {
         int currentProgress = habbo.getHabboStats().getAchievementProgress(achievement);
@@ -347,11 +317,7 @@ public class AchievementManager
         return false;
     }
 
-    /**
-     * Creates an new Achievement entry in the database.
-     * @param habbo The Habbo the achievement should be saved for.
-     * @param achievement The Achievement that should be inserted.
-     */
+
     public static void createUserEntry(Habbo habbo, Achievement achievement)
     {
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO users_achievements (user_id, achievement_name, progress) VALUES (?, ?, ?)"))
@@ -367,10 +333,7 @@ public class AchievementManager
         }
     }
 
-    /**
-     * Saves all the Achievements for the given Habbo to the database.
-     * @param habbo The Habbo whose Achievements should be saved.
-     */
+
     public static void saveAchievements(Habbo habbo)
     {
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users_achievements SET progress = ? WHERE achievement_name = ? AND user_id = ? LIMIT 1"))

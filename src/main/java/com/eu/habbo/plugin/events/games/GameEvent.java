@@ -5,14 +5,10 @@ import com.eu.habbo.plugin.Event;
 
 public abstract class GameEvent extends Event
 {
-    /**
-     * The Game instance that this event applies to.
-     */
+
     public final Game game;
 
-    /**
-     * @param game The Game instance that this event applies to.
-     */
+
     public GameEvent(Game game)
     {
         this.game = game;

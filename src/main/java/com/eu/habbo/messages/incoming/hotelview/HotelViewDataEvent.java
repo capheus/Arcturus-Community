@@ -9,30 +9,8 @@ public class HotelViewDataEvent extends MessageHandler {
     public void handle()
     {
 
-        /*String[] data = hotelViewData.split(",");
 
-        if(data.length > 1)
-        {
-            this.client.sendResponse(new HotelViewDataComposer(hotelViewData, data[data.length - 1].replace(";", "")));
-            System.out.println("Hotelview Data: " + hotelViewData);
-        }
-        else
-        {
-            System.out.println("Hotelview Data error: " + hotelViewData);
-            this.client.sendResponse(new HotelViewDataComposer(hotelViewData, ""));
-        }*/
-        /*String hotelViewData = this.packet.readString();
 
-        String[] types = hotelViewData.split(";");
-
-        for(String s : types)
-        {
-            if(!s.contains(","))
-                continue;
-
-            String[] data = s.split(",");
-            this.client.sendResponse(new HotelViewDataComposer(hotelViewData, data[data.length - 1]));
-        }*/
 
         try
         {

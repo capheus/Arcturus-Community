@@ -397,24 +397,11 @@ public class Outgoing
     public final static int UnknownQuestComposer1 = 230; // PRODUCTION-201611291003-338511768
     public final static int ModToolSanctionDataComposer = 2782; // PRODUCTION-201611291003-338511768
     public final static int RoomEventMessageComposer = 2274;
-    /**
-     * int << count
-     * {
-     *     string << ?
-     *     int << Count
-     *     {
-     *         string << Name
-     *         int << ID
-     *         string << Consequence
-     *     }
-     * }
-     */
 
 
 
-    /**
-     * Music Disks / Trax / Jukebox
-     */
+
+
     public final static int JukeBoxMySongsComposer = 2602; // PRODUCTION-201611291003-338511768
     public final static int JukeBoxNowPlayingMessageComposer = 469; // PRODUCTION-201611291003-338511768
     public final static int JukeBoxPlaylistFullComposer = 105; // PRODUCTION-201611291003-338511768
@@ -424,9 +411,7 @@ public class Outgoing
     public final static int JukeBoxTrackDataComposer = 3365; // PRODUCTION-201611291003-338511768
     public final static int JukeBoxTrackCodeComposer = 1381; // PRODUCTION-201611291003-338511768
 
-    /**
-     * Crafting
-     */
+
     public final static int CraftableProductsComposer = 1000; // PRODUCTION-201611291003-338511768
     public final static int CraftingRecipeComposer = 2774; // PRODUCTION-201611291003-338511768
     public final static int CraftingResultComposer = 618; // PRODUCTION-201611291003-338511768
@@ -549,37 +534,7 @@ public class Outgoing
     public final static int UnknownGuildComposer3 = 876;
 
     public final static int GameCenterGameComposer = 3805;
-    /*
-    0x0909 //unused
-1347 //Unused cry[to
-195 //unused
-1982 //unused
-2142 //unused
-2494 //u
-2668 //u
-2756 //u
-2819 //u
-3035 //u
-3099 //u
-3138 //u
-3191 //u
-3560 //Game2WeeklyLeaderboardParser
-3684 //u
-3805 //u Gamecomposer
-3863 //u
-3885 //u Crypto
-3915 //u
 
-416 //u
-
-463 //u
-600 //u
-
-761 //u
-872 //u
-
-
-     */
 
     public static final int SnowStormGameStartedComposer = 5000;
     public static final int SnowStormQuePositionComposer = 5001;

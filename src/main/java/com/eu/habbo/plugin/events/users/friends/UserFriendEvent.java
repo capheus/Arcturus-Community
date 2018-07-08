@@ -8,10 +8,7 @@ public abstract class UserFriendEvent extends UserEvent
 {
     public final MessengerBuddy friend;
 
-    /**
-     * @param habbo The Habbo this event applies to.
-     * @param friend The friend this event applies to.
-     */
+
     public UserFriendEvent(Habbo habbo, MessengerBuddy friend)
     {
         super(habbo);

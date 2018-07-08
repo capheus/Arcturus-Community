@@ -523,11 +523,7 @@ public class PetManager
             return new Pet(set);
     }
 
-    /**
-     * Deletes a pet from the database.
-     * @param pet The pet to delete.
-     * @return true if the pet has been deleted.
-     */
+
     public boolean deletePet(AbstractPet pet)
     {
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM users_pets WHERE id = ? LIMIT 1"))

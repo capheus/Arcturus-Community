@@ -39,10 +39,7 @@ public class GuardianTicket
         this.date = new Date();
     }
 
-    /**
-     * Requests an Guardian to vote on this ticket.
-     * @param guardian The Guardian to ask.
-     */
+
     public void requestToVote(Habbo guardian)
     {
         guardian.getClient().sendResponse(new GuardianNewReportReceivedComposer(this));
@@ -52,10 +49,7 @@ public class GuardianTicket
         Emulator.getThreading().run(new GuardianNotAccepted(this, guardian), Emulator.getConfig().getInt("guardians.accept.timer") * 1000);
     }
 
-    /**
-     * Adds an guardian to this ticket.
-     * @param guardian The guardian to add.
-     */
+
     public void addGuardian(Habbo guardian)
     {
         GuardianVote vote = this.votes.get(guardian);
@@ -68,10 +62,7 @@ public class GuardianTicket
         }
     }
 
-    /**
-     * Removes an Guardian from this ticket.
-     * @param guardian The Guardian to remove.
-     */
+
     public void removeGuardian(Habbo guardian)
     {
         GuardianVote vote = this.getVoteForGuardian(guardian);
@@ -91,11 +82,7 @@ public class GuardianTicket
         this.updateVotes();
     }
 
-    /**
-     * Set the vote for an Guardian.
-     * @param guardian The Guardian to set the vote for.
-     * @param vote The GuardianVoteType to set the vote to.
-     */
+
     public void vote(Habbo guardian, GuardianVoteType vote)
     {
         this.votes.get(guardian).type = vote;
@@ -107,9 +94,7 @@ public class GuardianTicket
         this.finish();
     }
 
-    /**
-     * Updates the votes to all other voting guardians.
-     */
+
     public void updateVotes()
     {
         synchronized (this.votes)
@@ -124,9 +109,7 @@ public class GuardianTicket
         }
     }
 
-    /**
-     * Tries to finish the voting on a ticket and searches for more guardians if needed.
-     */
+
     public void finish()
     {
         int votedCount = this.getVotedCount();
@@ -183,17 +166,13 @@ public class GuardianTicket
         }
     }
 
-    /**
-     * @return True if an verdict has been set.
-     */
+
     public boolean isFinished()
     {
         return !(this.verdict == null);
     }
 
-    /**
-     * @return Calculates the verdict of this ticket.
-     */
+
     public GuardianVoteType calculateVerdict()
     {
         int countAcceptably = 0;
@@ -289,11 +268,7 @@ public class GuardianTicket
         return this.guardianCount;
     }
 
-    /**
-     * Sorts all votes.
-     * @param guardian The guardian to remove from this vote list.
-     * @return The sorted votes list.
-     */
+
     public ArrayList<GuardianVote> getSortedVotes(Habbo guardian)
     {
         synchronized (this.votes)
@@ -316,9 +291,7 @@ public class GuardianTicket
         }
     }
 
-    /**
-     * @return The amount of votes (Acceptably, Badly or Awfully) thath as been cast.
-     */
+
     public int getVotedCount()
     {
         int count = 0;

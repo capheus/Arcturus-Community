@@ -15,9 +15,7 @@ public class NewsList
         this.reload();
     }
 
-    /**
-     * Reloads the news.
-     */
+
     public void reload()
     {
         synchronized (this.newsWidgets)
@@ -37,10 +35,7 @@ public class NewsList
         }
     }
 
-    /**
-     * The newsitems displayed on the HotelView
-     * @return
-     */
+
     public THashSet<NewsWidget> getNewsWidgets()
     {
         return newsWidgets;

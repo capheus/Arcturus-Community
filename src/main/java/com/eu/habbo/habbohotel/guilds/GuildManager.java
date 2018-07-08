@@ -21,14 +21,10 @@ import java.util.NoSuchElementException;
 
 public class GuildManager
 {
-    /**
-     * Guildparts. The things you use to create the badge.
-     */
+
     private final THashMap<GuildPartType, THashMap<Integer, GuildPart>> guildParts;
 
-    /**
-     * Cached guilds.
-     */
+
     private final TIntObjectMap<Guild> guilds;
 
     public GuildManager()
@@ -41,9 +37,7 @@ public class GuildManager
         Emulator.getLogging().logStart("Guild Manager -> Loaded! (" + (System.currentTimeMillis() - millis) + " MS)");
     }
 
-    /**
-     * Loads the guild parts.
-     */
+
     public void loadGuildParts()
     {
         this.guildParts.clear();
@@ -68,17 +62,7 @@ public class GuildManager
         }
     }
 
-    /**
-     * Creates a new guild.
-     * @param habbo
-     * @param roomId
-     * @param name
-     * @param description
-     * @param badge
-     * @param colorOne
-     * @param colorTwo
-     * @return
-     */
+
     public Guild createGuild(Habbo habbo, int roomId, String roomName, String name, String description, String badge, int colorOne, int colorTwo)
     {
         Guild guild = new Guild(habbo.getHabboInfo().getId(), habbo.getHabboInfo().getUsername(), roomId, roomName, name, description, colorOne, colorTwo, badge);
@@ -134,10 +118,7 @@ public class GuildManager
         return guild;
     }
 
-    /**
-     * Deletes a guild.
-     * @param guild The guild to delete.
-     */
+
     public void deleteGuild(Guild guild)
     {
         THashSet<GuildMember> members = this.getGuildMembers(guild);
@@ -192,9 +173,7 @@ public class GuildManager
         }
     }
 
-    /**
-     * Removes inactive guilds from the cache.
-     */
+
     public void clearInactiveGuilds()
     {
         List<Integer> toRemove = new ArrayList<Integer>();
@@ -222,13 +201,7 @@ public class GuildManager
         }
     }
 
-    /**
-     * Join a guild.
-     * @param guild The guild to join.
-     * @param client The client that joins.
-     * @param userId The Habbo ID that joins.
-     * @param acceptRequest Accepted the request.
-     */
+
     public void joinGuild(Guild guild, GameClient client, int userId, boolean acceptRequest)
     {
         boolean error = false;
@@ -359,11 +332,7 @@ public class GuildManager
         }
     }
 
-    /**
-     * Makes the user admin of the guild.
-     * @param guild The guild that the user should become admin of.
-     * @param userId The userID that becomes admin.
-     */
+
     public void setAdmin(Guild guild, int userId)
     {
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE guilds_members SET level_id = ? WHERE user_id = ? AND guild_id = ? LIMIT 1"))
@@ -379,11 +348,7 @@ public class GuildManager
         }
     }
 
-    /**
-     * Demotes the admin back to user.
-     * @param guild The guild that the admin is demoted of.
-     * @param userId The user id.
-     */
+
     public void removeAdmin(Guild guild, int userId)
     {
         if(guild.getOwnerId() == userId)
@@ -402,11 +367,7 @@ public class GuildManager
         }
     }
 
-    /**
-     * Removes a member from the guild.
-     * @param guild The guild.
-     * @param userId The member
-     */
+
     public void removeMember(Guild guild, int userId)
     {
         if(guild.getOwnerId() == userId)
@@ -433,33 +394,20 @@ public class GuildManager
         }
     }
 
-    /**
-     * Adds a guild to the cache.
-     * @param guild The guild to add.
-     */
+
     public void addGuild(Guild guild)
     {
         guild.lastRequested = Emulator.getIntUnixTimestamp();
         this.guilds.put(guild.getId(), guild);
     }
 
-    /**
-     * Gets the guild member for the given Habbo.
-     * @param guild The guild to look up.
-     * @param habbo The Habbo to look up.
-     * @return The GuildMember.
-     */
+
     public GuildMember getGuildMember(Guild guild, Habbo habbo)
     {
         return getGuildMember(guild.getId(), habbo.getHabboInfo().getId());
     }
 
-    /**
-     * Gets the guild member for the given Habbo.
-     * @param guildId The guild to look up.
-     * @param habboId The Habbo to look up.
-     * @return The GuildMember.
-     */
+
     public GuildMember getGuildMember(int guildId, int habboId)
     {
         GuildMember member = null;
@@ -483,21 +431,13 @@ public class GuildManager
         return member;
     }
 
-    /**
-     * Gets the guild members for the guild.
-     * @param guildId The guild to lookup.
-     * @return The guild members.
-     */
+
     public THashSet<GuildMember> getGuildMembers(int guildId)
     {
         return this.getGuildMembers(this.getGuild(guildId));
     }
 
-    /**
-     * Gets the guild members for the guild.
-     * @param guild The guild to lookup.
-     * @return The guild members.
-     */
+
     THashSet<GuildMember> getGuildMembers(Guild guild)
     {
         THashSet<GuildMember> guildMembers = new THashSet<GuildMember>();
@@ -521,14 +461,7 @@ public class GuildManager
         return guildMembers;
     }
 
-    /**
-     * Gets the guild members for the guild.
-     * @param guild The guild to lookup.
-     * @param page The page to lookup.
-     * @param levelId The levelid (Admins, Users, Unaccepted)
-     * @param query The search query.
-     * @return The found members.
-     */
+
     public ArrayList<GuildMember> getGuildMembers(Guild guild, int page, int levelId, String query)
     {
         ArrayList<GuildMember> guildMembers = new ArrayList<GuildMember>();
@@ -556,11 +489,7 @@ public class GuildManager
         return guildMembers;
     }
 
-    /**
-     * Gets all the admins for a guild.
-     * @param guild The guild to lookup.
-     * @return The GuildMembers that have admin permission for the guild.
-     */
+
     public THashMap<Integer, GuildMember> getOnlyAdmins(Guild guild)
     {
         THashMap<Integer, GuildMember> guildAdmins = new THashMap<Integer, GuildMember>();
@@ -594,10 +523,7 @@ public class GuildManager
         }
     }
 
-    /**
-     * @param guildId The guild id
-     * @return The guild. Caches if needed.
-     */
+
     public Guild getGuild(int guildId)
     {
         Guild g = this.guilds.get(guildId);
@@ -742,11 +668,7 @@ public class GuildManager
         return this.guildParts.get(type).get(id);
     }
 
-    /**
-     * Sets the furniture guild.
-     * @param furni The furni to set.
-     * @param guildId The guild to set.
-     */
+
     public void setGuild(InteractionGuildFurni furni, int guildId)
     {
         furni.setGuildId(guildId);
@@ -762,9 +684,7 @@ public class GuildManager
         }
     }
 
-    /**
-     * Disposes the GuildManager
-     */
+
     public void dispose()
     {
         TIntObjectIterator<Guild> guildIterator = this.guilds.iterator();

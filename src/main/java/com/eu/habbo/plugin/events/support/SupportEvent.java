@@ -5,14 +5,10 @@ import com.eu.habbo.plugin.Event;
 
 public abstract class SupportEvent extends Event
 {
-    /**
-     * The moderator for this event.
-     */
+
     public Habbo moderator;
 
-    /**
-     * @param moderator The moderator for this event.
-     */
+
     public SupportEvent(Habbo moderator)
     {
         this.moderator = moderator;

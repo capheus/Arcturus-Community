@@ -9,9 +9,7 @@ import com.google.gson.Gson;
 
 public class ForwardUser extends RCONMessage<ForwardUser.ForwardUserJSON>
 {
-    /**
-     * Forwards an user to a room.
-     */
+
     public ForwardUser()
     {
         super(ForwardUserJSON.class);

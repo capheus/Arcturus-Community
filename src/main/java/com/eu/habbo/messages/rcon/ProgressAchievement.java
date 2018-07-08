@@ -8,10 +8,7 @@ import com.google.gson.Gson;
 
 public class ProgressAchievement extends RCONMessage<ProgressAchievement.ProgressAchievementJSON>
 {
-    /**
-     * Progresses an achievement for an ONLINE user.
-     * Achievements for offline users are not managed by the emulator.
-     */
+
     public ProgressAchievement()
     {
         super(ProgressAchievementJSON.class);

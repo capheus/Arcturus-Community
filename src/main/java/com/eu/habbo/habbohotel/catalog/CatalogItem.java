@@ -15,90 +15,55 @@ import java.util.HashMap;
 
 public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem>
 {
-    /**
-     * Unique identifier.
-     */
+
     protected int id;
 
-    /**
-     * Page where this item will be displayed.
-     */
+
     protected int pageId;
 
-    /**
-     * String representation of the items that are displayed.
-     */
+
     protected String itemId;
 
-    /**
-     * Catalog item name.
-     */
+
     protected String name;
 
-    /**
-     * The amount of credits this item can be purchased for.
-     */
+
     protected int credits;
 
-    /**
-     * The amount of points this item can be purchased for.
-     */
+
     protected int points;
 
-    /**
-     * The seasonal currency that is used in order to buy this item.
-     * Defaults to pixels at 0.
-     */
+
     protected short pointsType;
 
-    /**
-     * The amount of times this item will be given when purchased.
-     */
+
     protected int amount;
 
-    /**
-     * If this item can be gifted.
-     */
+
     protected boolean allowGift = false;
 
-    /**
-     * The total limited stack of this catalog item.
-     */
+
     protected int limitedStack;
 
-    /**
-     * The amount of items that have been sold in this limited stack.
-     */
+
     protected int limitedSells;
 
-    /**
-     * Extradata can be used to hold more data or set default data for the items bought.
-     */
+
     protected String extradata;
 
-    /**
-     * Determines if this item can only be bought by people that have Habbo Club.
-     */
+
     protected boolean clubOnly;
 
-    /**
-     * Determines if multiple purchases and thus discount is available.
-     */
+
     protected boolean haveOffer;
 
-    /**
-     * The search offer id linked to this catalog item.
-     */
+
     protected int offerId;
 
-    /**
-     * Flag to mark this item requiring an update to the database.
-     */
+
     protected boolean needsUpdate;
 
-    /**
-     * Contains the amount of items in the bundle.
-     */
+
     protected HashMap<Integer, Integer> bundle;
 
     public CatalogItem(ResultSet set) throws SQLException
@@ -107,11 +72,7 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
         this.needsUpdate = false;
     }
 
-    /**
-     * Updaes the CatalogItem with the given resultset.
-     * @param set The ResultSet to update the CatalogItem with.
-     * @throws SQLException
-     */
+
     public void update(ResultSet set) throws SQLException
     {
         this.load(set);
@@ -138,98 +99,73 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
         this.loadBundle();
     }
 
-    /**
-     * @return Unique identifier.
-     */
+
     public int getId()
     {
         return this.id;
     }
 
-    /**
-     * @return Page where this item will be displayed.
-     */
+
     public int getPageId()
     {
         return this.pageId;
     }
 
-    /**
-     * @param pageId Thenew page id to set for the item of where it will be displayed.
-     */
+
     public void setPageId(int pageId)
     {
         this.pageId = pageId;
     }
 
-    /**
-     * @return String representation of the items that are displayed.
-     */
+
     public String getItemId()
     {
         return this.itemId;
     }
 
-    /**
-     * @param itemId String representation of the items that are displayed.
-     */
+
     public void setItemId(String itemId)
     {
         this.itemId = itemId;
     }
 
-    /**
-     * @return Catalog item name.
-     */
+
     public String getName()
     {
         return this.name;
     }
 
-    /**
-     * @return The amount of credits this item can be purchased for.
-     */
+
     public int getCredits()
     {
         return this.credits;
     }
 
-    /**
-     * @return The amount of points this item can be purchased for.
-     */
+
     public int getPoints()
     {
         return this.points;
     }
 
-    /**
-     * @return The seasonal currency that is used in order to buy this item.
-     *         Defaults to pixels at 0.
-     */
+
     public int getPointsType()
     {
         return this.pointsType;
     }
 
-    /**
-     * @return The amount of times this item will be given when purchased.
-     */
+
     public int getAmount()
     {
         return this.amount;
     }
 
-    /**
-     * @return The total limited stack of this catalog item.
-     */
+
     public int getLimitedStack()
     {
         return this.limitedStack;
     }
 
-    /**
-     * @return The amount of items that have been sold in this limited stack.
-     */
+
     public int getLimitedSells()
     {
         CatalogLimitedConfiguration ltdConfig = Emulator.getGameEnvironment().getCatalogManager().getLimitedConfig(this);
@@ -242,49 +178,37 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
         return this.limitedStack;
     }
 
-    /**
-     * @return Extradata can be used to hold more data or set default data for the items bought.
-     */
+
     public String getExtradata()
     {
         return this.extradata;
     }
 
-    /**
-     * @return Determines if this item can only be bought by people that have Habbo Club.
-     */
+
     public boolean isClubOnly()
     {
         return this.clubOnly;
     }
 
-    /**
-     * @return Determines if multiple purchases and thus discount is available.
-     */
+
     public boolean isHaveOffer()
     {
         return this.haveOffer;
     }
 
-    /**
-     * @return The search offer id linked to this catalog item.
-     */
+
     public int getOfferId()
     {
         return this.offerId;
     }
 
-    /**
-     * @return Returns True if this item has a limited stack.
-     */
+
     public boolean isLimited()
     {
         return this.limitedStack > 0;
     }
 
-    /**
-     * Sell a limited item.
-     */
+
     public synchronized void sellRare()
     {
         this.limitedSells++;
@@ -299,9 +223,7 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
         Emulator.getThreading().run(this);
     }
 
-    /**
-     * @return Return all BaseItems being sold.
-     */
+
     public THashSet<Item> getBaseItems()
     {
         THashSet<Item> items = new THashSet<>();
@@ -334,9 +256,7 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
         return items;
     }
 
-    /**
-     * @return The amount of items being sold.
-     */
+
     public int getItemAmount(int id)
     {
         if(this.bundle.containsKey(id))
@@ -345,17 +265,13 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
             return this.amount;
     }
 
-    /**
-     * @return The bundle items.
-     */
+
     public HashMap<Integer, Integer> getBundle()
     {
         return this.bundle;
     }
 
-    /**
-     * Loads the items in a bundle.
-     */
+
     public void loadBundle()
     {
         int intItemId;
@@ -514,11 +430,7 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
         return this.getId() - catalogItem.getId();
     }
 
-    /**
-     * Does additional checks to see if an item has offers enabled.
-     * @param item The item to check
-     * @return True if the item has offers enabled.
-     */
+
     private static boolean haveOffer(CatalogItem item)
     {
         if(!item.haveOffer)

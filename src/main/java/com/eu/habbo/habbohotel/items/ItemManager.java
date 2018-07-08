@@ -146,12 +146,8 @@ public class ItemManager
         this.interactionsList.add(new ItemInteraction("effect_tile",            InteractionEffectTile.class));
         this.interactionsList.add(new ItemInteraction("sticky_pole",            InteractionStickyPole.class));
 
-        /*
-            Wireds
-        */
-            /*
-                Triggers
-            */
+
+
             this.interactionsList.add(new ItemInteraction("wf_trg_walks_on_furni",      WiredTriggerHabboWalkOnFurni.class));
             this.interactionsList.add(new ItemInteraction("wf_trg_walks_off_furni",     WiredTriggerHabboWalkOffFurni.class));
             this.interactionsList.add(new ItemInteraction("wf_trg_enter_room",          WiredTriggerHabboEntersRoom.class));
@@ -169,9 +165,7 @@ public class ItemManager
             this.interactionsList.add(new ItemInteraction("wf_trg_says_command",        WiredTriggerHabboSaysCommand.class));
             this.interactionsList.add(new ItemInteraction("wf_trg_score_achieved",      WiredTriggerScoreAchieved.class));
 
-            /*
-                Effects
-            */
+
             this.interactionsList.add(new ItemInteraction("wf_act_toggle_state",        WiredEffectToggleFurni.class));
             this.interactionsList.add(new ItemInteraction("wf_act_reset_timers",        WiredEffectResetTimers.class));
             this.interactionsList.add(new ItemInteraction("wf_act_match_to_sshot",      WiredEffectMatchFurni.class));
@@ -209,9 +203,7 @@ public class ItemManager
             this.interactionsList.add(new ItemInteraction("wf_act_give_respect",        WiredEffectGiveRespect.class));
             this.interactionsList.add(new ItemInteraction("wf_act_alert",               WiredEffectAlert.class));
 
-            /*
-                Conditions
-            */
+
             this.interactionsList.add(new ItemInteraction("wf_cnd_has_furni_on",     WiredConditionFurniHaveFurni.class));
             this.interactionsList.add(new ItemInteraction("wf_cnd_furnis_hv_avtrs",  WiredConditionFurniHaveHabbo.class));
             this.interactionsList.add(new ItemInteraction("wf_cnd_stuff_is",         WiredConditionFurniTypeMatch.class));
@@ -242,23 +234,15 @@ public class ItemManager
             this.interactionsList.add(new ItemInteraction("wf_cnd_freeze",           WiredConditionFreezeGameActive.class));
             this.interactionsList.add(new ItemInteraction("wf_cnd_not_freeze",       WiredConditionNotFreezeGameActive.class));
 
-            /*
-                Extra
-             */
+
             this.interactionsList.add(new ItemInteraction("wf_xtra_random", WiredExtraRandom.class));
             this.interactionsList.add(new ItemInteraction("wf_xtra_unseen", WiredExtraUnseen.class));
 
-            /*
-                Highscores
-             */
+
             this.interactionsList.add(new ItemInteraction("wf_highscore", InteractionWiredHighscore.class));
 
-        /*
-            Battle Banzai
-        */
-            /*
-                Battle Banzai Items
-            */
+
+
             //battlebanzai_pyramid
             //battlebanzai_puck extends pushable
             this.interactionsList.add(new ItemInteraction("battlebanzai_timer",             InteractionBattleBanzaiTimer.class));
@@ -266,69 +250,49 @@ public class ItemManager
             this.interactionsList.add(new ItemInteraction("battlebanzai_random_teleport",   InteractionBattleBanzaiTeleporter.class));
             this.interactionsList.add(new ItemInteraction("battlebanzai_sphere",            InteractionBattleBanzaiSphere.class));
 
-            /*
-                Battle Banzai Gates
-            */
+
             this.interactionsList.add(new ItemInteraction("battlebanzai_gate_blue",         InteractionBattleBanzaiGateBlue.class));
             this.interactionsList.add(new ItemInteraction("battlebanzai_gate_green",        InteractionBattleBanzaiGateGreen.class));
             this.interactionsList.add(new ItemInteraction("battlebanzai_gate_red",          InteractionBattleBanzaiGateRed.class));
             this.interactionsList.add(new ItemInteraction("battlebanzai_gate_yellow",       InteractionBattleBanzaiGateYellow.class));
 
-            /*
-                Battle Banzai Scoreboards
-            */
+
             this.interactionsList.add(new ItemInteraction("battlebanzai_counter_blue",      InteractionBattleBanzaiScoreboardBlue.class));
             this.interactionsList.add(new ItemInteraction("battlebanzai_counter_green",     InteractionBattleBanzaiScoreboardGreen.class));
             this.interactionsList.add(new ItemInteraction("battlebanzai_counter_red",       InteractionBattleBanzaiScoreboardRed.class));
             this.interactionsList.add(new ItemInteraction("battlebanzai_counter_yellow",    InteractionBattleBanzaiScoreboardYellow.class));
 
-        /*
-            Freeze
-        */
-            /*
-                Freeze Items
-            */
+
+
             this.interactionsList.add(new ItemInteraction("freeze_block",   InteractionFreezeBlock.class));
             this.interactionsList.add(new ItemInteraction("freeze_tile",    InteractionFreezeTile.class));
             this.interactionsList.add(new ItemInteraction("freeze_exit",    InteractionFreezeExitTile.class));
             this.interactionsList.add(new ItemInteraction("freeze_timer",   InteractionFreezeTimer.class));
 
-            /*
-                Freeze Gates
-            */
+
             this.interactionsList.add(new ItemInteraction("freeze_gate_blue",   InteractionFreezeGateBlue.class));
             this.interactionsList.add(new ItemInteraction("freeze_gate_green",  InteractionFreezeGateGreen.class));
             this.interactionsList.add(new ItemInteraction("freeze_gate_red",    InteractionFreezeGateRed.class));
             this.interactionsList.add(new ItemInteraction("freeze_gate_yellow", InteractionFreezeGateYellow.class));
 
-            /*
-                Freeze Scoreboards
-            */
+
             this.interactionsList.add(new ItemInteraction("freeze_counter_blue",    InteractionFreezeScoreboardBlue.class));
             this.interactionsList.add(new ItemInteraction("freeze_counter_green",   InteractionFreezeScoreboardGreen.class));
             this.interactionsList.add(new ItemInteraction("freeze_counter_red",     InteractionFreezeScoreboardRed.class));
             this.interactionsList.add(new ItemInteraction("freeze_counter_yellow",  InteractionFreezeScoreboardYellow.class));
 
-        /*
-            Ice Tag
-         */
+
             this.interactionsList.add(new ItemInteraction("icetag_pole",  InteractionIceTagPole.class));
             this.interactionsList.add(new ItemInteraction("icetag_field", InteractionIceTagField.class));
 
-        /*
-            Bunnyrun
-         */
+
             this.interactionsList.add(new ItemInteraction("bunnyrun_pole",  InteractionBunnyrunPole.class));
             this.interactionsList.add(new ItemInteraction("bunnyrun_field", InteractionBunnyrunField.class));
 
-        /*
-            Rollerskate
-         */
+
             this.interactionsList.add(new ItemInteraction("rollerskate_field", InteractionRollerskateField.class));
 
-        /*
-            Football
-         */
+
             this.interactionsList.add(new ItemInteraction("football",                InteractionFootball.class));
             this.interactionsList.add(new ItemInteraction("football_gate",           InteractionFootballGate.class));
             this.interactionsList.add(new ItemInteraction("football_counter_blue",   InteractionFootballScoreboardBlue.class));
@@ -345,10 +309,7 @@ public class ItemManager
         this.interactionsList.add(new ItemInteraction("snowstorm_pile", null));
     }
 
-    /**
-     * Adds an new ItemInteraction to the interaction list.
-     * @param itemInteraction The ItemInteraction that must be added.
-     */
+
     public void addItemInteraction(ItemInteraction itemInteraction)
     {
         for (ItemInteraction interaction : this.interactionsList)
@@ -362,11 +323,7 @@ public class ItemManager
         this.interactionsList.add(itemInteraction);
     }
 
-    /**
-     * Gets that correct ItemInteraction class for the given Interaction.
-     * @param type The Interaction that must be found.
-     * @return The ItemInteraction definition for the given class.
-     */
+
     public ItemInteraction getItemInteraction(Class<? extends HabboItem> type)
     {
         for (ItemInteraction interaction : this.interactionsList)
@@ -379,11 +336,7 @@ public class ItemManager
         return getItemInteraction(InteractionDefault.class);
     }
 
-    /**
-     * Gets that correct ItemInteraction class for the given Interaction.
-     * @param type The Interaction that must be found.
-     * @return The ItemInteraction definition for the given class.
-     */
+
     public ItemInteraction getItemInteraction(String type)
     {
         for (ItemInteraction interaction : this.interactionsList)
@@ -395,11 +348,7 @@ public class ItemManager
         return this.getItemInteraction(InteractionDefault.class);
     }
 
-    /**
-     * Loads all items from the database. Updates the item definition when needed.
-     *
-     * Note: Does not change the interaction type. Emulator requires a restart for that.
-     */
+
     public void loadItems()
     {
         try (
@@ -432,9 +381,7 @@ public class ItemManager
         }
     }
 
-    /**
-     * Loads the crackable items and their rewards from the database.
-     */
+
     public void loadCrackable()
     {
         this.crackableRewards.clear();
@@ -462,11 +409,7 @@ public class ItemManager
         }
     }
 
-    /**
-     * Gets the amount of clicks required for an crackable item.
-     * @param itemId The Item id.
-     * @return The amount of clicks required.
-     */
+
     public int getCrackableCount(int itemId)
     {
         if(this.crackableRewards.containsKey(itemId))
@@ -475,12 +418,7 @@ public class ItemManager
             return 0;
     }
 
-    /**
-     * Calculates the current state of the crackable item depending on the amount of ticks.
-     * @param count The current amount of ticks.
-     * @param max The amount of ticks needed.
-     * @return State of the crackable.
-     */
+
     public int calculateCrackState(int count, int max, Item baseItem)
     {
         return (int)Math.floor((1.0D / ((double)max / (double)count) * baseItem.getStateCount()));
@@ -496,9 +434,7 @@ public class ItemManager
         return this.getItem(this.crackableRewards.get(itemId).getRandomReward());
     }
 
-    /**
-     * Loads soundtracks from the database.
-     */
+
     public void loadSoundTracks()
     {
         this.soundTracks.clear();

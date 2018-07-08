@@ -20,19 +20,13 @@ import java.util.ArrayList;
 
 public class GameClient
 {
-    /**
-     * The Channel this client is using.
-     */
+
     private final Channel channel;
 
-    /**
-     * The Habbo it is linked to.
-     */
+
     private Habbo habbo;
 
-    /**
-     * The MAC Address of the connected client.
-     */
+
     private String machineId = "";
 
     public GameClient(Channel channel)
@@ -40,10 +34,7 @@ public class GameClient
         this.channel = channel;
     }
 
-    /**
-     * Sends an composer to the client.
-     * @param composer The composer to send.
-     */
+
     public void sendResponse(MessageComposer composer)
     {
         if(this.channel.isOpen())
@@ -59,10 +50,7 @@ public class GameClient
         }
     }
 
-    /**
-     * Sends an response to the client.
-     * @param response The response to send.
-     */
+
     public void sendResponse(ServerMessage response)
     {
         if(this.channel.isOpen())
@@ -80,10 +68,7 @@ public class GameClient
         }
     }
 
-    /**
-     * Sends multiple responses to the client.
-     * @param responses The responses to send.
-     */
+
     public void sendResponses(ArrayList<ServerMessage> responses)
     {
         ByteBuf buffer = Unpooled.buffer();
@@ -108,9 +93,7 @@ public class GameClient
         buffer.release();
     }
 
-    /**
-     * Disposes the client. Disconnection mostly.
-     */
+
     public void dispose()
     {
         try

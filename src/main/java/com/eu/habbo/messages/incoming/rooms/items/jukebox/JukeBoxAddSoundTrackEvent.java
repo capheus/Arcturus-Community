@@ -33,58 +33,7 @@ public class JukeBoxAddSoundTrackEvent extends MessageHandler
 
             if (item instanceof InteractionMusicDisc)
             {
-                /*for (HabboItem jukeBox : room.getRoomSpecialTypes().getItemsOfType(InteractionJukeBox.class))
-                {
-                    if (jukeBox instanceof InteractionJukeBox)
-                    {
-                        SoundTrack track = Emulator.getGameEnvironment().getItemManager().getSoundTrack(((InteractionMusicDisc) item).getSongId());
-                        ArrayList<SoundTrack> soundTracks = new ArrayList<SoundTrack>();
-                        soundTracks.add(track);
 
-                        if (!((InteractionJukeBox)jukeBox).hasItemInPlaylist(itemId))
-                        {
-                            ((InteractionJukeBox) jukeBox).addToPlayList(itemId, room);
-                        }
-                        else
-                        {
-                            ((InteractionJukeBox) jukeBox).removeFromPlayList(itemId, room);
-                        }
-
-                        //room.sendComposer(new JukeBoxPlayListComposer(((InteractionJukeBox) jukeBox), room).compose());
-                        THashSet<SoundTrack> soundTrackTHashSet = new THashSet<>();
-                        List<Integer> toRemove = new ArrayList<Integer>();
-                        ((InteractionJukeBox) jukeBox).getMusicDisks().forEach(new TIntProcedure()
-                        {
-                            @Override
-                            public boolean execute(int i)
-                            {
-                                HabboItem item = room.getHabboItem(i);
-
-                                if (item != null && item instanceof InteractionMusicDisc)
-                                {
-                                    SoundTrack track = Emulator.getGameEnvironment().getItemManager().getSoundTrack(((InteractionMusicDisc) item).getSongId());
-
-                                    if (track != null)
-                                    {
-                                        soundTrackTHashSet.add(track);
-                                        return true;
-                                    }
-                                }
-                                toRemove.add(i);
-
-                                return true;
-                            }
-                        });
-
-                        for (Integer i : toRemove)
-                        {
-                            ((InteractionJukeBox) jukeBox).removeFromPlayList(i, room);
-                        }
-
-                        room.sendComposer(new JukeBoxPlayListUpdatedComposer(soundTrackTHashSet).compose());
-                    }
-                    break;
-                }*/
 
                 if (this.client.getHabbo().getHabboInfo().getCurrentRoom().hasRights(this.client.getHabbo()))
                 {

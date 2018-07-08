@@ -5,44 +5,28 @@ import java.sql.SQLException;
 
 public class ClubOffer
 {
-    /**
-     * Id of the offer.
-     */
+
     private final int id;
 
-    /**
-     * Name of the offer
-     */
+
     private final String name;
 
-    /**
-     * Total days
-     */
+
     private final int days;
 
-    /**
-     * Price in credits.
-     */
+
     private final int credits;
 
-    /**
-     * Price in points.
-     */
+
     private final int points;
 
-    /**
-     * Points type.
-     */
+
     private final int pointsType;
 
-    /**
-     * Is VIP (Legacy)
-     */
+
     private final boolean vip;
 
-    /**
-     * If the ClubOffer is an extension deal.
-     */
+
     private final boolean deal;
 
     public ClubOffer(ResultSet set) throws SQLException

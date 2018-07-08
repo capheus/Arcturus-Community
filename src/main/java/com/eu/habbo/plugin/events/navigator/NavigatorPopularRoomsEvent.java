@@ -7,15 +7,10 @@ import java.util.ArrayList;
 
 public class NavigatorPopularRoomsEvent extends NavigatorRoomsEvent
 {
-    /**
-     * The rooms displayed.
-     */
+
     public final ArrayList<Room> rooms;
 
-    /**
-     * @param habbo The Habbo this event applies to.
-     * @param rooms The rooms displayed.
-     */
+
     public NavigatorPopularRoomsEvent(Habbo habbo, ArrayList<Room> rooms)
     {
         super(habbo, rooms);

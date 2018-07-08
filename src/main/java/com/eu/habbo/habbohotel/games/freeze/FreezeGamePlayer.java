@@ -51,9 +51,7 @@ public class FreezeGamePlayer extends GamePlayer
         }
     }
 
-    /*
-        Freeze
-    */
+
     public void addLife()
     {
         if(this.lives < FreezeGame.MAX_LIVES)

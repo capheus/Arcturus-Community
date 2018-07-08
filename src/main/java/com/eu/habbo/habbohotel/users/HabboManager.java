@@ -321,13 +321,7 @@ public class HabboManager
         return nameChanges;
     }
 
-    /**
-     * Sets the rank for an user.
-     * Updates the database if the user is offline.
-     * @param userId The ID of the user.
-     * @param rankId The new rank ID for the user.
-     * @throws Exception When the rank does not exist.
-     */
+
     public void setRank(int userId, int rankId) throws Exception
     {
         Habbo habbo = this.getHabbo(userId);

@@ -14,9 +14,7 @@ import java.sql.SQLException;
 
 public class SendGift extends RCONMessage<SendGift.SendGiftJSON>
 {
-    /**
-     * Sends a gift to an user.
-     */
+
     public SendGift()
     {
         super(SendGiftJSON.class);

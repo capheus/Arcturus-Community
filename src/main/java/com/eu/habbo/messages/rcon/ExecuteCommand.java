@@ -7,9 +7,7 @@ import com.google.gson.Gson;
 
 public class ExecuteCommand extends RCONMessage<ExecuteCommand.JSONExecuteCommand>
 {
-    /**
-     * Executes a command as an user. Still requires the user to have the proper permissions set.
-     */
+
     public ExecuteCommand()
     {
         super(JSONExecuteCommand.class);

@@ -27,17 +27,7 @@ public class UserClubComposer extends MessageComposer
 
         if(endTimestamp >= now)
         {
-            /*Date endDate = new Date(endTimestamp * 1000);
-            Date startDate = new Date(Emulator.getIntUnixTimestamp() * 1000);
 
-            long duration = endDate.getTime() - startDate.getTime();
-
-            long theDays = TimeUnit.MILLISECONDS.toDays(duration);
-            int years = (int) Math.floor(theDays / 365);
-            theDays = theDays - (years * 365);
-
-            int months = (int) Math.floor(theDays / 31);
-            theDays = theDays - (months * 31);*/
 
             int days = ((endTimestamp - Emulator.getIntUnixTimestamp()) / 86400);
             int years = (int) Math.floor(days / 365);

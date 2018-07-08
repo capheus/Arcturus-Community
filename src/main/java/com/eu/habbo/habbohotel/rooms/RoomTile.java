@@ -11,23 +11,14 @@ public class RoomTile
     private boolean allowStack = true;
     private boolean walkable = true;
 
-    /**
-     * Pathfinder
-     */
+
     private RoomTile previous = null;
     private boolean diagonally;
     private short movementPanelty;
     private short gCosts;
     private short hCosts;
 
-    /**
-     *  @param x
-     * @param y
-     * @param z
-     * @param state
-     * @param walkable
-     * @param allowStack
-     */
+
     public RoomTile(short x, short y, short z, RoomTileState state, boolean walkable, boolean allowStack)
     {
         this.x = x;

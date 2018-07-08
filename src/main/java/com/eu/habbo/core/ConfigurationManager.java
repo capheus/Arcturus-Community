@@ -15,22 +15,13 @@ import java.util.Properties;
 
 public class ConfigurationManager
 {
-    /**
-     * Flag for when the ConfigurationManager has fully loaded.
-     */
+
     public boolean loaded = false;
 
-    /**
-     * Flag for when the ConfigurationManager is still loading.
-     * The configurationmanager is loaded in two parts,
-     * first the config.ini is read.
-     * After that the rest of the configuration is read from the database.
-     */
+
     public boolean isLoading = false;
 
-    /**
-     * Our configurations stored in this object.
-     */
+
     private final Properties properties;
     
     public ConfigurationManager(String path) throws Exception
@@ -40,10 +31,7 @@ public class ConfigurationManager
         this.reload();
     }
 
-    /**
-     * Reloads the settings from the config file.
-     * @throws Exception
-     */
+
     public void reload() throws Exception
     {
         this.isLoading = true;
@@ -82,9 +70,7 @@ public class ConfigurationManager
         }
     }
 
-    /**
-     * Loads the settings from the database.
-     */
+
     public void loadFromDatabase()
     {
         Emulator.getLogging().logStart("Loading configuration from database...");
@@ -128,22 +114,13 @@ public class ConfigurationManager
         }
     }
 
-    /**
-     * Gets the string value for a specific key.
-     * @param key The key to find the value for.
-     * @return The string value for the key. Returns an empty string if not found.
-     */
+
     public String getValue(String key)
     {
         return getValue(key, "");
     }
 
-    /**
-     * Gets the string value for a specific key.
-     * @param key The key to find the value for.
-     * @param defaultValue The value that will be returned when the key is not found.
-     * @return The string value for the key. Returns defaultValue when not found.
-     */
+
     public String getValue(String key, String defaultValue)
     {
         if (this.isLoading)
@@ -155,22 +132,13 @@ public class ConfigurationManager
         return this.properties.getProperty(key, defaultValue);
     }
 
-    /**
-     * Gets the boolean value for a specific key.
-     * @param key The key to find the value for.
-     * @return The boolean value for the key. Returns false if not found.
-     */
+
     public boolean getBoolean(String key)
     {
         return getBoolean(key, false);
     }
 
-    /**
-     * Gets the boolean value for a specific key.
-     * @param key The key to find the value for.
-     * @param defaultValue The value that will be returned when the key is not found.
-     * @return The boolean value for the key. Returns defaultValue when not found.
-     */
+
     public boolean getBoolean(String key, boolean defaultValue)
     {
         if (this.isLoading)
@@ -187,22 +155,13 @@ public class ConfigurationManager
         return defaultValue;
     }
 
-    /**
-     * Gets the int value for a specific key.
-     * @param key The key to find the value for.
-     * @return The int value for the key. Returns 0 if not found.
-     */
+
     public int getInt(String key)
     {
         return getInt(key, 0);
     }
 
-    /**
-     * Gets the int value for a specific key.
-     * @param key The key to find the value for.
-     * @param defaultValue The value that will be returned when the key is not found.
-     * @return The int value for the key. Returns defaultValue when not found.
-     */
+
     public int getInt(String key, Integer defaultValue)
     {
         if (this.isLoading)
@@ -218,22 +177,13 @@ public class ConfigurationManager
         return defaultValue;
     }
 
-    /**
-     * Gets the double value for a specific key.
-     * @param key The key to find the value for.
-     * @return The double value for the key. Returns 0 if not found.
-     */
+
     public double getDouble(String key)
     {
         return getDouble(key, 0.0);
     }
 
-    /**
-     * Gets the double value for a specific key.
-     * @param key The key to find the value for.
-     * @param defaultValue The value that will be returned when the key is not found.
-     * @return The double value for the key. Returns defaultValue when not found.
-     */
+
     public double getDouble(String key, Double defaultValue)
     {
         if (this.isLoading)
@@ -251,11 +201,7 @@ public class ConfigurationManager
         return defaultValue;
     }
 
-    /**
-     * Updates the give key.
-     * @param key The key to update.
-     * @param value The new value.
-     */
+
     public void update(String key, String value)
     {
         this.properties.setProperty(key, value);

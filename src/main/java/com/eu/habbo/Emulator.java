@@ -29,49 +29,31 @@ import java.util.regex.Pattern;
 
 public final class Emulator
 {
-    /**
-     * Major version of the emulator.
-     */
+
     public final static int MAJOR = 1;
 
-    /**
-     * Minor version of the emulator.
-     */
+
     public final static int MINOR = 10;
 
-    /**
-     * Stable build version of the emulator.
-     */
+
     public final static int BUILD = 0;
 
-    /**
-     * Version as string.
-     */
+
     public static final String version = "Version: " + MAJOR + "." + MINOR + "." + BUILD;
 
-    /**
-     * Public chat, used for staffchat for now.
-     */
+
     public static MessengerBuddy publicChatBuddy;
 
-    /**
-     * The emulator is fully loaded and ready to handle players.
-     */
+
     public static boolean isReady = false;
 
-    /**
-     * The emulator is shutting down.
-     */
+
     public static boolean isShuttingDown = false;
 
-    /**
-     * The emulator has fully shutdown.
-     */
+
     public static boolean stopped = false;
 
-    /**
-     * The emulator is in debugging mode.
-     */
+
     public static boolean debugging = false;
 
     private static int                      timeStarted = 0;
@@ -102,11 +84,7 @@ public final class Emulator
         Runtime.getRuntime().addShutdownHook(hook);
     }
 
-    /**
-     * Entry point for Arcturus Emulator.
-     * @param args Unused
-     * @throws Exception Failed to start the emulator.
-     */
+
     public static void main(String[] args) throws Exception
     {
         try
@@ -204,9 +182,7 @@ public final class Emulator
         }
     }
 
-    /**
-     * Shutsdown the emulator.
-     */
+
     private static void dispose()
     {
         Emulator.isShuttingDown = true;
@@ -290,82 +266,61 @@ public final class Emulator
         catch (Exception e) {}
     }
 
-    /**
-     * @return The ConfigurationManager
-     */
+
     public static ConfigurationManager getConfig()
     {
         return config;
     }
 
-    /**
-     * @return The TextsManager
-     */
+
     public static TextsManager getTexts()
     {
         return texts;
     }
 
-    /**
-     * @return The Database
-     */
+
     public static Database getDatabase()
     {
         return database;
     }
 
-    /**
-     * @return Current Runtime
-     */
+
     public static Runtime getRuntime()
     {
         return runtime;
     }
 
-    /**
-     * @return The GameServer
-     */
+
     public static GameServer getGameServer()
     {
         return gameServer;
     }
 
-    /**
-     * @return The RCONServer
-     */
+
     public static RCONServer getRconServer()
     {
         return rconServer;
     }
 
-    /**
-     * @return Logging module
-     */
+
     public static Logging getLogging()
     {
         return logging;
     }
 
-    /**
-     * @return The ThreadPooling
-     */
+
     public static ThreadPooling getThreading()
     {
         return threading;
     }
 
-    /**
-     * @return The GameEnvironment
-     */
+
     public static GameEnvironment getGameEnvironment()
     {
         return gameEnvironment;
     }
 
-    /**
-     *
-     * @return The PluginManager
-     */
+
     public static PluginManager getPluginManager()
     {
         return pluginManager;
@@ -401,11 +356,7 @@ public final class Emulator
         System.exit(0);
     }
 
-    /**
-     * Converts a date to an unix timestamp
-     * @param date The date to convert
-     * @return Return unix timestamp in seconds.
-     */
+
     private static String dateToUnixTimestamp(Date date)
     {
         String res = "";
@@ -417,11 +368,7 @@ public final class Emulator
         return res + seconds;
     }
 
-    /**
-     * Converts a String to a Date object
-     * @param date The String to parse
-     * @return The Date of the string.
-     */
+
     private static Date stringToDate(String date)
     {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

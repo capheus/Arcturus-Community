@@ -452,100 +452,13 @@ public class TestCommand extends Command
         }
 
 
-        /*if(params[1].equalsIgnoreCase("r"))
-        {
-            gameClient.getHabbo().getRoomUnit().getStatus().remove(params[2]);
-            return true;
-        }
-        String s = "";
-        for(int i = 2; i < params.length; i++)
-        {
-            s+= params[i];
 
-            if(i + 1 < params.length)
-            {
-                s+= " ";
-            }
-        }
-
-        gameClient.getHabbo().getRoomUnit().getStatus().put(params[1], s);
-        gameClient.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserStatusComposer(gameClient.getHabbo().getRoomUnit()).compose());*/
         //if(params.length >= 2)
         //{
         //    gameClient.sendResponse(new RoomUserActionComposer(gameClient.getHabbo().getRoomUnit(), Integer.valueOf(params[1])));
         //}
 
-        /*if(params.length < 2)
-            return false;
 
-        /*
-        :test 1604 i:0 s:a i:1 i:2 i:3 i: 4 s:b i:3 i:1 i:1 s:Admin s:a s:M i:0 i:0 i:0 i:0
-        if(params[1].equalsIgnoreCase("purple"))
-        {
-            AbstractPet pet = gameClient.getHabbo().getHabboInfo().getCurrentRoom().getPet(13);
-
-            if(pet instanceof Pet)
-            {
-                String a = "";
-                String b = "";
-                String c = "";
-                if(params[2] != null)
-                {
-                    a = params[2];
-                    if(params.length >= 4)
-                    {
-                        b = params[3];
-                    }
-                    if(params.length >= 5)
-                    {
-                        c = params[4];
-                    }
-                    pet.getRoomUnit().getStatus().put(a, b + " " + c);
-                    gameClient.sendResponse(new RoomUserStatusComposer(pet.getRoomUnit()));
-                }
-            }
-        }
-        else if(params[1].equalsIgnoreCase("clear"))
-        {
-            AbstractPet pet = gameClient.getHabbo().getHabboInfo().getCurrentRoom().getPet(13);
-
-            if(pet instanceof Pet)
-            {
-                pet.getRoomUnit().getStatus().clear();
-                gameClient.sendResponse(new RoomUserStatusComposer(pet.getRoomUnit()));
-            }
-        }
-        else if(params[1].equalsIgnoreCase("club"))
-        {
-            gameClient.sendResponse(new ClubDataComposer(gameClient.getHabbo(), Integer.valueOf(params[2])));
-            return true;
-        }
-            int header = Integer.valueOf(params[1]);
-
-            ServerMessage message = new ServerMessage();
-            message.init(header);
-
-            for (int i = 2; i < params.length; i++)
-            {
-                String[] data = params[i].split(":");
-                System.out.println(data.length + "//");
-                if (data[0].equals("i"))
-                {
-                    message.appendInt(Integer.valueOf(data[1]));
-                } else if (data[0].equals("s"))
-                {
-                    if(data[1].equalsIgnoreCase("%look%"))
-                    {
-                        data[1] = gameClient.getHabbo().getHabboInfo().getLook();
-                    }
-                    message.appendString(data[1]);
-                } else if (data[0].equals("b"))
-                {
-                    message.appendBoolean(data[1].equalsIgnoreCase("1"));
-                }
-
-            }
-            gameClient.sendResponse(message);*/
         //}
 
         //int header = Integer.valueOf(params[1]);
@@ -559,28 +472,7 @@ public class TestCommand extends Command
         //gameClient.sendResponse(new SnowWarsCompose1(1604));
         //gameClient.sendResponse(new SnowWarsLevelDataComposer());
 
-        /*
-        ServerMessage response = new ServerMessage();
-        response.init(Outgoing.RoomUsersComposer);
-        response.appendInt(1);
-        response.appendInt(0);
-        response.appendString("");
-        response.appendString("");
-        response.appendString("");
-        response.appendInt(0); //Room Unit ID
-        response.appendInt(10);
-        response.appendInt(10);
-        response.appendString("");
-        response.appendInt(0);
-        response.appendInt(200);
-        response.appendString(this.habbo.getHabboInfo().getGender());
-        response.appendInt(this.habbo.getHabboStats().guild != 0 ? this.habbo.getHabboStats().guild : -1);
-        response.appendInt(this.habbo.getHabboStats().guild != 0 ? 1 : -1);
-        response.appendString(this.habbo.getHabboStats().guild != 0 ? Emulator.getGameEnvironment().getGuildManager().getGuild(this.habbo.getHabboStats().guild).getName() : "");
-        response.appendString("");
-        response.appendInt(this.habbo.getHabboInfo().getAchievementScore());
-        response.appendBoolean(true);
-        }*/
+
         return true;
     }
 

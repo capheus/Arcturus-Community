@@ -24,11 +24,7 @@ public class BotManager
 
     final private static THashMap<String, Class<? extends Bot>> botDefenitions = new THashMap<String, Class<? extends Bot>>();
 
-    /**
-     * Loads up the BotManager. Do NOT initialise this class yourself.
-     *
-     * Extend from the Bot class and implement 'public static void initialise()' to load data as you see fit.
-     */
+
     public BotManager()
     {
         long millis = System.currentTimeMillis();
@@ -42,10 +38,7 @@ public class BotManager
         Emulator.getLogging().logStart("Bot Manager -> Loaded! ("+(System.currentTimeMillis() - millis)+" MS)");
     }
 
-    /**
-     * Reloads the bot manager
-     * @return Returns true if the BotManager has been succesfully reloaded.
-     */
+
     public boolean reload()
     {
         for(Map.Entry<String, Class<? extends Bot>> set : botDefenitions.entrySet())
@@ -71,12 +64,7 @@ public class BotManager
         return true;
     }
 
-    /**
-     * Creates a new Bot and inserts it into the database.
-     * @param data A key-value set of details of the bot (name, motto, figure, gender)
-     * @param type The type of the bot that must be initialised.
-     * @return The initialised bot. Returns NULL upon Exception;
-     */
+
     public Bot createBot(THashMap<String, String> data, String type)
     {
         Bot bot = null;
@@ -118,13 +106,7 @@ public class BotManager
         return bot;
     }
 
-    /**
-     * Places a bot at the given location in the given room.
-     * @param bot The Bot that is being placed.
-     * @param habbo The Habbo that owns the Bot.
-     * @param room The Room this Bot is being placed in.
-     * @param location The given location of the Bot.
-     */
+
     public void placeBot(Bot bot, Habbo habbo, Room room, RoomTile location)
     {
         BotPlacedEvent event = new BotPlacedEvent(bot, location, habbo);
@@ -171,12 +153,7 @@ public class BotManager
         }
     }
 
-    /**
-     * Removes a bot from the room.
-     * Note the owner is being set to the Habbo.
-     * @param botId The id of the Bot that is being picked up.
-     * @param habbo The Habbo who picks it.
-     */
+
     public void pickUpBot(int botId, Habbo habbo)
     {
         if(habbo.getHabboInfo().getCurrentRoom() != null)
@@ -185,12 +162,7 @@ public class BotManager
         }
     }
 
-    /**
-     * Removes a bot from the room.
-     * Note the owner is being set to the Habbo.
-     * @param bot The Bot that is being picked up.
-     * @param habbo The Habbo who picks it.
-     */
+
     public void pickUpBot(Bot bot, Habbo habbo)
     {
         if(bot != null && habbo != null)
@@ -220,11 +192,7 @@ public class BotManager
         }
     }
 
-    /**
-     * Loads a bot from the given ResultSet.
-     * @param set The set this bot must be initialised from.
-     * @return The initialised bot. Returns NULL upon SQLException being thrown.
-     */
+
     public Bot loadBot(ResultSet set)
     {
         try
@@ -249,11 +217,7 @@ public class BotManager
         return null;
     }
 
-    /**
-     * Deletes a bot from the database.
-     * @param bot The bot to delete.
-     * @return true if the bot has been deleted.
-     */
+
     public boolean deleteBot(Bot bot)
     {
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM bots WHERE id = ? LIMIT 1"))
@@ -269,15 +233,7 @@ public class BotManager
         return false;
     }
 
-    /**
-     * Add a new bot type in order to implement custom behaviour.
-     *
-     * Make sure to extend the Bot class and make the constructor match Bot(ResultSet)
-     * @param type The name of the bot type.
-     * @param botClazz The class that needs to be initialised.
-     * @throws Exception If the bot type already exists.
-     *                   If the bot class has no constructor matchin Bot(ResultSet)
-     */
+
     public static void addBotDefinition(String type, Class<? extends Bot> botClazz) throws Exception
     {
         if(botClazz.getDeclaredConstructor(ResultSet.class) == null)
@@ -292,11 +248,7 @@ public class BotManager
         }
     }
 
-    /**
-     * Called upon Emulator shutdown.
-     * Implement 'public static void dispose()' to pass on this event
-     * to your custom bot class.
-     */
+
     public void dispose()
     {
         for(Map.Entry<String, Class<? extends Bot>> set : botDefenitions.entrySet())

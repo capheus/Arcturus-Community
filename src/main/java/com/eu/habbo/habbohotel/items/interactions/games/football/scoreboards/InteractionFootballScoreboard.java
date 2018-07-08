@@ -13,9 +13,7 @@ import com.eu.habbo.habbohotel.wired.WiredEffectType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Thanks to Beny for coding football game for Arcturus!
- */
+
 public class InteractionFootballScoreboard extends InteractionGameScoreboard
 {
     private int score;
@@ -60,11 +58,7 @@ public class InteractionFootballScoreboard extends InteractionGameScoreboard
         return false;
     }
 
-    /**
-     *
-     * @param amount
-     * @return New score.
-     */
+
     public int changeScore(int amount)
     {
         this.score += amount;

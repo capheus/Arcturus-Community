@@ -6,9 +6,7 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Class for the buildersclub rewards page.
- */
+
 public class BuildersClubLoyaltyLayout extends CatalogPage
 {
     public BuildersClubLoyaltyLayout(ResultSet set) throws SQLException

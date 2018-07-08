@@ -8,9 +8,7 @@ import java.io.StringWriter;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-/**
- * Created on 12-11-2015 19:16.
- */
+
 public class ErrorLog implements Loggable
 {
     public final static String insertQuery = "INSERT INTO emulator_errors (timestamp, type, stacktrace) VALUES (?, ?, ?)";

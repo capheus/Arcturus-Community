@@ -64,24 +64,7 @@ public class PetInformationComposer extends MessageComposer
         this.response.appendBoolean(this.pet instanceof MonsterplantPet && ((MonsterplantPet) this.pet).isPubliclyBreedable()); //Breedable checkbox
 
 
-        /*
-        public function get _SafeStr_6187():Boolean
-        {
-            return (this._SafeStr_10925);
-        }
-        public function get _SafeStr_6188():Boolean
-        {
-            return (this._SafeStr_10926);
-        }
-        public function get _SafeStr_6189():Boolean
-        {
-            return (this._SafeStr_10927);
-        }
-        public function get _SafeStr_6190():Boolean
-        {
-            return (this._SafeStr_10928);
-        }
-         */
+
         return this.response;
     }
 }

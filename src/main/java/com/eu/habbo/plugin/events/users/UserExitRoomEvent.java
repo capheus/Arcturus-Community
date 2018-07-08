@@ -20,10 +20,7 @@ public class UserExitRoomEvent extends UserEvent
 
     public final UserExitRoomReason reason;
 
-    /**
-     * @param habbo The Habbo this event applies to.
-     * @param reason The reason the Habbo has left the room.
-     */
+
     public UserExitRoomEvent(Habbo habbo, UserExitRoomReason reason)
     {
         super(habbo);

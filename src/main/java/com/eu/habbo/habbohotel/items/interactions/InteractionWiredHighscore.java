@@ -112,10 +112,7 @@ public class InteractionWiredHighscore extends HabboItem
         }
     }
 
-    /*
 
-    FUCK OFF
-     */
     @Override
     public void serializeExtradata(ServerMessage serverMessage)
     {

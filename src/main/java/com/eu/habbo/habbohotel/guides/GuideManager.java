@@ -55,9 +55,7 @@ public class GuideManager
         this.activeGuardians.remove(habbo);
     }
 
-    /**
-     * Guide Shit
-     */
+
 
     public void setOnGuide(Habbo habbo, boolean onDuty)
     {
@@ -76,14 +74,7 @@ public class GuideManager
         }
     }
 
-    /**
-     * Searches for an helper to handle the tour.
-     * Automatically schedules the tour request untill an helper is found
-     * or the request has been cancelled by the requester.
-     *
-     * @param tour The tour to find a helper for.
-     * @return Wether an helper has been found.
-     */
+
     public boolean findHelper(GuideTour tour)
     {
         synchronized (this.activeHelpers)
@@ -111,11 +102,7 @@ public class GuideManager
         return false;
     }
 
-    /**
-     * Declines an tourrequest for the current helper assigned.
-     * Automatically searches for a new helper.
-     * @param tour The tour to decline.
-     */
+
     public void declineTour(GuideTour tour)
     {
         Habbo helper = tour.getHelper();
@@ -130,11 +117,7 @@ public class GuideManager
         }
     }
 
-    /**
-     * Starts an new tour session.
-     * @param tour The tour to start.
-     * @param helper The helper to assign.
-     */
+
     public void startSession(GuideTour tour, Habbo helper)
     {
         synchronized (this.activeTours)
@@ -152,21 +135,7 @@ public class GuideManager
         }
     }
 
-    /**
-     * Ends an tour session.
-     * <list>
-     *     <ul>
-     *         The requester cancels the tour request.
-     *     </ul>
-     *     <ul>
-     *         The requester says no more help needed.
-     *     </ul>
-     *     <ul>
-     *         The requester reported the helper.
-     *     </ul>
-     * </list>
-     * @param tour
-     */
+
     public void endSession(GuideTour tour)
     {
         synchronized (this.activeTours)
@@ -187,11 +156,7 @@ public class GuideManager
         }
     }
 
-    /**
-     * Recommend the guide.
-     * @param tour The GuideTour this applies to.
-     * @param recommend Recommended or not.
-     */
+
     public void recommend(GuideTour tour, boolean recommend)
     {
         synchronized (this.activeTours)
@@ -204,11 +169,7 @@ public class GuideManager
         }
     }
 
-    /**
-     * Gets the GuideTour for the given helper.
-     * @param helper The helper to find the tour for.
-     * @return The GuideTour for the helper. NULL when not found.
-     */
+
     public GuideTour getGuideTourByHelper(Habbo helper)
     {
         synchronized (this.activeTours)
@@ -225,11 +186,7 @@ public class GuideManager
         return null;
     }
 
-    /**
-     * Gets the GuideTour for the given requester.
-     * @param noob The noob to find the tour for.
-     * @return The GuideTour for the noob. NULL when not found.
-     */
+
     public GuideTour getGuideTourByNoob(Habbo noob)
     {
         synchronized (this.activeTours)
@@ -246,11 +203,7 @@ public class GuideManager
         return null;
     }
 
-    /**
-     * Searches for any GuideTour linked to the either the noob or the helper.
-     * @param habbo The Habbo to look for.
-     * @return An given tour.
-     */
+
     public GuideTour getGuideTourByHabbo(Habbo habbo)
     {
         synchronized (this.activeTours)
@@ -267,33 +220,25 @@ public class GuideManager
         return null;
     }
 
-    /**
-     * @return The amount of helpers that are on duty.
-     */
+
     public int getGuidesCount()
     {
         return this.activeHelpers.size();
     }
 
-    /**
-     * @return The amount of guardians that are on duty.
-     */
+
     public int getGuardiansCount()
     {
         return this.activeGuardians.size();
     }
 
-    /**
-     * @return true if there are guardians on duty.
-     */
+
     public boolean activeGuardians()
     {
         return this.activeGuardians.size() > 0;
     }
 
-    /**
-     * @return The average waiting time before an helper is assinged.
-     */
+
     public int getAverageWaitingTime()
     {
         synchronized (this.tourRequestTiming)
@@ -312,14 +257,9 @@ public class GuideManager
         }
     }
 
-    /**
-     * Guardians
-     */
 
-    /**
-     * Adds a new guardian ticket to the active ticket Queue
-     * @param ticket The GuardianTicket to add.
-     */
+
+
     public void addGuardianTicket(GuardianTicket ticket)
     {
         synchronized (this.activeTickets)
@@ -330,10 +270,7 @@ public class GuideManager
         }
     }
 
-    /**
-     * Searches for new guardians to vote on the given ticket.
-     * @param ticket The GuardianTicket to find Guardians for.
-     */
+
     public void findGuardians(GuardianTicket ticket)
     {
         synchronized (this.activeGuardians)
@@ -376,11 +313,7 @@ public class GuideManager
         }
     }
 
-    /**
-     * Accept a ticket for an Guardian.
-     * @param guardian The Guardian who accepts.
-     * @param accepted Accepted.
-     */
+
     public void acceptTicket(Habbo guardian, boolean accepted)
     {
         GuardianTicket ticket = this.getTicketForGuardian(guardian);
@@ -401,9 +334,7 @@ public class GuideManager
         }
     }
 
-    /**
-     * @return The active GuardianTicket for the Guardian.
-     */
+
     public GuardianTicket getTicketForGuardian(Habbo guardian)
     {
         synchronized (this.activeGuardians)
@@ -412,9 +343,7 @@ public class GuideManager
         }
     }
 
-    /**
-     * @return The most recent ticket send by the reporter. NULL when not found.
-     */
+
     public GuardianTicket getRecentTicket(Habbo reporter)
     {
         GuardianTicket ticket = null;
@@ -465,10 +394,7 @@ public class GuideManager
         return ticket;
     }
 
-    /**
-     * Closes a ticket and moves it to the closed ticket queue.
-     * @param ticket The GuardianTicket to close.
-     */
+
     public void closeTicket(GuardianTicket ticket)
     {
         synchronized (this.activeTickets)
@@ -500,11 +426,7 @@ public class GuideManager
         }
     }
 
-    /**
-     * Sets the give Guardian active for Guardian duty.
-     * @param habbo The Guardian to set on duty.
-     * @param onDuty On duty or not.
-     */
+
     public void setOnGuardian(Habbo habbo, boolean onDuty)
     {
         if(onDuty)
@@ -524,9 +446,7 @@ public class GuideManager
         }
     }
 
-    /**
-     * Cleans up shit.
-     */
+
     public void cleanup()
     {
         synchronized (this.activeTours)

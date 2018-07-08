@@ -13,34 +13,22 @@ import java.sql.SQLException;
 
 public class Logging
 {
-    /**
-     * File that packetlogs will be sved to.
-     */
+
     private static File packets;
 
-    /**
-     * File that undefined packetlogs will be saved to.
-     */
+
     private static File packetsUndefined;
 
-    /**
-     * File that packets that were improperly handled will be saved to.
-     */
+
     private static File errorsPackets;
 
-    /**
-     * File that SQL errors will be saved to.
-     */
+
     private static File errorsSQL;
 
-    /**
-     * File that runtime errors will be saved to.
-     */
+
     private static File errorsRuntime;
 
-    /**
-     * File that debug logs will be saved to.
-     */
+
     private static File debugFile;
 
     private static PrintWriter packetsWriter;
@@ -50,24 +38,16 @@ public class Logging
     private static PrintWriter errorsRuntimeWriter;
     private static PrintWriter debugFileWriter;
 
-    /**
-     * Bright text.
-     */
+
     public static final String ANSI_BRIGHT = "\u001B[1m";
 
-    /**
-     * Italicized text.
-     */
+
     public static final String ANSI_ITALICS = "\u001B[3m";
 
-    /**
-     * Underlined text.
-     */
+
     public static final String ANSI_UNDERLINE = "\u001B[4m";
 
-    /**
-     * Resets all text effects to normal console font.
-     */
+
     public static final String ANSI_RESET = "\u001B[0m";
 
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -79,16 +59,10 @@ public class Logging
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
-    /**
-     * Error logging cache layer.
-     * Used for bulk inserting into the database.
-     */
+
     private final THashSet<Loggable> errorLogs = new THashSet<Loggable>();
 
-    /**
-     * Command log cache layer.
-     * Used for bulk inserting into the database.
-     */
+
     private final THashSet<Loggable> commandLogs = new THashSet<Loggable>();
 
     public Logging()
@@ -182,19 +156,13 @@ public class Logging
         }
     }
 
-    /**
-     * Prints a starting message to the console.
-     * @param line The message to print.
-     */
+
     public void logStart(Object line)
     {
         System.out.println("[" + Logging.ANSI_BRIGHT + Logging.ANSI_GREEN + "LOADING" + Logging.ANSI_RESET + "] " + line.toString());
     }
 
-    /**
-     * Prints a shutdown message to the console.
-     * @param line The message to print.
-     */
+
     public void logShutdownLine(Object line)
     {
         if(Emulator.getConfig().getBoolean("logging.debug"))

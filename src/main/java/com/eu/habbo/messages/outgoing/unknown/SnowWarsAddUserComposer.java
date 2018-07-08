@@ -5,10 +5,7 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 
 public class SnowWarsAddUserComposer extends MessageComposer
 {
-    /*
-        Adds the user to the "Waiting for more players" screen.
-        //Works
-     */
+
     @Override
     public ServerMessage compose()
     {

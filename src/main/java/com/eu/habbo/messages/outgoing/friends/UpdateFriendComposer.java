@@ -18,10 +18,7 @@ public class UpdateFriendComposer extends MessageComposer
         this.buddy = buddy;
     }
 
-    /**
-     * Updates the staff chat so the look matches the user. Does not do any other stuff.
-     * @param habbo
-     */
+
     public UpdateFriendComposer(Habbo habbo)
     {
         this.habbo = habbo;

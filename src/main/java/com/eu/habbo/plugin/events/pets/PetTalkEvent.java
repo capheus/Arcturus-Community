@@ -5,9 +5,7 @@ import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 
 public class PetTalkEvent extends PetEvent
 {
-    /**
-     * The message to be displayed
-     */
+
     public RoomChatMessage message;
 
     public PetTalkEvent(AbstractPet pet, RoomChatMessage message)

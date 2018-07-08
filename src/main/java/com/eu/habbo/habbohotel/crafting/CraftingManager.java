@@ -13,11 +13,7 @@ import java.util.Map;
 
 public class CraftingManager
 {
-    /*
-        crafting_altars_recipes
-        crafting_recipes
-        crafting_recipes_ingredients
-     */
+
     private final THashMap<Item, CraftingAltar> altars;
 
     public CraftingManager()

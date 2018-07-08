@@ -9,13 +9,7 @@ public class FurnitureRoomTonerEvent extends FurnitureUserEvent
     public int saturation;
     public int brightness;
 
-    /**
-     * This event is triggered when the data for the room background toner is saved.
-     * @param furniture The furniture this event applies to.
-     * @param hue The hue.
-     * @param saturation The saturation.
-     * @param brightness The brightness.
-     */
+
     public FurnitureRoomTonerEvent(HabboItem furniture, Habbo habbo, int hue, int saturation, int brightness)
     {
         super(furniture, habbo);

@@ -357,17 +357,7 @@ public class RoomManager
         return room;
     }
 
-    /**
-     * Creates and preloads a room.
-     * @param ownerId
-     * @param ownerName
-     * @param name
-     * @param description
-     * @param modelName
-     * @param usersMax
-     * @param categoryId
-     * @return
-     */
+
     public Room createRoom(int ownerId, String ownerName, String name, String description, String modelName, int usersMax, int categoryId)
     {
         Room room = null;
@@ -396,16 +386,7 @@ public class RoomManager
         return room;
     }
 
-    /**
-     * Creates a room for the given Habbo and also preloads the room.
-     * @param habbo
-     * @param name
-     * @param description
-     * @param modelName
-     * @param usersMax
-     * @param categoryId
-     * @return
-     */
+
     public Room createRoomForHabbo(Habbo habbo, String name, String description, String modelName, int usersMax, int categoryId)
     {
         Room room = this.createRoom(habbo.getHabboInfo().getId(), habbo.getHabboInfo().getUsername(), name, description, modelName, usersMax, categoryId);

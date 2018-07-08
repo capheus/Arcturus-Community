@@ -106,11 +106,7 @@ public class RCONServer
         {}
     }
 
-    /**
-     * Adds a new RCON Message to be used.
-     * @param key   The key that triggers this RCONMessage.
-     * @param clazz The class that will be instantiated and handles the logic.
-     */
+
     public void addRCONMessage(String key, Class<? extends RCONMessage> clazz)
     {
         this.messages.put(key, clazz);

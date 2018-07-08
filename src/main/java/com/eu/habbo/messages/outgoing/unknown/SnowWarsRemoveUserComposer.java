@@ -5,10 +5,7 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 
 public class SnowWarsRemoveUserComposer extends MessageComposer
 {
-    /*
-        Removes a user from the "Waiting for users" window.
-        //Works
-     */
+
     @Override
     public ServerMessage compose()
     {

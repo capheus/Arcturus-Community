@@ -81,14 +81,7 @@ public class GuildForum implements ISerialize
     }
 
     //TODO:
-    /*
-        Verwijderen door guild admin -> state naar HIDDEN_BY_ADMIN
-            Guild admins moeten nog wel forum kunnen bekijken.
-        Verwijderen door staff -> state naar HIDDEN_BY_STAFF
-            Guild admins kunnen de thread niet zien. Staff wel.
 
-        Thread wordt nooit uit de database verwijderd, alleen als de groep verwijderd wordt.
-     */
     public void hideThread(int threadId)
     {
         this.threads.get(threadId).setState(ThreadState.HIDDEN_BY_ADMIN);
@@ -143,12 +136,7 @@ public class GuildForum implements ISerialize
 
     public enum ThreadState
     {
-        /*
-        public static const _SafeStr_11113:int = 0;
-        public static const _SafeStr_11114:int = 1;
-        public static const _SafeStr_11115:int = 10;
-        public static const _SafeStr_9691:int = 20;
-         */
+
 
         OPEN(0),
         CLOSED(1),

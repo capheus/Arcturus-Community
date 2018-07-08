@@ -13,9 +13,7 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserActionComposer;
 
 import java.util.Map;
 
-/**
- * Thanks to Beny for adding football game to Arcturus!
- */
+
 public class FootballGame extends Game
 {
     private Room room;

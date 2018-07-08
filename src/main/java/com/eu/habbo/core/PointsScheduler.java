@@ -7,19 +7,13 @@ import java.util.Map;
 
 public class PointsScheduler extends Scheduler
 {
-    /**
-     * Defines if users that are not in a room should be excluded from receiving points.
-     */
+
     public static boolean IGNORE_HOTEL_VIEW;
 
-    /**
-     * Defines if users idling in rooms should be excluded from receiving points.
-     */
+
     public static boolean IGNORE_IDLED;
 
-    /**
-     * The amount of points to give.
-     */
+
     private static int POINTS;
 
     public PointsScheduler()

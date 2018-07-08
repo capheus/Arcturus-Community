@@ -13,10 +13,7 @@ import java.sql.*;
 
 public class GiveBadge extends RCONMessage<GiveBadge.GiveBadgeJSON>
 {
-    /**
-     * Sends a badge to an user.
-     * Insers it if the user is not found.
-     */
+
     public GiveBadge()
     {
         super(GiveBadgeJSON.class);

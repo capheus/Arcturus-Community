@@ -107,9 +107,7 @@ public class RoomUnit
     {
         try
         {
-            /**
-             * !this.status.containsKey("mv") &&
-             */
+
             if (!this.isWalking() && !isKicked)
             {
                 if (this.status.remove("mv") == null)

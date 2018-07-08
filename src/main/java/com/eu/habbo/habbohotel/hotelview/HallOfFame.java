@@ -7,14 +7,10 @@ import java.sql.*;
 
 public class HallOfFame
 {
-    /**
-     * Hall of Fame winners are in here.
-     */
+
     private final THashMap<Integer, HallOfFameWinner> winners = new THashMap<Integer, HallOfFameWinner>();
 
-    /**
-     * The name of the competition.
-     */
+
     private static String competitionName;
 
     public HallOfFame()
@@ -24,9 +20,7 @@ public class HallOfFame
         reload();
     }
 
-    /**
-     * Reloads the HoF
-     */
+
     public void reload()
     {
         this.winners.clear();

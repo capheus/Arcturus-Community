@@ -10,12 +10,7 @@ public class PetBreedingStartComposer extends MessageComposer
     public final int anInt1;
     public final int anInt2;
 
-    /**
-     * For plants
-     * @param state
-     * @param anInt1
-     * @param anInt2
-     */
+
     public PetBreedingStartComposer(int state, int anInt1, int anInt2)
     {
         this.state = state;

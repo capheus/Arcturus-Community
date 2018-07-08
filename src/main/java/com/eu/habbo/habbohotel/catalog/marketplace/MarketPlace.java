@@ -24,12 +24,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Note: A lot of data in here is not cached in the emulator but rather loaded from the database.
- * If you have a big hotel and the marketplace is used frequently this may cause some lagg.
- * If you have issues with that please let us know so we can see if we need to modify the Marketplace so
- * it caches the data in the Emulator.
- */
+
 public class MarketPlace
 {
     //Configuration. Loaded from database & updated accordingly.
@@ -38,10 +33,7 @@ public class MarketPlace
     //Currency to use.
     public static int MARKETPLACE_CURRENCY = 0;
 
-    /**
-     * @param habbo The Habbo to lookup items for.
-     * @return The items that are put on marketplace by the given Habbo.
-     */
+
     public static THashSet<MarketPlaceOffer> getOwnOffers(Habbo habbo)
     {
         THashSet<MarketPlaceOffer> offers = new THashSet<MarketPlaceOffer>();
@@ -64,11 +56,7 @@ public class MarketPlace
         return  offers;
     }
 
-    /**
-     * Removes an offer from the marketplace.
-     * @param habbo The Habbo that owns the item.
-     * @param offerId The offer id.
-     */
+
     public static void takeBackItem(Habbo habbo, int offerId)
     {
         MarketPlaceOffer offer = habbo.getInventory().getOffer(offerId);
@@ -79,11 +67,7 @@ public class MarketPlace
         }
     }
 
-    /**
-     * Removes an offer from the marketplace.
-     * @param habbo The Habbo that owns the item.
-     * @param offer The offer.
-     */
+
     private static void takeBackItem(Habbo habbo, MarketPlaceOffer offer)
     {
         if(offer != null && habbo.getInventory().getMarketplaceItems().contains(offer))
@@ -147,34 +131,13 @@ public class MarketPlace
         }
     }
 
-    /**
-     * Searches the marketplace for specific items in the given price range.
-     * @param minPrice The minimum price of the offers.
-     * @param maxPrice The maximum price of the offers
-     * @param search The search criteria for the offers.
-     * @param sort The sort criteria for the offers.
-     * @return The result of the search.
-     */
+
     public static List<MarketPlaceOffer> getOffers(int minPrice, int maxPrice, String search, int sort)
     {
         List<MarketPlaceOffer> offers = new ArrayList<>(10);
 
         //String query = "SELECT items_base.type AS type, items.item_id AS base_item_id, items.limited_data AS ltd_data, marketplace_items.*, COUNT(*) as number, AVG(price) as avg, MIN(price) as minPrice FROM marketplace_items INNER JOIN items ON marketplace_items.item_id = items.id INNER JOIN items_base ON items.item_id = items_base.id WHERE state = ? AND timestamp >= ?";
-        /*String query = "SELECT " +
-                            "B.* FROM marketplace_items a " +
-                        "INNER JOIN (SELECT " +
-                                "items_base.type AS type, " +
-                                "items.item_id AS base_item_id, " +
-                                "items.limited_data AS ltd_data, " +
-                                "marketplace_items.*, " +
-                                "AVG(price) as avg, " +
-                                "MIN(marketplace_items.price) as minPrice, " +
-                                "MAX(marketplace_items.price) as maxPrice, " +
-                                "COUNT(*) as number " +
-                            "FROM marketplace_items " +
-                            "INNER JOIN items ON marketplace_items.item_id = items.id " +
-                            "INNER JOIN items_base ON items.item_id = items_base.id " +
-                            "WHERE state = 1 AND timestamp > ?";*/
+
 
         String query =  "SELECT " +
                             "B.* FROM marketplace_items a " +
@@ -270,11 +233,7 @@ public class MarketPlace
         return offers;
     }
 
-    /**
-     * Serializes the item info.
-     * @param itemId The item id that should be looked up.
-     * @param message The message the data should be appended to.
-     */
+
     public static void serializeItemInfo(int itemId, ServerMessage message)
     {
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT avg(price) as price, COUNT(*) as sold, (datediff(NOW(), DATE(from_unixtime(timestamp)))) as day FROM marketplace_items INNER JOIN items ON items.id = marketplace_items.item_id INNER JOIN items_base ON items.item_id = items_base.id WHERE items.limited_data = '0:0' AND state = 2 AND items_base.sprite_id = ? AND DATE(from_unixtime(timestamp)) >= NOW() - INTERVAL 30 DAY GROUP BY DATE(from_unixtime(timestamp))"))
@@ -308,10 +267,7 @@ public class MarketPlace
         }
     }
 
-    /**
-     * @param baseItemId The base item id that should be looked up. (items_base table)
-     * @return The amount of items of this type are on sale.
-     */
+
     public static int itemsOnSale(int baseItemId)
     {
         int number = 0;
@@ -333,11 +289,7 @@ public class MarketPlace
         return number;
     }
 
-    /**
-     * @param baseItemId The base item id that should be looked up. (items_base table)
-     * @param days The amount of days.
-     * @return The average amount of coins this item was over the given amount of days.
-     */
+
     private static int avarageLastXDays(int baseItemId, int days)
     {
         int avg = 0;
@@ -360,11 +312,7 @@ public class MarketPlace
         return calculateCommision(avg);
     }
 
-    /**
-     * Buys an item from the marketplace.
-     * @param offerId The offer id that should be bought.
-     * @param client The GameClient that buys it.
-     */
+
     public static void buyItem(int offerId, GameClient client)
     {
         RequestOffersEvent.cachedResults.clear();
@@ -451,14 +399,7 @@ public class MarketPlace
         }
     }
 
-    /**
-     * Sends an error message to the client. If the items was sold out or
-     * if the previous one isn't on sale anymore then it shows the new price.
-     * @param client The GameClient the messages should be send to.
-     * @param baseItemId The Item id data selected from the marketplace_offers table.
-     * @param offerId The id of the offer that was bought.
-     * @throws SQLException
-     */
+
     public static void sendErrorMessage(GameClient client, int baseItemId, int offerId) throws SQLException
     {
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT marketplace_items.*, COUNT( * ) AS count\n" +
@@ -487,13 +428,7 @@ public class MarketPlace
         }
     }
 
-    /**
-     * Sells an item to the marketplace.
-     * @param client The GameClient that sells it.
-     * @param item The HabboItem that is being sold.
-     * @param price The price it is being sold for.
-     * @return Whether it has succesfully been posted to the marketplace.
-     */
+
     public static boolean sellItem(GameClient client, HabboItem item, int price)
     {
         if(item == null || client == null)
@@ -533,10 +468,7 @@ public class MarketPlace
         return true;
     }
 
-    /**
-     * Claims all the credits that are gained from selling items on the marketplace.
-     * @param client The GameClient the credits should be checked for.
-     */
+
     public static void getCredits(GameClient client)
     {
         int credits = 0;
@@ -583,11 +515,7 @@ public class MarketPlace
         }
     }
 
-    /**
-     * Calculates the commission that is being added for the given price.
-     * @param price The price to calculate the commission for.
-     * @return The new price including the commission.
-     */
+
     public static int calculateCommision(int price)
     {
         return price + (int)Math.ceil(price / 100.0);
