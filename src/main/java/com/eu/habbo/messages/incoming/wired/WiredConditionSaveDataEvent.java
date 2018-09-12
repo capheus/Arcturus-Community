@@ -2,6 +2,7 @@ package com.eu.habbo.messages.incoming.wired;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredCondition;
+import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.wired.WiredSavedComposer;
@@ -17,7 +18,7 @@ public class WiredConditionSaveDataEvent extends MessageHandler
 
         if(room != null)
         {
-            if(room.hasRights(this.client.getHabbo()) || room.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() || this.client.getHabbo().hasPermission("acc_anyroomowner") || this.client.getHabbo().hasPermission("acc_moverotate"))
+            if(room.hasRights(this.client.getHabbo()) || room.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() || this.client.getHabbo().hasPermission(Permission.ACC_ANYROOMOWNER) || this.client.getHabbo().hasPermission("acc_moverotate"))
             {
                 InteractionWiredCondition condition = room.getRoomSpecialTypes().getCondition(itemId);
 

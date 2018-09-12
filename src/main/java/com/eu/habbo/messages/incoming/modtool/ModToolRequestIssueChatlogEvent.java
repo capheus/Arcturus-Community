@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.modtool.ModToolChatLog;
 import com.eu.habbo.habbohotel.modtool.ModToolIssue;
 import com.eu.habbo.habbohotel.modtool.ModToolTicketType;
+import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.modtool.ModToolIssueChatlogComposer;
@@ -15,7 +16,7 @@ public class ModToolRequestIssueChatlogEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        if(this.client.getHabbo().hasPermission("acc_supporttool"))
+        if(this.client.getHabbo().hasPermission(Permission.ACC_SUPPORTTOOL))
         {
             ModToolIssue issue = Emulator.getGameEnvironment().getModToolManager().getTicket(this.packet.readInt());
 

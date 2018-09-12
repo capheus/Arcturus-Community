@@ -202,6 +202,7 @@ public class ItemManager
             this.interactionsList.add(new ItemInteraction("wf_act_lower_furni",         WiredEffectLowerFurni.class));
             this.interactionsList.add(new ItemInteraction("wf_act_give_respect",        WiredEffectGiveRespect.class));
             this.interactionsList.add(new ItemInteraction("wf_act_alert",               WiredEffectAlert.class));
+            this.interactionsList.add(new ItemInteraction("wf_act_give_handitem",       WiredEffectGiveHandItem.class));
 
 
             this.interactionsList.add(new ItemInteraction("wf_cnd_has_furni_on",     WiredConditionFurniHaveFurni.class));
@@ -233,6 +234,14 @@ public class ItemManager
             this.interactionsList.add(new ItemInteraction("wf_cnd_not_battlebanzai", WiredConditionNotBattleBanzaiGameActive.class));
             this.interactionsList.add(new ItemInteraction("wf_cnd_freeze",           WiredConditionFreezeGameActive.class));
             this.interactionsList.add(new ItemInteraction("wf_cnd_not_freeze",       WiredConditionNotFreezeGameActive.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_habbo_has_rank",   WiredConditionHabboHasRank.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_habbo_not_rank",   WiredConditionHabboNotRank.class));
+        this.interactionsList.add(new ItemInteraction("wf_cnd_habbo_has_diamonds",   WiredConditionHabboHasDiamonds.class));
+        this.interactionsList.add(new ItemInteraction("wf_cnd_habbo_has_credits",    WiredConditionHabboHasCredits.class));
+        this.interactionsList.add(new ItemInteraction("wf_cnd_habbo_has_duckets",    WiredConditionHabboHasDuckets.class));
+        this.interactionsList.add(new ItemInteraction("wf_cnd_not_habbo_has_diamonds",   WiredConditionNotHabboHasDiamonds.class));
+        this.interactionsList.add(new ItemInteraction("wf_cnd_not_habbo_has_credits",    WiredConditionNotHabboHasCredits.class));
+        this.interactionsList.add(new ItemInteraction("wf_cnd_not_habbo_has_duckets",    WiredConditionNotHabboHasDuckets.class));
 
 
             this.interactionsList.add(new ItemInteraction("wf_xtra_random", WiredExtraRandom.class));

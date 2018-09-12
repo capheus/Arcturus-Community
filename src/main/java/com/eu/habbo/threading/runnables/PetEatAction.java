@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.items.interactions.InteractionPetFood;
 import com.eu.habbo.habbohotel.pets.GnomePet;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.PetTasks;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.messages.outgoing.rooms.items.RemoveFloorItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 
@@ -64,7 +65,7 @@ public class PetEatAction implements Runnable
                 }
 
                 this.pet.setTask(PetTasks.FREE);
-                this.pet.getRoomUnit().getStatus().remove("eat");
+                this.pet.getRoomUnit().removeStatus(RoomUnitStatus.EAT);
                 this.pet.getRoomUnit().setCanWalk(true);
                 this.pet.getRoom().sendComposer(new RoomUserStatusComposer(this.pet.getRoomUnit()).compose());
             }

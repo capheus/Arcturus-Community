@@ -1,6 +1,6 @@
 package com.eu.habbo.messages.outgoing.inventory;
 
-import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
@@ -14,7 +14,7 @@ public class RemovePetComposer extends MessageComposer
         this.petId = petId;
     }
 
-    public RemovePetComposer(AbstractPet pet)
+    public RemovePetComposer(Pet pet)
     {
         this.petId = pet.getId();
     }

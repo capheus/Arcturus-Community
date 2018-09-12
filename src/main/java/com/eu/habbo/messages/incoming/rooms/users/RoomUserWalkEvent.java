@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.pets.PetTasks;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUnitOnRollerComposer;
@@ -60,7 +61,7 @@ public class RoomUserWalkEvent extends MessageHandler
                             return;
                         }
 
-                        if (habbo.getRoomUnit().getStatus().containsKey("lay"))
+                        if (habbo.getRoomUnit().hasStatus(RoomUnitStatus.LAY))
                         {
                             if (habbo.getHabboInfo().getCurrentRoom().getLayout().getTilesInFront(habbo.getRoomUnit().getCurrentLocation(), habbo.getRoomUnit().getBodyRotation().getValue(), 2).contains(tile))
                                 return;

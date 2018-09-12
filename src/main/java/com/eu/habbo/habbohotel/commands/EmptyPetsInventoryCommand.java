@@ -2,7 +2,8 @@ package com.eu.habbo.habbohotel.commands;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
-import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.permissions.Permission;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -42,20 +43,20 @@ public class EmptyPetsInventoryCommand extends Command
         if(params.length >= 2 && params[1].equalsIgnoreCase(Emulator.getTexts().getValue("generic.yes")))
         {
             Habbo habbo = gameClient.getHabbo();
-            if (params.length == 3 && gameClient.getHabbo().hasPermission("acc_empty_others"))
+            if (params.length == 3 && gameClient.getHabbo().hasPermission(Permission.ACC_EMPTY_OTHERS))
             {
                 habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(params[2]);
             }
 
             if (habbo != null)
             {
-                TIntObjectHashMap<AbstractPet> pets = new TIntObjectHashMap<>();
+                TIntObjectHashMap<Pet> pets = new TIntObjectHashMap<>();
                 pets.putAll(habbo.getInventory().getPetsComponent().getPets());
                 habbo.getInventory().getPetsComponent().getPets().clear();
-                pets.forEachValue(new TObjectProcedure<AbstractPet>()
+                pets.forEachValue(new TObjectProcedure<Pet>()
                 {
                     @Override
-                    public boolean execute(AbstractPet object)
+                    public boolean execute(Pet object)
                     {
                         Emulator.getGameEnvironment().getPetManager().deletePet(object);
                         return true;

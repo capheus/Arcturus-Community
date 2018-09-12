@@ -12,10 +12,7 @@ import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreeze
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeTimer;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.gates.InteractionFreezeGate;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.scoreboards.InteractionFreezeScoreboard;
-import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.rooms.RoomLayout;
-import com.eu.habbo.habbohotel.rooms.RoomTile;
-import com.eu.habbo.habbohotel.rooms.RoomUserAction;
+import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
@@ -433,7 +430,7 @@ public class FreezeGame extends Game
                 {
                     event.setCancelled(true);
                     event.habbo.getRoomUnit().setGoalLocation(event.habbo.getRoomUnit().getCurrentLocation());
-                    event.habbo.getRoomUnit().getStatus().remove("mv");
+                    event.habbo.getRoomUnit().removeStatus(RoomUnitStatus.MOVE);
                     game.room.sendComposer(new RoomUserStatusComposer(event.habbo.getRoomUnit()).compose());
                 }
             }

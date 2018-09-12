@@ -1,6 +1,6 @@
 package com.eu.habbo.messages.outgoing.rooms.pets.breeding;
 
-import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.messages.ISerialize;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
@@ -12,7 +12,7 @@ public class PetBreedingResultComposer extends MessageComposer
     public final PetBreedingPet petOne;
     public final PetBreedingPet petTwo;
 
-    public PetBreedingResultComposer(int anInt1, AbstractPet petOne, String ownerPetOne, AbstractPet petTwo, String ownerPetTwo)
+    public PetBreedingResultComposer(int anInt1, Pet petOne, String ownerPetOne, Pet petTwo, String ownerPetTwo)
     {
         this.anInt1 = anInt1;
         this.petOne = new PetBreedingPet(petOne, ownerPetOne);
@@ -57,10 +57,10 @@ public class PetBreedingResultComposer extends MessageComposer
 
     public class PetBreedingPet implements ISerialize
     {
-        public final AbstractPet pet;
+        public final Pet pet;
         public final String ownerName;
 
-        public PetBreedingPet(AbstractPet pet, String ownerName)
+        public PetBreedingPet(Pet pet, String ownerName)
         {
             this.pet = pet;
             this.ownerName = ownerName;

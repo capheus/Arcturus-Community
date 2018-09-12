@@ -12,6 +12,7 @@ import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.Interaction
 import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.gates.InteractionBattleBanzaiGate;
 import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.scoreboards.InteractionBattleBanzaiScoreboard;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.rooms.RoomUserAction;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -323,7 +324,7 @@ public class BattleBanzaiGame extends Game
                 {
                     event.setCancelled(true);
                     event.habbo.getRoomUnit().setGoalLocation(event.habbo.getRoomUnit().getCurrentLocation());
-                    event.habbo.getRoomUnit().getStatus().remove("mv");
+                    event.habbo.getRoomUnit().removeStatus(RoomUnitStatus.MOVE);
                     game.room.sendComposer(new RoomUserStatusComposer(event.habbo.getRoomUnit()).compose());
                 }
             }

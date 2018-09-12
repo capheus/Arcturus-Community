@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
+import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
@@ -48,17 +49,26 @@ public class WiredEffectKickHabbo extends InteractionWiredEffect
 
         if(habbo != null)
         {
-            if(!habbo.hasPermission("acc_unkickable") && habbo.getHabboInfo().getId() != room.getOwnerId())
+            if (habbo.hasPermission(Permission.ACC_UNKICKABLE))
             {
-                room.giveEffect(habbo, 4);
-
-                if(!this.message.isEmpty())
-                    habbo.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(this.message, habbo, habbo, RoomChatMessageBubbles.ALERT)));
-
-                Emulator.getThreading().run(new RoomUnitKick(habbo, room, true), 2000);
-
+                habbo.whisper(Emulator.getTexts().getValue("hotel.wired.kickexception.unkickable"));
                 return true;
             }
+
+            if (habbo.getHabboInfo().getId() == room.getOwnerId())
+            {
+                habbo.whisper(Emulator.getTexts().getValue("hotel.wired.kickexception.owner"));
+                return true;
+            }
+
+            room.giveEffect(habbo, 4);
+
+            if(!this.message.isEmpty())
+                habbo.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(this.message, habbo, habbo, RoomChatMessageBubbles.ALERT)));
+
+            Emulator.getThreading().run(new RoomUnitKick(habbo, room, true), 2000);
+
+            return true;
         }
 
         return false;

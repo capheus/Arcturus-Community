@@ -1,6 +1,6 @@
 package com.eu.habbo.messages.incoming.rooms.pets;
 
-import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.MonsterplantPet;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
@@ -11,7 +11,7 @@ public class ToggleMonsterplantBreedableEvent extends MessageHandler
     {
         int petId = this.packet.readInt();
 
-        AbstractPet pet = this.client.getHabbo().getHabboInfo().getCurrentRoom().getPet(petId);
+        Pet pet = this.client.getHabbo().getHabboInfo().getCurrentRoom().getPet(petId);
 
         if (pet != null)
         {

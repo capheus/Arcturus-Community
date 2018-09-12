@@ -87,8 +87,6 @@ public class MarketPlace
                             return;
                         }
 
-                        habbo.getInventory().removeMarketplaceOffer(offer);
-
                         try (PreparedStatement statement = connection.prepareStatement("DELETE FROM marketplace_items WHERE id = ? AND state != 2"))
                         {
                             statement.setInt(1, offer.getOfferId());
@@ -96,6 +94,7 @@ public class MarketPlace
 
                             if (count != 0)
                             {
+                                habbo.getInventory().removeMarketplaceOffer(offer);
                                 try (PreparedStatement updateItems = connection.prepareStatement("UPDATE items SET user_id = ? WHERE id = ? LIMIT 1"))
                                 {
                                     updateItems.setInt(1, habbo.getHabboInfo().getId());
@@ -208,8 +207,6 @@ public class MarketPlace
         query += " AS B ON a.id = B.id";
 
         query += " LIMIT 100";
-
-        System.out.println(query);
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement(query))
         {

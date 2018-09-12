@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.bots;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.plugin.events.bots.BotServerItemEvent;
 import com.eu.habbo.threading.runnables.RoomUnitGiveHanditem;
 import com.eu.habbo.threading.runnables.RoomUnitWalkToRoomUnit;
@@ -62,7 +63,7 @@ public class ButlerBot extends Bot
     @Override
     public void onUserSay(final RoomChatMessage message)
     {
-        if(this.getRoomUnit().isWalking())
+        if(this.getRoomUnit().hasStatus(RoomUnitStatus.MOVE))
             return;
 
         if (this.getRoomUnit().getCurrentLocation().distance(message.getHabbo().getRoomUnit().getCurrentLocation()) <= Emulator.getConfig().getInt("hotel.bot.butler.servedistance"))

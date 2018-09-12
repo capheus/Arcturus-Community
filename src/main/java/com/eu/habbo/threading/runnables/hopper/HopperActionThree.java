@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.interactions.InteractionCostumeHopper;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
@@ -44,7 +45,7 @@ class HopperActionThree implements Runnable
 
         if(targetTeleport == null)
         {
-            this.client.getHabbo().getRoomUnit().getStatus().remove("mv");
+            this.client.getHabbo().getRoomUnit().removeStatus(RoomUnitStatus.MOVE);
             this.client.getHabbo().getRoomUnit().setCanWalk(true);
             return;
         }
@@ -54,7 +55,7 @@ class HopperActionThree implements Runnable
         this.client.getHabbo().getRoomUnit().setLocation(this.room.getLayout().getTile(targetTeleport.getX(), targetTeleport.getY()));
         this.client.getHabbo().getRoomUnit().setZ(targetTeleport.getZ());
         this.client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[targetTeleport.getRotation() % 8]);
-        this.client.getHabbo().getRoomUnit().getStatus().remove("mv");
+        this.client.getHabbo().getRoomUnit().removeStatus(RoomUnitStatus.MOVE);
         targetRoom.sendComposer(new RoomUserStatusComposer(this.client.getHabbo().getRoomUnit()).compose());
 
         Emulator.getThreading().run(new HabboItemNewState(this.teleportOne, room, "0"), 500);

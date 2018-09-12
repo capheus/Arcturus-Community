@@ -1,16 +1,16 @@
 package com.eu.habbo.messages.outgoing.catalog;
 
-import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class PetBoughtNotificationComposer extends MessageComposer
 {
-    private AbstractPet pet;
+    private Pet pet;
     private boolean gift;
 
-    public PetBoughtNotificationComposer(AbstractPet pet, boolean gift)
+    public PetBoughtNotificationComposer(Pet pet, boolean gift)
     {
         this.pet = pet;
         this.gift = gift;

@@ -67,7 +67,7 @@ public class RequestUserDataEvent extends MessageHandler
 
 //            messages.add(new UserPerksComposer().compose());
 //            messages.add(new ForwardToRoomComposer(0).compose());
-//            if(this.client.getHabbo().hasPermission("acc_supporttool"))
+//            if(this.client.getHabbo().hasPermission(Permission.ACC_SUPPORTTOOL))
 //            {
 //                messages.add(new ModToolComposer().compose());
 //            }

@@ -345,7 +345,7 @@ public class WiredHandler
                 {
                     if (set.getInt("rows") >= 1)
                     {
-                        if (wiredBox.limit == 0)
+                        if (wiredBox.rewardTime == WiredEffectGiveReward.LIMIT_ONCE)
                         {
                             habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.REWARD_ALREADY_RECEIVED));
                             return false;
@@ -355,7 +355,7 @@ public class WiredHandler
                     set.beforeFirst();
                     if (set.next())
                     {
-                        if (wiredBox.limit == WiredEffectGiveReward.LIMIT_N_MINUTES)
+                        if (wiredBox.rewardTime == WiredEffectGiveReward.LIMIT_N_MINUTES)
                         {
                             if (Emulator.getIntUnixTimestamp() - set.getInt("timestamp") <= 60)
                             {
@@ -373,7 +373,7 @@ public class WiredHandler
                             }
                         }
 
-                        if (wiredBox.limit == WiredEffectGiveReward.LIMIT_N_HOURS)
+                        if (wiredBox.rewardTime == WiredEffectGiveReward.LIMIT_N_HOURS)
                         {
                             if (!(Emulator.getIntUnixTimestamp() - set.getInt("timestamp") >= (3600 * wiredBox.limitationInterval)))
                             {
@@ -382,7 +382,7 @@ public class WiredHandler
                             }
                         }
 
-                        if (wiredBox.limit == WiredEffectGiveReward.LIMIT_N_DAY)
+                        if (wiredBox.rewardTime == WiredEffectGiveReward.LIMIT_N_DAY)
                         {
                             if (!(Emulator.getIntUnixTimestamp() - set.getInt("timestamp") >= (86400 * wiredBox.limitationInterval)))
                             {

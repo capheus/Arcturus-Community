@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserEffectComposer;
@@ -108,7 +109,7 @@ class TeleportInteraction extends Thread
             {
                 this.client.getHabbo().getRoomUnit().setGoalLocation(this.room.getLayout().getTile(this.teleportOne.getX(), this.teleportOne.getY()));
                 this.client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[newRotation(this.teleportOne.getRotation())]);
-                this.client.getHabbo().getRoomUnit().getStatus().put("mv", this.teleportOne.getX() + "," + this.teleportOne.getY() + "," + this.teleportOne.getZ());
+                this.client.getHabbo().getRoomUnit().setStatus(RoomUnitStatus.MOVE, this.teleportOne.getX() + "," + this.teleportOne.getY() + "," + this.teleportOne.getZ());
                 //room.sendComposer(new RoomUserStatusComposer(this.client.getHabbo().getRoomUnit()));
 
                 state = 3;

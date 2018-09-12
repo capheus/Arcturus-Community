@@ -1,7 +1,7 @@
 package com.eu.habbo.messages.outgoing.rooms.pets;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.HorsePet;
 import com.eu.habbo.habbohotel.pets.MonsterplantPet;
 import com.eu.habbo.habbohotel.pets.PetManager;
@@ -12,10 +12,10 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class PetInformationComposer extends MessageComposer
 {
-    private final AbstractPet pet;
+    private final Pet pet;
     private final Room room;
 
-    public PetInformationComposer(AbstractPet pet, Room room)
+    public PetInformationComposer(Pet pet, Room room)
     {
         this.pet = pet;
         this.room = room;

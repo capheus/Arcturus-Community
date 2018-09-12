@@ -1,6 +1,6 @@
 package com.eu.habbo.messages.incoming.rooms.pets;
 
-import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.messages.incoming.MessageHandler;
@@ -11,7 +11,7 @@ public class MovePetEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        AbstractPet pet = this.client.getHabbo().getHabboInfo().getCurrentRoom().getPet(this.packet.readInt());
+        Pet pet = this.client.getHabbo().getHabboInfo().getCurrentRoom().getPet(this.packet.readInt());
 
         if (pet != null)
         {

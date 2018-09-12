@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.incoming.rooms.items;
 
 import com.eu.habbo.habbohotel.items.interactions.InteractionPostIt;
+import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
@@ -35,7 +36,7 @@ public class RoomPickupItemEvent extends MessageHandler
         {
             if (room.hasRights(this.client.getHabbo()))
             {
-                if (this.client.getHabbo().hasPermission("acc_anyroomowner"))
+                if (this.client.getHabbo().hasPermission(Permission.ACC_ANYROOMOWNER))
                 {
                     item.setUserId(this.client.getHabbo().getHabboInfo().getId());
                 }
@@ -44,9 +45,9 @@ public class RoomPickupItemEvent extends MessageHandler
             }
         }
 
-//            if(item.getUserId() == this.client.getHabbo().getHabboInfo().getId() || (room.getGuildId() > 0 && room.guildRightLevel(this.client.getHabbo()) >= 2) || this.client.getHabbo().hasPermission("acc_anyroomowner"))
+//            if(item.getUserId() == this.client.getHabbo().getHabboInfo().getId() || (room.getGuildId() > 0 && room.guildRightLevel(this.client.getHabbo()) >= 2) || this.client.getHabbo().hasPermission(Permission.ACC_ANYROOMOWNER))
 //            {
-//                if (room.getGuildId() == 0 && this.client.getHabbo().hasPermission("acc_anyroomowner"))
+//                if (room.getGuildId() == 0 && this.client.getHabbo().hasPermission(Permission.ACC_ANYROOMOWNER))
 //                    item.setUserId(this.client.getHabbo().getHabboInfo().getId());
 //
 //                room.pickUpItem(item, this.client.getHabbo());

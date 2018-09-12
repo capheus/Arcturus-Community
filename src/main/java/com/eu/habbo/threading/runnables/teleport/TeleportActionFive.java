@@ -30,7 +30,7 @@ class TeleportActionFive implements Runnable
         if (this.client.getHabbo().getHabboInfo().getCurrentRoom() != this.room)
             return;
 
-        if (!(this.currentTeleport instanceof InteractionTeleportTile))
+        //if (!(this.currentTeleport instanceof InteractionTeleportTile))
         {
             RoomTile tile = this.room.getLayout().getTileInFront(this.room.getLayout().getTile(this.currentTeleport.getX(), this.currentTeleport.getY()), this.currentTeleport.getRotation());
 

@@ -3,6 +3,7 @@ package com.eu.habbo.messages.incoming.trading;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTrade;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.trading.TradeStartFailComposer;
@@ -21,19 +22,15 @@ public class TradeStartEvent extends MessageHandler
             {
                 Habbo targetUser = room.getHabboByRoomUnitId(userId);
 
-                if (this.client.getHabbo().hasPermission("acc_trade_anywhere"))
-                {
-                    room.startTrade(this.client.getHabbo(), targetUser);
-                    return;
-                }
+                boolean tradeAnywhere = this.client.getHabbo().hasPermission("acc_trade_anywhere");
 
-                if (!RoomTrade.TRADING_ENABLED)
+                if (!RoomTrade.TRADING_ENABLED && !tradeAnywhere)
                 {
                     this.client.sendResponse(new TradeStartFailComposer(TradeStartFailComposer.HOTEL_TRADING_NOT_ALLOWED));
                     return;
                 }
 
-                if (room.getTradeMode() == 0 || (room.getTradeMode() == 1 && this.client.getHabbo().getHabboInfo().getId() != room.getOwnerId()))
+                if ((room.getTradeMode() == 0 || (room.getTradeMode() == 1 && this.client.getHabbo().getHabboInfo().getId() != room.getOwnerId())) && !tradeAnywhere)
                 {
                     this.client.sendResponse(new TradeStartFailComposer(TradeStartFailComposer.ROOM_TRADING_NOT_ALLOWED));
                     return;
@@ -41,11 +38,11 @@ public class TradeStartEvent extends MessageHandler
 
                 if (targetUser != null)
                 {
-                    if (!this.client.getHabbo().getRoomUnit().getStatus().containsKey("trd"))
+                    if (!this.client.getHabbo().getRoomUnit().hasStatus(RoomUnitStatus.TRADING))
                     {
                         if (this.client.getHabbo().getHabboStats().allowTrade)
                         {
-                            if (!targetUser.getRoomUnit().getStatus().containsKey("trd"))
+                            if (!targetUser.getRoomUnit().hasStatus(RoomUnitStatus.TRADING))
                             {
                                 if (targetUser.getHabboStats().allowTrade)
                                 {

@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.wired.WiredEffectType;
@@ -134,6 +135,17 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
     }
 
     @Override
+    public void onClick(GameClient client, Room room, Object[] objects) throws Exception
+    {
+        super.onClick(client, room, objects);
+
+        if (client.getHabbo().hasPermission("acc_superwired"))
+        {
+            client.getHabbo().whisper(Emulator.getTexts().getValue("hotel.wired.superwired.info"), RoomChatMessageBubbles.ALERT);
+        }
+    }
+
+    @Override
     public void serializeWiredData(ServerMessage message, Room room)
     {
         message.appendBoolean(false);
@@ -187,44 +199,50 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
     @Override
     public boolean saveData(ClientMessage packet, GameClient gameClient)
     {
-        packet.readInt();
-
-        this.rewardTime = packet.readInt();
-        this.uniqueRewards = packet.readInt() == 1;
-        this.limit = packet.readInt();
-        this.limitationInterval = packet.readInt();
-        this.given = 0;
-
-        String data = packet.readString();
-
-        String[] items = data.split(";");
-
-        this.rewardItems.clear();
-
-        int i = 1;
-        for(String s : items)
+        if (gameClient.getHabbo().hasPermission("acc_superwired"))
         {
-            String[] d = s.split(",");
+            packet.readInt();
 
-            if(d.length == 3)
+            this.rewardTime = packet.readInt();
+            this.uniqueRewards = packet.readInt() == 1;
+            this.limit = packet.readInt();
+            this.limitationInterval = packet.readInt();
+            this.given = 0;
+
+            String data = packet.readString();
+
+            String[] items = data.split(";");
+
+            this.rewardItems.clear();
+
+            int i = 1;
+            for (String s : items)
             {
-                if (!(d[1].contains(":") || d[1].contains(";")))
+                String[] d = s.split(",");
+
+                if (d.length == 3)
                 {
-                    this.rewardItems.add(new WiredGiveRewardItem(i, d[0].equalsIgnoreCase("0"), d[1], Integer.valueOf(d[2])));
-                    continue;
+                    if (!(d[1].contains(":") || d[1].contains(";")))
+                    {
+                        this.rewardItems.add(new WiredGiveRewardItem(i, d[0].equalsIgnoreCase("0"), d[1], Integer.valueOf(d[2])));
+                        continue;
+                    }
                 }
+
+                gameClient.sendResponse(new UpdateFailedComposer(Emulator.getTexts().getValue("alert.superwired.invalid")));
+                return false;
             }
 
-            gameClient.sendResponse(new UpdateFailedComposer(Emulator.getTexts().getValue("alert.superwired.invalid")));
-            return false;
+            WiredHandler.dropRewards(this.getId());
+
+            packet.readString();
+            packet.readInt();
+            this.setDelay(packet.readInt());
+            return true;
         }
 
-        WiredHandler.dropRewards(this.getId());
-
-        packet.readString();
-        packet.readInt();
-        this.setDelay(packet.readInt());
-        return true;
+        gameClient.getHabbo().whisper("U cannot do this.", RoomChatMessageBubbles.ALERT);
+        return false;
     }
 
     @Override

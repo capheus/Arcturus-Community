@@ -1,13 +1,15 @@
 package com.eu.habbo.messages.incoming.rooms.pets;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.inventory.AddPetComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
+import com.eu.habbo.messages.outgoing.rooms.UpdateStackHeightComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.RemoveFloorItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.PetPackageNameValidationComposer;
 import com.eu.habbo.threading.runnables.QueryDeleteHabboItem;
@@ -65,16 +67,18 @@ public class PetPackageNameEvent extends MessageHandler
 
                         if (pet != null)
                         {
-                            room.placePet((AbstractPet) pet, item.getX(), item.getY(), item.getZ(), item.getRotation());
+                            room.placePet((Pet) pet, item.getX(), item.getY(), item.getZ(), item.getRotation());
                             pet.setUserId(this.client.getHabbo().getHabboInfo().getId());
                             pet.needsUpdate = true;
                             pet.getRoomUnit().setLocation(room.getLayout().getTile(item.getX(), item.getY()));
                             pet.getRoomUnit().setZ(item.getZ());
                             Emulator.getThreading().run(new QueryDeleteHabboItem(item));
                             room.removeHabboItem(item);
-                            room.updateTile(room.getLayout().getTile(item.getX(), item.getY()));
-                            item.setUserId(0);
                             room.sendComposer(new RemoveFloorItemComposer(item).compose());
+                            RoomTile tile = room.getLayout().getTile(item.getX(), item.getY());
+                            room.updateTile(room.getLayout().getTile(item.getX(), item.getY()));
+                            room.sendComposer(new UpdateStackHeightComposer(tile.x, tile.y, tile.relativeHeight()).compose());
+                            item.setUserId(0);
                         }
                     }
                     else

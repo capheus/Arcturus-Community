@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.bots;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.generic.alerts.BotErrorComposer;
@@ -117,7 +118,7 @@ public class BotManager
 
         if(room != null && bot != null && habbo != null)
         {
-            if (room.getOwnerId() == habbo.getHabboInfo().getId() || habbo.hasPermission("acc_anyroomowner") || habbo.hasPermission("acc_placefurni"))
+            if (room.getOwnerId() == habbo.getHabboInfo().getId() || habbo.hasPermission(Permission.ACC_ANYROOMOWNER) || habbo.hasPermission("acc_placefurni"))
             {
                 if (room.getCurrentBots().size() >= Room.MAXIMUM_BOTS && !habbo.hasPermission("acc_unlimited_bots"))
                 {
@@ -173,7 +174,7 @@ public class BotManager
             if(pickedUpEvent.isCancelled())
                 return;
 
-            if (bot.getOwnerId() == habbo.getHabboInfo().getId() || habbo.hasPermission("acc_anyroomowner"))
+            if (bot.getOwnerId() == habbo.getHabboInfo().getId() || habbo.hasPermission(Permission.ACC_ANYROOMOWNER))
             {
                 if (!habbo.hasPermission("acc_unlimited_bots") && habbo.getInventory().getBotsComponent().getBots().size() >= 15)
                     return;

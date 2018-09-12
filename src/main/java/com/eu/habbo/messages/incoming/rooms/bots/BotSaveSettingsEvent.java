@@ -3,6 +3,7 @@ package com.eu.habbo.messages.incoming.rooms.bots;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.bots.BotManager;
+import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.DanceType;
 import com.eu.habbo.habbohotel.users.HabboGender;
@@ -26,7 +27,7 @@ public class BotSaveSettingsEvent extends MessageHandler
         if(room == null)
             return;
 
-        if(room.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() || this.client.getHabbo().hasPermission("acc_anyroomowner"))
+        if(room.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() || this.client.getHabbo().hasPermission(Permission.ACC_ANYROOMOWNER))
         {
             int botId = this.packet.readInt();
 
@@ -68,7 +69,13 @@ public class BotSaveSettingsEvent extends MessageHandler
                     {
                         for(String s : data[i].split("\r"))
                         {
-                            chat.add(Emulator.getGameEnvironment().getWordFilter().filter(Jsoup.parse(s).text(), this.client.getHabbo()));
+                            String result = Emulator.getGameEnvironment().getWordFilter().filter(Jsoup.parse(s).text(), this.client.getHabbo());
+
+                            if (!this.client.getHabbo().hasPermission("acc_chat_no_filter"))
+                            {
+                                result = Emulator.getGameEnvironment().getWordFilter().filter(result, this.client.getHabbo());
+                            }
+                            chat.add(result);
                         }
                     }
 

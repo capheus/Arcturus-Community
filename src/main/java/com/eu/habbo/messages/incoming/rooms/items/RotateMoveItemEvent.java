@@ -3,10 +3,7 @@ package com.eu.habbo.messages.incoming.rooms.items;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.InteractionRoller;
 import com.eu.habbo.habbohotel.items.interactions.InteractionStackHelper;
-import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.rooms.RoomLayout;
-import com.eu.habbo.habbohotel.rooms.RoomTile;
-import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
@@ -174,7 +171,7 @@ public class RotateMoveItemEvent extends MessageHandler
             THashSet<RoomUnit> updatedUnits = new THashSet<RoomUnit>();
             for (Habbo habbo : habbos)
             {
-                habbo.getRoomUnit().getStatus().remove("sit");
+                habbo.getRoomUnit().removeStatus(RoomUnitStatus.SIT);
             }
             room.sendComposer(new RoomUserStatusComposer(updatedUnits, false).compose());
         }
@@ -185,7 +182,7 @@ public class RotateMoveItemEvent extends MessageHandler
             THashSet<RoomUnit> updatedUnits = new THashSet<RoomUnit>();
             for (Habbo habbo : habbos)
             {
-                habbo.getRoomUnit().getStatus().remove("lay");
+                habbo.getRoomUnit().removeStatus(RoomUnitStatus.LAY);
             }
             room.sendComposer(new RoomUserStatusComposer(updatedUnits, false).compose());
         }

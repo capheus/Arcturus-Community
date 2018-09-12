@@ -4,6 +4,7 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.rooms.RoomUnitType;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboGender;
@@ -87,14 +88,14 @@ public class InteractionMultiHeight extends HabboItem
                         if(habbo.getRoomUnit() == null)
                             continue;
 
-                        if(habbo.getRoomUnit().getStatus().containsKey("mv"))
+                        if(habbo.getRoomUnit().hasStatus(RoomUnitStatus.MOVE))
                             continue;
 
                         if (this.getBaseItem().getMultiHeights().length >= 0)
                         {
                             if (this.getBaseItem().allowSit())
                             {
-                                habbo.getRoomUnit().getStatus().put("sit", this.getBaseItem().getMultiHeights()[(this.getExtradata().isEmpty() ? 0 : Integer.valueOf(this.getExtradata()) % (this.getBaseItem().getMultiHeights().length))] * 1.0D + "");
+                                habbo.getRoomUnit().setStatus(RoomUnitStatus.SIT, this.getBaseItem().getMultiHeights()[(this.getExtradata().isEmpty() ? 0 : Integer.valueOf(this.getExtradata()) % (this.getBaseItem().getMultiHeights().length))] * 1.0D + "");
                             }
                             else
                             {

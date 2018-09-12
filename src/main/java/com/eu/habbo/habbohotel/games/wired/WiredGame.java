@@ -70,8 +70,9 @@ public class WiredGame extends Game
     }
 
     @Override
-    public synchronized void removeHabbo(Habbo habbo)
+    public void removeHabbo(Habbo habbo)
     {
+        super.removeHabbo(habbo);
         this.room.giveEffect(habbo, 0);
     }
 }

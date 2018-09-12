@@ -11,7 +11,7 @@ public enum PetTasks
     PLAY_DEAD("ded"),
     STAY(""),
     FOLLOW(""),
-    STAND(""),
+    STAND("std"),
     JUMP("jmp"),
     SPEAK("spk"),
     PLAY(""),

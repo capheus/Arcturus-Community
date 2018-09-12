@@ -33,7 +33,7 @@ public final class Emulator
     public final static int MAJOR = 1;
 
 
-    public final static int MINOR = 10;
+    public final static int MINOR = 11;
 
 
     public final static int BUILD = 0;
@@ -156,6 +156,16 @@ public final class Emulator
             {
                 Emulator.getLogging().logErrorLine("No account has been found in config.ini Please create an account on Arcturus.wf and edit the config.ini in order to maximize usage of Arcturus! http://arcturus.wf");
             }
+
+            Emulator.getThreading().run(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    Emulator.getLogging().logStart("Thanks for using Arcturus. Contact: Skype: wesley.jabbo Discord: TheGeneral#0063");
+                    Emulator.getLogging().logStart("-The General");
+                }
+            }, 3500);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 

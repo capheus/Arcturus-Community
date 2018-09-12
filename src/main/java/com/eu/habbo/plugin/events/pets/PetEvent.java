@@ -1,15 +1,15 @@
 package com.eu.habbo.plugin.events.pets;
 
-import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.plugin.Event;
 
 public abstract class PetEvent extends Event
 {
 
-    public final AbstractPet pet;
+    public final Pet pet;
 
 
-    public PetEvent(AbstractPet pet)
+    public PetEvent(Pet pet)
     {
         this.pet = pet;
     }

@@ -79,7 +79,6 @@ public class InteractionOneWayGate extends HabboItem
                 {
                     HabboItem item = this;
 
-                    room.sendComposer(new ItemStateComposer2(getId(), 1).compose());
                     room.scheduledTasks.add(new Runnable()
                     {
                         @Override
@@ -87,7 +86,17 @@ public class InteractionOneWayGate extends HabboItem
                         {
                             roomUnitID = client.getHabbo().getRoomUnit().getId();
                             room.updateTile(gatePosition);
+                            room.sendComposer(new ItemStateComposer2(getId(), 1).compose());
                             client.getHabbo().getRoomUnit().setGoalLocation(room.getLayout().getTileInFront(room.getLayout().getTile(getX(), getY()), getRotation() + 4));
+
+                            room.scheduledTasks.add(new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    refresh(room);
+                                }
+                            });
                         }
                     });
                 }

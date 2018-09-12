@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.incoming.rooms.pets;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.messages.incoming.MessageHandler;
@@ -18,7 +19,7 @@ public class PetPlaceEvent extends MessageHandler
         if(room == null)
             return;
 
-        if(this.client.getHabbo().getHabboInfo().getId() != room.getOwnerId() && !room.isAllowPets() && !(this.client.getHabbo().hasPermission("acc_anyroomowner") || this.client.getHabbo().hasPermission("acc_placefurni")))
+        if(this.client.getHabbo().getHabboInfo().getId() != room.getOwnerId() && !room.isAllowPets() && !(this.client.getHabbo().hasPermission(Permission.ACC_ANYROOMOWNER) || this.client.getHabbo().hasPermission("acc_placefurni")))
         {
             this.client.sendResponse(new PetErrorComposer(PetErrorComposer.ROOM_ERROR_PETS_FORBIDDEN_IN_FLAT));
             return;
@@ -97,7 +98,7 @@ public class PetPlaceEvent extends MessageHandler
 
         roomUnit.setLocation(tile);
         roomUnit.setZ(tile.getStackHeight());
-        roomUnit.getStatus().put("sit", "0");
+        roomUnit.setStatus(RoomUnitStatus.SIT, "0");
         roomUnit.setRoomUnitType(RoomUnitType.PET);
         if (playerTile != null)
         {

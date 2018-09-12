@@ -2,11 +2,12 @@ package com.eu.habbo.messages.incoming.rooms.pets;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
-import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.HorsePet;
 import com.eu.habbo.habbohotel.pets.MonsterplantPet;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.items.RemoveFloorItemComposer;
@@ -32,7 +33,7 @@ public class HorseUseItemEvent extends MessageHandler
             return;
 
         int petId = this.packet.readInt();
-        AbstractPet pet = this.client.getHabbo().getHabboInfo().getCurrentRoom().getPet(petId);
+        Pet pet = this.client.getHabbo().getHabboInfo().getCurrentRoom().getPet(petId);
 
         if(pet instanceof Pet)
         {
@@ -115,8 +116,8 @@ public class HorseUseItemEvent extends MessageHandler
                     if (((MonsterplantPet) pet).isDead())
                     {
                         ((MonsterplantPet) pet).setDeathTimestamp(Emulator.getIntUnixTimestamp() + MonsterplantPet.timeToLive);
-                        pet.getRoomUnit().getStatus().clear();
-                        pet.getRoomUnit().getStatus().put("gst", "rev");
+                        pet.getRoomUnit().clearStatus();
+                        pet.getRoomUnit().setStatus(RoomUnitStatus.GESTURE, "rev");
                         ((MonsterplantPet) pet).packetUpdate = true;
 
                         this.client.getHabbo().getHabboInfo().getCurrentRoom().removeHabboItem(item);
@@ -125,7 +126,7 @@ public class HorseUseItemEvent extends MessageHandler
                         this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new PetStatusUpdateComposer((Pet)pet).compose());
                         this.client.getHabbo().getHabboInfo().getCurrentRoom().updateTiles(room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
                         AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("MonsterPlantHealer"));
-                        pet.getRoomUnit().getStatus().remove("gst");
+                        pet.getRoomUnit().removeStatus(RoomUnitStatus.GESTURE);
                         Emulator.getThreading().run(new QueryDeleteHabboItem(item));
                     }
                 }
@@ -134,16 +135,16 @@ public class HorseUseItemEvent extends MessageHandler
                     if (!((MonsterplantPet) pet).isFullyGrown())
                     {
                         pet.setCreated(pet.getCreated() - MonsterplantPet.growTime);
-                        pet.getRoomUnit().getStatus().clear();
+                        pet.getRoomUnit().clearStatus();
                         ((MonsterplantPet) pet).cycle();
-                        pet.getRoomUnit().getStatus().put("gst", "spd");
-                        pet.getRoomUnit().getStatus().put("grw" + ((MonsterplantPet) pet).getGrowthStage(), "");
+                        pet.getRoomUnit().setStatus(RoomUnitStatus.GESTURE, "spd");
+                        pet.getRoomUnit().setStatus(RoomUnitStatus.fromString("grw" + ((MonsterplantPet) pet).getGrowthStage()), "");
                         this.client.getHabbo().getHabboInfo().getCurrentRoom().removeHabboItem(item);
                         this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RemoveFloorItemComposer(item).compose());
                         this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserStatusComposer(pet.getRoomUnit()).compose());
                         this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new PetStatusUpdateComposer((Pet)pet).compose());
                         this.client.getHabbo().getHabboInfo().getCurrentRoom().updateTiles(room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
-                        pet.getRoomUnit().getStatus().remove("gst");
+                        pet.getRoomUnit().removeStatus(RoomUnitStatus.GESTURE);
                         ((MonsterplantPet) pet).cycle();
                         Emulator.getThreading().run(new QueryDeleteHabboItem(item));
                     }
@@ -160,15 +161,15 @@ public class HorseUseItemEvent extends MessageHandler
 
                         {
                             ((MonsterplantPet) pet).setCanBreed(true);
-                            pet.getRoomUnit().getStatus().clear();
-                            pet.getRoomUnit().getStatus().put("gst", "reb");
+                            pet.getRoomUnit().clearStatus();
+                            pet.getRoomUnit().setStatus(RoomUnitStatus.GESTURE, "reb");
 
                             this.client.getHabbo().getHabboInfo().getCurrentRoom().removeHabboItem(item);
                             this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RemoveFloorItemComposer(item).compose());
                             this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserStatusComposer(pet.getRoomUnit()).compose());
                             this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new PetStatusUpdateComposer((Pet)pet).compose());
                             this.client.getHabbo().getHabboInfo().getCurrentRoom().updateTiles(room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
-                            pet.getRoomUnit().getStatus().remove("gst");
+                            pet.getRoomUnit().removeStatus(RoomUnitStatus.GESTURE);
                             Emulator.getThreading().run(new QueryDeleteHabboItem(item));
                         }
                     }

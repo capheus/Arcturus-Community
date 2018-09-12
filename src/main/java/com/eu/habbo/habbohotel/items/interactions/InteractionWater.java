@@ -2,11 +2,12 @@ package com.eu.habbo.habbohotel.items.interactions;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
-import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.map.hash.THashMap;
@@ -113,13 +114,13 @@ public class InteractionWater extends InteractionDefault
     @Override
     public void onWalk(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
     {
-        AbstractPet pet = room.getPet(roomUnit);
+        Pet pet = room.getPet(roomUnit);
 
         if (pet != null)
         {
             if(pet instanceof Pet)
             {
-                pet.getRoomUnit().getStatus().put("dip", "0");
+                pet.getRoomUnit().setStatus(RoomUnitStatus.DIP, "0");
             }
         }
     }

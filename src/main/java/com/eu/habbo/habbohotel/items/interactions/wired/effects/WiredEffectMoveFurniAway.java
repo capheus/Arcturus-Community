@@ -241,4 +241,10 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
 
         return true;
     }
+
+    @Override
+    protected long requiredCooldown()
+    {
+        return 495;
+    }
 }

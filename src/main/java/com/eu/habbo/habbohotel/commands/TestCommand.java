@@ -4,14 +4,11 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
-import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.MonsterplantPet;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.PetManager;
-import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
-import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
-import com.eu.habbo.habbohotel.rooms.RoomTile;
+import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
@@ -61,8 +58,6 @@ public class TestCommand extends Command
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
-//        if (true)
-//            return false;
 
         if (params[1].equals("ach"))
         {
@@ -107,7 +102,7 @@ public class TestCommand extends Command
                 s += "Habbo ID: " + habbo.getHabboInfo().getId() + ", RoomUnit ID: " + habbo.getRoomUnit().getId() + "\r";
             }
 
-            for (AbstractPet pet : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentPets().valueCollection())
+            for (Pet pet : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentPets().valueCollection())
             {
                 s += "Pet ID: " + pet.getId() + ", RoomUnit ID: " + pet.getRoomUnit().getId() + ", Name: " + pet.getName();
 
@@ -127,7 +122,7 @@ public class TestCommand extends Command
 
         if (params[1].equalsIgnoreCase("rebr"))
         {
-            for (AbstractPet pet : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentPets().valueCollection())
+            for (Pet pet : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentPets().valueCollection())
             {
                 if (pet instanceof MonsterplantPet)
                 {
@@ -193,7 +188,7 @@ public class TestCommand extends Command
         }
         else if(params[1].equalsIgnoreCase("pet"))
         {
-            AbstractPet pet = gameClient.getHabbo().getHabboInfo().getCurrentRoom().getPet(Integer.valueOf(params[2]));
+            Pet pet = gameClient.getHabbo().getHabboInfo().getCurrentRoom().getPet(Integer.valueOf(params[2]));
 
             if(pet instanceof Pet)
             {
@@ -211,18 +206,18 @@ public class TestCommand extends Command
                     {
                         c = params[5];
                     }
-                    pet.getRoomUnit().getStatus().put(a, b + " " + c);
+                    pet.getRoomUnit().setStatus(RoomUnitStatus.fromString(a), b + " " + c);
                     gameClient.sendResponse(new RoomUserStatusComposer(pet.getRoomUnit()));
                 }
             }
         }
         else if (params[1].equalsIgnoreCase("petc"))
         {
-            AbstractPet pet = gameClient.getHabbo().getHabboInfo().getCurrentRoom().getPet(Integer.valueOf(params[2]));
+            Pet pet = gameClient.getHabbo().getHabboInfo().getCurrentRoom().getPet(Integer.valueOf(params[2]));
 
             if (pet != null)
             {
-                pet.getRoomUnit().getStatus().clear();
+                pet.getRoomUnit().clearStatus();
                 gameClient.sendResponse(new RoomUserStatusComposer(pet.getRoomUnit()));
             }
         }
@@ -291,10 +286,10 @@ public class TestCommand extends Command
             Room room = gameClient.getHabbo().getHabboInfo().getCurrentRoom();
             List<RoomTile> tiles = room.getLayout().getTilesAround(gameClient.getHabbo().getRoomUnit().getCurrentLocation());
 
-            room.getCurrentPets().forEachValue(new TObjectProcedure<AbstractPet>()
+            room.getCurrentPets().forEachValue(new TObjectProcedure<Pet>()
             {
                 @Override
-                public boolean execute(AbstractPet object)
+                public boolean execute(Pet object)
                 {
                     Emulator.getThreading().run(new Runnable()
                     {
@@ -310,7 +305,7 @@ public class TestCommand extends Command
         }
         else if(params[1].equalsIgnoreCase("st"))
         {
-            gameClient.getHabbo().getRoomUnit().getStatus().put(params[2], params[3]);
+            gameClient.getHabbo().getRoomUnit().setStatus(RoomUnitStatus.fromString(params[2]), params[3]);
             gameClient.sendResponse(new RoomUserStatusComposer(gameClient.getHabbo().getRoomUnit()));
         }
         else if (params[1].equalsIgnoreCase("filt"))

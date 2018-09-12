@@ -3,7 +3,9 @@ package com.eu.habbo.threading.runnables.teleport;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.interactions.InteractionTeleport;
+import com.eu.habbo.habbohotel.items.interactions.InteractionTeleportTile;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
@@ -49,7 +51,7 @@ class TeleportActionThree implements Runnable
         this.client.getHabbo().getRoomUnit().setLocation(targetRoom.getLayout().getTile(targetTeleport.getX(), targetTeleport.getY()));
         this.client.getHabbo().getRoomUnit().setZ(targetTeleport.getZ());
         this.client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[targetTeleport.getRotation() % 8]);
-        this.client.getHabbo().getRoomUnit().getStatus().remove("mv");
+        this.client.getHabbo().getRoomUnit().removeStatus(RoomUnitStatus.MOVE);
 
         if(targetRoom != this.room)
         {
@@ -63,7 +65,7 @@ class TeleportActionThree implements Runnable
 
         this.client.getHabbo().getHabboInfo().setCurrentRoom(targetRoom);
         //Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, this.room, "0"), 500);
-        Emulator.getThreading().run(new TeleportActionFour(targetTeleport, targetRoom, this.client), 1000);
+        Emulator.getThreading().run(new TeleportActionFour(targetTeleport, targetRoom, this.client), this.currentTeleport instanceof InteractionTeleportTile ? 500 : 1000);
 
     }
 }

@@ -15,7 +15,7 @@ public class WiredConditionHabboHasEffect extends InteractionWiredCondition
 {
     public static final WiredConditionType type = WiredConditionType.ACTOR_WEARS_EFFECT;
 
-    private int effectId = 0;
+    protected int effectId = 0;
 
     public WiredConditionHabboHasEffect(ResultSet set, Item baseItem) throws SQLException
     {
@@ -60,7 +60,7 @@ public class WiredConditionHabboHasEffect extends InteractionWiredCondition
     @Override
     public void serializeWiredData(ServerMessage message, Room room)
     {
-        message.appendBoolean(false);
+        message.appendBoolean(true);
         message.appendInt(5);
         message.appendInt(0);
         message.appendInt(this.getBaseItem().getSpriteId());

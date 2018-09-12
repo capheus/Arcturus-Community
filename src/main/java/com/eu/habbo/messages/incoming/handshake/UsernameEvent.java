@@ -45,7 +45,12 @@ public class UsernameEvent extends MessageHandler
                 }
                 this.client.getHabbo().getHabboStats().loginStreak++;
                 calendar = true;
-            } else
+            }
+            else if (daysBetween >= 1)
+            {
+                calendar = true;
+            }
+            else
             {
                 if (((lastLogin.getTime() / 1000) - Emulator.getIntUnixTimestamp()) > 86400)
                 {
@@ -97,9 +102,9 @@ public class UsernameEvent extends MessageHandler
             }
         }
 
-        if (calendar)
+        if (calendar && Emulator.getConfig().getBoolean("hotel.calendar.enabled"))
         {
-            this.client.sendResponse(new AdventCalendarDataComposer("xmas11", Emulator.getGameEnvironment().getCatalogManager().calendarRewards.size(), this.client.getHabbo().getHabboStats().loginStreak, this.client.getHabbo().getHabboStats().calendarRewardsClaimed, true));
+            this.client.sendResponse(new AdventCalendarDataComposer("xmas11", Emulator.getGameEnvironment().getCatalogManager().calendarRewards.size(), (int)Math.floor((Emulator.getIntUnixTimestamp() - Emulator.getConfig().getInt("hotel.calendar.starttimestamp")) / 86400) , this.client.getHabbo().getHabboStats().calendarRewardsClaimed, true));
             this.client.sendResponse(new NuxAlertComposer("openView/calendar"));
         }
 

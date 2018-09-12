@@ -3,6 +3,7 @@ package com.eu.habbo.threading.runnables;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUnitOnRollerComposer;
 
 public class RoomUnitTeleport implements Runnable
@@ -30,7 +31,7 @@ public class RoomUnitTeleport implements Runnable
     {
         RoomTile t = this.room.getLayout().getTile((short) x, (short) y);
         this.roomUnit.setGoalLocation(t);
-        this.roomUnit.getStatus().remove("mv");
+        this.roomUnit.removeStatus(RoomUnitStatus.MOVE);
         this.room.sendComposer(new RoomUnitOnRollerComposer(this.roomUnit, null, t, this.room).compose());
         this.room.giveEffect(this.roomUnit, this.newEffect);
         this.room.updateHabbosAt(t.x, t.y);

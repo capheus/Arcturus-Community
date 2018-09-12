@@ -349,7 +349,7 @@ public class PluginManager
             {}
         }
 
-        HabboManager.WELCOME_MESSAGE = Emulator.getConfig().getValue("hotel.welcome.alert.message");
+        HabboManager.WELCOME_MESSAGE = Emulator.getConfig().getValue("hotel.welcome.alert.message").replace("<br>", "<br/>").replace("<br />", "<br/>").replace("\\r", "\r").replace("\\n", "\n").replace("\\t", "\t");
         Room.PREFIX_FORMAT = Emulator.getConfig().getValue("room.chat.prefix.format");
     }
 }

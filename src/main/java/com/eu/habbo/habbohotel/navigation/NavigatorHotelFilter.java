@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.navigation;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomCategory;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -21,7 +22,7 @@ public class NavigatorHotelFilter extends NavigatorFilter
     @Override
     public List<SearchResultList> getResult(Habbo habbo)
     {
-        boolean showInvisible = habbo.hasPermission("acc_enter_anyroom") || habbo.hasPermission("acc_anyroomowner");
+        boolean showInvisible = habbo.hasPermission("acc_enter_anyroom") || habbo.hasPermission(Permission.ACC_ANYROOMOWNER);
         List<SearchResultList> resultLists = new ArrayList<SearchResultList>();
         int i = 0;
         resultLists.add(new SearchResultList(i, "popular", "", SearchAction.NONE, habbo.getHabboStats().navigatorWindowSettings.getListModeForCategory("popular", ListMode.fromType(Emulator.getConfig().getInt("hotel.navigator.popular.listtype"))), habbo.getHabboStats().navigatorWindowSettings.getDisplayModeForCategory("popular"), Emulator.getGameEnvironment().getRoomManager().getPopularRooms(Emulator.getConfig().getInt("hotel.navigator.popular.amount")), false, showInvisible));
@@ -43,7 +44,7 @@ public class NavigatorHotelFilter extends NavigatorFilter
     @Override
     public List<SearchResultList> getResult(Habbo habbo, NavigatorFilterField filterField, String value, int roomCategory)
     {
-        boolean showInvisible = habbo.hasPermission("acc_enter_anyroom") || habbo.hasPermission("acc_anyroomowner");
+        boolean showInvisible = habbo.hasPermission("acc_enter_anyroom") || habbo.hasPermission(Permission.ACC_ANYROOMOWNER);
         if (!filterField.databaseQuery.isEmpty())
         {
             List<SearchResultList> resultLists = new ArrayList<SearchResultList>();

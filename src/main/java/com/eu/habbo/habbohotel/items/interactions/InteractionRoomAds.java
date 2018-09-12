@@ -12,7 +12,7 @@ public class InteractionRoomAds extends InteractionCustomValues
 {
     public final static THashMap<String, String> defaultValues = new THashMap<String, String>()
     {
-        {put("imageUrl", "http://arcturus.wf");}
+        {put("imageUrl", "http://arcturus.wf/ads_background.png");}
         {put("clickUrl", "http://arcturus.wf");}
         {put("offsetX", "0");}
         {put("offsetY", "0");}

@@ -47,6 +47,11 @@ public class PetData implements Comparable<PetData>
 
     public PetData(ResultSet set) throws SQLException
     {
+        this.load(set);
+    }
+
+    public void load(ResultSet set) throws SQLException
+    {
         this.type = set.getInt("pet_type");
         this.name = set.getString("pet_name");
         this.actionsHappy = set.getString("happy_actions").split(";");
@@ -276,14 +281,6 @@ public class PetData implements Comparable<PetData>
             return null;
 
         return vocals.get(Emulator.getRandom().nextInt(vocals.size()));
-    }
-
-    public void update(ResultSet set) throws SQLException
-    {
-        this.type = set.getInt("pet_type");
-        this.actionsHappy = set.getString("happy_actions").split(";");
-        this.actionsTired = set.getString("tired_actions").split(";");
-        this.actionsRandom = set.getString("random_actions").split(";");
     }
 
     @Override

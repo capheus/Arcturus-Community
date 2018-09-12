@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.commands;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
+import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
@@ -18,7 +19,7 @@ public class FreezeBotsCommand extends Command
     {
         if(gameClient.getHabbo().getHabboInfo().getCurrentRoom() != null)
         {
-            if(gameClient.getHabbo().getHabboInfo().getId() == gameClient.getHabbo().getHabboInfo().getCurrentRoom().getOwnerId() || gameClient.getHabbo().hasPermission("acc_anyroomowner"))
+            if(gameClient.getHabbo().getHabboInfo().getId() == gameClient.getHabbo().getHabboInfo().getCurrentRoom().getOwnerId() || gameClient.getHabbo().hasPermission(Permission.ACC_ANYROOMOWNER))
             {
                 gameClient.getHabbo().getHabboInfo().getCurrentRoom().setAllowBotsWalk(!gameClient.getHabbo().getHabboInfo().getCurrentRoom().isAllowBotsWalk());
                 gameClient.getHabbo().whisper(gameClient.getHabbo().getHabboInfo().getCurrentRoom().isAllowBotsWalk() ? Emulator.getTexts().getValue("commands.succes.cmd_freeze_bots.unfrozen") : Emulator.getTexts().getValue("commands.succes.cmd_freeze_bots.frozen"), RoomChatMessageBubbles.ALERT);

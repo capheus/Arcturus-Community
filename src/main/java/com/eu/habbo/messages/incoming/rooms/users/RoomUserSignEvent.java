@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.incoming.rooms.users;
 
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
 public class RoomUserSignEvent extends MessageHandler {
@@ -13,7 +14,7 @@ public class RoomUserSignEvent extends MessageHandler {
         if(room == null)
             return;
 
-        this.client.getHabbo().getRoomUnit().getStatus().put("sign", signId + "");
+        this.client.getHabbo().getRoomUnit().setStatus(RoomUnitStatus.SIGN, signId + "");
         this.client.getHabbo().getHabboInfo().getCurrentRoom().unIdle(this.client.getHabbo());
     }
 }

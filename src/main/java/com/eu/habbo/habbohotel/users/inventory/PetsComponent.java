@@ -1,7 +1,7 @@
 package com.eu.habbo.habbohotel.users.inventory;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.PetManager;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -73,7 +73,7 @@ public class PetsComponent
         }
     }
 
-    public void removePet(AbstractPet pet)
+    public void removePet(Pet pet)
     {
         synchronized (this.pets)
         {

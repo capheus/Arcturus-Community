@@ -943,6 +943,23 @@ public class CatalogManager
                     habbo.getClient().sendResponse(new AlertLimitedSoldOutComposer());
                     return;
                 }
+
+                if (Emulator.getConfig().getBoolean("hotel.catalog.ltd.limit.enabled"))
+                {
+                    int ltdLimit = Emulator.getConfig().getInt("hotel.purchase.ltd.limit.daily.total");
+                    if (habbo.getHabboStats().totalLtds() >= ltdLimit)
+                    {
+                        habbo.alert(Emulator.getTexts().getValue("error.catalog.buy.limited.daily.total").replace("%itemname%", item.getBaseItems().iterator().next().getFullName()).replace("%limit%", ltdLimit + ""));
+                        return;
+                    }
+
+                    ltdLimit = Emulator.getConfig().getInt("hotel.purchase.ltd.limit.daily.item");
+                    if (habbo.getHabboStats().totalLtds(item.id) >= ltdLimit)
+                    {
+                        habbo.alert(Emulator.getTexts().getValue("error.catalog.buy.limited.daily.item").replace("%itemname%", item.getBaseItems().iterator().next().getFullName()).replace("%limit%", ltdLimit + ""));
+                        return;
+                    }
+                }
             }
 
             if(amount > 1)
@@ -1004,6 +1021,8 @@ public class CatalogManager
                             totalCredits += item.getCredits();
                             totalPoints += item.getPoints();
                         }
+
+                        habbo.getHabboStats().addLtdLog(item.getId(), Emulator.getIntUnixTimestamp());
 
                         //for (int j = 0; j < item.getAmount(); j++)
                         //{
@@ -1132,9 +1151,6 @@ public class CatalogManager
                                         }
                                         else if(baseItem.getInteractionType().getType() == InteractionGuildFurni.class || baseItem.getInteractionType().getType() == InteractionGuildGate.class)
                                         {
-                                            InteractionGuildFurni habboItem = (InteractionGuildFurni)Emulator.getGameEnvironment().getItemManager().createItem(habbo.getClient().getHabbo().getHabboInfo().getId(), baseItem, limitedStack, limitedNumber, extradata);
-                                            habboItem.setExtradata("");
-                                            habboItem.needsUpdate(true);
                                             int guildId;
                                             try
                                             {
@@ -1146,6 +1162,11 @@ public class CatalogManager
                                                 habbo.getClient().sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR));
                                                 return;
                                             }
+
+                                            InteractionGuildFurni habboItem = (InteractionGuildFurni)Emulator.getGameEnvironment().getItemManager().createItem(habbo.getClient().getHabbo().getHabboInfo().getId(), baseItem, limitedStack, limitedNumber, extradata);
+                                            habboItem.setExtradata("");
+                                            habboItem.needsUpdate(true);
+
                                             Emulator.getThreading().run(habboItem);
                                             Emulator.getGameEnvironment().getGuildManager().setGuild(habboItem, guildId);
                                             itemsList.add(habboItem);

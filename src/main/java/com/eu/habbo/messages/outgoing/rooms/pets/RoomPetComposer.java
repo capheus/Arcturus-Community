@@ -1,6 +1,6 @@
 package com.eu.habbo.messages.outgoing.rooms.pets;
 
-import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.HorsePet;
 import com.eu.habbo.habbohotel.pets.IPetLook;
 import com.eu.habbo.habbohotel.pets.MonsterplantPet;
@@ -11,17 +11,17 @@ import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.procedure.TIntObjectProcedure;
 
-public class RoomPetComposer extends MessageComposer implements TIntObjectProcedure<AbstractPet>
+public class RoomPetComposer extends MessageComposer implements TIntObjectProcedure<Pet>
 {
-    private final TIntObjectMap<AbstractPet> pets;
+    private final TIntObjectMap<Pet> pets;
 
-    public RoomPetComposer(AbstractPet pet)
+    public RoomPetComposer(Pet pet)
     {
-        this.pets = new TIntObjectHashMap<AbstractPet>();
+        this.pets = new TIntObjectHashMap<Pet>();
         this.pets.put(pet.getId(), pet);
     }
 
-    public RoomPetComposer(TIntObjectMap<AbstractPet> pets)
+    public RoomPetComposer(TIntObjectMap<Pet> pets)
     {
         this.pets = pets;
     }
@@ -36,7 +36,7 @@ public class RoomPetComposer extends MessageComposer implements TIntObjectProced
     }
 
     @Override
-    public boolean execute(int a, AbstractPet pet)
+    public boolean execute(int a, Pet pet)
     {
         this.response.appendInt(pet.getId());
         this.response.appendString(pet.getName());

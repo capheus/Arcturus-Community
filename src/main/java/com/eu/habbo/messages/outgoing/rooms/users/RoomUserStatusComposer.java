@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.outgoing.rooms.users;
 
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
@@ -10,6 +11,7 @@ import gnu.trove.procedure.TObjectObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 
 import java.util.Collection;
+import java.util.Map;
 
 public class RoomUserStatusComposer extends MessageComposer
 {
@@ -48,21 +50,13 @@ public class RoomUserStatusComposer extends MessageComposer
                 this.response.appendInt(roomUnit.getHeadRotation().getValue());
                 this.response.appendInt(roomUnit.getBodyRotation().getValue());
 
-                final String[] status = {"/"};
-                synchronized (roomUnit.getStatus())
+                String status = "/";
+                for (Map.Entry<RoomUnitStatus, String> entry : roomUnit.getStatusMap().entrySet())
                 {
-                    roomUnit.getStatus().forEachEntry(new TObjectObjectProcedure<String, String>()
-                    {
-                        @Override
-                        public boolean execute(String key, String value)
-                        {
-                            status[0] = status[0] + key + " " + value + "/";
-                            return true;
-                        }
-                    });
+                    status += entry.getKey() + " " + entry.getValue() + "/";
                 }
 
-                this.response.appendString(status[0]);
+                this.response.appendString(status);
                 roomUnit.setPreviousLocation(roomUnit.getCurrentLocation());
                 roomUnit.getPreviousLocation().setStackHeight(roomUnit.getZ());
             }
@@ -80,20 +74,13 @@ public class RoomUserStatusComposer extends MessageComposer
                     this.response.appendInt(habbo.getRoomUnit().getHeadRotation().getValue());
                     this.response.appendInt(habbo.getRoomUnit().getBodyRotation().getValue());
 
-                    final String[] status = {"/"};
-                    synchronized (habbo.getRoomUnit().getStatus())
+                    String status = "/";
+
+                    for (Map.Entry<RoomUnitStatus, String> entry : habbo.getRoomUnit().getStatusMap().entrySet())
                     {
-                        habbo.getRoomUnit().getStatus().forEachEntry(new TObjectObjectProcedure<String, String>()
-                        {
-                            @Override
-                            public boolean execute(String key, String value)
-                            {
-                                status[0] = status[0] + key + " " + value + "/";
-                                return true;
-                            }
-                        });
+                        status += entry.getKey() + " " + entry.getValue() + "/";
                     }
-                    this.response.appendString(status[0]);
+                    this.response.appendString(status);
                     habbo.getRoomUnit().setPreviousLocation(habbo.getRoomUnit().getCurrentLocation());
                     habbo.getRoomUnit().getPreviousLocation().setStackHeight(habbo.getRoomUnit().getZ());
                 }

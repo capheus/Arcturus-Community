@@ -2,6 +2,7 @@ package com.eu.habbo.messages.incoming.modtool;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.modtool.ModToolBanType;
+import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
@@ -38,7 +39,7 @@ public class ModToolSanctionBanEvent extends MessageHandler
             case BAN_AVATAR_ONLY_100_YEARS:
                 duration = Emulator.getIntUnixTimestamp();
         }
-        if (this.client.getHabbo().hasPermission("acc_supporttool"))
+        if (this.client.getHabbo().hasPermission(Permission.ACC_SUPPORTTOOL))
         {
             Emulator.getGameEnvironment().getModToolManager().ban(userId, this.client.getHabbo(), message, duration, ModToolBanType.ACCOUNT, cfhTopic);
         }

@@ -1,15 +1,15 @@
 package com.eu.habbo.messages.outgoing.rooms.pets;
 
-import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class PetLevelUpComposer extends MessageComposer
 {
-    private final AbstractPet pet;
+    private final Pet pet;
 
-    public PetLevelUpComposer(AbstractPet pet)
+    public PetLevelUpComposer(Pet pet)
     {
         this.pet = pet;
     }

@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.achievements.Achievement;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.modtool.ModToolBan;
+import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.permissions.Rank;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.catalog.*;
@@ -339,7 +340,7 @@ public class HabboManager
             habbo.getClient().sendResponse(new UserPermissionsComposer(habbo));
             habbo.getClient().sendResponse(new UserPerksComposer(habbo));
 
-            if (habbo.hasPermission("acc_supporttool"))
+            if (habbo.hasPermission(Permission.ACC_SUPPORTTOOL))
             {
                 habbo.getClient().sendResponse(new ModToolComposer(habbo));
             }

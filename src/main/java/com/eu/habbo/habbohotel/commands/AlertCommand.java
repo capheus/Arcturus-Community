@@ -25,7 +25,7 @@ public class AlertCommand extends Command {
         }
         if(params.length < 3)
         {
-            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_alert.forgot_username"), RoomChatMessageBubbles.ALERT);
+            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_alert.forgot_message"), RoomChatMessageBubbles.ALERT);
             return true;
         }
 

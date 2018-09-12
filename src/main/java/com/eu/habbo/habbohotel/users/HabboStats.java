@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class HabboStats implements Runnable
 {
@@ -87,6 +88,8 @@ public class HabboStats implements Runnable
     public TIntArrayList calendarRewardsClaimed;
 
     public boolean allowNameChange = false;
+
+    public THashMap<Integer, List<Integer>> ltdPurchaseLog = new THashMap<>(0);
 
     private HabboStats(ResultSet set, Habbo habbo) throws SQLException
     {
@@ -202,6 +205,19 @@ public class HabboStats implements Runnable
                 while (rewardSet.next())
                 {
                     this.calendarRewardsClaimed.add(rewardSet.getInt("reward_id"));
+                }
+            }
+        }
+
+        try (PreparedStatement ltdPurchaseLogStatement = set.getStatement().getConnection().prepareStatement("SELECT catalog_item_id, timestamp FROM catalog_items_limited WHERE user_id = ? AND timestamp > ?"))
+        {
+            ltdPurchaseLogStatement.setInt(1, this.habbo.getHabboInfo().getId());
+            ltdPurchaseLogStatement.setInt(2, Emulator.getIntUnixTimestamp() - 86400);
+            try (ResultSet ltdSet = ltdPurchaseLogStatement.executeQuery())
+            {
+                while (ltdSet.next())
+                {
+                    this.addLtdLog(ltdSet.getInt("catalog_item_id"), ltdSet.getInt("timestamp"));
                 }
             }
         }
@@ -609,5 +625,36 @@ public class HabboStats implements Runnable
     {
         this.muteEndTime = 0;
         this.mutedBubbleTracker = false;
+    }
+
+    public void addLtdLog(int catalogItemId, int timestamp)
+    {
+        if (!this.ltdPurchaseLog.containsKey(catalogItemId))
+        {
+            this.ltdPurchaseLog.put(catalogItemId, new ArrayList<>(1));
+        }
+
+        this.ltdPurchaseLog.get(catalogItemId).add(timestamp);
+    }
+
+    public int totalLtds()
+    {
+        int total = 0;
+        for (Map.Entry<Integer, List<Integer>> entry : this.ltdPurchaseLog.entrySet())
+        {
+            total += entry.getValue().size();
+        }
+
+        return total;
+    }
+
+    public int totalLtds(int catalogItemId)
+    {
+        if (this.ltdPurchaseLog.containsKey(catalogItemId))
+        {
+            return this.ltdPurchaseLog.get(catalogItemId).size();
+        }
+
+        return 0;
     }
 }

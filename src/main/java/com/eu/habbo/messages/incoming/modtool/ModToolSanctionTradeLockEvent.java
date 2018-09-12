@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.incoming.modtool;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.modtool.ModToolIssueHandledComposer;
@@ -15,7 +16,7 @@ public class ModToolSanctionTradeLockEvent extends MessageHandler
         int duration = this.packet.readInt();
         int cfhTopic = this.packet.readInt();
 
-        if (this.client.getHabbo().hasPermission("acc_supporttool"))
+        if (this.client.getHabbo().hasPermission(Permission.ACC_SUPPORTTOOL))
         {
             Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(userId);
 

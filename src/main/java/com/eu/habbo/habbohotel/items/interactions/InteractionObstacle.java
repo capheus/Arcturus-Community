@@ -4,11 +4,12 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
-import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.HorsePet;
 import com.eu.habbo.habbohotel.pets.PetTasks;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -42,7 +43,7 @@ public class InteractionObstacle extends HabboItem
     @Override
     public boolean canWalkOn(RoomUnit roomUnit, Room room, Object[] objects)
     {
-        AbstractPet pet = room.getPet(roomUnit);
+        Pet pet = room.getPet(roomUnit);
 
         if (pet != null && pet instanceof HorsePet)
         {
@@ -85,15 +86,15 @@ public class InteractionObstacle extends HabboItem
 
         if(habbo == null)
         {
-            AbstractPet pet = room.getPet(roomUnit);
+            Pet pet = room.getPet(roomUnit);
 
             if(pet != null && pet instanceof HorsePet && ((HorsePet) pet).getRider() != null)
             {
                 if (((HorsePet) pet).getTask() != null && ((HorsePet) pet).getTask().equals(PetTasks.RIDE))
                 {
-                    if (pet.getRoomUnit().getStatus().containsKey("jmp"))
+                    if (pet.getRoomUnit().hasStatus(RoomUnitStatus.JUMP))
                     {
-                        pet.getRoomUnit().getStatus().remove("jmp");
+                        pet.getRoomUnit().removeStatus(RoomUnitStatus.JUMP);
                         Emulator.getThreading().run(new HabboItemNewState(this, room, "0"), 2000);
                     } else
                     {
@@ -107,7 +108,7 @@ public class InteractionObstacle extends HabboItem
                         }
 
                         this.setExtradata(state + "");
-                        pet.getRoomUnit().getStatus().put("jmp", "0");
+                        pet.getRoomUnit().setStatus(RoomUnitStatus.JUMP, "0");
 
                         AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("HorseConsecutiveJumpsCount"));
                         AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("HorseJumping"));
@@ -128,7 +129,7 @@ public class InteractionObstacle extends HabboItem
 
         if(habbo == null)
         {
-            AbstractPet pet = room.getPet(roomUnit);
+            Pet pet = room.getPet(roomUnit);
 
             if(pet != null && pet instanceof HorsePet && ((HorsePet) pet).getRider() != null)
             {
@@ -170,11 +171,11 @@ public class InteractionObstacle extends HabboItem
 
         if(habbo == null)
         {
-            AbstractPet pet = room.getPet(roomUnit);
+            Pet pet = room.getPet(roomUnit);
 
             if(pet != null && pet instanceof HorsePet && ((HorsePet) pet).getRider() != null)
             {
-                pet.getRoomUnit().getStatus().remove("jmp");
+                pet.getRoomUnit().removeStatus(RoomUnitStatus.JUMP);
             }
         }
     }

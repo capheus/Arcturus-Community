@@ -43,14 +43,11 @@ public class Rank
             String columnName = meta.getColumnName(i);
             if (columnName.startsWith("cmd_") || columnName.startsWith("acc_"))
             {
-                if (set.getString(i).equals("1") || set.getString(i).equals("2"))
-                {
-                    this.permissions.put(meta.getColumnName(i), new Permission(columnName, PermissionSetting.fromString(set.getString(i))));
-                }
+                this.permissions.put(meta.getColumnName(i), new Permission(columnName, PermissionSetting.fromString(set.getString(i))));
             }
             else
             {
-                variables.put(meta.getColumnName(i), set.getString(i));
+                this.variables.put(meta.getColumnName(i), set.getString(i));
             }
         }
     }

@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.pets;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.items.Item;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
@@ -166,18 +167,16 @@ public class MonsterplantPet extends Pet implements IPetLook
         {
             if (isDead())
             {
-                this.roomUnit.getStatus().remove("gst");
+                this.roomUnit.removeStatus(RoomUnitStatus.GESTURE);
 
-                if (!this.roomUnit.getStatus().containsKey("rip"))
+                if (!this.roomUnit.hasStatus(RoomUnitStatus.RIP))
                 {
                     AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(this.userId), Emulator.getGameEnvironment().getAchievementManager().getAchievement("MonsterPlantGardenOfDeath"));
                 }
-                if (this.roomUnit.getStatus().size() != 1)
-                {
-                    this.roomUnit.getStatus().clear();
-                    this.roomUnit.getStatus().put("rip", "");
-                    this.packetUpdate = true;
-                }
+
+                this.roomUnit.clearStatus();
+                this.roomUnit.setStatus(RoomUnitStatus.RIP, "");
+                this.packetUpdate = true;
             }
             else
             {
@@ -186,9 +185,9 @@ public class MonsterplantPet extends Pet implements IPetLook
                 {
                     this.growthStage = 7;
                     boolean clear = false;
-                    for (String s : roomUnit.getStatus().keySet())
+                    for (RoomUnitStatus s : roomUnit.getStatusMap().keySet())
                     {
-                        if (s.startsWith("grw"))
+                        if (s.equals(RoomUnitStatus.GROW))
                         {
                             clear = true;
                         }
@@ -196,7 +195,7 @@ public class MonsterplantPet extends Pet implements IPetLook
 
                     if (clear)
                     {
-                        roomUnit.getStatus().clear();
+                        roomUnit.clearStatus();
                         packetUpdate = true;
                     }
                 }
@@ -207,8 +206,8 @@ public class MonsterplantPet extends Pet implements IPetLook
                     if (g > this.growthStage)
                     {
                         this.growthStage = g;
-                        roomUnit.getStatus().clear();
-                        roomUnit.getStatus().put("grw" + this.growthStage, "");
+                        roomUnit.clearStatus();
+                        roomUnit.setStatus(RoomUnitStatus.fromString("grw" + this.growthStage), "");
                         packetUpdate = true;
                     }
                 }
@@ -352,14 +351,14 @@ public class MonsterplantPet extends Pet implements IPetLook
             this.room.sendComposer(new PetStatusUpdateComposer((Pet) pet).compose());
             this.room.sendComposer(new PetStatusUpdateComposer(this).compose());
 
-            this.getRoomUnit().getStatus().put("gst", "reb");
-            pet.getRoomUnit().getStatus().put("gst", "reb");
+            this.getRoomUnit().setStatus(RoomUnitStatus.GESTURE, "reb");
+            pet.getRoomUnit().setStatus(RoomUnitStatus.GESTURE, "reb");
 
             this.room.sendComposer(new RoomUserStatusComposer(this.getRoomUnit()).compose());
             this.room.sendComposer(new RoomUserStatusComposer(pet.getRoomUnit()).compose());
 
-            this.getRoomUnit().getStatus().remove("gst");
-            pet.getRoomUnit().getStatus().remove("gst");
+            this.getRoomUnit().removeStatus(RoomUnitStatus.GESTURE);
+            pet.getRoomUnit().removeStatus(RoomUnitStatus.GESTURE);
 
             Habbo ownerOne = this.room.getHabbo(this.getUserId());
             Habbo ownerTwo = null;

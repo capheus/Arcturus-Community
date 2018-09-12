@@ -107,7 +107,7 @@ public abstract class InteractionWired extends HabboItem
 
     protected long requiredCooldown()
     {
-        return 500;
+        return 100;
     }
 
 
@@ -116,7 +116,6 @@ public abstract class InteractionWired extends HabboItem
     {
         if (newMillis - this.cooldown < this.requiredCooldown())
         {
-            this.cooldown = newMillis;
             return false;
         }
 

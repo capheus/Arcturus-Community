@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
@@ -37,10 +38,10 @@ public class RoomUserLookAtPoint extends MessageHandler
         if(!roomUnit.canWalk())
             return;
 
-        if(roomUnit.isWalking() || roomUnit.getStatus().containsKey("mv"))
+        if(roomUnit.isWalking() || roomUnit.hasStatus(RoomUnitStatus.MOVE))
             return;
 
-        if (roomUnit.cmdLay || roomUnit.getStatus().containsKey("lay"))
+        if (roomUnit.cmdLay || roomUnit.hasStatus(RoomUnitStatus.LAY))
             return;
 
         int x = this.packet.readInt();

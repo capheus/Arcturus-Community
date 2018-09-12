@@ -75,14 +75,17 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
 
                 if(this.position)
                 {
-                    RoomTile t = room.getLayout().getTile((short)setting.x, (short)setting.y);
+                    RoomTile t = room.getLayout().getTile((short) setting.x, (short) setting.y);
 
-                    tilesToUpdate.addAll(room.getLayout().getTilesAt(t, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), oldRotation));
+                    if (!room.hasHabbosAt(t.x, t.y))
+                    {
+                        tilesToUpdate.addAll(room.getLayout().getTilesAt(t, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), oldRotation));
 
-                    double offsetZ = setting.z - item.getZ();
+                        double offsetZ = setting.z - item.getZ();
 
-                    room.sendComposer(new FloorItemOnRollerComposer(item, null, t, offsetZ, room).compose());
-                    tilesToUpdate.addAll(room.getLayout().getTilesAt(room.getLayout().getTile((short) item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), oldRotation));
+                        room.sendComposer(new FloorItemOnRollerComposer(item, null, t, offsetZ, room).compose());
+                        tilesToUpdate.addAll(room.getLayout().getTilesAt(room.getLayout().getTile((short) item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), oldRotation));
+                    }
                 }
 
                 item.needsUpdate(true);

@@ -109,7 +109,9 @@ public class WiredEffectLowerFurni extends InteractionWiredEffect
                     z = minZ;
                 }
 
-                room.sendComposer(new FloorItemOnRollerComposer(item, null, room.getLayout().getTile(item.getX(), item.getY()), z, room).compose());
+                room.sendComposer(new FloorItemOnRollerComposer(item, null, room.getLayout().getTile(item.getX(), item.getY()), -z, room).compose());
+
+                room.updateHabbosAt(item.getX(), item.getY());
             }
         }
 

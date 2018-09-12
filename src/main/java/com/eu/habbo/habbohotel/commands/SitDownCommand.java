@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.commands;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.users.Habbo;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.TIntObjectMap;
@@ -23,7 +24,7 @@ public class SitDownCommand extends Command
             {
                 habbo.getRoomUnit().stopWalking();
             }
-            else if(habbo.getRoomUnit().getStatus().containsKey("sit"))
+            else if(habbo.getRoomUnit().hasStatus(RoomUnitStatus.SIT))
             {
                 continue;
             }

@@ -17,7 +17,7 @@ public class WiredConditionNotHabboWearsBadge extends InteractionWiredCondition
 {
     public static final WiredConditionType type = WiredConditionType.NOT_ACTOR_WEARS_BADGE;
 
-    private String badge = "";
+    protected String badge = "";
 
     public WiredConditionNotHabboWearsBadge(ResultSet set, Item baseItem) throws SQLException
     {

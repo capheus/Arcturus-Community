@@ -70,7 +70,7 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
 
             if(target != null)
             {
-                if(RoomLayout.tilesAdjecent(target.getRoomUnit().getCurrentLocation(), room.getLayout().getTile(this.getX(), this.getY())) && (target.getRoomUnit().getX() == item.getX() || target.getRoomUnit().getY() == item.getY()))
+                if(room.getLayout().getTile(this.getX(), this.getY()).distance(target.getRoomUnit().getCurrentLocation()) == 1)
                 {
                     final Habbo finalTarget = target;
                     Emulator.getThreading().run(new Runnable()
@@ -245,5 +245,11 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
         this.setDelay(packet.readInt());
 
         return true;
+    }
+
+    @Override
+    protected long requiredCooldown()
+    {
+        return 495;
     }
 }

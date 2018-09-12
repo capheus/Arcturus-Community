@@ -263,6 +263,7 @@ public class PacketManager
         this.registerHandler(Incoming.PickNewUserGiftEvent,                     PickNewUserGiftEvent.class);
         this.registerHandler(Incoming.ChangeNameCheckUsernameEvent,             ChangeNameCheckUsernameEvent.class);
         this.registerHandler(Incoming.ConfirmChangeNameEvent,                   ConfirmChangeNameEvent.class);
+        this.registerHandler(Incoming.ChangeChatBubbleEvent,                    ChangeChatBubbleEvent.class);
     }
 
     private void registerNavigator() throws Exception

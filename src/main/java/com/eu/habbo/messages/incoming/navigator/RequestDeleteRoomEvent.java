@@ -43,6 +43,10 @@ public class RequestDeleteRoomEvent extends MessageHandler
                     }
                 }
 
+                room.preventUnloading = false;
+                room.dispose();
+                Emulator.getGameEnvironment().getRoomManager().uncacheRoom(room);
+
                 try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
                 {
                     try (PreparedStatement statement = connection.prepareStatement("DELETE FROM rooms WHERE id = ? LIMIT 1"))
@@ -50,8 +54,6 @@ public class RequestDeleteRoomEvent extends MessageHandler
                         statement.setInt(1, roomId);
                         statement.execute();
                     }
-
-                    room.preventUnloading = false;
 
                     if (room.hasCustomLayout())
                     {

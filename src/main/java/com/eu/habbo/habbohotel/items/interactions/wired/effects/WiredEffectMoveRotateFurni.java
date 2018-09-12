@@ -8,9 +8,11 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
+import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredEffectType;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
+import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemOnRollerComposer;
@@ -142,23 +144,33 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
                             (short) (item.getY() + ((moveDirection == RoomUserRotation.NORTH || moveDirection == RoomUserRotation.NORTH_EAST || moveDirection == RoomUserRotation.NORTH_WEST) ? 1 : ((moveDirection == RoomUserRotation.SOUTH || moveDirection == RoomUserRotation.SOUTH_EAST || moveDirection == RoomUserRotation.SOUTH_WEST) ? -1 : 0)))
                     );
 
-                    if (newTile != null && room.tileWalkable(newTile))
+                    if (newTile != null)
                     {
-                        Rectangle rectangle = new Rectangle(newTile.x,
-                                newTile.y,
-                                item.getBaseItem().getWidth(),
-                                item.getBaseItem().getLength());
-
-                        for (int x = rectangle.x; x < rectangle.x + rectangle.getWidth(); x++)
+                        boolean hasHabbos = false;
+                        for (Habbo habbo : room.getHabbosAt(newTile))
                         {
-                            for (int y = rectangle.y; y < rectangle.y + rectangle.getHeight(); y++)
-                            {
-                                HabboItem i = room.getTopItemAt(x, y, item);
+                            hasHabbos = true;
+                            WiredHandler.handle(WiredTriggerType.COLLISION, habbo.getRoomUnit(), room, new Object[]{item});
+                        }
 
-                                if (i == null || i == item || i.getBaseItem().allowStack())
+                        if (!hasHabbos && room.tileWalkable(newTile))
+                        {
+                            Rectangle rectangle = new Rectangle(newTile.x,
+                                    newTile.y,
+                                    item.getBaseItem().getWidth(),
+                                    item.getBaseItem().getLength());
+
+                            for (int x = rectangle.x; x < rectangle.x + rectangle.getWidth(); x++)
+                            {
+                                for (int y = rectangle.y; y < rectangle.y + rectangle.getHeight(); y++)
                                 {
-                                    double offset = room.getStackHeight(newTile.x, newTile.y, false) - item.getZ();
-                                    room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, offset, room).compose());
+                                    HabboItem i = room.getTopItemAt(x, y, item);
+
+                                    if (i == null || i == item || i.getBaseItem().allowStack())
+                                    {
+                                        double offset = room.getStackHeight(newTile.x, newTile.y, false) - item.getZ();
+                                        room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, offset, room).compose());
+                                    }
                                 }
                             }
                         }
@@ -313,5 +325,11 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
         this.setDelay(packet.readInt());
 
         return true;
+    }
+
+    @Override
+    protected long requiredCooldown()
+    {
+        return 495;
     }
 }

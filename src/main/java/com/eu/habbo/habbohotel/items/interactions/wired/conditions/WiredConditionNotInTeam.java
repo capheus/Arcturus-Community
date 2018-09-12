@@ -38,12 +38,12 @@ public class WiredConditionNotInTeam extends InteractionWiredCondition
         {
             if(habbo.getHabboInfo().getGamePlayer() != null)
             {
-                if(habbo.getHabboInfo().getGamePlayer().getTeamColor().equals(this.teamColor))
-                    return false;
+                if(!habbo.getHabboInfo().getGamePlayer().getTeamColor().equals(this.teamColor))
+                    return true;
             }
         }
 
-        return true;
+        return false;
     }
 
     @Override
@@ -90,7 +90,7 @@ public class WiredConditionNotInTeam extends InteractionWiredCondition
         message.appendInt(this.getId());
         message.appendString("");
         message.appendInt(1);
-        message.appendInt(this.teamColor.type);
+        message.appendInt(this.teamColor.type + 1);
         message.appendInt(0);
         message.appendInt(this.getType().code);
         message.appendInt(0);
@@ -102,7 +102,7 @@ public class WiredConditionNotInTeam extends InteractionWiredCondition
     {
         packet.readInt();
 
-        this.teamColor = GameTeamColors.values()[packet.readInt()];
+        this.teamColor = GameTeamColors.values()[packet.readInt() - 1];
 
         return true;
     }

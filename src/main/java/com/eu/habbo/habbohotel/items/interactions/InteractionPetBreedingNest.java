@@ -1,7 +1,7 @@
 package com.eu.habbo.habbohotel.items.interactions;
 
 import com.eu.habbo.habbohotel.items.Item;
-import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -14,8 +14,8 @@ import java.sql.SQLException;
 
 public class InteractionPetBreedingNest extends HabboItem
 {
-    public AbstractPet petOne = null;
-    public AbstractPet petTwo = null;
+    public Pet petOne = null;
+    public Pet petTwo = null;
 
     public InteractionPetBreedingNest(ResultSet set, Item baseItem) throws SQLException
     {
@@ -58,7 +58,7 @@ public class InteractionPetBreedingNest extends HabboItem
     @Override
     public void onWalkOn(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
     {
-        AbstractPet pet = room.getPet(roomUnit);
+        Pet pet = room.getPet(roomUnit);
 
         if (pet != null)
         {
@@ -80,7 +80,7 @@ public class InteractionPetBreedingNest extends HabboItem
         }
     }
 
-    public boolean addPet(AbstractPet pet)
+    public boolean addPet(Pet pet)
     {
         if (this.petOne == null)
         {

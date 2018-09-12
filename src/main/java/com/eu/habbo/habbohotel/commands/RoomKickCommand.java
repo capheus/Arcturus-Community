@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.commands;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
+import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
@@ -33,7 +34,7 @@ public class RoomKickCommand extends Command
 
             for (Habbo habbo : room.getHabbos())
             {
-                if (!(habbo.hasPermission("acc_unkickable") || habbo.hasPermission("acc_supporttool") || room.isOwner(habbo)))
+                if (!(habbo.hasPermission(Permission.ACC_UNKICKABLE) || habbo.hasPermission(Permission.ACC_SUPPORTTOOL) || room.isOwner(habbo)))
                 {
                     room.kickHabbo(habbo, true);
                 }

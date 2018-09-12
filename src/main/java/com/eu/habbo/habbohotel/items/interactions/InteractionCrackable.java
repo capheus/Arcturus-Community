@@ -94,7 +94,7 @@ public class InteractionCrackable extends HabboItem
 
             this.setExtradata(Integer.valueOf(this.getExtradata()) + 1 + "");
             this.needsUpdate(true);
-            room.updateItemState(this);
+            room.updateItem(this);
 
             CrackableReward rewardData = Emulator.getGameEnvironment().getItemManager().getCrackableData(this.getBaseItem().getId());
 

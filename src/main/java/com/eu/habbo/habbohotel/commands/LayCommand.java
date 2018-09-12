@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.commands;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 
@@ -36,7 +37,7 @@ public class LayCommand extends Command
             }
         }
 
-        gameClient.getHabbo().getRoomUnit().getStatus().put("lay", 0.5 + "");
+        gameClient.getHabbo().getRoomUnit().setStatus(RoomUnitStatus.LAY, 0.5 + "");
         gameClient.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserStatusComposer(gameClient.getHabbo().getRoomUnit()).compose());
         return true;
     }

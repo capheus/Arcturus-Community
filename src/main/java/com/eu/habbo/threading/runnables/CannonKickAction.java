@@ -2,6 +2,7 @@ package com.eu.habbo.threading.runnables;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.InteractionCannon;
+import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -38,7 +39,7 @@ public class CannonKickAction implements Runnable
         {
             for(Habbo habbo : this.room.getHabbosAt(t.x, t.y))
             {
-                if(!habbo.hasPermission("acc_unkickable") && !this.room.isOwner(habbo))
+                if(!habbo.hasPermission(Permission.ACC_UNKICKABLE) && !this.room.isOwner(habbo))
                 {
                     Emulator.getGameEnvironment().getRoomManager().leaveRoom(habbo, this.room);
                     habbo.getClient().sendResponse(message); //kicked composer

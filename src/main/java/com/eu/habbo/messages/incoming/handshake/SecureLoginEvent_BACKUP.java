@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.incoming.handshake;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.MessageHandler;
@@ -67,7 +68,7 @@ public class SecureLoginEvent_BACKUP extends MessageHandler
                 //messages.add(new MessengerInitComposer(this.client.getHabbo()).compose());
                 //messages.add(new FriendsComposer(this.client.getHabbo()).compose());
 
-                if(this.client.getHabbo().hasPermission("acc_supporttool"))
+                if(this.client.getHabbo().hasPermission(Permission.ACC_SUPPORTTOOL))
                 {
                     messages.add(new ModToolComposer(this.client.getHabbo()).compose());
                 }

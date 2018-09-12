@@ -1,7 +1,7 @@
 package com.eu.habbo.messages.incoming.rooms.pets;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.HorsePet;
 import com.eu.habbo.habbohotel.pets.PetTasks;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
@@ -19,7 +19,7 @@ public class HorseRideEvent extends MessageHandler
         if(this.client.getHabbo().getHabboInfo().getCurrentRoom() == null)
             return;
 
-        AbstractPet pet = this.client.getHabbo().getHabboInfo().getCurrentRoom().getPet(petId);
+        Pet pet = this.client.getHabbo().getHabboInfo().getCurrentRoom().getPet(petId);
 
         if(pet == null || !(pet instanceof HorsePet))
             return;

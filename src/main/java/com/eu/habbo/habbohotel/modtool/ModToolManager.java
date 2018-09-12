@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.modtool;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
+import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomState;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -469,7 +470,7 @@ public class ModToolManager
 
     public void alert(Habbo moderator, Habbo target, String message)
     {
-        if(moderator.hasPermission("acc_supporttool"))
+        if(moderator.hasPermission(Permission.ACC_SUPPORTTOOL))
         {
             SupportUserAlertedEvent alertedEvent = new SupportUserAlertedEvent(moderator, target, message);
             if (Emulator.getPluginManager().fireEvent(alertedEvent).isCancelled())
@@ -569,7 +570,7 @@ public class ModToolManager
         {
             for (Habbo habbo : room.getHabbos())
             {
-                if (!(habbo.hasPermission("acc_unkickable") || habbo.hasPermission("acc_supporttool") || room.isOwner(habbo)))
+                if (!(habbo.hasPermission(Permission.ACC_UNKICKABLE) || habbo.hasPermission(Permission.ACC_SUPPORTTOOL) || room.isOwner(habbo)))
                 {
                     room.kickHabbo(habbo, false);
                 }
@@ -692,7 +693,7 @@ public class ModToolManager
 
     public void updateTicketToMods(ModToolIssue issue)
     {
-        Emulator.getGameEnvironment().getHabboManager().sendPacketToHabbosWithPermission(new ModToolIssueInfoComposer(issue).compose(), "acc_supporttool");
+        Emulator.getGameEnvironment().getHabboManager().sendPacketToHabbosWithPermission(new ModToolIssueInfoComposer(issue).compose(), Permission.ACC_SUPPORTTOOL);
     }
 
     public void addTicket(ModToolIssue issue)

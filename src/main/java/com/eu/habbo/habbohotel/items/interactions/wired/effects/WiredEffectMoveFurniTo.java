@@ -245,4 +245,10 @@ public class WiredEffectMoveFurniTo extends InteractionWiredEffect
         this.spacing = 0;
         this.indexOffset.clear();
     }
+
+    @Override
+    protected long requiredCooldown()
+    {
+        return 495;
+    }
 }

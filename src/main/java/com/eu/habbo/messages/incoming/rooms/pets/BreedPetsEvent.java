@@ -1,6 +1,6 @@
 package com.eu.habbo.messages.incoming.rooms.pets;
 
-import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.MonsterplantPet;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
@@ -13,8 +13,8 @@ public class BreedPetsEvent extends MessageHandler
 
         if (unknownInt == 0)
         {
-            AbstractPet petOne = this.client.getHabbo().getHabboInfo().getCurrentRoom().getPet(this.packet.readInt());
-            AbstractPet petTwo = this.client.getHabbo().getHabboInfo().getCurrentRoom().getPet(this.packet.readInt());
+            Pet petOne = this.client.getHabbo().getHabboInfo().getCurrentRoom().getPet(this.packet.readInt());
+            Pet petTwo = this.client.getHabbo().getHabboInfo().getCurrentRoom().getPet(this.packet.readInt());
 
             if (petOne == null || petTwo == null)
             {

@@ -3,11 +3,12 @@ package com.eu.habbo.habbohotel.items.interactions;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
-import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.PetTasks;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
@@ -70,7 +71,7 @@ public class InteractionPetFood extends HabboItem
         if(this.getExtradata().length() == 0)
             this.setExtradata("0");
 
-        AbstractPet pet = room.getPet(client);
+        Pet pet = room.getPet(client);
 
         if(pet != null && pet instanceof Pet)
         {
@@ -81,9 +82,9 @@ public class InteractionPetFood extends HabboItem
                     ((Pet) pet).setTask(PetTasks.EAT);
                     pet.getRoomUnit().setGoalLocation(room.getLayout().getTile(this.getX(), this.getY()));
                     pet.getRoomUnit().setRotation(RoomUserRotation.values()[this.getRotation()]);
-                    pet.getRoomUnit().getStatus().clear();
-                    pet.getRoomUnit().getStatus().remove("mv");
-                    pet.getRoomUnit().getStatus().put("eat", "0");
+                    pet.getRoomUnit().clearStatus();
+                    pet.getRoomUnit().removeStatus(RoomUnitStatus.MOVE);
+                    pet.getRoomUnit().setStatus(RoomUnitStatus.EAT, "0");
                     room.sendComposer(new RoomUserStatusComposer(client).compose());
                     Emulator.getThreading().run(new PetEatAction((Pet) pet, this));
                 }

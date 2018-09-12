@@ -35,9 +35,9 @@ public class RoomTrade
 
         for(RoomTradeUser roomTradeUser : this.users)
         {
-            if(!roomTradeUser.getHabbo().getRoomUnit().getStatus().containsKey("trd"))
+            if(!roomTradeUser.getHabbo().getRoomUnit().hasStatus(RoomUnitStatus.TRADING))
             {
-                roomTradeUser.getHabbo().getRoomUnit().getStatus().put("trd", "");
+                roomTradeUser.getHabbo().getRoomUnit().setStatus(RoomUnitStatus.TRADING, "");
                 if(!roomTradeUser.getHabbo().getRoomUnit().isWalking())
                     room.sendComposer(new RoomUserStatusComposer(roomTradeUser.getHabbo().getRoomUnit()).compose());
             }
@@ -283,7 +283,7 @@ public class RoomTrade
             if(habbo == null)
                 continue;
 
-            habbo.getRoomUnit().getStatus().remove("trd");
+            habbo.getRoomUnit().removeStatus(RoomUnitStatus.TRADING);
             this.room.sendComposer(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
         }
     }

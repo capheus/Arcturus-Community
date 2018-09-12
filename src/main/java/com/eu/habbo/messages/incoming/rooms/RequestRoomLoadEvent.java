@@ -16,6 +16,11 @@ public class RequestRoomLoadEvent extends MessageHandler
 
         if(this.client.getHabbo().getHabboInfo().getLoadingRoom() == 0 && this.client.getHabbo().getHabboStats().roomEnterTimestamp + 1000 < System.currentTimeMillis())
         {
+            if (this.client.getHabbo().getRoomUnit() != null && this.client.getHabbo().getRoomUnit().isTeleporting)
+            {
+                return;
+            }
+
             Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
             if (room != null)
             {

@@ -7,23 +7,20 @@ import com.eu.habbo.habbohotel.items.interactions.InteractionNest;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPetDrink;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPetFood;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPetToy;
+import com.eu.habbo.habbohotel.pets.actions.*;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
-import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.set.hash.THashSet;
-import javafx.util.Pair;
-import org.apache.commons.math.distribution.ExponentialDistribution;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 
 public class PetManager
@@ -34,6 +31,41 @@ public class PetManager
     private final THashMap<Integer, PetData> petData;
     private final TIntIntMap breedingPetType;
     private final THashMap<Integer, TIntObjectHashMap<ArrayList<PetBreedingReward>>> breedingReward;
+    public final THashMap<Integer, PetAction> petActions = new THashMap<Integer, PetAction>()
+    {
+        {
+            put(0, new ActionFree());
+            put(1, new ActionSit());
+            put(2, new ActionDown());
+            put(3, new ActionHere());
+            put(4, new ActionBeg());
+            put(5, new ActionPlayDead());
+            put(6, new ActionStay());
+            put(7, new ActionFollow());
+            put(8, new ActionStand());
+            put(9, new ActionJump());
+            put(10, new ActionSpeak());
+            put(11, new ActionPlay());
+            put(12, new ActionSilent());
+            put(13, new ActionNest());
+            put(14, new ActionDrink());
+            put(15, new ActionFollowLeft());
+            put(16, new ActionFollowRight());
+            put(17, new ActionPlayFootball());
+            put(24, new ActionMoveForward());
+            put(25, new ActionTurnLeft());
+            put(26, new ActionTurnRight());
+            put(27, new ActionRelax());
+            put(28, new ActionCroak());
+            put(29, new ActionDip());
+            put(30, new ActionWave());
+            put(35, new ActionWings());
+            put(36, new ActionBreatheFire());
+            put(38, new ActionTorch());
+            put(43, new ActionEat());
+
+        }
+    };
 
     public PetManager()
     {
@@ -74,7 +106,7 @@ public class PetManager
 
                         if (petData != null)
                         {
-                            petData.update(set);
+                            petData.load(set);
                         }
                         else
                         {
@@ -150,7 +182,7 @@ public class PetManager
 
                 if(baseItem != null)
                 {
-                    if(set.getInt("pet_id") == 0)
+                    if(set.getInt("pet_id") == -1)
                     {
                         if(baseItem.getInteractionType().getType() == InteractionNest.class) PetData.generalNestItems.add(baseItem);
                         else if(baseItem.getInteractionType().getType() == InteractionPetFood.class) PetData.generalFoodItems.add(baseItem);
@@ -180,9 +212,16 @@ public class PetManager
         {
             while(set.next())
             {
-                if(set.getInt("pet_id") > 0)
+                if(set.getInt("pet_id") >= 0)
                 {
-                    this.petData.get(set.getInt("pet_id")).petVocals.get(PetVocalsType.valueOf(set.getString("type").toUpperCase())).add(new PetVocal(set.getString("message")));
+                    if (this.petData.containsKey(set.getInt("pet_id")))
+                    {
+                        this.petData.get(set.getInt("pet_id")).petVocals.get(PetVocalsType.valueOf(set.getString("type").toUpperCase())).add(new PetVocal(set.getString("message")));
+                    }
+                    else
+                    {
+                        Emulator.getLogging().logErrorLine("Missing pet_actions table entry for pet id " + set.getInt("pet_id"));
+                    }
                 }
                 else
                 {
@@ -202,7 +241,7 @@ public class PetManager
         {
             while(set.next())
             {
-               commandsList.put(set.getInt("command_id"), new PetCommand(set));
+               commandsList.put(set.getInt("command_id"), new PetCommand(set, this.petActions.get(set.getInt("command_id"))));
             }
         }
 
@@ -524,7 +563,7 @@ public class PetManager
     }
 
 
-    public boolean deletePet(AbstractPet pet)
+    public boolean deletePet(Pet pet)
     {
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM users_pets WHERE id = ? LIMIT 1"))
         {

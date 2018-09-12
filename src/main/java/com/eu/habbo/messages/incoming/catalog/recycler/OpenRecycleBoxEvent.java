@@ -2,6 +2,7 @@ package com.eu.habbo.messages.incoming.catalog.recycler;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.InteractionGift;
+import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
@@ -25,7 +26,7 @@ public class OpenRecycleBoxEvent extends MessageHandler
         if(room == null)
             return;
 
-        if(room.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() || this.client.getHabbo().hasPermission("acc_anyroomowner"))
+        if(room.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() || this.client.getHabbo().hasPermission(Permission.ACC_ANYROOMOWNER))
         {
             HabboItem item = room.getHabboItem(this.packet.readInt());
 

@@ -1,6 +1,6 @@
 package com.eu.habbo.messages.incoming.rooms.pets;
 
-import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.pets.PetInformationComposer;
@@ -17,7 +17,7 @@ public class RequestPetInformationEvent extends MessageHandler
         if(room == null)
             return;
 
-        AbstractPet pet = room.getPet(petId);
+        Pet pet = room.getPet(petId);
 
         if(pet != null)
         {

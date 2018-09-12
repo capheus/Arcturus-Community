@@ -15,7 +15,7 @@ public class WiredConditionNotHabboHasEffect extends InteractionWiredCondition
 {
     private static final WiredConditionType type = WiredConditionType.NOT_ACTOR_WEARS_EFFECT;
 
-    private int effectId;
+    protected int effectId;
 
     public WiredConditionNotHabboHasEffect(ResultSet set, Item baseItem) throws SQLException
     {

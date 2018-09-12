@@ -2,10 +2,7 @@ package com.eu.habbo.habbohotel.items.interactions;
 
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
-import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.rooms.RoomLayout;
-import com.eu.habbo.habbohotel.rooms.RoomTile;
-import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemOnRollerComposer;
@@ -29,7 +26,7 @@ public class InteractionPuzzleBox extends HabboItem
     @Override
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
-        if(client.getHabbo().getRoomUnit().getStatus().containsKey("mv"))
+        if(client.getHabbo().getRoomUnit().hasStatus(RoomUnitStatus.MOVE))
             return;
 
         if(!RoomLayout.tilesAdjecent(room.getLayout().getTile(super.getX(), super.getY()), client.getHabbo().getRoomUnit().getCurrentLocation()))

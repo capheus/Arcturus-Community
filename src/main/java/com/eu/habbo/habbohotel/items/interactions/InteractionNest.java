@@ -2,12 +2,12 @@ package com.eu.habbo.habbohotel.items.interactions;
 
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
-import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.pets.HorsePet;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.PetTasks;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
@@ -65,7 +65,7 @@ public class InteractionNest extends HabboItem
     {
         super.onWalkOn(roomUnit, room, objects);
 
-        AbstractPet pet = room.getPet(roomUnit);
+        Pet pet = room.getPet(roomUnit);
 
         if(pet != null && pet instanceof Pet)
         {
@@ -81,9 +81,9 @@ public class InteractionNest extends HabboItem
                 {
                     ((Pet) pet).setTask(PetTasks.NEST);
                     pet.getRoomUnit().setGoalLocation(room.getLayout().getTile(this.getX(), this.getY()));
-                    pet.getRoomUnit().getStatus().clear();
-                    pet.getRoomUnit().getStatus().remove("mv");
-                    pet.getRoomUnit().getStatus().put("lay", room.getStackHeight(this.getX(), this.getY(), false) + "");
+                    pet.getRoomUnit().clearStatus();
+                    pet.getRoomUnit().removeStatus(RoomUnitStatus.MOVE);
+                    pet.getRoomUnit().setStatus(RoomUnitStatus.LAY, room.getStackHeight(this.getX(), this.getY(), false) + "");
                     room.sendComposer(new RoomUserStatusComposer(roomUnit).compose());
                 }
             }

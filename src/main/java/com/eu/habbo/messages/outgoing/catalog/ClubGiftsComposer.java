@@ -17,7 +17,7 @@ public class ClubGiftsComposer extends MessageComposer
     {
         this.response.init(Outgoing.ClubGiftsComposer);
 
-        this.response.appendInt(365); //Days Until Next Gift
+        this.response.appendInt(0); //Days Until Next Gift
         this.response.appendInt(1); //Gift Selectable
 
         CatalogPage page = Emulator.getGameEnvironment().getCatalogManager().getCatalogPage(Emulator.getConfig().getInt("catalog.page.vipgifts"));
@@ -58,9 +58,9 @@ public class ClubGiftsComposer extends MessageComposer
 
                     if (item != null)
                     {
-                        this.response.appendInt(1);
+                        this.response.appendInt(item.getId());
                         this.response.appendBoolean(true);
-                        this.response.appendInt(2);
+                        this.response.appendInt(i);
                         this.response.appendBoolean(true);
                     }
                     else
