@@ -16,7 +16,7 @@ public class RoomTradeUser
         this.habbo = habbo;
         this.accepted = false;
         this.confirmed = false;
-        this.items = new THashSet<HabboItem>();
+        this.items = new THashSet<>();
     }
 
     public Habbo getHabbo()

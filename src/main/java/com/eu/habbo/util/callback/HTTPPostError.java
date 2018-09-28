@@ -2,7 +2,9 @@ package com.eu.habbo.util.callback;
 
 import com.eu.habbo.Emulator;
 
-import java.io.*;
+import java.io.DataOutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -25,7 +27,7 @@ public class HTTPPostError implements Runnable
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             stackTrace.printStackTrace(pw);
-            String url = "http://arcturus.wf/callback/error.php";
+            String url = "http://arcturus.pw/callback/error.php";
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestMethod("POST");

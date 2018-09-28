@@ -29,19 +29,19 @@ public class WiredEffectBotTeleport extends InteractionWiredEffect
     public WiredEffectBotTeleport(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
-        this.items = new THashSet<HabboItem>();
+        this.items = new THashSet<>();
     }
 
     public WiredEffectBotTeleport(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
     {
         super(id, userId, item, extradata, limitedStack, limitedSells);
-        this.items = new THashSet<HabboItem>();
+        this.items = new THashSet<>();
     }
 
     @Override
     public void serializeWiredData(ServerMessage message, Room room)
     {
-        THashSet<HabboItem> items = new THashSet<HabboItem>();
+        THashSet<HabboItem> items = new THashSet<>();
 
         for(HabboItem item : this.items)
         {
@@ -155,7 +155,7 @@ public class WiredEffectBotTeleport extends InteractionWiredEffect
     @Override
     public void loadWiredData(ResultSet set, Room room) throws SQLException
     {
-        this.items = new THashSet<HabboItem>();
+        this.items = new THashSet<>();
         String[] wiredData = set.getString("wired_data").split("\t");
 
         if (wiredData.length >= 2)

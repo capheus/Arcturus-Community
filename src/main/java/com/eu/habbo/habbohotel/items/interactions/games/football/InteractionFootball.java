@@ -7,7 +7,6 @@ import com.eu.habbo.habbohotel.items.interactions.InteractionPushable;
 import com.eu.habbo.habbohotel.items.interactions.games.InteractionGameTeamItem;
 import com.eu.habbo.habbohotel.items.interactions.games.football.goals.InteractionFootballGoal;
 import com.eu.habbo.habbohotel.rooms.*;
-import com.eu.habbo.habbohotel.rooms.RoomTileState;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.items.ItemStateComposer;
 import com.eu.habbo.util.pathfinding.Rotation;
@@ -27,7 +26,7 @@ public class InteractionFootball extends InteractionPushable
         super(id, userId, item, extradata, limitedStack, limitedSells);
     }
     
-    // Velocity
+
     
     @Override
     public int getWalkOnVelocity(RoomUnit roomUnit, Room room)
@@ -59,7 +58,7 @@ public class InteractionFootball extends InteractionPushable
         return 2;
     }
     
-    // Direction
+
         
     @Override
     public RoomUserRotation getWalkOnDirection(RoomUnit roomUnit, Room room)
@@ -97,7 +96,7 @@ public class InteractionFootball extends InteractionPushable
         return roomUnit.getBodyRotation();
     }
     
-    // Methods
+
     
     @Override
     public int getNextRollDelay(int currentStep, int totalSteps)
@@ -158,7 +157,7 @@ public class InteractionFootball extends InteractionPushable
         }
     }
     
-    // Checks
+
     
     @Override
     public boolean validMove(Room room, RoomTile from, RoomTile to)

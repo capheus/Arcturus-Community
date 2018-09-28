@@ -4,7 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.pets.Pet;
-import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.PetTasks;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
@@ -77,16 +76,16 @@ public class InteractionPetFood extends HabboItem
         {
             if(pet.getPetData().haveFoodItem(this))
             {
-                if (((Pet) pet).levelHunger >= 35)
+                if (pet.levelHunger >= 35)
                 {
-                    ((Pet) pet).setTask(PetTasks.EAT);
+                    pet.setTask(PetTasks.EAT);
                     pet.getRoomUnit().setGoalLocation(room.getLayout().getTile(this.getX(), this.getY()));
                     pet.getRoomUnit().setRotation(RoomUserRotation.values()[this.getRotation()]);
                     pet.getRoomUnit().clearStatus();
                     pet.getRoomUnit().removeStatus(RoomUnitStatus.MOVE);
                     pet.getRoomUnit().setStatus(RoomUnitStatus.EAT, "0");
                     room.sendComposer(new RoomUserStatusComposer(client).compose());
-                    Emulator.getThreading().run(new PetEatAction((Pet) pet, this));
+                    Emulator.getThreading().run(new PetEatAction(pet, this));
                 }
             }
         }

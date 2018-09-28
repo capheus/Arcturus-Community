@@ -18,7 +18,7 @@ public class CatalogSearchedItemEvent extends MessageHandler
 
         if(pageId != 0)
         {
-            CatalogPage page = Emulator.getGameEnvironment().getCatalogManager().getCatalogPage(pageId);
+            CatalogPage page = Emulator.getGameEnvironment().getCatalogManager().getCatalogPage(Emulator.getGameEnvironment().getCatalogManager().getCatalogItem(pageId).getPageId());
 
             if (page != null)
             {

@@ -8,7 +8,6 @@ import com.eu.habbo.threading.runnables.UpdateModToolIssue;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ModToolIssue implements ISerialize
 {
@@ -75,7 +74,7 @@ public class ModToolIssue implements ISerialize
         message.appendInt(this.category); //CATEGORY ID
         message.appendInt(((Emulator.getIntUnixTimestamp() - this.timestamp))); //TIME IN MS AGO
         message.appendInt(this.priority); //PRIORITY
-        message.appendInt(1); // != 0?
+        message.appendInt(1);
         message.appendInt(this.senderId); //Reporter user ID
         message.appendString(this.senderUsername); //Reporter user name.
         message.appendInt(this.reportedId); //Reported user ID.

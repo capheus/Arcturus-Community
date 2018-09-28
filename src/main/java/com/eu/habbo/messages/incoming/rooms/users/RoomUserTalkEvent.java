@@ -1,14 +1,10 @@
 package com.eu.habbo.messages.incoming.rooms.users;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.commands.CommandHandler;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatType;
-import com.eu.habbo.habbohotel.wired.WiredHandler;
-import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserTalkComposer;
 import com.eu.habbo.plugin.events.users.UserTalkEvent;
 
 public class RoomUserTalkEvent extends MessageHandler {
@@ -25,19 +21,28 @@ public class RoomUserTalkEvent extends MessageHandler {
 
         RoomChatMessage message = new RoomChatMessage(this);
 
-        if (Emulator.getPluginManager().fireEvent(new UserTalkEvent(this.client.getHabbo(), message, RoomChatType.TALK)).isCancelled())
+        if (message.getMessage().length() <= RoomChatMessage.MAXIMUM_LENGTH)
         {
-            return;
-        }
-
-        room.talk(this.client.getHabbo(), message, RoomChatType.TALK);
-
-        if (!message.isCommand)
-        {
-            if(RoomChatMessage.SAVE_ROOM_CHATS)
+            if (Emulator.getPluginManager().fireEvent(new UserTalkEvent(this.client.getHabbo(), message, RoomChatType.TALK)).isCancelled())
             {
-                Emulator.getThreading().run(message);
+                return;
             }
+
+            room.talk(this.client.getHabbo(), message, RoomChatType.TALK);
+
+            if (!message.isCommand)
+            {
+                if (RoomChatMessage.SAVE_ROOM_CHATS)
+                {
+                    Emulator.getThreading().run(message);
+                }
+            }
+        }
+        else
+        {
+            String reportMessage = Emulator.getTexts().getValue("scripter.warning.chat.length").replace("%username%", client.getHabbo().getHabboInfo().getUsername()).replace("%length%", message.getMessage().length() + "");
+            Emulator.getGameEnvironment().getModToolManager().quickTicket(client.getHabbo(), "Scripter", reportMessage);
+            Emulator.getLogging().logUserLine(reportMessage);
         }
     }
 }

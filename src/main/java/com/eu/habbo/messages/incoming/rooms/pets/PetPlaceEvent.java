@@ -52,15 +52,7 @@ public class PetPlaceEvent extends MessageHandler
 
             if (tile == null || !tile.isWalkable())
             {
-                //Find a walkable tile around the player.
-                for (RoomTile t : room.getLayout().getTilesAround(this.client.getHabbo().getRoomUnit().getCurrentLocation()))
-                {
-                    if (t != null && t.isWalkable())
-                    {
-                        tile = t;
-                        break;
-                    }
-                }
+                this.client.sendResponse(new PetErrorComposer(PetErrorComposer.ROOM_ERROR_PETS_NO_FREE_TILES));
             }
 
             //Check if tile exists and is walkable. Else place it in the current location the Habbo is standing.

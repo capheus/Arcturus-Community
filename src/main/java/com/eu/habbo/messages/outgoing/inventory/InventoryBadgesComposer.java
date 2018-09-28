@@ -22,7 +22,7 @@ public class InventoryBadgesComposer extends MessageComposer
         if(this.habbo == null)
             return null;
 
-        THashSet<HabboBadge> equippedBadges = new THashSet<HabboBadge>();
+        THashSet<HabboBadge> equippedBadges = new THashSet<>();
 
         this.response.init(Outgoing.InventoryBadgesComposer);
 

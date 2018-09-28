@@ -40,41 +40,41 @@ public class UserCurrencyComposer extends MessageComposer
         }
 
         //Size
-//        this.response.appendInt(11);
+
 //
-//        this.response.appendInt(0);
-//        this.response.appendInt(this.habbo.getHabboInfo().getPixels());
+
+
 //
-//        this.response.appendInt(1);
-//        this.response.appendInt(this.habbo.getHabboInfo().get);
+
+
 //
-//        this.response.appendInt(2);
-//        this.response.appendInt(0);
+
+
 //
-//        this.response.appendInt(3);
-//        this.response.appendInt(0);
+
+
 //
-//        this.response.appendInt(4);
-//        this.response.appendInt(0);
+
+
 //
-//        this.response.appendInt(5);
-//        this.response.appendInt(0);
+
+
 //
 //
-//        this.response.appendInt(101);
-//        this.response.appendInt(0);
+
+
 //
-//        this.response.appendInt(102);
-//        this.response.appendInt(0);
+
+
 //
-//        this.response.appendInt(103);
-//        this.response.appendInt(0);
+
+
 //
-//        this.response.appendInt(104);
-//        this.response.appendInt(0);
+
+
 //
-//        this.response.appendInt(105);
-//        this.response.appendInt(this.habbo.getHabboInfo().getPoints());
+
+
 
         return this.response;
     }

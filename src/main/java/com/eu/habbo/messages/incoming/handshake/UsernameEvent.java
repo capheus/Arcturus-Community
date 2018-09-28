@@ -31,11 +31,11 @@ public class UsernameEvent extends MessageHandler
 
 
             Date lastLogin = new Date(this.client.getHabbo().getHabboInfo().getLastOnline());
-            Calendar c1 = Calendar.getInstance(); // today
-            c1.add(Calendar.DAY_OF_YEAR, -1); // yesterday
+            Calendar c1 = Calendar.getInstance();
+            c1.add(Calendar.DAY_OF_YEAR, -1);
 
             Calendar c2 = Calendar.getInstance();
-            c2.setTime(lastLogin); // your date
+            c2.setTime(lastLogin);
 
             if (daysBetween == 1)
             {

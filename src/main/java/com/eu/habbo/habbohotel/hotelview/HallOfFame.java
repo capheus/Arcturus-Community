@@ -3,15 +3,18 @@ package com.eu.habbo.habbohotel.hotelview;
 import com.eu.habbo.Emulator;
 import gnu.trove.map.hash.THashMap;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class HallOfFame
 {
 
-    private final THashMap<Integer, HallOfFameWinner> winners = new THashMap<Integer, HallOfFameWinner>();
+    private final THashMap<Integer, HallOfFameWinner> winners = new THashMap<>();
 
 
-    private static String competitionName;
+    private String competitionName;
 
     public HallOfFame()
     {

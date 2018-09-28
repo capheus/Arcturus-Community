@@ -3,7 +3,6 @@ package com.eu.habbo.habbohotel.items.interactions;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.pets.Pet;
-import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.PetTasks;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
@@ -69,13 +68,13 @@ public class InteractionPetToy extends HabboItem
                 return;
             }
 
-            ((Pet) pet).setTask(PetTasks.PLAY);
+            pet.setTask(PetTasks.PLAY);
             pet.getRoomUnit().setGoalLocation(room.getLayout().getTile(this.getX(), this.getY()));
             pet.getRoomUnit().setRotation(RoomUserRotation.values()[this.getRotation()]);
             pet.getRoomUnit().clearStatus();
             pet.getRoomUnit().removeStatus(RoomUnitStatus.MOVE);
             pet.getRoomUnit().setStatus(RoomUnitStatus.PLAY, "0");
-            ((Pet) pet).packetUpdate = true;
+            pet.packetUpdate = true;
             HabboItem item = this;
             Emulator.getThreading().run(new Runnable()
             {
@@ -85,7 +84,7 @@ public class InteractionPetToy extends HabboItem
                     pet.addHappyness(25);
                     item.setExtradata("0");
                     room.updateItem(item);
-                    new PetClearPosture((Pet)pet, RoomUnitStatus.PLAY, null, true).run();;
+                    new PetClearPosture(pet, RoomUnitStatus.PLAY, null, true).run();;
                 }
             }, 2500 + (Emulator.getRandom().nextInt(20) * 500));
             this.setExtradata("1");

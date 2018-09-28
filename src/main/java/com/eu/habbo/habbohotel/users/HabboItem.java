@@ -6,7 +6,10 @@ import com.eu.habbo.habbohotel.items.FurnitureType;
 import com.eu.habbo.habbohotel.items.IEventTriggers;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.*;
-import com.eu.habbo.habbohotel.rooms.*;
+import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomLayout;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
+import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.wired.WiredEffectType;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
@@ -358,8 +361,8 @@ public abstract class HabboItem implements Runnable, IEventTriggers
     {
         if(this.getBaseItem().getEffectF() > 0 || this.getBaseItem().getEffectM() > 0)
         {
-            List<Habbo> oldHabbos = new ArrayList<Habbo>();
-            List<Habbo> newHabbos = new ArrayList<Habbo>();
+            List<Habbo> oldHabbos = new ArrayList<>();
+            List<Habbo> newHabbos = new ArrayList<>();
 
             for (RoomTile tile : room.getLayout().getTilesAt(oldLocation, this.getBaseItem().getWidth(), this.getBaseItem().getLength(), this.getRotation()))
             {

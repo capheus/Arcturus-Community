@@ -5,7 +5,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public abstract class PetAction
 {

@@ -104,6 +104,7 @@ public class InteractionLoveLock extends HabboItem
                     if (habbo != null)
                     {
                         this.userTwoId = client.getHabbo().getHabboInfo().getId();
+                        client.sendResponse(new LoveLockFurniStartComposer(this));
                     }
                 }
             }

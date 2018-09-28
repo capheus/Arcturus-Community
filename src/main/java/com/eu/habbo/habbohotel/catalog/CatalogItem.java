@@ -242,7 +242,17 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
                     itemId = itemId.split(":")[0];
                 }
 
-                int identifier = Integer.parseInt(itemId);
+                int identifier = 0;
+                try
+                {
+
+                     identifier = Integer.parseInt(itemId);
+                }
+                catch (Exception e)
+                {
+                    Emulator.getLogging().logStart("Invalid value (" + itemId + ") for items_base column for catalog_item id (" + this.id + "). Value must be integer or of the format of integer:amount;integer:amount");
+                    continue;
+                }
                 if (identifier > 0)
                 {
                     Item item = Emulator.getGameEnvironment().getItemManager().getItem(identifier);
@@ -431,9 +441,21 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
     }
 
 
-    private static boolean haveOffer(CatalogItem item)
+    public static boolean haveOffer(CatalogItem item)
     {
         if(!item.haveOffer)
+            return false;
+
+        if(item.getAmount() != 1)
+            return false;
+
+        if(item.isLimited())
+            return false;
+
+        if (item.bundle.size() > 1)
+            return false;
+
+        if(item.getName().toLowerCase().startsWith("cf_") || item.getName().toLowerCase().startsWith("cfc_"))
             return false;
 
         for(Item i : item.getBaseItems())
@@ -442,18 +464,9 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
                 return false;
         }
 
-        if(item.getName().toLowerCase().startsWith("cf_") || item.getName().toLowerCase().startsWith("cfc_"))
-            return false;
-
-        if(item.isLimited())
-            return false;
-
         if(item.getName().toLowerCase().startsWith("rentable_bot_"))
             return false;
 
-        if(item.getAmount() != 1)
-            return false;
-
-        return item.bundle.size() <= 1;
+        return true;
     }
 }

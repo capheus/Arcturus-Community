@@ -1,9 +1,6 @@
 package com.eu.habbo.habbohotel.games;
 
-import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.habbohotel.wired.WiredHandler;
-import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import gnu.trove.set.hash.THashSet;
 
 public class GameTeam
@@ -22,7 +19,7 @@ public class GameTeam
     {
         this.teamColor = teamColor;
 
-        this.members = new THashSet<GamePlayer>();
+        this.members = new THashSet<>();
     }
 
 

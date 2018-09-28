@@ -1,7 +1,5 @@
 package com.eu.habbo.networking.camera;
 
-import com.eu.habbo.Emulator;
-import com.eu.habbo.threading.runnables.CameraClientAutoReconnect;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;

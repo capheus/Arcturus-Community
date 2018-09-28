@@ -97,7 +97,7 @@ public class ConfirmChangeNameEvent extends MessageHandler
             }
             else
             {
-                this.client.sendResponse(new ChangeNameCheckResultComposer(ChangeNameCheckResultComposer.TAKEN_WITH_SUGGESTIONS, name, new ArrayList<String>()));
+                this.client.sendResponse(new ChangeNameCheckResultComposer(ChangeNameCheckResultComposer.TAKEN_WITH_SUGGESTIONS, name, new ArrayList<>()));
             }
         }
     }

@@ -1,17 +1,19 @@
 package com.eu.habbo.habbohotel.modtool;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.gameclients.GameClientManager;
 import com.eu.habbo.habbohotel.messenger.Message;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.friends.FriendChatMessageComposer;
 import com.eu.habbo.plugin.events.users.UserTriggerWordFilterEvent;
-import com.eu.habbo.threading.runnables.InsertModToolIssue;
 import gnu.trove.iterator.hash.TObjectHashIterator;
 import gnu.trove.set.hash.THashSet;
+import org.apache.commons.lang3.StringUtils;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.Normalizer;
 
 public class WordFilter
@@ -19,9 +21,9 @@ public class WordFilter
     //Configuration. Loaded from database & updated accordingly.
     public static boolean ENABLED_FRIENDCHAT = true;
 
-    THashSet<WordFilterWord> autoReportWords = new THashSet<WordFilterWord>();
-    THashSet<WordFilterWord> hideMessageWords = new THashSet<WordFilterWord>();
-    THashSet<WordFilterWord> words = new THashSet<WordFilterWord>();
+    THashSet<WordFilterWord> autoReportWords = new THashSet<>();
+    THashSet<WordFilterWord> hideMessageWords = new THashSet<>();
+    THashSet<WordFilterWord> words = new THashSet<>();
 
     public WordFilter()
     {
@@ -61,8 +63,8 @@ public class WordFilter
                         this.autoReportWords.add(word);
                     else if (word.hideMessage)
                         this.hideMessageWords.add(word);
-                    else
-                        words.add(word);
+
+                    this.words.add(word);
                 }
             }
         }
@@ -136,11 +138,10 @@ public class WordFilter
 
     public String filter(String message, Habbo habbo)
     {
-        String original = message;
-
+        String filteredMessage = message;
         if(Emulator.getConfig().getBoolean("hotel.wordfilter.normalise"))
         {
-            message = this.normalise(message);
+            filteredMessage = this.normalise(filteredMessage);
         }
 
         TObjectHashIterator iterator = this.words.iterator();
@@ -151,17 +152,17 @@ public class WordFilter
         {
             WordFilterWord word = (WordFilterWord) iterator.next();
 
-            if(message.contains(word.key))
+            if(StringUtils.containsIgnoreCase(filteredMessage, word.key))
             {
                 if(habbo != null)
                 {
                     if(Emulator.getPluginManager().fireEvent(new UserTriggerWordFilterEvent(habbo, word)).isCancelled())
                         continue;
                 }
-                message = message.replace(word.key, word.replacement);
+                filteredMessage = filteredMessage.replaceAll("(?i)" + word.key, word.replacement);
                 foundShit = true;
 
-                if (word.muteTime > 0)
+                if (habbo != null && word.muteTime > 0)
                 {
                     habbo.mute(word.muteTime);
                 }
@@ -170,10 +171,10 @@ public class WordFilter
 
         if (!foundShit)
         {
-            return original;
+            return message;
         }
 
-        return message;
+        return filteredMessage;
     }
 
     public void filter (RoomChatMessage roomChatMessage, Habbo habbo)

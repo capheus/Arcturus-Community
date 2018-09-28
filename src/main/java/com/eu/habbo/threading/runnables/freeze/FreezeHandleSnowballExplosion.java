@@ -35,7 +35,7 @@ class FreezeHandleSnowballExplosion implements Runnable
 
             player.addSnowball();
 
-            THashSet<RoomTile> tiles = new THashSet<RoomTile>();
+            THashSet<RoomTile> tiles = new THashSet<>();
 
             FreezeGame game = ((FreezeGame)this.thrownData.room.getGame(FreezeGame.class));
 
@@ -53,7 +53,7 @@ class FreezeHandleSnowballExplosion implements Runnable
                 player.nextDiagonal = false;
             }
 
-            THashSet<InteractionFreezeTile> freezeTiles = new THashSet<InteractionFreezeTile>();
+            THashSet<InteractionFreezeTile> freezeTiles = new THashSet<>();
 
             for (RoomTile t : tiles)
             {
@@ -68,7 +68,7 @@ class FreezeHandleSnowballExplosion implements Runnable
                         this.thrownData.room.updateItem(i);
                         i.setExtradata("0");
 
-                        THashSet<Habbo> habbos = new THashSet<Habbo>();
+                        THashSet<Habbo> habbos = new THashSet<>();
                         habbos.addAll(this.thrownData.room.getHabbosAt(i.getX(), i.getY()));
 
                         for (Habbo habbo : habbos)

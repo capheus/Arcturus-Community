@@ -22,7 +22,7 @@ public class Achievement
 
     public Achievement(ResultSet set) throws SQLException
     {
-        levels = new THashMap<Integer, AchievementLevel>();
+        levels = new THashMap<>();
 
         id = set.getInt("id");
         this.name = set.getString("name");
@@ -44,28 +44,24 @@ public class Achievement
     public AchievementLevel getLevelForProgress(int progress)
     {
         AchievementLevel l = null;
-
-        for(AchievementLevel level : this.levels.values())
+        if (progress > 0)
         {
-            if (l == null && level.level == 1)
+            for (AchievementLevel level : this.levels.values())
             {
-                l = level;
-            }
-
-            if (progress >= level.progress)
-            {
-                if (l != null)
+                if (progress >= level.progress)
                 {
-                    if (l.level > level.level)
+                    if (l != null)
                     {
-                        continue;
+                        if (l.level > level.level)
+                        {
+                            continue;
+                        }
                     }
-                }
 
-                l = level;
+                    l = level;
+                }
             }
         }
-
         return l;
     }
 
@@ -81,5 +77,10 @@ public class Achievement
         }
 
         return null;
+    }
+
+    public AchievementLevel firstLevel()
+    {
+        return this.levels.get(1);
     }
 }

@@ -20,19 +20,28 @@ public class RoomUserShoutEvent extends MessageHandler
 
         RoomChatMessage message = new RoomChatMessage(this);
 
-        if (Emulator.getPluginManager().fireEvent(new UserTalkEvent(this.client.getHabbo(), message, RoomChatType.SHOUT)).isCancelled())
+        if (message.getMessage().length() <= RoomChatMessage.MAXIMUM_LENGTH)
         {
-            return;
-        }
-
-        this.client.getHabbo().getHabboInfo().getCurrentRoom().talk(this.client.getHabbo(), message, RoomChatType.SHOUT);
-
-        if (!message.isCommand)
-        {
-            if(RoomChatMessage.SAVE_ROOM_CHATS)
+            if (Emulator.getPluginManager().fireEvent(new UserTalkEvent(this.client.getHabbo(), message, RoomChatType.SHOUT)).isCancelled())
             {
-                Emulator.getThreading().run(message);
+                return;
             }
+
+            this.client.getHabbo().getHabboInfo().getCurrentRoom().talk(this.client.getHabbo(), message, RoomChatType.SHOUT);
+
+            if (!message.isCommand)
+            {
+                if (RoomChatMessage.SAVE_ROOM_CHATS)
+                {
+                    Emulator.getThreading().run(message);
+                }
+            }
+        }
+        else
+        {
+            String reportMessage = Emulator.getTexts().getValue("scripter.warning.chat.length").replace("%username%", client.getHabbo().getHabboInfo().getUsername()).replace("%length%", message.getMessage().length() + "");
+            Emulator.getGameEnvironment().getModToolManager().quickTicket(client.getHabbo(), "Scripter", reportMessage);
+            Emulator.getLogging().logUserLine(reportMessage);
         }
     }
 }

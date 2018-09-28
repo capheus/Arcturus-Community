@@ -15,6 +15,7 @@ import java.util.List;
 
 public class RoomChatMessage implements Runnable, ISerialize
 {
+    public static int MAXIMUM_LENGTH = 100;
     //Configuration. Loaded from database & updated accordingly.
     public static boolean SAVE_ROOM_CHATS = false;
     public static int[] BANNED_BUBBLES = {};

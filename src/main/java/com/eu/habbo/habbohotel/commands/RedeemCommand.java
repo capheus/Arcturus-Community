@@ -2,11 +2,9 @@ package com.eu.habbo.habbohotel.commands;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
-import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.eu.habbo.threading.runnables.QueryDeleteHabboItems;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
@@ -25,7 +23,7 @@ public class RedeemCommand extends Command
     @Override
     public boolean handle(final GameClient gameClient, String[] params) throws Exception
     {
-        ArrayList<HabboItem> items = new ArrayList<HabboItem>();
+        ArrayList<HabboItem> items = new ArrayList<>();
 
         int credits = 0;
         int pixels = 0;
@@ -79,7 +77,7 @@ public class RedeemCommand extends Command
             }
         }
 
-        TIntObjectHashMap<HabboItem> deleted = new TIntObjectHashMap<HabboItem>();
+        TIntObjectHashMap<HabboItem> deleted = new TIntObjectHashMap<>();
         for(HabboItem item : items)
         {
             gameClient.getHabbo().getInventory().getItemsComponent().removeHabboItem(item);

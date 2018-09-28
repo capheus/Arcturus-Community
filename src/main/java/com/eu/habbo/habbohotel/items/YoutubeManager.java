@@ -1,17 +1,18 @@
 package com.eu.habbo.habbohotel.items;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.users.HabboItem;
 import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class YoutubeManager
 {
-    public THashMap<Integer, ArrayList<YoutubeItem>> playLists = new THashMap<Integer, ArrayList<YoutubeItem>>();
-    public THashMap<Integer, YoutubeItem> videos = new THashMap<Integer, YoutubeItem>();
+    public THashMap<Integer, ArrayList<YoutubeItem>> playLists = new THashMap<>();
+    public THashMap<Integer, YoutubeItem> videos = new THashMap<>();
 
     public void load()
     {
@@ -36,7 +37,7 @@ public class YoutubeManager
                     {
                         if (!this.playLists.containsKey(set.getInt("item_id")))
                         {
-                            this.playLists.put(set.getInt("item_id"), new ArrayList<YoutubeItem>());
+                            this.playLists.put(set.getInt("item_id"), new ArrayList<>());
                         }
 
                         YoutubeItem item = this.videos.get(set.getInt("video_id"));
@@ -62,7 +63,7 @@ public class YoutubeManager
             return this.playLists.get(item.getId());
         }
 
-        return new ArrayList<YoutubeItem>();
+        return new ArrayList<>();
     }
 
     public YoutubeItem getVideo(Item item, String video)

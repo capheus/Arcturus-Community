@@ -4,11 +4,13 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
-import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.MonsterplantPet;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.PetManager;
-import com.eu.habbo.habbohotel.rooms.*;
+import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
@@ -18,29 +20,24 @@ import com.eu.habbo.messages.incoming.gamecenter.GameCenterRequestGamesEvent;
 import com.eu.habbo.messages.incoming.rooms.pets.MovePetEvent;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
-import com.eu.habbo.messages.outgoing.events.calendar.AdventCalendarDataComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.MessagesForYouComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.PetInformationComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.PetStatusUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserDataComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
-import com.eu.habbo.messages.outgoing.unknown.NuxAlertComposer;
 import com.eu.habbo.messages.outgoing.users.UserDataComposer;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import gnu.trove.procedure.TObjectProcedure;
-import org.joda.time.Days;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.text.Normalizer;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -128,7 +125,7 @@ public class TestCommand extends Command
                 {
                     ((MonsterplantPet) pet).setPubliclyBreedable(false);
                     ((MonsterplantPet) pet).setCanBreed(true);
-                    gameClient.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new PetStatusUpdateComposer((Pet) pet).compose());
+                    gameClient.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new PetStatusUpdateComposer(pet).compose());
                     gameClient.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new PetInformationComposer(pet, gameClient.getHabbo().getHabboInfo().getCurrentRoom()).compose());
                 }
             }
@@ -223,7 +220,7 @@ public class TestCommand extends Command
         }
         else if (params[1].equalsIgnoreCase("rand"))
         {
-            Map<Integer, Integer> results = new HashMap<Integer, Integer>();
+            Map<Integer, Integer> results = new HashMap<>();
 
             for (int i = 0; i < Integer.valueOf(params[2]); i++)
             {
@@ -322,9 +319,9 @@ public class TestCommand extends Command
                     this.response.init(Outgoing.NewUserGiftComposer);
 
                     this.response.appendInt(1); //?
-                    this.response.appendInt(1); // element 1
-                    this.response.appendInt(2); // element 2
-                    this.response.appendInt(6); // Totaal cadeaus?
+                    this.response.appendInt(1);
+                    this.response.appendInt(2);
+                    this.response.appendInt(6);
 
                     String[] gift1 = {"throne.png", "throne"}; //Emulator.getConfig().getValue("nux.gift.1").split(";");
                     String[] gift2 = {"throne.png", "throne"}; //Emulator.getConfig().getValue("nux.gift.2").split(";");
@@ -450,7 +447,7 @@ public class TestCommand extends Command
 
         //if(params.length >= 2)
         //{
-        //    gameClient.sendResponse(new RoomUserActionComposer(gameClient.getHabbo().getRoomUnit(), Integer.valueOf(params[1])));
+
         //}
 
 

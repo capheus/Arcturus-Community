@@ -6,7 +6,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import gnu.trove.TCollections;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.THashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public class GuildForumManager
 
     public GuildForumManager()
     {
-        this.guildForums = TCollections.synchronizedMap(new TIntObjectHashMap<GuildForum>());
+        this.guildForums = TCollections.synchronizedMap(new TIntObjectHashMap<>());
     }
 
     public GuildForum getGuildForum(int guildId)

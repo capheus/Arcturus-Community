@@ -1,10 +1,7 @@
 package com.eu.habbo.messages.incoming.hotelview;
 
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.hotelview.*;
-import com.eu.habbo.messages.outgoing.users.UserCurrencyComposer;
-import com.eu.habbo.messages.outgoing.users.UserDataComposer;
-import com.eu.habbo.messages.outgoing.users.UserHomeRoomComposer;
+import com.eu.habbo.messages.outgoing.hotelview.BonusRareComposer;
 
 public class HotelViewRequestBonusRareEvent extends MessageHandler
 {

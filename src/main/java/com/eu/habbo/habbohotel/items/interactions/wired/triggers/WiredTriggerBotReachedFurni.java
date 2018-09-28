@@ -30,13 +30,13 @@ public class WiredTriggerBotReachedFurni extends InteractionWiredTrigger
     public WiredTriggerBotReachedFurni(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
-        this.items = new THashSet<HabboItem>();
+        this.items = new THashSet<>();
     }
 
     public WiredTriggerBotReachedFurni(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
     {
         super(id, userId, item, extradata, limitedStack, limitedSells);
-        this.items = new THashSet<HabboItem>();
+        this.items = new THashSet<>();
     }
 
     @Override
@@ -48,7 +48,7 @@ public class WiredTriggerBotReachedFurni extends InteractionWiredTrigger
     @Override
     public void serializeWiredData(ServerMessage message, Room room)
     {
-        THashSet<HabboItem> items = new THashSet<HabboItem>();
+        THashSet<HabboItem> items = new THashSet<>();
 
         if(Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()) == null)
         {

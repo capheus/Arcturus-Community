@@ -30,7 +30,7 @@ public class WiredEffectGiveScore extends InteractionWiredEffect
     private int score;
     private int count;
 
-    private TObjectIntMap<Map.Entry<Integer, Integer>> data = new TObjectIntHashMap<Map.Entry<Integer, Integer>>();
+    private TObjectIntMap<Map.Entry<Integer, Integer>> data = new TObjectIntHashMap<>();
 
     public WiredEffectGiveScore(ResultSet set, Item baseItem) throws SQLException
     {
@@ -82,7 +82,7 @@ public class WiredEffectGiveScore extends InteractionWiredEffect
                 }
             }
 
-            this.data.put(new AbstractMap.SimpleEntry<Integer, Integer>(game.getStartTime(), habbo.getHabboInfo().getId()), 1);
+            this.data.put(new AbstractMap.SimpleEntry<>(game.getStartTime(), habbo.getHabboInfo().getId()), 1);
 
             if (habbo.getHabboInfo().getGamePlayer() != null)
             {

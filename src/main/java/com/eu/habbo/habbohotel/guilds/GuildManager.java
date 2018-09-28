@@ -30,8 +30,8 @@ public class GuildManager
     public GuildManager()
     {
         long millis = System.currentTimeMillis();
-        this.guildParts = new THashMap<GuildPartType, THashMap<Integer, GuildPart>>();
-        this.guilds = TCollections.synchronizedMap(new TIntObjectHashMap<Guild>());
+        this.guildParts = new THashMap<>();
+        this.guilds = TCollections.synchronizedMap(new TIntObjectHashMap<>());
 
         this.loadGuildParts();
         Emulator.getLogging().logStart("Guild Manager -> Loaded! (" + (System.currentTimeMillis() - millis) + " MS)");
@@ -44,7 +44,7 @@ public class GuildManager
 
         for (GuildPartType t : GuildPartType.values())
         {
-            this.guildParts.put(t, new THashMap<Integer, GuildPart>());
+            this.guildParts.put(t, new THashMap<>());
         }
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection();
@@ -176,7 +176,7 @@ public class GuildManager
 
     public void clearInactiveGuilds()
     {
-        List<Integer> toRemove = new ArrayList<Integer>();
+        List<Integer> toRemove = new ArrayList<>();
         TIntObjectIterator<Guild> guilds = this.guilds.iterator();
         for (int i = this.guilds.size(); i-- > 0; )
         {
@@ -440,7 +440,7 @@ public class GuildManager
 
     THashSet<GuildMember> getGuildMembers(Guild guild)
     {
-        THashSet<GuildMember> guildMembers = new THashSet<GuildMember>();
+        THashSet<GuildMember> guildMembers = new THashSet<>();
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.username, users.look, guilds_members.* FROM guilds_members INNER JOIN users ON guilds_members.user_id = users.id WHERE guilds_members.guild_id = ?"))
         {
@@ -464,7 +464,7 @@ public class GuildManager
 
     public ArrayList<GuildMember> getGuildMembers(Guild guild, int page, int levelId, String query)
     {
-        ArrayList<GuildMember> guildMembers = new ArrayList<GuildMember>();
+        ArrayList<GuildMember> guildMembers = new ArrayList<>();
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.username, users.look, guilds_members.* FROM guilds_members INNER JOIN users ON guilds_members.user_id = users.id WHERE guilds_members.guild_id = ?  " + (rankQuery(levelId)) + " AND users.username LIKE ? ORDER BY level_id, member_since ASC LIMIT ?, ?"))
         {
@@ -492,7 +492,7 @@ public class GuildManager
 
     public THashMap<Integer, GuildMember> getOnlyAdmins(Guild guild)
     {
-        THashMap<Integer, GuildMember> guildAdmins = new THashMap<Integer, GuildMember>();
+        THashMap<Integer, GuildMember> guildAdmins = new THashMap<>();
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.username, users.look, guilds_members.* FROM guilds_members INNER JOIN users ON guilds_members.user_id = users.id WHERE guilds_members.guild_id = ?  " + (rankQuery(1))))
         {
@@ -561,7 +561,7 @@ public class GuildManager
 
     public List<Guild> getGuilds(int userId)
     {
-        List<Guild> guilds = new ArrayList<Guild>();
+        List<Guild> guilds = new ArrayList<>();
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT guild_id FROM guilds_members WHERE user_id = ? AND level_id <= 2 ORDER BY member_since ASC"))
         {

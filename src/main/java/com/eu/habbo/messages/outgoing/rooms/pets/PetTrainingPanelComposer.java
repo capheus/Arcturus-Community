@@ -22,7 +22,7 @@ public class PetTrainingPanelComposer extends MessageComposer
     @Override
     public ServerMessage compose()
     {
-        List<PetCommand> enabled = new ArrayList<PetCommand>();
+        List<PetCommand> enabled = new ArrayList<>();
         Collections.sort(this.pet.getPetData().getPetCommands());
 
         this.response.init(Outgoing.PetTrainingPanelComposer);

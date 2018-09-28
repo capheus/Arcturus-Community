@@ -29,13 +29,13 @@ public class WiredConditionNotMatchStatePosition extends InteractionWiredConditi
     public WiredConditionNotMatchStatePosition(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
-        this.settings = new THashSet<WiredMatchFurniSetting>();
+        this.settings = new THashSet<>();
     }
 
     public WiredConditionNotMatchStatePosition(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
     {
         super(id, userId, item, extradata, limitedStack, limitedSells);
-        this.settings = new THashSet<WiredMatchFurniSetting>();
+        this.settings = new THashSet<>();
     }
 
     @Override
@@ -44,7 +44,7 @@ public class WiredConditionNotMatchStatePosition extends InteractionWiredConditi
         if(this.settings.isEmpty())
             return true;
 
-        THashSet<WiredMatchFurniSetting> s = new THashSet<WiredMatchFurniSetting>();
+        THashSet<WiredMatchFurniSetting> s = new THashSet<>();
 
         for(WiredMatchFurniSetting setting : this.settings)
         {
@@ -209,7 +209,7 @@ public class WiredConditionNotMatchStatePosition extends InteractionWiredConditi
 
         if(room != null)
         {
-            THashSet<WiredMatchFurniSetting> remove = new THashSet<WiredMatchFurniSetting>();
+            THashSet<WiredMatchFurniSetting> remove = new THashSet<>();
 
             for (WiredMatchFurniSetting setting : this.settings)
             {

@@ -20,8 +20,8 @@ public class CraftingAltar
     {
         this.baseItem    = baseItem;
 
-        this.ingredients = new THashSet<Item>();
-        this.recipes     = new THashMap<Integer, CraftingRecipe>();
+        this.ingredients = new THashSet<>();
+        this.recipes     = new THashMap<>();
     }
 
     public void addIngredient(Item item)
@@ -36,7 +36,7 @@ public class CraftingAltar
 
     public Map<CraftingRecipe, Boolean> matchRecipes(Map<Item, Integer> amountMap)
     {
-        THashMap<CraftingRecipe, Boolean> foundRecepies = new THashMap<CraftingRecipe, Boolean>();
+        THashMap<CraftingRecipe, Boolean> foundRecepies = new THashMap<>();
 
         for (Map.Entry<Integer, CraftingRecipe> set : this.recipes.entrySet())
         {
@@ -73,37 +73,37 @@ public class CraftingAltar
                 }
             }
 
-//            for (Map.Entry<Item, Integer> entry : set.getValue().getIngredients().entrySet())
-//            {
-//                if (contains)
-//                {
-//                    if (!amountMap.containsKey(entry.getKey()))
-//                    {
-//                        equals = false;
-//                        continue;
-//                    }
+
+
+
+
+
+
+
+
+
 //
-//                    {
-//                        if (equals)
-//                        {
-//                            if (!entry.getValue().equals(amountMap.get(entry.getKey())))
-//                            {
-//                                if (entry.getValue() > amountMap.get(entry.getKey()))
-//                                {
-//                                    contains = true;
-//                                }
-//                                else
-//                                {
-//                                    contains = false;
-//                                }
+
+
+
+
+
+
+
+
+
+
+
+
+
 //
-//                                equals = false;
-//                                break;
-//                            }
-//                        }
-//                    }
-//                }
-//            }
+
+
+
+
+
+
+
 
             if (contains)
             {
@@ -164,7 +164,7 @@ public class CraftingAltar
 
     public List<CraftingRecipe> getRecipesForHabbo(Habbo habbo)
     {
-        List<CraftingRecipe> recipeList = new ArrayList<CraftingRecipe>();
+        List<CraftingRecipe> recipeList = new ArrayList<>();
 
         for (Map.Entry<Integer, CraftingRecipe> set : this.recipes.entrySet())
         {

@@ -15,7 +15,7 @@ import java.util.Comparator;
 
 public class BadgesComponent
 {
-    private final THashSet<HabboBadge> badges = new THashSet<HabboBadge>();
+    private final THashSet<HabboBadge> badges = new THashSet<>();
 
     public BadgesComponent(Habbo habbo)
     {
@@ -24,7 +24,7 @@ public class BadgesComponent
 
     private static THashSet<HabboBadge> loadBadges(Habbo habbo)
     {
-        THashSet<HabboBadge> badgesList = new THashSet<HabboBadge>();
+        THashSet<HabboBadge> badgesList = new THashSet<>();
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM users_badges WHERE user_id = ?"))
         {
             statement.setInt(1, habbo.getHabboInfo().getId());
@@ -62,7 +62,7 @@ public class BadgesComponent
     {
         synchronized (this.badges)
         {
-            ArrayList<HabboBadge> badgesList = new ArrayList<HabboBadge>();
+            ArrayList<HabboBadge> badgesList = new ArrayList<>();
             for (HabboBadge badge : this.badges)
             {
                 if (badge.getSlot() == 0)
@@ -90,7 +90,7 @@ public class BadgesComponent
 
     public static ArrayList<HabboBadge> getBadgesOfflineHabbo(int userId)
     {
-        ArrayList<HabboBadge> badgesList = new ArrayList<HabboBadge>();
+        ArrayList<HabboBadge> badgesList = new ArrayList<>();
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM users_badges WHERE slot_id > 0 AND user_id = ? ORDER BY slot_id ASC"))
         {
             statement.setInt(1, userId);

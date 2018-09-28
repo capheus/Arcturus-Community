@@ -2,7 +2,6 @@ package com.eu.habbo.habbohotel.users.inventory;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.pets.Pet;
-import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.PetManager;
 import com.eu.habbo.habbohotel.users.Habbo;
 import gnu.trove.TCollections;
@@ -19,7 +18,7 @@ import java.util.Set;
 
 public class PetsComponent
 {
-    private final TIntObjectMap<Pet> pets = TCollections.synchronizedMap(new TIntObjectHashMap<Pet>());
+    private final TIntObjectMap<Pet> pets = TCollections.synchronizedMap(new TIntObjectHashMap<>());
 
     public PetsComponent(Habbo habbo)
     {

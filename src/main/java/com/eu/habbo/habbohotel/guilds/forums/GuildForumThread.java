@@ -46,7 +46,7 @@ public class GuildForumThread implements ISerialize, Runnable
         this.lastCommentTimestamp = this.timestamp;
 
         //this.comments = new TIntObjectHashMap<GuildForumComment>();
-        this.comments = new ArrayList<GuildForumComment>();
+        this.comments = new ArrayList<>();
     }
 
     //Via de database inladen;
@@ -70,7 +70,7 @@ public class GuildForumThread implements ISerialize, Runnable
         this.lastAuthorName = this.authorName;
         this.lastCommentTimestamp = this.timestamp;
 
-        this.comments = new ArrayList<GuildForumComment>();
+        this.comments = new ArrayList<>();
         this.addComment(new GuildForumComment(set, 0));
 
 

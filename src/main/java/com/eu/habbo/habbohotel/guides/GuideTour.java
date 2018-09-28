@@ -1,10 +1,8 @@
 package com.eu.habbo.habbohotel.guides;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.achievements.Achievement;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.users.Habbo;
-import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
 public class GuideTour
@@ -19,8 +17,8 @@ public class GuideTour
 
     private final Habbo noob;
     private final String helpRequest;
-    private final THashSet<GuideChatMessage> sendMessages = new THashSet<GuideChatMessage>();
-    private final THashSet<Integer> declinedHelpers = new THashSet<Integer>();
+    private final THashSet<GuideChatMessage> sendMessages = new THashSet<>();
+    private final THashSet<Integer> declinedHelpers = new THashSet<>();
 
     public GuideTour(Habbo noob, String helpRequest)
     {

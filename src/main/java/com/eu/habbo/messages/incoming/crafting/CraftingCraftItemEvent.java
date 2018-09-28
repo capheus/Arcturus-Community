@@ -36,7 +36,7 @@ public class CraftingCraftItemEvent extends MessageHandler
                 return;
             }
 
-            TIntObjectHashMap<HabboItem> toRemove = new TIntObjectHashMap<HabboItem>();
+            TIntObjectHashMap<HabboItem> toRemove = new TIntObjectHashMap<>();
             for (Map.Entry<Item, Integer> set : recipe.getIngredients().entrySet())
             {
                 for (int i = 0; i < set.getValue(); i++)

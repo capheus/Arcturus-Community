@@ -22,7 +22,7 @@ public class InteractionGift extends HabboItem
     private String sender = "";
     private String look = "";
 
-    public THashSet<HabboItem> items = new THashSet<HabboItem>();
+    public THashSet<HabboItem> items = new THashSet<>();
 
     public boolean explode = false;
 

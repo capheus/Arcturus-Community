@@ -1,12 +1,11 @@
 package com.eu.habbo.core.consolecommands;
 
 import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
 
 public abstract class ConsoleCommand
 {
 
-    public static THashMap<String, ConsoleCommand> commands = new THashMap<String, ConsoleCommand>();
+    public static THashMap<String, ConsoleCommand> commands = new THashMap<>();
 
 
     public final String key;

@@ -20,7 +20,7 @@ public class NavigatorFavoriteFilter extends NavigatorFilter
     @Override
     public List<SearchResultList> getResult(Habbo habbo)
     {
-        List<SearchResultList> resultLists = new ArrayList<SearchResultList>();
+        List<SearchResultList> resultLists = new ArrayList<>();
         List<Room> rooms = Emulator.getGameEnvironment().getRoomManager().getRoomsFavourite(habbo);
         Collections.sort(rooms);
         resultLists.add(new SearchResultList(0, "favorites", "", SearchAction.NONE, habbo.getHabboStats().navigatorWindowSettings.getListModeForCategory("favorites", ListMode.LIST), habbo.getHabboStats().navigatorWindowSettings.getDisplayModeForCategory("popular", DisplayMode.VISIBLE), rooms, true, true));

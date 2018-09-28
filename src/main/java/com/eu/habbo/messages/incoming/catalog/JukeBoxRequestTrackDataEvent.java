@@ -15,7 +15,7 @@ public class JukeBoxRequestTrackDataEvent extends MessageHandler
     {
         int count = this.packet.readInt();
 
-        List<SoundTrack> tracks = new ArrayList<SoundTrack>(count);
+        List<SoundTrack> tracks = new ArrayList<>(count);
 
         for(int i = 0; i < count; i++)
         {

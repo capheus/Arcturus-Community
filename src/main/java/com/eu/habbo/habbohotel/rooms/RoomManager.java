@@ -5,6 +5,7 @@ import com.eu.habbo.core.RoomUserPetComposer;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.guilds.Guild;
+import com.eu.habbo.habbohotel.items.interactions.InteractionWired;
 import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
 import com.eu.habbo.habbohotel.navigation.NavigatorFilterComparator;
 import com.eu.habbo.habbohotel.navigation.NavigatorFilterField;
@@ -58,9 +59,9 @@ public class RoomManager
     public RoomManager()
     {
         long millis = System.currentTimeMillis();
-        this.roomCategories = new THashMap<Integer, RoomCategory>();
-        this.mapNames = new ArrayList<String>();
-        this.activeRooms = new ConcurrentHashMap<Integer, Room>();
+        this.roomCategories = new THashMap<>();
+        this.mapNames = new ArrayList<>();
+        this.activeRooms = new ConcurrentHashMap<>();
         this.loadRoomCategories();
         this.loadRoomModels();
 
@@ -147,7 +148,7 @@ public class RoomManager
     private static final int page = 0;
     public THashMap<Integer, List<Room>> findRooms(NavigatorFilterField filterField, String value, int category)
     {
-        THashMap<Integer, List<Room>> rooms = new THashMap<Integer, List<Room>>();
+        THashMap<Integer, List<Room>> rooms = new THashMap<>();
         String query = filterField.databaseQuery + " AND rooms.state != 'invisible' " + (category >= 0 ? "AND rooms.category = '" + category + "'" : "") + "  ORDER BY rooms.users, rooms.id DESC LIMIT " + (page * NavigatorManager.MAXIMUM_RESULTS_PER_PAGE)  + "" + ((page * NavigatorManager.MAXIMUM_RESULTS_PER_PAGE) + NavigatorManager.MAXIMUM_RESULTS_PER_PAGE);
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement(query))
         {
@@ -166,7 +167,7 @@ public class RoomManager
 
                     if (!rooms.containsKey(set.getInt("category")))
                     {
-                        rooms.put(set.getInt("category"), new ArrayList<Room>());
+                        rooms.put(set.getInt("category"), new ArrayList<>());
                     }
 
                     rooms.get(set.getInt("category")).add(room);
@@ -220,7 +221,7 @@ public class RoomManager
 
     public List<RoomCategory> roomCategoriesForHabbo(Habbo habbo)
     {
-        List<RoomCategory> categories = new ArrayList<RoomCategory>();
+        List<RoomCategory> categories = new ArrayList<>();
         for(RoomCategory category : this.roomCategories.values())
         {
             if(category.getMinRank() <= habbo.getHabboInfo().getRank().getId())
@@ -255,7 +256,7 @@ public class RoomManager
 
     public List<Room> getRoomsByScore()
     {
-        List<Room> rooms = new ArrayList<Room>();
+        List<Room> rooms = new ArrayList<>();
         rooms.addAll(this.activeRooms.values());
         Collections.sort(rooms, Room.SORT_SCORE);
 
@@ -264,7 +265,7 @@ public class RoomManager
 
     public List<Room> getActiveRooms(int categoryId)
     {
-        List<Room> rooms = new ArrayList<Room>();
+        List<Room> rooms = new ArrayList<>();
         for (Room room : this.activeRooms.values())
         {
             if (categoryId == room.getCategory() || categoryId == -1)
@@ -277,7 +278,7 @@ public class RoomManager
     //TODO Move to HabboInfo class.
     public List<Room> getRoomsForHabbo(Habbo habbo)
     {
-        List<Room> rooms = new ArrayList<Room>();
+        List<Room> rooms = new ArrayList<>();
         for(Room room : this.activeRooms.values())
         {
             if(room.getOwnerId() == habbo.getHabboInfo().getId())
@@ -295,7 +296,7 @@ public class RoomManager
             return getRoomsForHabbo(h);
         }
 
-        List<Room> rooms = new ArrayList<Room>();
+        List<Room> rooms = new ArrayList<>();
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM rooms WHERE owner_name = ? ORDER BY id DESC LIMIT 25"))
         {
@@ -419,7 +420,7 @@ public class RoomManager
 
     public void unloadRoomsForHabbo(Habbo habbo)
     {
-        List<Room> roomsToDispose = new ArrayList<Room>();
+        List<Room> roomsToDispose = new ArrayList<>();
         for(Room room : this.activeRooms.values())
         {
             if(!room.isPublicRoom() && !room.isStaffPromotedRoom() && room.getOwnerId() == habbo.getHabboInfo().getId() && room.getUserCount() == 0)
@@ -440,7 +441,7 @@ public class RoomManager
 
     public void clearInactiveRooms()
     {
-        THashSet<Room> roomsToDispose = new THashSet<Room>();
+        THashSet<Room> roomsToDispose = new THashSet<>();
         for(Room room : this.activeRooms.values())
         {
             if(!room.isPublicRoom() && !room.isStaffPromotedRoom() && !Emulator.getGameServer().getGameClientManager().containsHabbo(room.getOwnerId()) && room.isPreLoaded())
@@ -543,7 +544,7 @@ public class RoomManager
 
     public ArrayList<Room> getActiveRooms()
     {
-        return new ArrayList<Room>(this.activeRooms.values());
+        return new ArrayList<>(this.activeRooms.values());
     }
 
     public int loadedRoomsCount()
@@ -655,7 +656,7 @@ public class RoomManager
 
     void openRoom(Habbo habbo, Room room, RoomTile doorLocation)
     {
-        if (room == null)
+        if (room == null || room.getLayout() == null)
             return;
 
         if (Emulator.getConfig().getBoolean("hotel.room.enter.logs"))
@@ -766,6 +767,7 @@ public class RoomManager
             return;
         }
 
+        habbo.getRoomUnit().removeStatus(RoomUnitStatus.FLAT_CONTROL);
         habbo.getHabboInfo().setLoadingRoom(0);
         habbo.getHabboInfo().setCurrentRoom(room);
         habbo.getRoomUnit().setPathFinderRoom(room);
@@ -795,19 +797,29 @@ public class RoomManager
         habbo.getRoomUnit().setPathFinderRoom(room);
         habbo.getRoomUnit().resetIdleTimer();
 
+        habbo.getRoomUnit().setInvisible(false);
         room.addHabbo(habbo);
+
+        List<Habbo> habbos = new ArrayList<>();
         if (!room.getCurrentHabbos().isEmpty())
         {
-            // ServerMessage m = new RoomUsersComposer(habbo).compose().appendResponse(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
+
 
             room.sendComposer(new RoomUsersComposer(habbo).compose());
             room.sendComposer(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
 
+            for (Habbo h : room.getHabbos())
+            {
+                if (!h.getRoomUnit().isInvisible())
+                {
+                    habbos.add(h);
+                }
+            }
 
             synchronized (room.roomUnitLock)
             {
-                habbo.getClient().sendResponse(new RoomUsersComposer(room.getHabbos()));
-                habbo.getClient().sendResponse(new RoomUserStatusComposer(room.getHabbos()));
+                habbo.getClient().sendResponse(new RoomUsersComposer(habbos));
+                habbo.getClient().sendResponse(new RoomUserStatusComposer(habbos));
             }
 
             if (habbo.getHabboStats().guild != 0)
@@ -868,13 +880,16 @@ public class RoomManager
 
         habbo.getClient().sendResponse(new RoomWallItemsComposer(room));
         {
-            final THashSet<HabboItem> floorItems = new THashSet<HabboItem>();
+            final THashSet<HabboItem> floorItems = new THashSet<>();
 
             room.getFloorItems().forEach(new TObjectProcedure<HabboItem>()
             {
                 @Override
                 public boolean execute(HabboItem object)
                 {
+                    if (room.isHideWired() && object instanceof InteractionWired)
+                        return true;
+
                     floorItems.add(object);
                     if (floorItems.size() == 250)
                     {
@@ -912,8 +927,8 @@ public class RoomManager
             habbo.getHabboStats().mutedBubbleTracker = false;
         }
 
-        THashMap<Integer, String> guildBadges = new THashMap<Integer, String>();
-        for (Habbo roomHabbo : room.getHabbos())
+        THashMap<Integer, String> guildBadges = new THashMap<>();
+        for (Habbo roomHabbo : habbos)
         {
             {
                 if (roomHabbo.getRoomUnit().getDanceType().getType() > 0)
@@ -1096,7 +1111,7 @@ public class RoomManager
 
     public Set<String> getTags()
     {
-        Map<String, Integer> tagCount = new HashMap<String, Integer>();
+        Map<String, Integer> tagCount = new HashMap<>();
 
         for(Room room : this.activeRooms.values())
         {
@@ -1109,12 +1124,12 @@ public class RoomManager
                 tagCount.put(s, i++);
             }
         }
-        return new TreeMap<String, Integer>(tagCount).keySet();
+        return new TreeMap<>(tagCount).keySet();
     }
 
     public ArrayList<Room> getPublicRooms()
     {
-        ArrayList<Room> rooms = new ArrayList<Room>();
+        ArrayList<Room> rooms = new ArrayList<>();
 
         for(Room room : this.activeRooms.values())
         {
@@ -1129,7 +1144,7 @@ public class RoomManager
 
     public ArrayList<Room> getPopularRooms(int count)
     {
-        ArrayList<Room> rooms = new ArrayList<Room>();
+        ArrayList<Room> rooms = new ArrayList<>();
 
         for (Room room : this.activeRooms.values())
         {
@@ -1146,12 +1161,12 @@ public class RoomManager
 
         Collections.sort(rooms);
 
-        return new ArrayList<Room>(rooms.subList(0, (rooms.size() < count ? rooms.size() : count)));
+        return new ArrayList<>(rooms.subList(0, (rooms.size() < count ? rooms.size() : count)));
     }
 
     public ArrayList<Room> getPopularRooms(int count, int category)
     {
-        ArrayList<Room> rooms = new ArrayList<Room>();
+        ArrayList<Room> rooms = new ArrayList<>();
 
         for (Room room : this.activeRooms.values())
         {
@@ -1168,12 +1183,12 @@ public class RoomManager
 
         Collections.sort(rooms);
 
-        return new ArrayList<Room>(rooms.subList(0, (rooms.size() < count ? rooms.size() : count)));
+        return new ArrayList<>(rooms.subList(0, (rooms.size() < count ? rooms.size() : count)));
     }
 
     public Map<Integer, List<Room>> getPopularRoomsByCategory(int count)
     {
-        Map<Integer, List<Room>> rooms = new HashMap<Integer, List<Room>>();
+        Map<Integer, List<Room>> rooms = new HashMap<>();
 
         for (Room room : this.activeRooms.values())
         {
@@ -1181,14 +1196,14 @@ public class RoomManager
             {
                 if (!rooms.containsKey(room.getCategory()))
                 {
-                    rooms.put(room.getCategory(), new ArrayList<Room>());
+                    rooms.put(room.getCategory(), new ArrayList<>());
                 }
 
                 rooms.get(room.getCategory()).add(room);
             }
         }
 
-        Map<Integer, List<Room>> result = new HashMap<Integer, List<Room>>();
+        Map<Integer, List<Room>> result = new HashMap<>();
 
         for (Map.Entry<Integer, List<Room>> set : rooms.entrySet())
         {
@@ -1197,7 +1212,7 @@ public class RoomManager
 
             Collections.sort(set.getValue());
 
-            result.put(set.getKey(), new ArrayList<Room>(set.getValue().subList(0, (set.getValue().size() < count ? set.getValue().size() : count))));
+            result.put(set.getKey(), new ArrayList<>(set.getValue().subList(0, (set.getValue().size() < count ? set.getValue().size() : count))));
         }
 
         return result;
@@ -1205,7 +1220,7 @@ public class RoomManager
 
     public ArrayList<Room> getRoomsWithName(String name)
     {
-        ArrayList<Room> rooms = new ArrayList<Room>();
+        ArrayList<Room> rooms = new ArrayList<>();
 
         for (Room room : this.activeRooms.values())
         {
@@ -1227,7 +1242,7 @@ public class RoomManager
 
     private ArrayList<Room> getOfflineRoomsWithName(String name)
     {
-        ArrayList<Room> rooms = new ArrayList<Room>();
+        ArrayList<Room> rooms = new ArrayList<>();
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.username AS owner_name, rooms.* FROM rooms INNER JOIN users ON owner_id = users.id WHERE name LIKE ? ORDER BY id DESC LIMIT 25"))
         {
@@ -1255,7 +1270,7 @@ public class RoomManager
 
     public ArrayList<Room> getRoomsWithTag(String tag)
     {
-        ArrayList<Room> rooms = new ArrayList<Room>();
+        ArrayList<Room> rooms = new ArrayList<>();
 
         for (Room room : this.activeRooms.values())
         {
@@ -1276,7 +1291,7 @@ public class RoomManager
 
     public ArrayList<Room> getGroupRoomsWithName(String name)
     {
-        ArrayList<Room> rooms = new ArrayList<Room>();
+        ArrayList<Room> rooms = new ArrayList<>();
 
         for (Room room : this.activeRooms.values())
         {
@@ -1299,7 +1314,7 @@ public class RoomManager
 
     private ArrayList<Room> getOfflineGroupRoomsWithName(String name)
     {
-        ArrayList<Room> rooms = new ArrayList<Room>();
+        ArrayList<Room> rooms = new ArrayList<>();
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.username AS owner_name, rooms.* FROM rooms INNER JOIN users ON rooms.owner_id = users.id WHERE name LIKE ? AND guild_id != 0 ORDER BY id DESC LIMIT 25"))
         {
@@ -1328,7 +1343,7 @@ public class RoomManager
 
     public ArrayList<Room> getRoomsFriendsNow(Habbo habbo)
     {
-        ArrayList<Room> rooms = new ArrayList<Room>();
+        ArrayList<Room> rooms = new ArrayList<>();
 
         for(MessengerBuddy buddy : habbo.getMessenger().getFriends().values())
         {
@@ -1350,7 +1365,7 @@ public class RoomManager
 
     public ArrayList<Room> getRoomsFriendsOwn(Habbo habbo)
     {
-        ArrayList<Room> rooms = new ArrayList<Room>();
+        ArrayList<Room> rooms = new ArrayList<>();
 
         for(MessengerBuddy buddy : habbo.getMessenger().getFriends().values())
         {
@@ -1372,7 +1387,7 @@ public class RoomManager
 
     public ArrayList<Room> getRoomsVisited(Habbo habbo, boolean includeSelf, int limit)
     {
-        ArrayList<Room> rooms = new ArrayList<Room>();
+        ArrayList<Room> rooms = new ArrayList<>();
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT rooms.* FROM room_enter_log INNER JOIN rooms ON room_enter_log.room_id = rooms.id WHERE user_id = ? AND timestamp >= ? AND rooms.owner_id != ? GROUP BY rooms.id ORDER BY timestamp DESC LIMIT " + limit))
         {
@@ -1408,7 +1423,7 @@ public class RoomManager
 
     public ArrayList<Room> getRoomsFavourite(Habbo habbo)
     {
-        final ArrayList<Room> rooms = new ArrayList<Room>();
+        final ArrayList<Room> rooms = new ArrayList<>();
 
         habbo.getHabboStats().getFavoriteRooms().forEach(new TIntProcedure()
         {
@@ -1430,7 +1445,7 @@ public class RoomManager
 
     public List<Room> getGroupRooms(Habbo habbo, int limit)
     {
-        final ArrayList<Room> rooms = new ArrayList<Room>();
+        final ArrayList<Room> rooms = new ArrayList<>();
 
         for (Guild guild : Emulator.getGameEnvironment().getGuildManager().getGuilds(habbo.getHabboInfo().getId()))
         {
@@ -1452,7 +1467,7 @@ public class RoomManager
 
     public ArrayList<Room> getRoomsWithRights(Habbo habbo)
     {
-        ArrayList<Room> rooms = new ArrayList<Room>();
+        ArrayList<Room> rooms = new ArrayList<>();
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT rooms.* FROM rooms INNER JOIN room_rights ON room_rights.room_id = rooms.id WHERE room_rights.user_id = ? ORDER BY rooms.id DESC LIMIT 30"))
         {
@@ -1513,12 +1528,12 @@ public class RoomManager
 
     public ArrayList<Room> getRoomsInGroup(Habbo habbo)
     {
-        return new ArrayList<Room>();
+        return new ArrayList<>();
     }
 
     public ArrayList<Room> getRoomsPromoted()
     {
-        ArrayList<Room> r = new ArrayList<Room>();
+        ArrayList<Room> r = new ArrayList<>();
 
         for(Room room : this.getActiveRooms())
         {
@@ -1533,7 +1548,7 @@ public class RoomManager
 
     public List<Room> filterRoomsByOwner(List<Room> rooms, String filter)
     {
-        ArrayList<Room> r = new ArrayList<Room>();
+        ArrayList<Room> r = new ArrayList<>();
 
         for(Room room : rooms)
         {
@@ -1546,7 +1561,7 @@ public class RoomManager
 
     public List<Room> filterRoomsByName(List<Room> rooms, String filter)
     {
-        ArrayList<Room> r = new ArrayList<Room>();
+        ArrayList<Room> r = new ArrayList<>();
 
         for(Room room : rooms)
         {
@@ -1559,7 +1574,7 @@ public class RoomManager
 
     public List<Room> filterRoomsByNameAndDescription(List<Room> rooms, String filter)
     {
-        ArrayList<Room> r = new ArrayList<Room>();
+        ArrayList<Room> r = new ArrayList<>();
 
         for(Room room : rooms)
         {
@@ -1572,7 +1587,7 @@ public class RoomManager
 
     public List<Room> filterRoomsByTag(List<Room> rooms, String filter)
     {
-        ArrayList<Room> r = new ArrayList<Room>();
+        ArrayList<Room> r = new ArrayList<>();
 
         for(Room room : rooms)
         {
@@ -1591,7 +1606,7 @@ public class RoomManager
 
     public List<Room> filterRoomsByGroup(List<Room> rooms, String filter)
     {
-        ArrayList<Room> r = new ArrayList<Room>();
+        ArrayList<Room> r = new ArrayList<>();
 
         for(Room room : rooms)
         {

@@ -29,7 +29,7 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
 
     private int direction;
     private int rotation;
-    private final THashSet<HabboItem> items = new THashSet<HabboItem>();
+    private final THashSet<HabboItem> items = new THashSet<>();
 
     public WiredEffectMoveRotateFurni(ResultSet set, Item baseItem) throws SQLException
     {
@@ -44,7 +44,7 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
     @Override
     public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
     {
-        THashSet<HabboItem> items = new THashSet<HabboItem>();
+        THashSet<HabboItem> items = new THashSet<>();
 
         synchronized (this.items)
         {
@@ -185,7 +185,7 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
     @Override
     public String getWiredData()
     {
-        THashSet<HabboItem> items = new THashSet<HabboItem>();
+        THashSet<HabboItem> items = new THashSet<>();
 
         this.items.remove(null);
         Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
@@ -257,13 +257,13 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
     @Override
     public WiredEffectType getType()
     {
-        return this.type;
+        return type;
     }
 
     @Override
     public void serializeWiredData(ServerMessage message, Room room)
     {
-        THashSet<HabboItem> items = new THashSet<HabboItem>();
+        THashSet<HabboItem> items = new THashSet<>();
 
         synchronized (this.items)
         {

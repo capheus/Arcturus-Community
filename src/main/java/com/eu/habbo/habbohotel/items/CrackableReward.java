@@ -25,7 +25,7 @@ public class CrackableReward
         this.achievementCracked = set.getString("achievement_cracked");
 
         String[] data = set.getString("prizes").split(";");
-        this.prizes = new HashMap<Integer, Map.Entry<Integer, Integer>>();
+        this.prizes = new HashMap<>();
 
         this.totalChance = 0;
         for(int i = 0; i < data.length; i++)
@@ -45,7 +45,7 @@ public class CrackableReward
                     itemId = Integer.valueOf(data[i].replace(":", ""));
                 }
 
-                this.prizes.put(itemId, new AbstractMap.SimpleEntry<Integer, Integer>(this.totalChance, this.totalChance + chance));
+                this.prizes.put(itemId, new AbstractMap.SimpleEntry<>(this.totalChance, this.totalChance + chance));
                 this.totalChance += chance;
             }
             catch (Exception e)

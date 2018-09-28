@@ -6,7 +6,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.friends.FriendsComposer;
-import com.eu.habbo.messages.outgoing.users.FavoriteRoomsCountComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.handshake.DebugConsoleComposer;
 import com.eu.habbo.messages.outgoing.handshake.SecureLoginOKComposer;
@@ -44,7 +43,7 @@ public class SecureLoginEvent_BACKUP extends MessageHandler
                 Emulator.getThreading().run(habbo);
                 Emulator.getGameEnvironment().getHabboManager().addHabbo(habbo);
 
-                ArrayList<ServerMessage> messages = new ArrayList<ServerMessage>();
+                ArrayList<ServerMessage> messages = new ArrayList<>();
 
 
 
@@ -56,7 +55,7 @@ public class SecureLoginEvent_BACKUP extends MessageHandler
                 messages.add(new UserClubComposer(this.client.getHabbo()).compose());
                 messages.add(new DebugConsoleComposer().compose());
                 messages.add(new UserAchievementScoreComposer(this.client.getHabbo()).compose());
-                messages.add(new NewUserIdentityComposer().compose());
+                messages.add(new NewUserIdentityComposer(habbo).compose());
                 messages.add(new UserPerksComposer(habbo).compose());
                 messages.add(new SessionRightsComposer().compose());
                 messages.add(new FavoriteRoomsCountComposer(habbo).compose());

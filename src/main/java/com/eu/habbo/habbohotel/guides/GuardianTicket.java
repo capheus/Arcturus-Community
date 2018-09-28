@@ -12,12 +12,15 @@ import com.eu.habbo.threading.runnables.GuardianNotAccepted;
 import com.eu.habbo.threading.runnables.GuardianVotingFinish;
 import gnu.trove.map.hash.THashMap;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Map;
 
 public class GuardianTicket
 {
     private ArrayList<ModToolChatLog> chatLogs;
-    private  final THashMap<Habbo, GuardianVote> votes = new THashMap<Habbo, GuardianVote>();
+    private  final THashMap<Habbo, GuardianVote> votes = new THashMap<>();
     private GuardianVoteType verdict;
     private int timeLeft = 120;
     private int resendCount = 0;
@@ -205,10 +208,10 @@ public class GuardianTicket
         total += countBadly;
         total += countAwfully;
 
-//        if(total / countAcceptably * 100.0 >= 35)
-//        {
-//            if(total / countBadly >= )
-//        }
+
+
+
+
 
         return GuardianVoteType.BADLY;
     }
@@ -273,7 +276,7 @@ public class GuardianTicket
     {
         synchronized (this.votes)
         {
-            ArrayList<GuardianVote> votes = new ArrayList<GuardianVote>(this.votes.values());
+            ArrayList<GuardianVote> votes = new ArrayList<>(this.votes.values());
             Collections.sort(votes);
 
             GuardianVote v = null;

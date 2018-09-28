@@ -5,7 +5,8 @@ import com.eu.habbo.habbohotel.guilds.forums.GuildForum;
 import com.eu.habbo.habbohotel.guilds.forums.GuildForumComment;
 import com.eu.habbo.habbohotel.guilds.forums.GuildForumThread;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.guilds.forums.*;
+import com.eu.habbo.messages.outgoing.guilds.forums.GuildForumAddCommentComposer;
+import com.eu.habbo.messages.outgoing.guilds.forums.GuildForumThreadMessagesComposer;
 
 
 public class GuildForumPostThreadEvent extends MessageHandler
@@ -14,7 +15,7 @@ public class GuildForumPostThreadEvent extends MessageHandler
     public void handle() throws Exception
     {
         int guildId = this.packet.readInt();
-        int threadId = this.packet.readInt(); // if 0 == forum message != thread
+        int threadId = this.packet.readInt();
         String subject = this.packet.readString();
         String message = this.packet.readString();
 

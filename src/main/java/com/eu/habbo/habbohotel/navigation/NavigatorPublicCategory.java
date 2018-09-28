@@ -20,7 +20,7 @@ public class NavigatorPublicCategory
         this.name = set.getString("name");
         this.image = set.getString("image").equals("1") ? ListMode.THUMBNAILS : ListMode.LIST;
 
-        this.rooms = new ArrayList<Room>();
+        this.rooms = new ArrayList<>();
     }
 
     public void addRoom(Room room)

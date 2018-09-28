@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class BadgeImager
 {
-    THashMap<String, BufferedImage> cachedImages = new THashMap<String, BufferedImage>();
+    THashMap<String, BufferedImage> cachedImages = new THashMap<>();
 
     public BadgeImager()
     {
@@ -229,39 +229,39 @@ public class BadgeImager
                 float green = (color.getGreen() / 255.0F) * (maskColor.getGreen() / 255.0F);
                 float blue  = (color.getBlue()  / 255.0F) * (maskColor.getBlue()  / 255.0F);
 //
-//                if (image.isAlphaPremultiplied())
-//                {
-//                    red   = red   * alpha / 255;
-//                    green = green * alpha / 255;
-//                    blue  = blue  * alpha / 255;
-//                }
 
-//                int alpha = (color.getAlpha() & 0xFF);
-//                int red   = (color.getRed()   & 0xFF);
-//                int green = (color.getGreen() & 0xFF);
-//                int blue  = (color.getBlue()  & 0xFF);
+
+
+
+
+
+
+
+
+
+
 //
-//                if(image.isAlphaPremultiplied())
-//                {
-//                    red |= maskColor.getRed();
-//                    green |= maskColor.getGreen();
-//                    blue |= maskColor.getBlue();
-//                }
-//                else
-//                {
-//                    red &= maskColor.getRed();
-//                    green &= maskColor.getGreen();
-//                    blue &= maskColor.getBlue();
-//                }
+
+
+
+
+
+
+
+
+
+
+
+
 //
-//                if((pixel | 0xFF000000) == 0xFFFFFFFF)
-//                {
-//                    color = maskColor;
-//                }
-//                else
-//                {
+
+
+
+
+
+
                     color = new Color(red, green, blue, alpha);
-//                }
+
 
                 int rgb = color.getRGB();
                 image.setRGB(x, y, rgb);

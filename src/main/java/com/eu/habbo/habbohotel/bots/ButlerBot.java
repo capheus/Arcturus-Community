@@ -9,14 +9,17 @@ import com.eu.habbo.threading.runnables.RoomUnitWalkToRoomUnit;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class ButlerBot extends Bot
 {
-    public static THashMap<THashSet<String>, Integer> serveItems = new THashMap<THashSet<String>, Integer>();
+    public static THashMap<THashSet<String>, Integer> serveItems = new THashMap<>();
 
 
     public ButlerBot(ResultSet set) throws SQLException
@@ -32,7 +35,7 @@ public class ButlerBot extends Bot
     public static void initialise()
     {
         if(serveItems == null)
-            serveItems = new THashMap<THashSet<String>, Integer>();
+            serveItems = new THashMap<>();
 
         serveItems.clear();
 
@@ -41,7 +44,7 @@ public class ButlerBot extends Bot
             while (set.next())
             {
                 String[] keys = set.getString("keys").split(";");
-                THashSet<String> ks = new THashSet<String>();
+                THashSet<String> ks = new THashSet<>();
                 for(String key : keys)
                 {
                     ks.add(key);
@@ -86,7 +89,7 @@ public class ButlerBot extends Bot
                             final String key = s;
                             final Bot b = this;
 
-                            List<Runnable> tasks = new ArrayList<Runnable>();
+                            List<Runnable> tasks = new ArrayList<>();
                             tasks.add(new RoomUnitGiveHanditem(serveEvent.habbo.getRoomUnit(), serveEvent.habbo.getHabboInfo().getCurrentRoom(), serveEvent.itemId));
                             tasks.add(new RoomUnitGiveHanditem(this.getRoomUnit(), serveEvent.habbo.getHabboInfo().getCurrentRoom(), 0));
 

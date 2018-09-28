@@ -33,7 +33,7 @@ public class StalkFriendEvent extends MessageHandler
             return;
         }
 
-        if(habbo.getHabboStats().blockFollowing)
+        if(habbo.getHabboStats().blockFollowing && !this.client.getHabbo().hasPermission("acc_can_stalk"))
         {
             this.client.sendResponse(new StalkErrorComposer(StalkErrorComposer.FRIEND_BLOCKED_STALKING));
             return;

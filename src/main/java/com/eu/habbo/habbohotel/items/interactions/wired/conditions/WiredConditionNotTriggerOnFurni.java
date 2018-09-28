@@ -21,7 +21,7 @@ public class WiredConditionNotTriggerOnFurni extends InteractionWiredCondition
 {
     public static final WiredConditionType type = WiredConditionType.NOT_ACTOR_ON_FURNI;
 
-    private THashSet<HabboItem> items = new THashSet<HabboItem>();
+    private THashSet<HabboItem> items = new THashSet<>();
 
     public WiredConditionNotTriggerOnFurni(ResultSet set, Item baseItem) throws SQLException
     {
@@ -150,7 +150,7 @@ public class WiredConditionNotTriggerOnFurni extends InteractionWiredCondition
 
     private void refresh()
     {
-        THashSet<HabboItem> items = new THashSet<HabboItem>();
+        THashSet<HabboItem> items = new THashSet<>();
 
         Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
         if(room == null)

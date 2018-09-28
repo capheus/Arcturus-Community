@@ -29,6 +29,10 @@ public class CatalogLimitedConfiguration implements Runnable
         synchronized (this.limitedNumbers)
         {
             int num = this.limitedNumbers.pop();
+            if(this.limitedNumbers.isEmpty())
+            {
+                Emulator.getGameEnvironment().getCatalogManager().moveCatalogItem(Emulator.getGameEnvironment().getCatalogManager().getCatalogItem(itemId), Emulator.getConfig().getInt("catalog.ltd.page.soldout"));
+            }
             return num;
         }
     }

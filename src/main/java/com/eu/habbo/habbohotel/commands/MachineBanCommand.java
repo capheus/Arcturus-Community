@@ -2,16 +2,11 @@ package com.eu.habbo.habbohotel.commands;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
-import com.eu.habbo.habbohotel.modtool.ModToolBan;
 import com.eu.habbo.habbohotel.modtool.ModToolBanType;
-import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboInfo;
 import com.eu.habbo.habbohotel.users.HabboManager;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
-
-import java.util.List;
 
 public class MachineBanCommand extends Command
 {
@@ -64,14 +59,14 @@ public class MachineBanCommand extends Command
             }
 
             count = Emulator.getGameEnvironment().getModToolManager().ban(habbo.getId(), gameClient.getHabbo(), reason, IPBanCommand.TEN_YEARS, ModToolBanType.MACHINE, -1).size();
-//            for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithMachineId(ban.machineId))
-//            {
-//                if (h != null)
-//                {
-//                    count++;
-//                    Emulator.getGameEnvironment().getModToolManager().ban(h.getHabboInfo().getId(), gameClient.getHabbo(), reason, IPBanCommand.TEN_YEARS, ModToolBanType.MACHINE);
-//                }
-//            }
+
+
+
+
+
+
+
+
         }
         else
         {

@@ -1,8 +1,6 @@
 package com.eu.habbo.habbohotel.rooms;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.plugin.EventHandler;
-import com.eu.habbo.plugin.events.emulator.EmulatorConfigUpdatedEvent;
 import gnu.trove.set.hash.THashSet;
 
 import java.awt.*;
@@ -283,7 +281,7 @@ public class RoomLayout
 
                 if ((current.x == newTile.x) && (current.y == newTile.y))
                 {
-                    return calcPath(findTile(openList, (short)oldTile.x, (short)oldTile.y), current);
+                    return calcPath(findTile(openList, oldTile.x, oldTile.y), current);
                 }
 
                 List<RoomTile> adjacentNodes = getAdjacent(openList, current, newTile.x, newTile.y);
@@ -295,7 +293,7 @@ public class RoomLayout
 
                     double height = (room.getLayout().getStackHeightAtSquare(currentAdj.x, currentAdj.y) - room.getLayout().getStackHeightAtSquare(current.x, current.y));
 
-                    if ((!ALLOW_FALLING && height < -MAXIMUM_STEP_HEIGHT) || (height > MAXIMUM_STEP_HEIGHT && !room.canLayAt(currentAdj.x, currentAdj.y)))
+                    if ((!ALLOW_FALLING && height < -MAXIMUM_STEP_HEIGHT) || (height - (room.canSitAt(currentAdj.x, currentAdj.y) ? 0.5 : 0) > MAXIMUM_STEP_HEIGHT && !room.canLayAt(currentAdj.x, currentAdj.y)))
                         continue;
 
                     if (!this.room.isAllowWalkthrough() && room.hasHabbosAt(currentAdj.x, currentAdj.y)) continue;
@@ -305,7 +303,7 @@ public class RoomLayout
                     if (!openList.contains(currentAdj) || (currentAdj.x == newTile.x && currentAdj.y == newTile.y && (room.canSitOrLayAt(newTile.x, newTile.y) && !room.hasHabbosAt(newTile.x, newTile.y))))
                     {
                         currentAdj.setPrevious(current);
-                        currentAdj.sethCosts(findTile(openList, (short)newTile.x, (short)newTile.y));
+                        currentAdj.sethCosts(findTile(openList, newTile.x, newTile.y));
                         currentAdj.setgCosts(current);
                         openList.add(currentAdj);
                     }
@@ -385,7 +383,7 @@ public class RoomLayout
     {
         short x = node.x;
         short y = node.y;
-        List<RoomTile> adj = new LinkedList<RoomTile>();
+        List<RoomTile> adj = new LinkedList<>();
         boolean canSitOrLayAt = room.canSitOrLayAt(newX, newY);
         if (x > 0)
         {
@@ -487,6 +485,11 @@ public class RoomLayout
         return true;
     }
 
+    public static boolean tileInSquare(Rectangle square, RoomTile tile)
+    {
+        return (square.contains(tile.x, tile.y));
+    }
+
     public static boolean pointInSquare(int x1, int y1, int x2, int y2, int pointX, int pointY)
     {
         return (pointX >= x1 && pointY >= y1) && (pointX <= x2 && pointY <= y2);
@@ -556,7 +559,7 @@ public class RoomLayout
 
     public List<RoomTile> getTilesAround(RoomTile tile)
     {
-        List<RoomTile> tiles = new ArrayList<RoomTile>(8);
+        List<RoomTile> tiles = new ArrayList<>(8);
 
         if (tile != null)
         {
@@ -587,7 +590,7 @@ public class RoomLayout
 
     public THashSet<RoomTile> getTilesAt(RoomTile tile, int width, int length, int rotation)
     {
-        THashSet<RoomTile> pointList = new THashSet<RoomTile>(width * length, 0.1f);
+        THashSet<RoomTile> pointList = new THashSet<>(width * length, 0.1f);
 
         if (tile != null)
         {

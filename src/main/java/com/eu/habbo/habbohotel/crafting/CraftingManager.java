@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Map;
 
 public class CraftingManager
 {
@@ -18,7 +17,7 @@ public class CraftingManager
 
     public CraftingManager()
     {
-        this.altars = new THashMap<Item, CraftingAltar>();
+        this.altars = new THashMap<>();
 
         this.reload();
     }

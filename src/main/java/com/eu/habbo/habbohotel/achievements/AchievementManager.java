@@ -82,7 +82,7 @@ public class AchievementManager
 
                             if (!this.talentTrackLevels.containsKey(level.type))
                             {
-                                this.talentTrackLevels.put(level.type, new LinkedHashMap<Integer, TalentTrackLevel>());
+                                this.talentTrackLevels.put(level.type, new LinkedHashMap<>());
                             }
 
                             this.talentTrackLevels.get(level.type).put(level.level, level);
@@ -186,11 +186,13 @@ public class AchievementManager
 
         int currentProgress = habbo.getHabboStats().getAchievementProgress(achievement);
 
+        boolean created = false;
         if(currentProgress == -1)
         {
             currentProgress = 0;
             createUserEntry(habbo, achievement);
             habbo.getHabboStats().setProgress(achievement, 0);
+            created = true;
         }
 
         if(Emulator.getPluginManager().isRegistered(UserAchievementProgressEvent.class, true))
@@ -205,16 +207,18 @@ public class AchievementManager
         AchievementLevel oldLevel = achievement.getLevelForProgress(currentProgress);
 
         if(oldLevel == null)
-            return;
+        {
+            oldLevel = achievement.firstLevel();
+        }
 
-        if(oldLevel.level == achievement.levels.size() && currentProgress == oldLevel.progress) //Maximum achievement gotten.
+        if(oldLevel.level == achievement.levels.size() && currentProgress >= oldLevel.progress) //Maximum achievement gotten.
             return;
 
         habbo.getHabboStats().setProgress(achievement, currentProgress + amount);
 
         AchievementLevel newLevel = achievement.getLevelForProgress(currentProgress + amount);
 
-        if(oldLevel.level == newLevel.level && newLevel.level < achievement.levels.size())
+        if(newLevel == null || (oldLevel.level == newLevel.level && newLevel.level < achievement.levels.size()))
         {
             habbo.getClient().sendResponse(new AchievementProgressComposer(habbo, achievement));
         }

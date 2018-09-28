@@ -1,6 +1,5 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.triggers;
 
-import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
 import com.eu.habbo.habbohotel.rooms.Room;
@@ -31,12 +30,7 @@ public class WiredTriggerCollision extends InteractionWiredTrigger
     @Override
     public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
     {
-        if(stuff.length > 0)
-        {
-            return stuff[0] instanceof HabboItem;
-        }
-
-        return false;
+        return stuff.length > 0 && stuff[0] instanceof HabboItem;
     }
 
     @Override
@@ -81,6 +75,12 @@ public class WiredTriggerCollision extends InteractionWiredTrigger
 
     @Override
     public boolean saveData(ClientMessage packet)
+    {
+        return true;
+    }
+
+    @Override
+    public boolean isTriggeredByRoomUnit()
     {
         return true;
     }

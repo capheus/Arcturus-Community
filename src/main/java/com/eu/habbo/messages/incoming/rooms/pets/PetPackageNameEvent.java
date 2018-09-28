@@ -2,13 +2,11 @@ package com.eu.habbo.messages.incoming.rooms.pets;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.pets.Pet;
-import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.inventory.AddPetComposer;
-import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
+import com.eu.habbo.messages.outgoing.catalog.AlertPurchaseFailedComposer;
 import com.eu.habbo.messages.outgoing.rooms.UpdateStackHeightComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.RemoveFloorItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.PetPackageNameValidationComposer;
@@ -67,7 +65,7 @@ public class PetPackageNameEvent extends MessageHandler
 
                         if (pet != null)
                         {
-                            room.placePet((Pet) pet, item.getX(), item.getY(), item.getZ(), item.getRotation());
+                            room.placePet(pet, item.getX(), item.getY(), item.getZ(), item.getRotation());
                             pet.setUserId(this.client.getHabbo().getHabboInfo().getId());
                             pet.needsUpdate = true;
                             pet.getRoomUnit().setLocation(room.getLayout().getTile(item.getX(), item.getY()));
@@ -79,6 +77,10 @@ public class PetPackageNameEvent extends MessageHandler
                             room.updateTile(room.getLayout().getTile(item.getX(), item.getY()));
                             room.sendComposer(new UpdateStackHeightComposer(tile.x, tile.y, tile.relativeHeight()).compose());
                             item.setUserId(0);
+                        }
+                        else
+                        {
+                            this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR));
                         }
                     }
                     else

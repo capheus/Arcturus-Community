@@ -4,8 +4,8 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
-import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.HorsePet;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.PetTasks;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
@@ -90,7 +90,7 @@ public class InteractionObstacle extends HabboItem
 
             if(pet != null && pet instanceof HorsePet && ((HorsePet) pet).getRider() != null)
             {
-                if (((HorsePet) pet).getTask() != null && ((HorsePet) pet).getTask().equals(PetTasks.RIDE))
+                if (pet.getTask() != null && pet.getTask().equals(PetTasks.RIDE))
                 {
                     if (pet.getRoomUnit().hasStatus(RoomUnitStatus.JUMP))
                     {

@@ -1,7 +1,9 @@
 package com.eu.habbo.messages.incoming.hotelview;
 
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.hotelview.*;
+import com.eu.habbo.messages.outgoing.hotelview.HallOfFameComposer;
+import com.eu.habbo.messages.outgoing.hotelview.HotelViewDataComposer;
+import com.eu.habbo.messages.outgoing.hotelview.NewsListComposer;
 
 public class RequestNewsListEvent extends MessageHandler
 {

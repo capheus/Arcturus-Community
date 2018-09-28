@@ -3,10 +3,11 @@ package com.eu.habbo.core;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.util.callback.HTTPPostError;
 import gnu.trove.set.hash.THashSet;
-import sun.rmi.runtime.Log;
 
-import java.io.*;
-import java.nio.file.Files;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -60,10 +61,10 @@ public class Logging
     public static final String ANSI_WHITE = "\u001B[37m";
 
 
-    private final THashSet<Loggable> errorLogs = new THashSet<Loggable>();
+    private final THashSet<Loggable> errorLogs = new THashSet<>();
 
 
-    private final THashSet<Loggable> commandLogs = new THashSet<Loggable>();
+    private final THashSet<Loggable> commandLogs = new THashSet<>();
 
     public Logging()
     {

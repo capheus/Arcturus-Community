@@ -3,8 +3,6 @@ package com.eu.habbo.habbohotel.pets;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
-import com.eu.habbo.habbohotel.items.interactions.InteractionPetBreedingNest;
-import com.eu.habbo.habbohotel.items.interactions.InteractionWater;
 import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -14,13 +12,12 @@ import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetExperienceComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetRespectComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserTalkComposer;
 import com.eu.habbo.plugin.events.pets.PetTalkEvent;
-import com.eu.habbo.threading.runnables.PetClearPosture;
-import com.eu.habbo.threading.runnables.PetFollowHabbo;
 import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
 
 import java.sql.*;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Map;
+import java.util.TimeZone;
 
 public class Pet implements ISerialize, Runnable
 {
@@ -66,6 +63,11 @@ public class Pet implements ISerialize, Runnable
         this.room = null;
         this.name = set.getString("name");
         this.petData = Emulator.getGameEnvironment().getPetManager().getPetData(set.getInt("type"));
+        if (this.petData == null)
+        {
+            Emulator.getLogging().logErrorLine("WARNING! Missing pet data for type: " + set.getInt("type") + "! Insert a new entry into the pet_actions table for this type!");
+            this.petData = Emulator.getGameEnvironment().getPetManager().getPetData(0);
+        }
         this.race = set.getInt("race");
         this.experience = set.getInt("experience");
         this.happyness = set.getInt("happyness");
@@ -88,7 +90,7 @@ public class Pet implements ISerialize, Runnable
 
         if(this.petData == null)
         {
-            Emulator.getLogging().logErrorLine(new Exception("Non existing pet data for type: " + type));
+            Emulator.getLogging().logErrorLine(new Exception("WARNING! Missing pet data for type: " + type + "! Insert a new entry into the pet_actions table for this type!"));
         }
 
         this.race = race;
@@ -267,7 +269,12 @@ public class Pet implements ISerialize, Runnable
 
                 if (this.roomUnit.getWalkTimeOut() < time && this.canWalk())
                 {
-                    this.roomUnit.setGoalLocation(this.room.getRandomWalkableTile());
+                    RoomTile tile = this.room.getRandomWalkableTile();
+
+                    if (tile != null)
+                    {
+                        this.roomUnit.setGoalLocation(tile);
+                    }
                 }
 
                 if (this.task == PetTasks.NEST || this.task == PetTasks.DOWN)
@@ -407,7 +414,7 @@ public class Pet implements ISerialize, Runnable
 
     public void clearPosture()
     {
-        THashMap<RoomUnitStatus, String> keys = new THashMap<RoomUnitStatus, String>();
+        THashMap<RoomUnitStatus, String> keys = new THashMap<>();
 
         if(this.roomUnit.hasStatus(RoomUnitStatus.MOVE))
             keys.put(RoomUnitStatus.MOVE, this.roomUnit.getStatus(RoomUnitStatus.MOVE));
@@ -473,7 +480,14 @@ public class Pet implements ISerialize, Runnable
     {
         message.appendInt(this.id);
         message.appendString(this.name);
-        message.appendInt(this.petData.getType());
+        if (this.petData != null)
+        {
+            message.appendInt(this.petData.getType());
+        }
+        else
+        {
+            message.appendInt(-1);
+        }
         message.appendInt(this.race);
         message.appendString(this.color);
         message.appendInt(0);
@@ -554,7 +568,7 @@ public class Pet implements ISerialize, Runnable
         {
             this.room.sendComposer(new RoomPetExperienceComposer(this, amount).compose());
 
-            if(this.experience >= PetManager.experiences[this.level - 1])
+            if(this.level < PetManager.experiences.length + 1 && this.experience >= PetManager.experiences[this.level - 1])
             {
                 this.levelUp();
             }

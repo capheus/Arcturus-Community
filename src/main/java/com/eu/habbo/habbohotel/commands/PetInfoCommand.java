@@ -3,12 +3,9 @@ package com.eu.habbo.habbohotel.commands;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.pets.Pet;
-import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.PetManager;
-import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import gnu.trove.procedure.TIntObjectProcedure;
 
 public class PetInfoCommand extends Command
@@ -49,9 +46,9 @@ public class PetInfoCommand extends Command
                                 Emulator.getTexts().getValue("generic.pet.scratches") + ": " + pet.getRespect() + "\r" +
                                 Emulator.getTexts().getValue("generic.pet.energy") + ": " + pet.getEnergy() + "/" + PetManager.maxEnergy(pet.getLevel()) + "\r" +
                                 Emulator.getTexts().getValue("generic.pet.happyness") + ": " + pet.getHappyness() + "\r" +
-                                Emulator.getTexts().getValue("generic.pet.level.thirst") + ": " + ((Pet) pet).levelThirst + "\r" +
-                                Emulator.getTexts().getValue("generic.pet.level.hunger") + ": " + ((Pet) pet).levelHunger + "\r" +
-                                Emulator.getTexts().getValue("generic.pet.current_action") + ": " + (((Pet) pet).getTask() == null ? Emulator.getTexts().getValue("generic.nothing") :  ((Pet) pet).getTask().name()) + "\r" +
+                                Emulator.getTexts().getValue("generic.pet.level.thirst") + ": " + pet.levelThirst + "\r" +
+                                Emulator.getTexts().getValue("generic.pet.level.hunger") + ": " + pet.levelHunger + "\r" +
+                                Emulator.getTexts().getValue("generic.pet.current_action") + ": " + (pet.getTask() == null ? Emulator.getTexts().getValue("generic.nothing") :  pet.getTask().name()) + "\r" +
                                 Emulator.getTexts().getValue("generic.can.walk") + ": " + (pet.getRoomUnit().canWalk() ? Emulator.getTexts().getValue("generic.yes") : Emulator.getTexts().getValue("generic.no")) + ""
                         ));
                     }

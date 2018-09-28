@@ -15,6 +15,7 @@ import com.eu.habbo.messages.outgoing.inventory.*;
 import com.eu.habbo.messages.outgoing.rooms.FloodCounterComposer;
 import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserIgnoredComposer;
+import com.eu.habbo.messages.outgoing.rooms.users.RoomUserShoutComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserTalkComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.eu.habbo.messages.outgoing.users.*;
@@ -55,7 +56,6 @@ public class Habbo implements Runnable
 
         this.roomUnit = new RoomUnit();
         this.roomUnit.setRoomUnitType(RoomUnitType.USER);
-
         this.update = false;
     }
 
@@ -134,6 +134,7 @@ public class Habbo implements Runnable
             this.habboInfo.setIpLogin(((InetSocketAddress) this.client.getChannel().remoteAddress()).getAddress().getHostAddress());
         }
 
+        this.habboInfo.setMachineID(this.client.getMachineId());
         this.isOnline(true);
 
         this.messenger.connectionChanged(this, true, false);
@@ -315,7 +316,7 @@ public class Habbo implements Runnable
     {
         if (this.getRoomUnit().isInRoom())
         {
-            this.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserTalkComposer(new RoomChatMessage(message, client.getHabbo().getRoomUnit(), bubble)).compose());
+            this.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserShoutComposer(new RoomChatMessage(message, client.getHabbo().getRoomUnit(), bubble)).compose());
         }
     }
 
@@ -449,5 +450,26 @@ public class Habbo implements Runnable
         {
             room.sendComposer(new RoomUserIgnoredComposer(this, RoomUserIgnoredComposer.UNIGNORED).compose());
         }
+    }
+
+    public int noobStatus()
+    {
+        if (this.firstVisit)
+        {
+            return 2;
+        }
+
+        int accountAge = Emulator.getIntUnixTimestamp() - this.habboInfo.getAccountCreated();
+        if (accountAge < (86400))
+        {
+            return 2;
+        }
+
+        if (accountAge < (3 * 86400))
+        {
+            return 1;
+        }
+
+        return 0;
     }
 }

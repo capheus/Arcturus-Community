@@ -168,6 +168,8 @@ public class InteractionRentableSpace extends HabboItem
 
         habbo.getHabboStats().setRentedItemId(this.getId());
         habbo.getHabboStats().setRentedTimeEnd(this.endTimestamp);
+        this.needsUpdate(true);
+        this.run();
     }
 
     public void endRent()
@@ -181,7 +183,7 @@ public class InteractionRentableSpace extends HabboItem
 
         Rectangle rect = RoomLayout.getRectangle(this.getX(), this.getY(), this.getBaseItem().getWidth(), this.getBaseItem().getLength(), this.getRotation());
 
-        THashSet<HabboItem> items = new THashSet<HabboItem>();
+        THashSet<HabboItem> items = new THashSet<>();
         for(int i = rect.x; i < rect.x + rect.getWidth(); i++)
         {
             for(int j = rect.y; j < rect.y + rect.getHeight(); j++)
@@ -224,6 +226,8 @@ public class InteractionRentableSpace extends HabboItem
 
         this.setRenterId(0);
         this.setRenterName("");
+        this.needsUpdate(true);
+        this.run();
     }
 
     @Override

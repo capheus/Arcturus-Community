@@ -35,13 +35,13 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
     public WiredEffectToggleFurni(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
-        this.items = new THashSet<HabboItem>();
+        this.items = new THashSet<>();
     }
 
     public WiredEffectToggleFurni(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
     {
         super(id, userId, item, extradata, limitedStack, limitedSells);
-        this.items = new THashSet<HabboItem>();
+        this.items = new THashSet<>();
     }
 
     @Override
@@ -49,7 +49,7 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
     {
         synchronized (this.items)
         {
-            THashSet<HabboItem> items = new THashSet<HabboItem>();
+            THashSet<HabboItem> items = new THashSet<>();
 
             for (HabboItem item : this.items)
             {
@@ -159,7 +159,7 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
                     continue;
                 }
 
-                if (triggerItem == null && roomUnit == null)// && triggerItem.getId() == item.getId())
+                if (triggerItem == null && roomUnit == null)
                 {
                     continue;
                 }

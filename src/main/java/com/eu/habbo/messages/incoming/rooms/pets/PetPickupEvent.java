@@ -24,7 +24,7 @@ public class PetPickupEvent extends MessageHandler
         if(room == null)
             return;
 
-        Pet pet = (Pet)room.getPet(petId);
+        Pet pet = room.getPet(petId);
 
         if (pet != null)
         {

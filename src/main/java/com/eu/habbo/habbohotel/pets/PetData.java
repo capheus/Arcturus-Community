@@ -37,13 +37,13 @@ public class PetData implements Comparable<PetData>
     private List<Item> drinkItems;
     private List<Item> toyItems;
 
-    public static final List<Item> generalDrinkItems = new ArrayList<Item>();
-    public static final List<Item> generalFoodItems = new ArrayList<Item>();
-    public static final List<Item> generalNestItems = new ArrayList<Item>();
-    public static final List<Item> generalToyItems = new ArrayList<Item>();
+    public static final List<Item> generalDrinkItems = new ArrayList<>();
+    public static final List<Item> generalFoodItems = new ArrayList<>();
+    public static final List<Item> generalNestItems = new ArrayList<>();
+    public static final List<Item> generalToyItems = new ArrayList<>();
 
     public THashMap<PetVocalsType, THashSet<PetVocal>> petVocals;
-    public static final THashMap<PetVocalsType, THashSet<PetVocal>> generalPetVocals = new THashMap<PetVocalsType, THashSet<PetVocal>>();
+    public static final THashMap<PetVocalsType, THashSet<PetVocal>> generalPetVocals = new THashMap<>();
 
     public PetData(ResultSet set) throws SQLException
     {
@@ -58,24 +58,24 @@ public class PetData implements Comparable<PetData>
         this.actionsTired = set.getString("tired_actions").split(";");
         this.actionsRandom = set.getString("random_actions").split(";");
 
-        this.petCommands = new ArrayList<PetCommand>();
-        this.nestItems = new ArrayList<Item>();
-        this.foodItems = new ArrayList<Item>();
-        this.drinkItems = new ArrayList<Item>();
-        this.toyItems = new ArrayList<Item>();
+        this.petCommands = new ArrayList<>();
+        this.nestItems = new ArrayList<>();
+        this.foodItems = new ArrayList<>();
+        this.drinkItems = new ArrayList<>();
+        this.toyItems = new ArrayList<>();
 
-        this.petVocals = new THashMap<PetVocalsType, THashSet<PetVocal>>();
+        this.petVocals = new THashMap<>();
 
         for(PetVocalsType type : PetVocalsType.values())
         {
-            this.petVocals.put(type, new THashSet<PetVocal>());
+            this.petVocals.put(type, new THashSet<>());
         }
 
         if(PetData.generalPetVocals.isEmpty())
         {
             for(PetVocalsType type : PetVocalsType.values())
             {
-                PetData.generalPetVocals.put(type, new THashSet<PetVocal>());
+                PetData.generalPetVocals.put(type, new THashSet<>());
             }
         }
     }
@@ -123,7 +123,7 @@ public class PetData implements Comparable<PetData>
 
     public HabboItem randomNest(THashSet<InteractionNest> items)
     {
-        List<HabboItem> nestList = new ArrayList<HabboItem>();
+        List<HabboItem> nestList = new ArrayList<>();
 
         for(InteractionNest nest : items)
         {
@@ -165,7 +165,7 @@ public class PetData implements Comparable<PetData>
 
     public HabboItem randomFoodItem(THashSet<InteractionPetFood> items)
     {
-        List<HabboItem> foodList = new ArrayList<HabboItem>();
+        List<HabboItem> foodList = new ArrayList<>();
 
         for(InteractionPetFood food : items)
         {
@@ -206,7 +206,7 @@ public class PetData implements Comparable<PetData>
 
     public HabboItem randomDrinkItem(THashSet<InteractionPetDrink> items)
     {
-        List<HabboItem> drinkList = new ArrayList<HabboItem>();
+        List<HabboItem> drinkList = new ArrayList<>();
 
         for(InteractionPetDrink drink : items)
         {
@@ -247,7 +247,7 @@ public class PetData implements Comparable<PetData>
 
     public HabboItem randomToyItem(THashSet<InteractionPetToy> items)
     {
-        List<HabboItem> toyList = new ArrayList<HabboItem>();
+        List<HabboItem> toyList = new ArrayList<>();
 
         for(InteractionPetToy toy : items)
         {
@@ -269,7 +269,7 @@ public class PetData implements Comparable<PetData>
     public PetVocal randomVocal(PetVocalsType type)
     {
         //TODO: Remove this useless copying.
-        List<PetVocal> vocals = new ArrayList<PetVocal>();
+        List<PetVocal> vocals = new ArrayList<>();
 
         if(this.petVocals.get(type) != null)
             vocals.addAll(this.petVocals.get(type));

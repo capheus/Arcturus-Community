@@ -12,7 +12,7 @@ public class RequestInitFriendsEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        ArrayList<ServerMessage> messages = new ArrayList<ServerMessage>();
+        ArrayList<ServerMessage> messages = new ArrayList<>();
 //
         messages.add(new MessengerInitComposer(this.client.getHabbo()).compose());
         messages.add(new FriendsComposer(this.client.getHabbo()).compose());

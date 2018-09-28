@@ -12,7 +12,7 @@ public class ModToolCategory
     public ModToolCategory(String name)
     {
         this.name = name;
-        this.presets = TCollections.synchronizedMap(new TIntObjectHashMap<ModToolPreset>());
+        this.presets = TCollections.synchronizedMap(new TIntObjectHashMap<>());
     }
 
     public void addPreset(ModToolPreset preset)

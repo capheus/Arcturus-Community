@@ -24,14 +24,12 @@ import com.eu.habbo.plugin.events.emulator.EmulatorConfigUpdatedEvent;
 import com.eu.habbo.plugin.events.users.UserTakeStepEvent;
 import com.eu.habbo.threading.runnables.freeze.FreezeClearEffects;
 import com.eu.habbo.threading.runnables.freeze.FreezeThrowSnowball;
-import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 public class FreezeGame extends Game
 {
@@ -155,7 +153,7 @@ public class FreezeGame extends Game
 
     public THashSet<RoomTile> affectedTilesByExplosion(short x, short y, int radius)
     {
-        THashSet<RoomTile> tiles = new THashSet<RoomTile>();
+        THashSet<RoomTile> tiles = new THashSet<>();
 
         RoomTile t = this.room.getLayout().getTile(x, y);
 
@@ -177,7 +175,7 @@ public class FreezeGame extends Game
 
     public THashSet<RoomTile>affectedTilesByExplosionDiagonal(short x, short y, int radius)
     {
-        THashSet<RoomTile> tiles = new THashSet<RoomTile>();
+        THashSet<RoomTile> tiles = new THashSet<>();
 
         for(int i = 0; i < 4; i++)
         {
@@ -364,7 +362,7 @@ public class FreezeGame extends Game
 
         for (GameTeam team : this.teams.values())
         {
-            THashSet<GamePlayer> players = new THashSet<GamePlayer>();
+            THashSet<GamePlayer> players = new THashSet<>();
 
             players.addAll(team.getMembers());
 
@@ -383,7 +381,7 @@ public class FreezeGame extends Game
             }
         }
 
-        Map<GameTeamColors, Integer> teamMemberCount = new HashMap<GameTeamColors, Integer>();
+        Map<GameTeamColors, Integer> teamMemberCount = new HashMap<>();
         for (Map.Entry<GameTeamColors, GameTeam> teamEntry : this.teams.entrySet())
         {
             teamMemberCount.put(teamEntry.getKey(), teamEntry.getValue().getMembers().size());

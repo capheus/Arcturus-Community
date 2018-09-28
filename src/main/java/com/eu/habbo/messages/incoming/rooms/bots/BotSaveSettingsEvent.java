@@ -6,10 +6,11 @@ import com.eu.habbo.habbohotel.bots.BotManager;
 import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.DanceType;
-import com.eu.habbo.habbohotel.users.HabboGender;
 import com.eu.habbo.messages.incoming.MessageHandler;
+import com.eu.habbo.messages.outgoing.generic.alerts.BotErrorComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUnitUpdateUsernameComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserDanceComposer;
+import com.eu.habbo.messages.outgoing.rooms.users.RoomUsersComposer;
 import com.eu.habbo.plugin.events.bots.BotSavedChatEvent;
 import com.eu.habbo.plugin.events.bots.BotSavedLookEvent;
 import com.eu.habbo.plugin.events.bots.BotSavedNameEvent;
@@ -64,25 +65,51 @@ public class BotSaveSettingsEvent extends MessageHandler
 
                     String[] data = messageString.split(";#;");
 
-                    ArrayList<String> chat = new ArrayList<String>();
-                    for(int i = 0; i < data.length - 3; i++)
+                    ArrayList<String> chat = new ArrayList<>();
+                    int totalChatLength = 0;
+                    for(int i = 0; i < data.length - 3 && totalChatLength <= 120; i++)
                     {
                         for(String s : data[i].split("\r"))
                         {
-                            String result = Emulator.getGameEnvironment().getWordFilter().filter(Jsoup.parse(s).text(), this.client.getHabbo());
-
-                            if (!this.client.getHabbo().hasPermission("acc_chat_no_filter"))
+                            String filtered = Jsoup.parse(s).text();
+                            int count = 0;
+                            while (!filtered.equalsIgnoreCase(s))
                             {
-                                result = Emulator.getGameEnvironment().getWordFilter().filter(result, this.client.getHabbo());
+                                if (count >=5){ bot.clearChat(); return; }
+                                s = filtered;
+                                filtered = Jsoup.parse(s).text();
+                                count++;
                             }
-                            chat.add(result);
+
+                            String result = Emulator.getGameEnvironment().getWordFilter().filter(s, null);
+
+                            if (!result.isEmpty())
+                            {
+                                if (!this.client.getHabbo().hasPermission("acc_chat_no_filter"))
+                                {
+                                    result = Emulator.getGameEnvironment().getWordFilter().filter(result, this.client.getHabbo());
+                                }
+
+                                result = result.substring(0, Math.min(BotManager.MAXIMUM_CHAT_LENGTH - totalChatLength, result.length()));
+                                chat.add(result);
+                                totalChatLength += result.length();
+                            }
                         }
                     }
 
-                    int chatSpeed = Integer.valueOf(data[data.length -2]);
-                    if (chatSpeed < BotManager.MINIMUM_CHAT_SPEED)
+                    int chatSpeed = 7;
+
+                    try
                     {
-                        chatSpeed = BotManager.MINIMUM_CHAT_SPEED;
+                        chatSpeed = Integer.valueOf(data[data.length - 2]);
+                        if (chatSpeed < BotManager.MINIMUM_CHAT_SPEED)
+                        {
+                            chatSpeed = BotManager.MINIMUM_CHAT_SPEED;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        //Invalid chatspeed. Use 7.
                     }
 
                     BotSavedChatEvent chatEvent = new BotSavedChatEvent(bot, Boolean.valueOf(data[data.length - 3]), Boolean.valueOf(data[data.length - 1]), chatSpeed, chat);
@@ -111,19 +138,36 @@ public class BotSaveSettingsEvent extends MessageHandler
                     break;
 
                 case 5:
-                    BotSavedNameEvent nameEvent = new BotSavedNameEvent(bot, Jsoup.parse(this.packet.readString()).text());
-
-                    if(nameEvent.name.length() <= 25)
+                    String name = this.packet.readString();
+                    boolean invalidName = name.length() > BotManager.MAXIMUM_NAME_LENGTH;
+                    if (!invalidName)
                     {
-                        Emulator.getPluginManager().fireEvent(nameEvent);
+                        String filteredName =  Emulator.getGameEnvironment().getWordFilter().filter(Jsoup.parse(name).text(), null);
+                        invalidName = !name.equalsIgnoreCase(filteredName);
+                        if (!invalidName)
+                        {
+                            BotSavedNameEvent nameEvent = new BotSavedNameEvent(bot, name);
 
-                        if (nameEvent.isCancelled())
-                            break;
+                            Emulator.getPluginManager().fireEvent(nameEvent);
 
-                        bot.setName(nameEvent.name);
-                        bot.needsUpdate(true);
-                        room.sendComposer(new RoomUnitUpdateUsernameComposer(bot.getRoomUnit(), nameEvent.name).compose());
+                            if (nameEvent.isCancelled())
+                                break;
+
+                            bot.setName(nameEvent.name);
+                            bot.needsUpdate(true);
+                            room.sendComposer(new RoomUnitUpdateUsernameComposer(bot.getRoomUnit(), nameEvent.name).compose());
+                        }
                     }
+
+                    if (invalidName)
+                    {
+                        this.client.sendResponse(new BotErrorComposer(BotErrorComposer.ROOM_ERROR_BOTS_NAME_NOT_ACCEPT));
+                    }
+                    break;
+                case 9:
+                    bot.setMotto(this.packet.readString());
+                    bot.needsUpdate(true);
+                    room.sendComposer(new RoomUsersComposer(bot).compose());
                     break;
             }
 

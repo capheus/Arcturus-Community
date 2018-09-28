@@ -3,7 +3,10 @@ package com.eu.habbo.habbohotel.hotelview;
 import com.eu.habbo.Emulator;
 import gnu.trove.set.hash.THashSet;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class NewsList
 {
@@ -11,7 +14,7 @@ public class NewsList
 
     public NewsList()
     {
-        this.newsWidgets = new THashSet<NewsWidget>();
+        this.newsWidgets = new THashSet<>();
         this.reload();
     }
 

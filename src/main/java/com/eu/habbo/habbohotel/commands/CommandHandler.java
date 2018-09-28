@@ -6,7 +6,6 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.permissions.PermissionSetting;
 import com.eu.habbo.habbohotel.pets.Pet;
-import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.PetCommand;
 import com.eu.habbo.habbohotel.pets.PetVocalsType;
 import com.eu.habbo.habbohotel.rooms.Room;
@@ -15,13 +14,12 @@ import com.eu.habbo.plugin.events.users.UserCommandEvent;
 import com.eu.habbo.plugin.events.users.UserExecuteCommandEvent;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
 
 import java.util.*;
 
 public class CommandHandler
 {
-    private final static THashMap<String, Command> commands = new THashMap<String, Command>(5);
+    private final static THashMap<String, Command> commands = new THashMap<>(5);
 
     public CommandHandler()
     {
@@ -65,8 +63,10 @@ public class CommandHandler
         addCommand(new HabnamCommand());
         addCommand(new HandItemCommand());
         addCommand(new HappyHourCommand());
+        addCommand(new HideWiredCommand());
         addCommand(new HotelAlertCommand());
         addCommand(new HotelAlertLinkCommand());
+        addCommand(new InvisibleCommand());
         addCommand(new IPBanCommand());
         addCommand(new LayCommand());
         addCommand(new MachineBanCommand());
@@ -265,7 +265,7 @@ public class CommandHandler
                                     if (command.key.equalsIgnoreCase(s))
                                     {
                                         if (command.level <= pet.getLevel())
-                                            ((Pet) pet).handleCommand(command, gameClient.getHabbo(), args);
+                                            pet.handleCommand(command, gameClient.getHabbo(), args);
                                         else
                                             pet.say(pet.getPetData().randomVocal(PetVocalsType.UNKNOWN_COMMAND));
 
@@ -284,7 +284,7 @@ public class CommandHandler
 
     public List<Command> getCommandsForRank(int rankId)
     {
-        List<Command> allowedCommands = new ArrayList<Command>();
+        List<Command> allowedCommands = new ArrayList<>();
         if (Emulator.getGameEnvironment().getPermissionsManager().rankExists(rankId))
         {
             THashMap<String, Permission> permissions = Emulator.getGameEnvironment().getPermissionsManager().getRank(rankId).getPermissions();

@@ -10,7 +10,7 @@ import java.net.URLClassLoader;
 
 public abstract class HabboPlugin
 {
-    public final THashMap<Class<? extends Event>, THashSet<Method>> registeredEvents = new THashMap<Class <? extends Event>, THashSet<Method>>();
+    public final THashMap<Class<? extends Event>, THashSet<Method>> registeredEvents = new THashMap<>();
 
     public HabboPluginConfiguration configuration;
 

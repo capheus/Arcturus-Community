@@ -346,7 +346,7 @@ public class Outgoing_Back
     public final static int GameCenterFeaturedPlayersComposer = 3788;
     public final static int HabboMallComposer = 3770; //Unused as far as I can tell.
     public final static int TargetedOfferComposer = 1495; //:test 1495 i:1 i:1 s:a s:b i:1 i:2 i:5 i:9 i:1000000 s:c s:d s:a.png s:e.png i:2 s:f.png s:g.png
-    public final static int LeprechaunStarterBundleComposer = 3766; // :test 3766 i:4
+    public final static int LeprechaunStarterBundleComposer = 3766;
     public final static int VerifyMobilePhoneWindowComposer = 3695; //:test 3695 i:0 i:1 i:2
     public final static int VerifyMobilePhoneCodeWindowComposer = 2160; //:test 2160 i:1 i:0
     public final static int VerifyMobilePhoneDoneComposer = 3109;

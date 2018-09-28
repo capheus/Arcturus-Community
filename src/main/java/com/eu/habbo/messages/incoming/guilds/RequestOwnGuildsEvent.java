@@ -11,7 +11,7 @@ public class RequestOwnGuildsEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        THashSet<Guild> guilds = new THashSet<Guild>();
+        THashSet<Guild> guilds = new THashSet<>();
 
         for(int i : this.client.getHabbo().getHabboStats().guilds)
         {

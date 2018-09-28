@@ -16,9 +16,9 @@ public class RoomFloorItemsComposer extends MessageComposer
 {
 
     private final TIntObjectMap<String> furniOwnerNames;
-    private final THashSet<HabboItem> items;
+    private final THashSet<? extends HabboItem> items;
 
-    public RoomFloorItemsComposer(TIntObjectMap<String> furniOwnerNames, THashSet<HabboItem> items)
+    public RoomFloorItemsComposer(TIntObjectMap<String> furniOwnerNames, THashSet<? extends HabboItem> items)
     {
         this.furniOwnerNames = furniOwnerNames;
         this.items = items;

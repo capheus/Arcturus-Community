@@ -3,9 +3,7 @@ package com.eu.habbo.messages.incoming.rooms.users;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.threading.runnables.HabboGiveHandItemToHabbo;
 import com.eu.habbo.threading.runnables.RoomUnitWalkToRoomUnit;
 
@@ -27,7 +25,7 @@ public class RoomUserGiveHandItemEvent extends MessageHandler
 
             if(target != null)
             {
-                List<Runnable> executable = new ArrayList<Runnable>();
+                List<Runnable> executable = new ArrayList<>();
                 executable.add(new HabboGiveHandItemToHabbo(this.client.getHabbo(), target));
                 Emulator.getThreading().run(new RoomUnitWalkToRoomUnit(this.client.getHabbo().getRoomUnit(), target.getRoomUnit(), this.client.getHabbo().getHabboInfo().getCurrentRoom(), executable, executable));
             }

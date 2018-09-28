@@ -5,7 +5,6 @@ import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.pets.Pet;
-import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.PetTasks;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
@@ -75,17 +74,17 @@ public class InteractionPetDrink extends HabboItem
         {
             if(pet.getPetData().haveDrinkItem(this))
             {
-                if (((Pet) pet).levelThirst >= 35)
+                if (pet.levelThirst >= 35)
                 {
-                    ((Pet) pet).setTask(PetTasks.EAT);
+                    pet.setTask(PetTasks.EAT);
                     pet.getRoomUnit().setGoalLocation(room.getLayout().getTile(this.getX(), this.getY()));
                     pet.getRoomUnit().setRotation(RoomUserRotation.values()[this.getRotation()]);
                     pet.getRoomUnit().clearStatus();
                     pet.getRoomUnit().removeStatus(RoomUnitStatus.MOVE);
                     pet.getRoomUnit().setStatus(RoomUnitStatus.EAT, "0");
-                    ((Pet) pet).addThirst(-75);
+                    pet.addThirst(-75);
                     room.sendComposer(new RoomUserStatusComposer(client).compose());
-                    Emulator.getThreading().run(new PetClearPosture((Pet)pet, RoomUnitStatus.EAT, null, true), 500);
+                    Emulator.getThreading().run(new PetClearPosture(pet, RoomUnitStatus.EAT, null, true), 500);
 
                     AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(pet.getUserId()), Emulator.getGameEnvironment().getAchievementManager().getAchievement("PetFeeding"), 75);
                 }

@@ -7,10 +7,12 @@ import com.eu.habbo.habbohotel.items.CrackableReward;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboGender;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.threading.runnables.CrackableExplode;
+import com.eu.habbo.util.pathfinding.Rotation;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -65,13 +67,9 @@ public class InteractionCrackable extends HabboItem
             return;
         }
 
+        super.onClick(client, room, objects);
         synchronized (this.lock)
         {
-            super.onClick(client, room, objects);
-
-            if (!room.hasRights(client.getHabbo()))
-                return;
-
             if (client == null)
                 return;
 
@@ -80,6 +78,12 @@ public class InteractionCrackable extends HabboItem
 
             if (this.cracked)
                 return;
+
+            if (client.getHabbo().getRoomUnit().getCurrentLocation().distance(room.getLayout().getTile(this.getX(), this.getY())) > 1.5)
+            {
+                client.getHabbo().getRoomUnit().setGoalLocation(room.getLayout().getTileInFront(room.getLayout().getTile(this.getX(), this.getY()), Rotation.Calculate(client.getHabbo().getRoomUnit().getX(), client.getHabbo().getRoomUnit().getY(), this.getX(), this.getY())));
+                return;
+            }
 
             if (this.getExtradata().length() == 0)
                 this.setExtradata("0");
@@ -92,6 +96,14 @@ public class InteractionCrackable extends HabboItem
                 if (client.getHabbo().getHabboInfo().getGender().equals(HabboGender.M) && this.getBaseItem().getEffectM() == client.getHabbo().getRoomUnit().getEffectId())
                     return;
 
+            this.onTick(client.getHabbo(), room);
+        }
+    }
+
+    public void onTick(Habbo habbo, Room room)
+    {
+        if (this.allowAnyone() || this.getUserId() == habbo.getHabboInfo().getId())
+        {
             this.setExtradata(Integer.valueOf(this.getExtradata()) + 1 + "");
             this.needsUpdate(true);
             room.updateItem(this);
@@ -100,16 +112,16 @@ public class InteractionCrackable extends HabboItem
 
             if (rewardData != null && !rewardData.achievementTick.isEmpty())
             {
-                AchievementManager.progressAchievement(client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement(rewardData.achievementTick));
+                AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement(rewardData.achievementTick));
             }
             if (!this.cracked && Integer.valueOf(this.getExtradata()) == Emulator.getGameEnvironment().getItemManager().getCrackableCount(this.getBaseItem().getId()))
             {
                 this.cracked = true;
-                Emulator.getThreading().run(new CrackableExplode(room, this), 1500);
+                Emulator.getThreading().run(new CrackableExplode(room, this, habbo, !this.placeInRoom()), 1500);
 
                 if (rewardData != null && !rewardData.achievementCracked.isEmpty())
                 {
-                    AchievementManager.progressAchievement(client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement(rewardData.achievementCracked));
+                    AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement(rewardData.achievementCracked));
                 }
             }
         }
@@ -131,5 +143,27 @@ public class InteractionCrackable extends HabboItem
     public void onWalkOff(RoomUnit client, Room room, Object[] objects) throws Exception
     {
 
+    }
+
+    public boolean allowAnyone()
+    {
+        return false;
+    }
+
+    protected boolean placeInRoom()
+    {
+        return true;
+    }
+
+    public boolean resetable()
+    {
+        return false;
+    }
+
+    public void reset(Room room)
+    {
+        this.cracked = false;
+        this.setExtradata("0");
+        room.updateItem(this);
     }
 }

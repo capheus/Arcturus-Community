@@ -25,7 +25,7 @@ public class RoomTrade
 
     public RoomTrade(Habbo userOne, Habbo userTwo, Room room)
     {
-        this.users = new ArrayList<RoomTradeUser>();
+        this.users = new ArrayList<>();
         this.tradeCompleted = false;
 
         this.users.add(new RoomTradeUser(userOne));

@@ -16,15 +16,12 @@ import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.rooms.RoomUserAction;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
-import com.eu.habbo.habbohotel.wired.WiredHandler;
-import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserActionComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.plugin.EventHandler;
 import com.eu.habbo.plugin.EventPriority;
 import com.eu.habbo.plugin.events.users.UserTakeStepEvent;
 import com.eu.habbo.threading.runnables.BattleBanzaiTilesFlicker;
-import com.eu.habbo.threading.runnables.GameStop;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
@@ -57,7 +54,7 @@ public class BattleBanzaiGame extends Game
     {
         super(BattleBanzaiGameTeam.class, BattleBanzaiGamePlayer.class, room, true);
 
-        this.lockedTiles = new THashMap<GameTeamColors, THashSet<HabboItem>>();
+        this.lockedTiles = new THashMap<>();
 
         room.setAllowEffects(true);
     }
@@ -338,7 +335,7 @@ public class BattleBanzaiGame extends Game
         {
             if(!this.lockedTiles.containsKey(teamColor))
             {
-                this.lockedTiles.put(teamColor, new THashSet<HabboItem>());
+                this.lockedTiles.put(teamColor, new THashSet<>());
             }
 
             this.lockedTiles.get(teamColor).add(item);

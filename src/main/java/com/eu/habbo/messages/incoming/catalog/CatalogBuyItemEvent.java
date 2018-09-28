@@ -12,7 +12,9 @@ import com.eu.habbo.habbohotel.items.FurnitureType;
 import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.habbohotel.users.HabboInventory;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.catalog.*;
+import com.eu.habbo.messages.outgoing.catalog.AlertPurchaseFailedComposer;
+import com.eu.habbo.messages.outgoing.catalog.AlertPurchaseUnavailableComposer;
+import com.eu.habbo.messages.outgoing.catalog.PurchaseOKComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
@@ -55,27 +57,45 @@ public class CatalogBuyItemEvent extends MessageHandler
 
         CatalogPage page = null;
 
-        if(pageId == -12345678)
+        if(pageId == -12345678 || pageId == -1)
         {
-            for(CatalogPage p : Emulator.getGameEnvironment().getCatalogManager().getCatalogPages(-1, this.client.getHabbo()))
+            CatalogItem searchedItem = Emulator.getGameEnvironment().getCatalogManager().getCatalogItem(itemId);
+
+            if (searchedItem.getOfferId() > 0)
             {
-                if(p.getCatalogItem(itemId) != null)
+                page = Emulator.getGameEnvironment().getCatalogManager().getCatalogPage(searchedItem.getPageId());
+
+                if (page.getCatalogItem(itemId).getOfferId() <= 0)
                 {
-                    page = p;
-                    break;
+                    page = null;
                 }
                 else
                 {
-                    for(CatalogPage p2 : Emulator.getGameEnvironment().getCatalogManager().getCatalogPages(p.getId(), this.client.getHabbo()))
+                    if (page.getRank() > this.client.getHabbo().getHabboInfo().getRank().getId())
                     {
-                        if(p2.getCatalogItem(itemId) != null)
-                        {
-                            page = p2;
-                            break;
-                        }
+                        page = null;
                     }
                 }
             }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
         else
         {
@@ -122,7 +142,7 @@ public class CatalogBuyItemEvent extends MessageHandler
                         Emulator.getThreading().run(badge);
                         this.client.getHabbo().getInventory().getBadgesComponent().addBadge(badge);
                         this.client.sendResponse(new AddUserBadgeComposer(badge));
-                        THashMap<String, String> keys = new THashMap<String, String>();
+                        THashMap<String, String> keys = new THashMap<>();
                         keys.put("display", "BUBBLE");
                         keys.put("image", "${image.library.url}album1584/" + badge.getCode() + ".gif");
                         keys.put("message", Emulator.getTexts().getValue("commands.generic.cmd_badge.received"));

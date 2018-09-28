@@ -3,9 +3,12 @@ package com.eu.habbo.habbohotel.polls;
 import com.eu.habbo.messages.ISerialize;
 import com.eu.habbo.messages.ServerMessage;
 import gnu.trove.map.hash.THashMap;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Map;
 
 public class PollQuestion implements ISerialize, Comparable<PollQuestion>
 {
@@ -27,8 +30,8 @@ public class PollQuestion implements ISerialize, Comparable<PollQuestion>
         this.minSelections = set.getInt("min_selections");
         this.order = set.getInt("order");
 
-        this.options = new THashMap<Integer, String[]>();
-        this.subQuestions = new ArrayList<PollQuestion>();
+        this.options = new THashMap<>();
+        this.subQuestions = new ArrayList<>();
 
         String opts = set.getString("options");
 

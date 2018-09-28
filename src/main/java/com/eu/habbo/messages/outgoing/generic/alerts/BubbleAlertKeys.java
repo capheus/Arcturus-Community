@@ -31,7 +31,9 @@ public enum BubbleAlertKeys
     NUX_POPUP("nux.popup"),
     PURCHASING_ROOM("purchasing.room"),
     RECEIVED_GIFT("received.gift"),
-    RECEIVED_BADGE("received.badge");
+    RECEIVED_BADGE("received.badge"),
+    FIGURESET_REDEEMED("figureset.redeemed.success"),
+    FIGURESET_OWNED_ALREADY("figureset.already.redeemed");
 
     public final String key;
 

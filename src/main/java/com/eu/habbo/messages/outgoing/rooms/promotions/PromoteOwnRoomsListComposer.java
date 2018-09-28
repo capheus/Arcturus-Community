@@ -10,7 +10,7 @@ import java.util.List;
 
 public class PromoteOwnRoomsListComposer extends MessageComposer
 {
-    private final List<Room> rooms = new ArrayList<Room>();
+    private final List<Room> rooms = new ArrayList<>();
 
     public PromoteOwnRoomsListComposer(List<Room> rooms)
     {

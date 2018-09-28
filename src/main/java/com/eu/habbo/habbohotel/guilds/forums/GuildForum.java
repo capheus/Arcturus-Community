@@ -22,7 +22,7 @@ public class GuildForum implements ISerialize
     {
         this.guild = guild;
 
-        this.threads = new TIntObjectHashMap<GuildForumThread>();
+        this.threads = new TIntObjectHashMap<>();
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT author.username as author_name, author.look as look, COALESCE(admin.username, '') as admin_name, guilds_forums.id as thread_id, 0 as row_number, guilds_forums.* FROM guilds_forums " +
                 "INNER JOIN users AS author ON author.id = user_id " +

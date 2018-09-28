@@ -15,7 +15,6 @@ import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.habbohotel.users.HabboGender;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.catalog.*;
-import com.eu.habbo.messages.outgoing.events.calendar.AdventCalendarDataComposer;
 import com.eu.habbo.messages.outgoing.events.calendar.AdventCalendarProductComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
@@ -24,7 +23,6 @@ import com.eu.habbo.messages.outgoing.inventory.AddBotComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddPetComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
-import com.eu.habbo.messages.outgoing.unknown.NuxAlertComposer;
 import com.eu.habbo.messages.outgoing.users.AddUserBadgeComposer;
 import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
 import com.eu.habbo.messages.outgoing.users.UserPointsComposer;
@@ -140,17 +138,17 @@ public class CatalogManager
     public CatalogManager()
     {
         long millis                 = System.currentTimeMillis();
-        this.catalogPages           = TCollections.synchronizedMap(new TIntObjectHashMap<CatalogPage>());
-        this.catalogFeaturedPages   = new TIntObjectHashMap<CatalogFeaturedPage>();
-        this.prizes                 = new THashMap<Integer, THashSet<Item>>();
-        this.giftWrappers           = new THashMap<Integer, Integer>();
-        this.giftFurnis             = new THashMap<Integer, Integer>();
-        this.clubItems              = new THashSet<CatalogItem>();
+        this.catalogPages           = TCollections.synchronizedMap(new TIntObjectHashMap<>());
+        this.catalogFeaturedPages   = new TIntObjectHashMap<>();
+        this.prizes                 = new THashMap<>();
+        this.giftWrappers           = new THashMap<>();
+        this.giftFurnis             = new THashMap<>();
+        this.clubItems              = new THashSet<>();
         this.clubOffers             = new THashMap<>();
-        this.clothing               = new THashMap<Integer, ClothItem>();
+        this.clothing               = new THashMap<>();
         this.offerDefs              = new TIntIntHashMap();
-        this.vouchers               = new ArrayList<Voucher>();
-        this.limitedNumbers         = new THashMap<Integer, CatalogLimitedConfiguration>();
+        this.vouchers               = new ArrayList<>();
+        this.limitedNumbers         = new THashMap<>();
         this.calendarRewards        = new THashMap<>();
 
         this.initialize();
@@ -188,7 +186,7 @@ public class CatalogManager
     {
         this.limitedNumbers.clear();
 
-        THashMap<Integer, LinkedList<Integer>> limiteds = new THashMap<Integer, LinkedList<Integer>>();
+        THashMap<Integer, LinkedList<Integer>> limiteds = new THashMap<>();
         TIntIntHashMap totals = new TIntIntHashMap();
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM catalog_items_limited"))
         {
@@ -198,7 +196,7 @@ public class CatalogManager
                 {
                     if (!limiteds.containsKey(set.getInt("catalog_item_id")))
                     {
-                        limiteds.put(set.getInt("catalog_item_id"), new LinkedList<Integer>());
+                        limiteds.put(set.getInt("catalog_item_id"), new LinkedList<>());
                     }
 
                     totals.adjustOrPutValue(set.getInt("catalog_item_id"), 1, 1);
@@ -226,7 +224,7 @@ public class CatalogManager
     {
         this.catalogPages.clear();
 
-        final THashMap<Integer, CatalogPage> pages = new THashMap<Integer, CatalogPage>();
+        final THashMap<Integer, CatalogPage> pages = new THashMap<>();
         pages.put(-1, new CatalogRootLayout(null));
         ResultSet set = null;
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM catalog_pages ORDER BY parent_id, id"))
@@ -354,7 +352,7 @@ public class CatalogManager
                     {
                         page.addOfferId(item.getOfferId());
 
-                        this.offerDefs.put(item.getOfferId(), page.getId());
+                        this.offerDefs.put(item.getOfferId(), item.getId());
                     }
                 }
                 else
@@ -438,7 +436,7 @@ public class CatalogManager
                     {
                         if (this.prizes.get(set.getInt("rarity")) == null)
                         {
-                            this.prizes.put(set.getInt("rarity"), new THashSet<Item>());
+                            this.prizes.put(set.getInt("rarity"), new THashSet<>());
                         }
 
                         this.prizes.get(set.getInt("rarity")).add(item);
@@ -682,7 +680,7 @@ public class CatalogManager
 
     public List<CatalogPage> getCatalogPages(int parentId, final Habbo habbo)
     {
-        final List<CatalogPage> pages = new ArrayList<CatalogPage>();
+        final List<CatalogPage> pages = new ArrayList<>();
 
         this.catalogPages.get(parentId).childPages.forEachValue(new TObjectProcedure<CatalogPage>()
         {
@@ -856,7 +854,7 @@ public class CatalogManager
 
             if (limitedConfiguration == null)
             {
-                limitedConfiguration = new CatalogLimitedConfiguration(item.getId(), new LinkedList<Integer>(), 0);
+                limitedConfiguration = new CatalogLimitedConfiguration(item.getId(), new LinkedList<>(), 0);
                 limitedConfiguration.generateNumbers(1, item.limitedStack);
                 this.limitedNumbers.put(item.getId(), limitedConfiguration);
             }
@@ -982,10 +980,10 @@ public class CatalogManager
             int totalCredits = 0;
             int totalPoints = 0;
 
-            THashSet<HabboItem> itemsList = new THashSet<HabboItem>();
+            THashSet<HabboItem> itemsList = new THashSet<>();
 
 
-            if(amount > 1 && !item.isHaveOffer())
+            if(amount > 1 && !CatalogItem.haveOffer(item))
             {
                 String message = Emulator.getTexts().getValue("scripter.warning.catalog.amount").replace("%username%", habbo.getHabboInfo().getUsername()).replace("%itemname%", item.getName()).replace("%pagename%", page.getCaption());
                 Emulator.getGameEnvironment().getModToolManager().quickTicket(habbo.getClient().getHabbo(), "Scripter", message);
@@ -1016,7 +1014,7 @@ public class CatalogManager
                     if(free ||
                             item.getPoints() <= habbo.getClient().getHabbo().getHabboInfo().getCurrencyAmount(item.getPointsType()) - totalPoints)
                     {
-                        if (((i + 1) % 6 != 0 && item.isHaveOffer()) || !item.isHaveOffer())
+                        if (((i + 1) % 6 != 0 && CatalogItem.haveOffer(item)) || !CatalogItem.haveOffer(item))
                         {
                             totalCredits += item.getCredits();
                             totalPoints += item.getPoints();
@@ -1036,7 +1034,7 @@ public class CatalogManager
                                         String type = item.getName().replace("rentable_bot_", "");
                                         type = type.replace("bot_", "");
 
-                                        THashMap<String, String> data = new THashMap<String, String>();
+                                        THashMap<String, String> data = new THashMap<>();
 
                                         for(String s : item.getExtradata().split(";"))
                                         {
@@ -1098,7 +1096,10 @@ public class CatalogManager
                                         }
 
                                         if(pet == null)
+                                        {
+                                            habbo.getClient().sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR));
                                             return;
+                                        }
 
                                         habbo.getClient().getHabbo().getInventory().getPetsComponent().addPet(pet);
                                         habbo.getClient().sendResponse(new AddPetComposer(pet));
@@ -1130,7 +1131,7 @@ public class CatalogManager
                                                 extradata = "UMAD";
                                             }
 
-                                            extradata = habbo.getClient().getHabbo().getHabboInfo().getUsername() + (char) 9 + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "-" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "-" + Calendar.getInstance().get(Calendar.YEAR) + (char) 9 + extradata;
+                                            extradata = habbo.getClient().getHabbo().getHabboInfo().getUsername() + (char) 9 + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "-" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "-" + Calendar.getInstance().get(Calendar.YEAR) + (char) 9 + Emulator.getGameEnvironment().getWordFilter().filter(extradata, habbo);
                                         }
 
                                         if (InteractionTeleport.class.isAssignableFrom(baseItem.getInteractionType().getType()))
@@ -1255,7 +1256,7 @@ public class CatalogManager
                 Emulator.getThreading().run(badge);
                 habbo.getInventory().getBadgesComponent().addBadge(badge);
                 habbo.getClient().sendResponse(new AddUserBadgeComposer(badge));
-                THashMap<String, String> keys = new THashMap<String, String>();
+                THashMap<String, String> keys = new THashMap<>();
                 keys.put("display", "BUBBLE");
                 keys.put("image", "${image.library.url}album1584/" + badge.getCode() + ".gif");
                 keys.put("message", Emulator.getTexts().getValue("commands.generic.cmd_badge.received"));

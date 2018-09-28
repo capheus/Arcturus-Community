@@ -1,10 +1,8 @@
 package com.eu.habbo.networking.camera;
 
-import com.eu.habbo.Emulator;
 import com.eu.habbo.core.Logging;
 import com.eu.habbo.networking.camera.messages.outgoing.CameraLoginComposer;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.buffer.UnpooledByteBufAllocator;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -13,7 +11,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 
 public class CameraClient
 {
-    public static final String host = "arcturus.wf";
+    public static final String host = "arcturus.pw";
     public static final int port = 1232;
     public static ChannelFuture channelFuture;
     public static Channel channel;

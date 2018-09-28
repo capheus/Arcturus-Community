@@ -42,21 +42,21 @@ public class FrontPageFeaturedLayout extends CatalogPage
     public void serializeExtra(ServerMessage message)
     {
 
-        message.appendInt(Emulator.getGameEnvironment().getCatalogManager().getCatalogFeaturedPages().size()); // count
+        message.appendInt(Emulator.getGameEnvironment().getCatalogManager().getCatalogFeaturedPages().size());
 
         for (CatalogFeaturedPage page : Emulator.getGameEnvironment().getCatalogManager().getCatalogFeaturedPages().valueCollection())
         {
             page.serialize(message);
         }
         message.appendInt(1); //Position
-        message.appendString("NUOVO: Affare Stanza di Rilassamento"); // Text
-        message.appendString("catalogue/feature_cata_vert_oly16bundle4.png"); // Image
+        message.appendString("NUOVO: Affare Stanza di Rilassamento");
+        message.appendString("catalogue/feature_cata_vert_oly16bundle4.png");
         message.appendInt(0); //Type
         //0 : String //Page Name
         //1 : Int //Page ID
         //2 : String //Productdata
-        message.appendString(""); // page link?
-        message.appendInt(-1); // page id?
+        message.appendString("");
+        message.appendInt(-1);
 
         message.appendInt(2);
         message.appendString("Il RITORNO di Habburgers! (TUTTI furni nuovi)");

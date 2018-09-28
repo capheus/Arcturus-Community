@@ -25,6 +25,10 @@ public class NewNavigatorActionEvent extends MessageHandler
                 this.client.sendResponse(new ForwardToRoomComposer(rooms.get(0).getId()));
             }
         }
+        else if (data.equalsIgnoreCase("predefined_noob_lobby"))
+        {
+            this.client.sendResponse(new ForwardToRoomComposer(Emulator.getConfig().getInt("hotel.room.nooblobby")));
+        }
         else
         {
             this.client.sendResponse(new UserHomeRoomComposer(this.client.getHabbo().getHabboInfo().getHomeRoom(), this.client.getHabbo().getHabboInfo().getHomeRoom()));

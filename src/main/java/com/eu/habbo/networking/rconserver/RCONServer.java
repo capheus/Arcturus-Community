@@ -5,7 +5,6 @@ import com.eu.habbo.core.Logging;
 import com.eu.habbo.messages.rcon.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonPrimitive;
 import gnu.trove.map.hash.THashMap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
@@ -37,7 +36,7 @@ public class RCONServer
 
         this.host = host;
         this.port = port;
-        this.messages = new THashMap<String, Class<? extends RCONMessage>>();
+        this.messages = new THashMap<>();
 
         this.gsonBuilder = new GsonBuilder();
         this.gsonBuilder.registerTypeAdapter(RCONMessage.class, new RCONMessage.RCONMessageSerializer());

@@ -13,7 +13,6 @@ import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemOnRollerComposer;
-import com.eu.habbo.util.pathfinding.Rotation;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
@@ -33,7 +32,7 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
 
     public static final WiredEffectType type = WiredEffectType.MOVE_DIRECTION;
 
-    private final THashMap<HabboItem, RoomUserRotation> items = new THashMap<HabboItem, RoomUserRotation>(0);
+    private final THashMap<HabboItem, RoomUserRotation> items = new THashMap<>(0);
     private RoomUserRotation startRotation = RoomUserRotation.NORTH;
     private int rotateAction = 0;
     public WiredEffectChangeFurniDirection(ResultSet set, Item baseItem) throws SQLException
@@ -49,7 +48,7 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
     @Override
     public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
     {
-        THashSet<HabboItem> items = new THashSet<HabboItem>();
+        THashSet<HabboItem> items = new THashSet<>();
 
         for (HabboItem item : this.items.keySet())
         {
@@ -161,7 +160,7 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
     @Override
     public WiredEffectType getType()
     {
-        return this.type;
+        return type;
     }
 
     @Override

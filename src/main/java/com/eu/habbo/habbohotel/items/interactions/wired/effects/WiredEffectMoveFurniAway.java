@@ -22,7 +22,7 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.FLEE;
 
-    private THashSet<HabboItem> items = new THashSet<HabboItem>();
+    private THashSet<HabboItem> items = new THashSet<>();
 
     public WiredEffectMoveFurniAway(ResultSet set, Item baseItem) throws SQLException
     {
@@ -37,7 +37,7 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
     @Override
     public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
     {
-        THashSet<HabboItem> items = new THashSet<HabboItem>();
+        THashSet<HabboItem> items = new THashSet<>();
 
         for(HabboItem item : this.items)
         {
@@ -156,7 +156,7 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
     @Override
     public void loadWiredData(ResultSet set, Room room) throws SQLException
     {
-        this.items = new THashSet<HabboItem>();
+        this.items = new THashSet<>();
         String[] wiredData = set.getString("wired_data").split("\t");
 
         if (wiredData.length >= 1)
@@ -194,7 +194,7 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
     @Override
     public void serializeWiredData(ServerMessage message, Room room)
     {
-        THashSet<HabboItem> items = new THashSet<HabboItem>();
+        THashSet<HabboItem> items = new THashSet<>();
 
         for(HabboItem item : this.items)
         {

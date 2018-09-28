@@ -8,8 +8,6 @@ import com.eu.habbo.messages.outgoing.users.ChangeNameCheckResultComposer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class ChangeNameCheckUsernameEvent extends MessageHandler
 {
@@ -32,7 +30,7 @@ public class ChangeNameCheckUsernameEvent extends MessageHandler
 
         int errorCode = ChangeNameCheckResultComposer.AVAILABLE;
 
-        List<String> suggestions = new ArrayList<String>(4);
+        List<String> suggestions = new ArrayList<>(4);
         if (false)
         {
             errorCode = ChangeNameCheckResultComposer.DISABLED;

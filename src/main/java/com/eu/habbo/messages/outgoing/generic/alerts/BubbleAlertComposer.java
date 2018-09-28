@@ -21,14 +21,14 @@ public class BubbleAlertComposer extends MessageComposer
     public BubbleAlertComposer(String errorKey, String message)
     {
         this.errorKey = errorKey;
-        this.keys = new THashMap<String, String>();
+        this.keys = new THashMap<>();
         this.keys.put("message", message);
     }
 
     public BubbleAlertComposer(String errorKey)
     {
         this.errorKey = errorKey;
-        this.keys = new THashMap<String, String>();
+        this.keys = new THashMap<>();
     }
 
     @Override

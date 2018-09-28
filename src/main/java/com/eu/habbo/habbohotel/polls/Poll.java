@@ -1,7 +1,5 @@
 package com.eu.habbo.habbohotel.polls;
 
-import gnu.trove.map.hash.THashMap;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,7 +21,7 @@ public class Poll
         this.title = set.getString("title");
         this.thanksMessage = set.getString("thanks_message");
         this.badgeReward = set.getString("reward_badge");
-        this.questions = new ArrayList<PollQuestion>();
+        this.questions = new ArrayList<>();
     }
 
     public int getId()

@@ -35,7 +35,7 @@ public class ModToolRequestIssueChatlogEvent extends MessageHandler
                         chatlog = Emulator.getGameEnvironment().getModToolManager().getRoomChatlog(issue.roomId);
                     } else
                     {
-                        chatlog = new ArrayList<ModToolChatLog>();
+                        chatlog = new ArrayList<>();
                         chatlog.addAll(Emulator.getGameEnvironment().getModToolManager().getUserChatlog(issue.reportedId));
                         chatlog.addAll(Emulator.getGameEnvironment().getModToolManager().getUserChatlog(issue.senderId));
                     }

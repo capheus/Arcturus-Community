@@ -1,6 +1,5 @@
 package com.eu.habbo.networking.gameserver;
 
-import com.eu.habbo.Emulator;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -28,7 +27,7 @@ public class GameByteDecoder extends ByteToMessageDecoder
 
         //if(length > 5120 && (length >> 24 != 60))
         //{
-        //    ctx.close();
+
         //}
 
         if (length == 1014001516)
@@ -55,6 +54,6 @@ public class GameByteDecoder extends ByteToMessageDecoder
 
         in.resetReaderIndex();
         ByteBuf read = in.readBytes(length + 4);
-        out.add(read); // (4)
+        out.add(read);
     }
 }

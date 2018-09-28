@@ -2,7 +2,7 @@ package com.eu.habbo.util.callback;
 
 import com.eu.habbo.Emulator;
 
-import java.io.*;
+import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -10,7 +10,7 @@ public class HTTPPostStatus implements Runnable
 {
     private void sendPost() throws Exception
     {
-        String url = "http://arcturus.wf/callback/status.php";
+        String url = "http://arcturus.pw/callback/status.php";
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("POST");

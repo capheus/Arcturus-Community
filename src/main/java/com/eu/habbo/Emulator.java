@@ -1,6 +1,9 @@
 package com.eu.habbo;
 
-import com.eu.habbo.core.*;
+import com.eu.habbo.core.CleanerThread;
+import com.eu.habbo.core.ConfigurationManager;
+import com.eu.habbo.core.Logging;
+import com.eu.habbo.core.TextsManager;
 import com.eu.habbo.core.consolecommands.ConsoleCommand;
 import com.eu.habbo.database.Database;
 import com.eu.habbo.habbohotel.GameEnvironment;
@@ -16,8 +19,6 @@ import com.eu.habbo.plugin.events.emulator.EmulatorStoppedEvent;
 import com.eu.habbo.threading.ThreadPooling;
 import com.eu.habbo.threading.runnables.CameraClientAutoReconnect;
 import com.eu.habbo.util.imager.badges.BadgeImager;
-import io.netty.util.internal.logging.InternalLoggerFactory;
-import io.netty.util.internal.logging.Slf4JLoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -25,7 +26,6 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
-import java.util.regex.Pattern;
 
 public final class Emulator
 {
@@ -33,7 +33,7 @@ public final class Emulator
     public final static int MAJOR = 1;
 
 
-    public final static int MINOR = 11;
+    public final static int MINOR = 12;
 
 
     public final static int BUILD = 0;
@@ -154,7 +154,7 @@ public final class Emulator
 
             if (Emulator.getConfig().getValue("username").isEmpty())
             {
-                Emulator.getLogging().logErrorLine("No account has been found in config.ini Please create an account on Arcturus.wf and edit the config.ini in order to maximize usage of Arcturus! http://arcturus.wf");
+                Emulator.getLogging().logErrorLine("No account has been found in config.ini Please create an account on Arcturus.pw and edit the config.ini in order to maximize usage of Arcturus! http://arcturus.wf");
             }
 
             Emulator.getThreading().run(new Runnable()

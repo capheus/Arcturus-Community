@@ -5,7 +5,9 @@ import com.eu.habbo.habbohotel.rooms.RoomManager;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
-import com.eu.habbo.messages.outgoing.users.*;
+import com.eu.habbo.messages.outgoing.users.MeMenuSettingsComposer;
+import com.eu.habbo.messages.outgoing.users.UserDataComposer;
+import com.eu.habbo.messages.outgoing.users.UserPerksComposer;
 
 import java.util.ArrayList;
 
@@ -26,7 +28,7 @@ public class RequestUserDataEvent extends MessageHandler
             //this.client.sendResponse(new UserCreditsComposer(this.client.getHabbo()));
             //this.client.sendResponse(new UserCurrencyComposer(this.client.getHabbo()));
             //this.client.sendResponse(new FavoriteRoomsCountComposer());
-           // this.client.sendResponse(new UserBCLimitsComposer());
+
             //this.client.sendResponse(new UserAchievementScoreComposer(this.client.getHabbo()));
             //this.client.sendResponse(new UserClothesComposer());
             //this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("hotel.alert.message.welcome").replace("%user%", this.client.getHabbo().getHabboInfo().getUsername()), this.client.getHabbo()));
@@ -34,27 +36,27 @@ public class RequestUserDataEvent extends MessageHandler
 
             //
 
-            ArrayList<ServerMessage> messages = new ArrayList<ServerMessage>();
+            ArrayList<ServerMessage> messages = new ArrayList<>();
 
 
 
-//            messages.add(new DebugConsoleComposer().compose());
-//            messages.add(new UserHomeRoomComposer(this.client.getHabbo().getHabboInfo().getHomeRoom(), this.client.getHabbo().getHabboInfo().getHomeRoom()).compose());
-//            messages.add(new NewUserIdentityComposer().compose());
-//            //messages.add(new UserDataComposer(this.client.getHabbo()).compose());
-//            messages.add(new SessionRightsComposer().compose());
-//            messages.add(new MinimailCountComposer().compose());
-//            messages.add(new MessengerInitComposer(this.client.getHabbo()).compose());
-//            messages.add(new FriendsComposer(this.client.getHabbo()).compose());
-//            messages.add(new UserPermissionsComposer(this.client.getHabbo()).compose());
-//            messages.add(new UserPermissionsComposer(this.client.getHabbo()).compose());
-//            //
-//            messages.add(new UserClubComposer(this.client.getHabbo()).compose());
-//            messages.add(new UserAchievementScoreComposer(this.client.getHabbo()).compose());
-//            messages.add(new UserBCLimitsComposer().compose());
-//            messages.add(new UserClothesComposer().compose());
-//            messages.add(new MeMenuSettingsComposer(this.client.getHabbo()).compose());
-//            messages.add(new FavoriteRoomsCountComposer().compose());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             messages.add(new UserDataComposer(this.client.getHabbo()).compose());
             messages.add(new UserPerksComposer(this.client.getHabbo()).compose());
 
@@ -65,37 +67,37 @@ public class RequestUserDataEvent extends MessageHandler
 
             messages.add(new MeMenuSettingsComposer(this.client.getHabbo()).compose());
 
-//            messages.add(new UserPerksComposer().compose());
-//            messages.add(new ForwardToRoomComposer(0).compose());
-//            if(this.client.getHabbo().hasPermission(Permission.ACC_SUPPORTTOOL))
-//            {
-//                messages.add(new ModToolComposer().compose());
-//            }
+
+
+
+
+
+
 //
 //
-//            //
+
 //
 //
 //
-//            //messages.add(new UserDataComposer(this.client.getHabbo()).compose());
-//            //messages.add(new UserPerksComposer().compose());
-//            //messages.add(new SessionRightsComposer().compose());
-//            messages.add(new UserEffectsListComposer().compose());
-//            messages.add(new UserCurrencyComposer(this.client.getHabbo()).compose());
-//            messages.add(new UserCreditsComposer(this.client.getHabbo()).compose());
-//            messages.add(new UserPointsComposer(this.client.getHabbo().getHabboInfo().getPoints(), 0, 5).compose());
-//            messages.add(new CatalogModeComposer(0).compose());
-//            messages.add(new DiscountComposer().compose());
-//            messages.add(new MarketplaceConfigComposer().compose());
-//            messages.add(new GiftConfigurationComposer().compose());
-//            messages.add(new RecyclerLogicComposer().compose());
-//            messages.add(new CatalogUpdatedComposer().compose());
-//            messages.add(new NewNavigatorMetaDataComposer().compose());
-//            messages.add(new NewNavigatorLiftedRoomsComposer().compose());
-//            messages.add(new NewNavigatorCollapsedCategoriesComposer().compose());
-//            messages.add(new NewNavigatorSavedSearchesComposer().compose());
-//            messages.add(new NewNavigatorEventCategoriesComposer().compose());
-//            messages.add(new RoomCategoriesComposer(Emulator.getGameEnvironment().getRoomManager().roomCategoriesForHabbo(this.client.getHabbo())).compose());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             this.client.sendResponses(messages);
 

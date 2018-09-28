@@ -4,7 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.networking.camera.messages.incoming.*;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
 
 import java.util.HashMap;
 
@@ -25,7 +24,7 @@ public class CameraPacketHandler
 
     public CameraPacketHandler()
     {
-        this.packetDefinitions = new HashMap<Short, Class<? extends CameraIncomingMessage>>();
+        this.packetDefinitions = new HashMap<>();
 
         this.packetDefinitions.put((short) 1, CameraLoginStatusEvent.class);
         this.packetDefinitions.put((short) 2, CameraResultURLEvent.class);

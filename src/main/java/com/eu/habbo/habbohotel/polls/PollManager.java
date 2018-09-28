@@ -8,7 +8,7 @@ import java.sql.*;
 
 public class PollManager
 {
-    private final THashMap<Integer, Poll> activePolls = new THashMap<Integer, Poll>();
+    private final THashMap<Integer, Poll> activePolls = new THashMap<>();
 
     public PollManager()
     {

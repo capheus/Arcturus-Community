@@ -62,7 +62,7 @@ public class PacketManager_1006
 
     public PacketManager_1006()
     {
-        this.incoming = new THashMap<Integer, Class<? extends MessageHandler>>();
+        this.incoming = new THashMap<>();
 
         this.registerCatalog();
         this.registerHandshake();

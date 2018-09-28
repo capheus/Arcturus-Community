@@ -50,7 +50,7 @@ public class CatalogPageComposer extends MessageComposer
         else
         {
             this.response.appendInt(this.page.getCatalogItems().size());
-            List<CatalogItem> items = new ArrayList<CatalogItem>();
+            List<CatalogItem> items = new ArrayList<>();
             items.addAll(this.page.getCatalogItems().valueCollection());
             Collections.sort(items);
             for (CatalogItem item : items)
@@ -71,7 +71,7 @@ public class CatalogPageComposer extends MessageComposer
 
     public void serializeExtra(ServerMessage message)
     {
-        message.appendInt(Emulator.getGameEnvironment().getCatalogManager().getCatalogFeaturedPages().size()); // count
+        message.appendInt(Emulator.getGameEnvironment().getCatalogManager().getCatalogFeaturedPages().size());
 
         for (CatalogFeaturedPage page : Emulator.getGameEnvironment().getCatalogManager().getCatalogFeaturedPages().valueCollection())
         {

@@ -88,7 +88,7 @@ public class RotateMoveItemEvent extends MessageHandler
             return;
         }
 
-        THashSet<RoomTile> updatedTiles = new THashSet<RoomTile>();
+        THashSet<RoomTile> updatedTiles = new THashSet<>();
 
         Rectangle currentSquare = RoomLayout.getRectangle(item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
 
@@ -105,13 +105,13 @@ public class RotateMoveItemEvent extends MessageHandler
             }
         }
 
-//        if ((x != item.getX() || y != item.getY()) || item.getRotation() != rotation) {
-//            for (int i = item.getX(); i < item.getX() + item.getBaseItem().getWidth(); i++) {
-//                for (int j = item.getY(); j < item.getY() + item.getBaseItem().getLength(); j++) {
-//                    updatedTiles.add(new Tile(i, j, 0));
-//                }
-//            }
-//        }
+
+
+
+
+
+
+
 
         //room.removeHabboItem(item.getId());
 
@@ -168,7 +168,7 @@ public class RotateMoveItemEvent extends MessageHandler
         if(item.getBaseItem().allowSit())
         {
             THashSet<Habbo> habbos = room.getHabbosAt(oldX, oldY);
-            THashSet<RoomUnit> updatedUnits = new THashSet<RoomUnit>();
+            THashSet<RoomUnit> updatedUnits = new THashSet<>();
             for (Habbo habbo : habbos)
             {
                 habbo.getRoomUnit().removeStatus(RoomUnitStatus.SIT);
@@ -179,7 +179,7 @@ public class RotateMoveItemEvent extends MessageHandler
         if (item.getBaseItem().allowLay())
         {
             THashSet<Habbo> habbos = room.getHabbosAt(oldX, oldY);
-            THashSet<RoomUnit> updatedUnits = new THashSet<RoomUnit>();
+            THashSet<RoomUnit> updatedUnits = new THashSet<>();
             for (Habbo habbo : habbos)
             {
                 habbo.getRoomUnit().removeStatus(RoomUnitStatus.LAY);

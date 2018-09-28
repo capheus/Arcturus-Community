@@ -7,7 +7,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.navigator.PrivateRoomsComposer;
 import com.eu.habbo.plugin.events.navigator.NavigatorSearchResultEvent;
-import com.mysql.fabric.Server;
 import gnu.trove.map.hash.THashMap;
 
 import java.util.ArrayList;
@@ -65,7 +64,7 @@ public class SearchRoomsEvent extends MessageHandler
 
             if (map == null)
             {
-                map = new THashMap<String, ServerMessage>(1);
+                map = new THashMap<>(1);
             }
 
             map.put((name + "\t" + query).toLowerCase(), message);

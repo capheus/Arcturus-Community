@@ -3,7 +3,6 @@ package com.eu.habbo.messages.rcon;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.users.MeMenuSettingsComposer;
-import com.eu.habbo.messages.outgoing.users.UserPermissionsComposer;
 import com.google.gson.Gson;
 
 import java.sql.Connection;
@@ -53,6 +52,7 @@ public class UpdateUser extends RCONMessage<UpdateUser.JSON>
                     habbo.getHabboStats().blockCameraFollow = json.block_camera_follow == 1;
                 }
 
+                habbo.getHabboStats().run();
                 habbo.getClient().sendResponse(new MeMenuSettingsComposer(habbo));
             }
             else

@@ -27,8 +27,8 @@ public class Messenger
 
     public Messenger()
     {
-        this.friends = new ConcurrentHashMap<Integer, MessengerBuddy>();
-        this.friendRequests = new THashSet<FriendRequest>();
+        this.friends = new ConcurrentHashMap<>();
+        this.friendRequests = new THashSet<>();
     }
 
     public void loadFriends(Habbo habbo)
@@ -138,7 +138,7 @@ public class Messenger
 
     public THashSet<MessengerBuddy> getFriends(String username)
     {
-        THashSet<MessengerBuddy> users = new THashSet<MessengerBuddy>();
+        THashSet<MessengerBuddy> users = new THashSet<>();
 
         for(Map.Entry<Integer, MessengerBuddy> map : this.friends.entrySet())
         {
@@ -152,7 +152,7 @@ public class Messenger
     }
     public static THashSet<MessengerBuddy> searchUsers(String username)
     {
-        THashSet<MessengerBuddy> users = new THashSet<MessengerBuddy>();
+        THashSet<MessengerBuddy> users = new THashSet<>();
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE username LIKE ? ORDER BY username DESC LIMIT 50"))
         {
             statement.setString(1, username + "%");
@@ -395,10 +395,10 @@ public class Messenger
 
     public static THashMap<Integer, THashSet<MessengerBuddy>> getFriends(int userId)
     {
-        THashMap<Integer, THashSet<MessengerBuddy>> map = new THashMap<Integer, THashSet<MessengerBuddy>>();
-        map.put(1, new THashSet<MessengerBuddy>());
-        map.put(2, new THashSet<MessengerBuddy>());
-        map.put(3, new THashSet<MessengerBuddy>());
+        THashMap<Integer, THashSet<MessengerBuddy>> map = new THashMap<>();
+        map.put(1, new THashSet<>());
+        map.put(2, new THashSet<>());
+        map.put(3, new THashSet<>());
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.id, users.look, users.username, messenger_friendships.relation FROM messenger_friendships INNER JOIN users ON users.id = messenger_friendships.user_two_id WHERE user_one_id = ? ORDER BY RAND() LIMIT 50"))
         {

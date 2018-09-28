@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class MonsterplantPet extends Pet implements IPetLook
 {
-    public static int growTime = (30 * 60); // 30 minutes
+    public static int growTime = (30 * 60);
     public static int timeToLive = (3 * 24 * 60 * 60); //3 days
 
     public static final Map<Integer, Pair<String, Integer>> bodyRarity = new LinkedHashMap<Integer, Pair<String, Integer>>()
@@ -62,9 +62,9 @@ public class MonsterplantPet extends Pet implements IPetLook
         }
     };
 
-    public static final ArrayList<Pair<String, Integer>> indexedBody = new ArrayList<Pair<String, Integer>>(MonsterplantPet.bodyRarity.values());
+    public static final ArrayList<Pair<String, Integer>> indexedBody = new ArrayList<>(MonsterplantPet.bodyRarity.values());
 
-    public static final ArrayList<Pair<String, Integer>> indexedColors = new ArrayList<Pair<String, Integer>>(MonsterplantPet.colorRarity.values());
+    public static final ArrayList<Pair<String, Integer>> indexedColors = new ArrayList<>(MonsterplantPet.colorRarity.values());
 
     private int type;
     private int hue;
@@ -348,7 +348,7 @@ public class MonsterplantPet extends Pet implements IPetLook
 
             pet.setCanBreed(false);
             pet.setPubliclyBreedable(false);
-            this.room.sendComposer(new PetStatusUpdateComposer((Pet) pet).compose());
+            this.room.sendComposer(new PetStatusUpdateComposer(pet).compose());
             this.room.sendComposer(new PetStatusUpdateComposer(this).compose());
 
             this.getRoomUnit().setStatus(RoomUnitStatus.GESTURE, "reb");

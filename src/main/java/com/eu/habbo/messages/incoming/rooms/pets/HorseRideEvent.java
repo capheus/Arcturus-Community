@@ -1,8 +1,8 @@
 package com.eu.habbo.messages.incoming.rooms.pets;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.HorsePet;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.PetTasks;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.messages.incoming.MessageHandler;
@@ -35,7 +35,7 @@ public class HorseRideEvent extends MessageHandler
                         this.client.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(((HorsePet) pet).getRider(), 0);
                         ((HorsePet) pet).getRider().getHabboInfo().setRiding(null);
                         ((HorsePet) pet).setRider(null);
-                        ((HorsePet) pet).setTask(PetTasks.FREE);
+                        pet.setTask(PetTasks.FREE);
                     } else
                     {
                         //TODO: Say somebody else is already riding.
@@ -53,7 +53,7 @@ public class HorseRideEvent extends MessageHandler
                         this.client.getHabbo().getHabboInfo().setRiding((HorsePet) pet);
                         ((HorsePet) pet).setRider(this.client.getHabbo());
                         this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserEffectComposer(this.client.getHabbo().getRoomUnit()).compose());
-                        ((HorsePet) pet).setTask(PetTasks.RIDE);
+                        pet.setTask(PetTasks.RIDE);
                     }
                     else
                     {
@@ -67,7 +67,7 @@ public class HorseRideEvent extends MessageHandler
         {
             this.client.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(this.client.getHabbo(), 0);
             ((HorsePet) pet).setRider(null);
-            ((HorsePet) pet).setTask(PetTasks.FREE);
+            pet.setTask(PetTasks.FREE);
             this.client.getHabbo().getHabboInfo().setRiding(null);
         }
     }

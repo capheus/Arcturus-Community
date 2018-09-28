@@ -197,7 +197,7 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
                 limitedStack = limitedConfiguration.getTotalSet();
             }
 
-            THashSet<HabboItem> itemsList = new THashSet<HabboItem>();
+            THashSet<HabboItem> itemsList = new THashSet<>();
 
             boolean badgeFound = false;
             for (Item baseItem : item.getBaseItems())
@@ -248,9 +248,9 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
                     if(
                             item.getPoints() <= this.client.getHabbo().getHabboInfo().getCurrencyAmount(item.getPointsType()) - totalPoints)
                             //item.getPointsType() == 0 && item.getPoints() <= this.client.getHabbo().getHabboInfo().getPixels() - totalPoints ||
-                            //        item.getPoints() <= this.client.getHabbo().getHabboInfo().getPoints())
+
                     {
-                        if ((i + 1) % 6 != 0 && item.isHaveOffer()  || !item.isHaveOffer())
+                        if (((i + 1) % 6 != 0 && CatalogItem.haveOffer(item)) || !CatalogItem.haveOffer(item))
                         {
                             totalCredits += item.getCredits();
                             totalPoints += item.getPoints();
@@ -395,7 +395,7 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
                 habbo.getClient().sendResponse(new AddHabboItemComposer(gift));
                 habbo.getClient().getHabbo().getInventory().getItemsComponent().addItem(gift);
                 habbo.getClient().sendResponse(new InventoryRefreshComposer());
-                THashMap<String, String> keys = new THashMap<String, String>();
+                THashMap<String, String> keys = new THashMap<>();
                 keys.put("display", "BUBBLE");
                 keys.put("image", "${image.library.url}notifications/gift.gif");
                 keys.put("message", Emulator.getTexts().getValue("generic.gift.received.anonymous"));

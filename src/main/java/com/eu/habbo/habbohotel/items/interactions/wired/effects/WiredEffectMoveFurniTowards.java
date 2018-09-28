@@ -4,7 +4,10 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
-import com.eu.habbo.habbohotel.rooms.*;
+import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
+import com.eu.habbo.habbohotel.rooms.RoomTileState;
+import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredEffectType;
@@ -27,19 +30,19 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
     public WiredEffectMoveFurniTowards(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
-        items = new THashSet<HabboItem>();
+        items = new THashSet<>();
     }
 
     public WiredEffectMoveFurniTowards(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
     {
         super(id, userId, item, extradata, limitedStack, limitedSells);
-        items = new THashSet<HabboItem>();
+        items = new THashSet<>();
     }
 
     @Override
     public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
     {
-        THashSet<HabboItem> items = new THashSet<HabboItem>();
+        THashSet<HabboItem> items = new THashSet<>();
 
         for(HabboItem item : this.items)
         {
@@ -52,91 +55,104 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
         for(HabboItem item : this.items)
         {
             RoomTile t = room.getLayout().getTile(item.getX(), item.getY());
-            double shortest = 1000.0D;
 
+            boolean collided = false;
+            double shortest = 4;
             Habbo target = null;
-
-            for(Habbo habbo : room.getHabbos())
+            for (Habbo habbo : room.getHabbos())
             {
-                RoomTile h = habbo.getRoomUnit().getCurrentLocation();
-
-                double distance = t.distance(h);
-                if(distance <= shortest)
+                if (habbo.getRoomUnit().getCurrentLocation().x == t.x || habbo.getRoomUnit().getCurrentLocation().y == t.y)
                 {
-                    target = habbo;
-                    shortest = distance;
+                    double distance = t.distance(habbo.getRoomUnit().getCurrentLocation());
+                    if (distance == 1)
+                    {
+                        Emulator.getThreading().run(new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                WiredHandler.handle(WiredTriggerType.COLLISION, habbo.getRoomUnit(), room, new Object[]{item});
+                            }
+                        });
+
+                        collided = true;
+                        break;
+                    }
+
+                    if (distance <= shortest)
+                    {
+                        target = habbo;
+                        shortest = distance;
+                    }
                 }
             }
 
+            if (collided)
+            {
+                break;
+            }
+
+            int x = 0;
+            int y = 0;
             if(target != null)
             {
-                if(room.getLayout().getTile(this.getX(), this.getY()).distance(target.getRoomUnit().getCurrentLocation()) == 1)
-                {
-                    final Habbo finalTarget = target;
-                    Emulator.getThreading().run(new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            WiredHandler.handle(WiredTriggerType.COLLISION, finalTarget.getRoomUnit(), room, new Object[]{item});
-                        }
-                    }, 500);
-
-                    continue;
-                }
-
-                int x = 0;
-                int y = 0;
-
-                if(target.getRoomUnit().getX() == item.getX())
+                if (target.getRoomUnit().getX() == item.getX())
                 {
                     if (item.getY() < target.getRoomUnit().getY())
                         y++;
                     else
                         y--;
-                }
-                else if(target.getRoomUnit().getY() == item.getY())
+                } else if (target.getRoomUnit().getY() == item.getY())
                 {
                     if (item.getX() < target.getRoomUnit().getX())
                         x++;
                     else
                         x--;
-                }
-                else if (target.getRoomUnit().getX() - item.getX() > target.getRoomUnit().getY() - item.getY())
+                } else if (target.getRoomUnit().getX() - item.getX() > target.getRoomUnit().getY() - item.getY())
                 {
-                    if (target.getRoomUnit().getX() - item.getX() > 0 )
+                    if (target.getRoomUnit().getX() - item.getX() > 0)
                         x++;
                     else
                         x--;
-                }
-                else
+                } else
                 {
                     if (target.getRoomUnit().getY() - item.getY() > 0)
                         y++;
                     else
                         y--;
                 }
-
-                RoomTile newTile = room.getLayout().getTile((short) (item.getX() + x), (short) (item.getY() + y));
-
-                if (newTile != null && newTile.state == RoomTileState.OPEN)
+            }
+            else
+            {
+                switch (Emulator.getRandom().nextInt(4))
                 {
-                    if (room.getLayout().tileExists(newTile.x, newTile.y))
+                    case 0: x--; break;
+                    case 1: x++; break;
+                    case 2: y--; break;
+                    case 3: y++; break;
+                }
+            }
+
+            RoomTile newTile = room.getLayout().getTile((short) (item.getX() + x), (short) (item.getY() + y));
+
+            if (newTile != null && newTile.state == RoomTileState.OPEN && newTile.isWalkable())
+            {
+                if (room.getLayout().tileExists(newTile.x, newTile.y))
+                {
+                    HabboItem topItem = room.getTopItemAt(newTile.x, newTile.y);
+
+                    if (topItem == null || topItem.getBaseItem().allowStack())
                     {
-                        HabboItem topItem = room.getTopItemAt(newTile.x, newTile.y);
+                        double offsetZ = 0;
 
-                        if (topItem == null || topItem.getBaseItem().allowStack())
-                        {
-                            double offsetZ = 0;
+                        if (topItem != null)
+                            offsetZ = topItem.getZ() + topItem.getBaseItem().getHeight() - item.getZ();
 
-                            if (topItem != null)
-                                offsetZ = topItem.getZ() + topItem.getBaseItem().getHeight() - item.getZ();
-
-                            room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, offsetZ, room).compose());
-                        }
+                        room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, offsetZ, room).compose());
                     }
                 }
             }
+
         }
 
         return true;
@@ -161,7 +177,7 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
     @Override
     public void loadWiredData(ResultSet set, Room room) throws SQLException
     {
-        this.items = new THashSet<HabboItem>();
+        this.items = new THashSet<>();
         String[] wiredData = set.getString("wired_data").split("\t");
 
         if (wiredData.length >= 1)
@@ -199,7 +215,7 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
     @Override
     public void serializeWiredData(ServerMessage message, Room room)
     {
-        THashSet<HabboItem> items = new THashSet<HabboItem>();
+        THashSet<HabboItem> items = new THashSet<>();
 
         for(HabboItem item : this.items)
         {

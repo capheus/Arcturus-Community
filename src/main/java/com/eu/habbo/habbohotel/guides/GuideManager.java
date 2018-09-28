@@ -10,9 +10,6 @@ import com.eu.habbo.threading.runnables.GuideFindNewHelper;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Map;
 
 public class GuideManager
@@ -26,12 +23,12 @@ public class GuideManager
 
     public GuideManager()
     {
-        this.activeTours = new THashSet<GuideTour>();
-        this.activeTickets = new THashSet<GuardianTicket>();
-        this.closedTickets = new THashSet<GuardianTicket>();
-        this.activeHelpers = new THashMap<Habbo, Boolean>();
-        this.activeGuardians = new THashMap<Habbo, GuardianTicket>();
-        this.tourRequestTiming = new THashMap<Integer, Integer>();
+        this.activeTours = new THashSet<>();
+        this.activeTickets = new THashSet<>();
+        this.closedTickets = new THashSet<>();
+        this.activeHelpers = new THashMap<>();
+        this.activeGuardians = new THashMap<>();
+        this.tourRequestTiming = new THashMap<>();
     }
 
     public void userLogsOut(Habbo habbo)
@@ -277,7 +274,7 @@ public class GuideManager
         {
             int count = ticket.getVotedCount();
 
-            THashSet<Habbo> selectedGuardians = new THashSet<Habbo>();
+            THashSet<Habbo> selectedGuardians = new THashSet<>();
 
             for(Map.Entry<Habbo, GuardianTicket> set : this.activeGuardians.entrySet())
             {
@@ -407,7 +404,7 @@ public class GuideManager
             this.closedTickets.add(ticket);
         }
 
-        THashSet<Habbo> toUpdate = new THashSet<Habbo>();
+        THashSet<Habbo> toUpdate = new THashSet<>();
 
         synchronized (this.activeGuardians)
         {
@@ -451,7 +448,7 @@ public class GuideManager
     {
         synchronized (this.activeTours)
         {
-            THashSet<GuideTour> tours = new THashSet<GuideTour>();
+            THashSet<GuideTour> tours = new THashSet<>();
             for(GuideTour tour : this.activeTours)
             {
                 if(tour.isEnded() && (Emulator.getIntUnixTimestamp() - tour.getEndTime() > 300))
@@ -468,7 +465,7 @@ public class GuideManager
 
         synchronized (this.activeTickets)
         {
-            THashSet<GuardianTicket> tickets = new THashSet<GuardianTicket>();
+            THashSet<GuardianTicket> tickets = new THashSet<>();
 
             for(GuardianTicket ticket : this.closedTickets)
             {

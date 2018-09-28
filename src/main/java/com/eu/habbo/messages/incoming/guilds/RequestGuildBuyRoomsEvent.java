@@ -15,7 +15,7 @@ public class RequestGuildBuyRoomsEvent extends MessageHandler
     {
         List<Room> rooms = Emulator.getGameEnvironment().getRoomManager().getRoomsForHabbo(this.client.getHabbo());
 
-        THashSet<Room> roomList = new THashSet<Room>();
+        THashSet<Room> roomList = new THashSet<>();
 
         for(Room room : rooms)
         {

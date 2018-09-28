@@ -93,10 +93,10 @@ public class HabboStats implements Runnable
 
     private HabboStats(ResultSet set, Habbo habbo) throws SQLException
     {
-        this.cache = new THashMap<String, Object>(0);
-        this.achievementProgress = new THashMap<Achievement, Integer>(0);
-        this.achievementCache = new THashMap<Achievement, Integer>(0);
-        this.recentPurchases = new THashMap<Integer, CatalogItem>(0);
+        this.cache = new THashMap<>(0);
+        this.achievementProgress = new THashMap<>(0);
+        this.achievementCache = new THashMap<>(0);
+        this.recentPurchases = new THashMap<>(0);
         this.favoriteRooms = new TIntArrayList(0);
         this.ignoredUsers = new TIntArrayList(0);
         this.secretRecipes = new TIntArrayList(0);

@@ -29,7 +29,7 @@ public class CraftingRecipe
         this.limited = set.getString("limited").equals("1");
         this.remaining = set.getInt("remaining");
 
-        this.ingredients = new THashMap<Item, Integer>();
+        this.ingredients = new THashMap<>();
     }
 
     public boolean canBeCrafted()

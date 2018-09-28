@@ -81,10 +81,10 @@ public class UserProfileComposer extends MessageComposer
         this.response.appendBoolean(Messenger.friendRequested(this.viewer.getHabbo().getHabboInfo().getId(), this.habboInfo.getId())); //Friend Request Send
         this.response.appendBoolean(this.habboInfo.isOnline());
 
-        List<Guild> guilds = new ArrayList<Guild>();
+        List<Guild> guilds = new ArrayList<>();
         if(this.habbo != null)
         {
-            List<Integer> toRemove = new ArrayList<Integer>();
+            List<Integer> toRemove = new ArrayList<>();
             for (int index = this.habbo.getHabboStats().guilds.size(); index > 0; index--)
             {
                 int i = this.habbo.getHabboStats().guilds.get(index - 1);

@@ -24,7 +24,7 @@ import java.util.Map;
 
 public abstract class TagGame extends Game
 {
-    public THashMap<Habbo, InteractionTagPole> taggers = new THashMap<Habbo, InteractionTagPole>();
+    public THashMap<Habbo, InteractionTagPole> taggers = new THashMap<>();
 
     public TagGame(Class<? extends GameTeam> gameTeamClazz, Class<? extends GamePlayer> gamePlayerClazz, Room room)
     {

@@ -29,9 +29,9 @@ public class InteractionVikingCotie extends InteractionDefault
             this.setExtradata("0");
         }
 
-        if (client.getHabbo().getHabboInfo().getId() == this.getUserId())
+        if (client != null && client.getHabbo().getHabboInfo().getId() == this.getUserId())
         {
-            if (client.getHabbo().getRoomUnit().getEffectId() == 5)
+            if (client.getHabbo().getRoomUnit().getEffectId() == 172 || client.getHabbo().getRoomUnit().getEffectId() == 173)
             {
                 int state = Integer.valueOf(this.getExtradata());
 
@@ -48,8 +48,6 @@ public class InteractionVikingCotie extends InteractionDefault
                 }
             }
         }
-
-        super.onClick(client, room, objects);
     }
 
     @Override

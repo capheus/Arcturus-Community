@@ -3,7 +3,6 @@ package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
-import com.eu.habbo.habbohotel.items.interactions.InteractionDice;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
@@ -16,13 +15,10 @@ import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemOnRollerComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
-import com.eu.habbo.messages.outgoing.rooms.items.ItemStateComposer;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class WiredEffectMatchFurni extends InteractionWiredEffect
 {
@@ -37,13 +33,13 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
     public WiredEffectMatchFurni(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
-        this.settings = new THashSet<WiredMatchFurniSetting>(0);
+        this.settings = new THashSet<>(0);
     }
 
     public WiredEffectMatchFurni(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
     {
         super(id, userId, item, extradata, limitedStack, limitedSells);
-        this.settings = new THashSet<WiredMatchFurniSetting>(0);
+        this.settings = new THashSet<>(0);
     }
 
     @Override
@@ -84,7 +80,7 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
                         double offsetZ = setting.z - item.getZ();
 
                         room.sendComposer(new FloorItemOnRollerComposer(item, null, t, offsetZ, room).compose());
-                        tilesToUpdate.addAll(room.getLayout().getTilesAt(room.getLayout().getTile((short) item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), oldRotation));
+                        tilesToUpdate.addAll(room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), oldRotation));
                     }
                 }
 
@@ -250,7 +246,7 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
 
         if(room != null)
         {
-            THashSet<WiredMatchFurniSetting> remove = new THashSet<WiredMatchFurniSetting>();
+            THashSet<WiredMatchFurniSetting> remove = new THashSet<>();
 
             for (WiredMatchFurniSetting setting : this.settings)
             {

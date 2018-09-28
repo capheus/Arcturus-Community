@@ -59,7 +59,7 @@ public abstract class NavigatorFilter
             }
         }
 
-        List<Room> toRemove = new ArrayList<Room>();
+        List<Room> toRemove = new ArrayList<>();
         try
         {
             method.setAccessible(true);

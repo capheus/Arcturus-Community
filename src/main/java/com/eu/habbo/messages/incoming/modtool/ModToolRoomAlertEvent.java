@@ -4,8 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
-import com.eu.habbo.messages.outgoing.modtool.ModToolIssueHandledComposer;
 
 public class ModToolRoomAlertEvent extends MessageHandler
 {

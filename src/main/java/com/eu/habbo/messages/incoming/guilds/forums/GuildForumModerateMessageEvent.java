@@ -6,8 +6,6 @@ import com.eu.habbo.habbohotel.guilds.forums.GuildForum;
 import com.eu.habbo.habbohotel.guilds.forums.GuildForumComment;
 import com.eu.habbo.habbohotel.guilds.forums.GuildForumThread;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.guilds.forums.GuildForumAddCommentComposer;
-import com.eu.habbo.messages.outgoing.guilds.forums.GuildForumThreadMessagesComposer;
 import com.eu.habbo.messages.outgoing.guilds.forums.UnknownGuildForumComposer6;
 
 
@@ -40,7 +38,7 @@ public class GuildForumModerateMessageEvent extends MessageHandler
 
         } else
         {
-            // TODO: throwing an error
+
         }
     }
 }

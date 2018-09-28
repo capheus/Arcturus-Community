@@ -2,9 +2,18 @@ package com.eu.habbo.habbohotel.items;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.*;
-import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.*;
-import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.gates.*;
-import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.scoreboards.*;
+import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.InteractionBattleBanzaiSphere;
+import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.InteractionBattleBanzaiTeleporter;
+import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.InteractionBattleBanzaiTile;
+import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.InteractionBattleBanzaiTimer;
+import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.gates.InteractionBattleBanzaiGateBlue;
+import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.gates.InteractionBattleBanzaiGateGreen;
+import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.gates.InteractionBattleBanzaiGateRed;
+import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.gates.InteractionBattleBanzaiGateYellow;
+import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.scoreboards.InteractionBattleBanzaiScoreboardBlue;
+import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.scoreboards.InteractionBattleBanzaiScoreboardGreen;
+import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.scoreboards.InteractionBattleBanzaiScoreboardRed;
+import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.scoreboards.InteractionBattleBanzaiScoreboardYellow;
 import com.eu.habbo.habbohotel.items.interactions.games.football.InteractionFootball;
 import com.eu.habbo.habbohotel.items.interactions.games.football.InteractionFootballGate;
 import com.eu.habbo.habbohotel.items.interactions.games.football.goals.InteractionFootballGoalBlue;
@@ -15,9 +24,18 @@ import com.eu.habbo.habbohotel.items.interactions.games.football.scoreboards.Int
 import com.eu.habbo.habbohotel.items.interactions.games.football.scoreboards.InteractionFootballScoreboardGreen;
 import com.eu.habbo.habbohotel.items.interactions.games.football.scoreboards.InteractionFootballScoreboardRed;
 import com.eu.habbo.habbohotel.items.interactions.games.football.scoreboards.InteractionFootballScoreboardYellow;
-import com.eu.habbo.habbohotel.items.interactions.games.freeze.*;
-import com.eu.habbo.habbohotel.items.interactions.games.freeze.gates.*;
-import com.eu.habbo.habbohotel.items.interactions.games.freeze.scoreboards.*;
+import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeBlock;
+import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeExitTile;
+import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeTile;
+import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeTimer;
+import com.eu.habbo.habbohotel.items.interactions.games.freeze.gates.InteractionFreezeGateBlue;
+import com.eu.habbo.habbohotel.items.interactions.games.freeze.gates.InteractionFreezeGateGreen;
+import com.eu.habbo.habbohotel.items.interactions.games.freeze.gates.InteractionFreezeGateRed;
+import com.eu.habbo.habbohotel.items.interactions.games.freeze.gates.InteractionFreezeGateYellow;
+import com.eu.habbo.habbohotel.items.interactions.games.freeze.scoreboards.InteractionFreezeScoreboardBlue;
+import com.eu.habbo.habbohotel.items.interactions.games.freeze.scoreboards.InteractionFreezeScoreboardGreen;
+import com.eu.habbo.habbohotel.items.interactions.games.freeze.scoreboards.InteractionFreezeScoreboardRed;
+import com.eu.habbo.habbohotel.items.interactions.games.freeze.scoreboards.InteractionFreezeScoreboardYellow;
 import com.eu.habbo.habbohotel.items.interactions.games.tag.bunnyrun.InteractionBunnyrunField;
 import com.eu.habbo.habbohotel.items.interactions.games.tag.bunnyrun.InteractionBunnyrunPole;
 import com.eu.habbo.habbohotel.items.interactions.games.tag.icetag.InteractionIceTagField;
@@ -25,6 +43,7 @@ import com.eu.habbo.habbohotel.items.interactions.games.tag.icetag.InteractionIc
 import com.eu.habbo.habbohotel.items.interactions.games.tag.rollerskate.InteractionRollerskateField;
 import com.eu.habbo.habbohotel.items.interactions.wired.conditions.*;
 import com.eu.habbo.habbohotel.items.interactions.wired.effects.*;
+import com.eu.habbo.habbohotel.items.interactions.wired.extra.WiredBlob;
 import com.eu.habbo.habbohotel.items.interactions.wired.extra.WiredExtraRandom;
 import com.eu.habbo.habbohotel.items.interactions.wired.extra.WiredExtraUnseen;
 import com.eu.habbo.habbohotel.items.interactions.wired.triggers.*;
@@ -103,6 +122,7 @@ public class ItemManager
         this.interactionsList.add(new ItemInteraction("teleport",               InteractionTeleport.class));
         this.interactionsList.add(new ItemInteraction("teleporttile",           InteractionTeleportTile.class));
         this.interactionsList.add(new ItemInteraction("crackable",              InteractionCrackable.class));
+        this.interactionsList.add(new ItemInteraction("crackable_master",       InteractionCrackableMaster.class));
         this.interactionsList.add(new ItemInteraction("nest",                   InteractionNest.class));
         this.interactionsList.add(new ItemInteraction("pet_drink",              InteractionPetDrink.class));
         this.interactionsList.add(new ItemInteraction("pet_food",               InteractionPetFood.class));
@@ -145,6 +165,8 @@ public class ItemManager
         this.interactionsList.add(new ItemInteraction("room_o_matic",           InteractionRoomOMatic.class));
         this.interactionsList.add(new ItemInteraction("effect_tile",            InteractionEffectTile.class));
         this.interactionsList.add(new ItemInteraction("sticky_pole",            InteractionStickyPole.class));
+        this.interactionsList.add(new ItemInteraction("trap",                   InteractionTrap.class));
+        this.interactionsList.add(new ItemInteraction("tent",                   InteractionTent.class));
 
 
 
@@ -242,10 +264,13 @@ public class ItemManager
         this.interactionsList.add(new ItemInteraction("wf_cnd_not_habbo_has_diamonds",   WiredConditionNotHabboHasDiamonds.class));
         this.interactionsList.add(new ItemInteraction("wf_cnd_not_habbo_has_credits",    WiredConditionNotHabboHasCredits.class));
         this.interactionsList.add(new ItemInteraction("wf_cnd_not_habbo_has_duckets",    WiredConditionNotHabboHasDuckets.class));
+        this.interactionsList.add(new ItemInteraction("wf_cnd_habbo_owns_badge",        WiredConditionHabboOwnsBadge.class));
+        this.interactionsList.add(new ItemInteraction("wf_cnd_not_habbo_owns_badge",        WiredConditionNotHabboOwnsBadge.class));
 
 
             this.interactionsList.add(new ItemInteraction("wf_xtra_random", WiredExtraRandom.class));
             this.interactionsList.add(new ItemInteraction("wf_xtra_unseen", WiredExtraUnseen.class));
+            this.interactionsList.add(new ItemInteraction("wf_blob", WiredBlob.class));
 
 
             this.interactionsList.add(new ItemInteraction("wf_highscore", InteractionWiredHighscore.class));

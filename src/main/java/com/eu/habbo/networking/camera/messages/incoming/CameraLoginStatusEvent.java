@@ -1,6 +1,5 @@
 package com.eu.habbo.networking.camera.messages.incoming;
 
-import com.eu.habbo.Emulator;
 import com.eu.habbo.core.Logging;
 import com.eu.habbo.networking.camera.CameraClient;
 import com.eu.habbo.networking.camera.CameraIncomingMessage;
@@ -33,7 +32,7 @@ public class CameraLoginStatusEvent extends CameraIncomingMessage
         }
         else if (status == NO_ACCOUNT)
         {
-            System.out.println("[" + Logging.ANSI_RED + "CAMERA" + Logging.ANSI_RESET + "] Failed to login to Camera Server: No Account Found. Register for free on the Arcturus Forums! Visit http://arcturus.wf/");
+            System.out.println("[" + Logging.ANSI_RED + "CAMERA" + Logging.ANSI_RESET + "] Failed to login to Camera Server: No Account Found. Register for free on the Arcturus Forums! Visit http://arcturus.pw/");
         }
         else if (status == BANNED)
         {
@@ -53,7 +52,7 @@ public class CameraLoginStatusEvent extends CameraIncomingMessage
             System.out.println("[" + Logging.ANSI_RED + "CAMERA" + Logging.ANSI_RESET + "] Please consider making a donation to keep this project going. The emulator can be used free of charge!");
             System.out.println("[" + Logging.ANSI_RED + "CAMERA" + Logging.ANSI_RESET + "] A trial version is available for $2.5. A year subscription is only $10 and a permanent subscription is $25.");
             System.out.println("[" + Logging.ANSI_RED + "CAMERA" + Logging.ANSI_RESET + "] By donating this subscription you support the development of the emulator you are using :)");
-            System.out.println("[" + Logging.ANSI_RED + "CAMERA" + Logging.ANSI_RESET + "] Visit http://arcturus.wf/mysubscriptions.php to buy your subscription!");
+            System.out.println("[" + Logging.ANSI_RED + "CAMERA" + Logging.ANSI_RESET + "] Visit http://arcturus.pw/mysubscriptions.php to buy your subscription!");
             System.out.println("");
             System.out.println("\t\t\t\t Please Consider getting a subscription. Regards: The General");
         }

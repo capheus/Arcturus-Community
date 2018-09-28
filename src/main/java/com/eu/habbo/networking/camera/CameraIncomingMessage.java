@@ -2,7 +2,6 @@ package com.eu.habbo.networking.camera;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
 
 import java.nio.charset.Charset;
 

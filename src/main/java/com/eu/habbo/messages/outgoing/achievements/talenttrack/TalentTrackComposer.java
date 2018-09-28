@@ -1,7 +1,10 @@
 package com.eu.habbo.messages.outgoing.achievements.talenttrack;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.achievements.*;
+import com.eu.habbo.habbohotel.achievements.Achievement;
+import com.eu.habbo.habbohotel.achievements.AchievementLevel;
+import com.eu.habbo.habbohotel.achievements.TalentTrackLevel;
+import com.eu.habbo.habbohotel.achievements.TalentTrackType;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;

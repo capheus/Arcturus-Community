@@ -5,7 +5,8 @@ import com.eu.habbo.habbohotel.catalog.ClothItem;
 import com.eu.habbo.habbohotel.items.interactions.InteractionClothing;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
 import com.eu.habbo.messages.outgoing.rooms.items.RemoveFloorItemComposer;
 import com.eu.habbo.messages.outgoing.users.UserClothesComposer;
 import com.eu.habbo.threading.runnables.QueryDeleteHabboItem;
@@ -55,10 +56,12 @@ public class RedeemClothingEvent extends MessageHandler
 
                             this.client.getHabbo().getInventory().getWardrobeComponent().getClothing().add(clothing.id);
                             this.client.sendResponse(new UserClothesComposer(this.client.getHabbo()));
+                            this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FIGURESET_REDEEMED.key));
+
                         }
                         else
                         {
-                            this.client.sendResponse(new GenericAlertComposer("You already own this item!"));
+                            this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FIGURESET_OWNED_ALREADY.key));
                         }
                     }
                     else

@@ -19,7 +19,7 @@ public class HTTPVersionCheck implements Runnable
             if (!Emulator.isReady)
                 return;
 
-            String url = "http://arcturus.wf/callback/check.php";
+            String url = "http://arcturus.pw/callback/check.php";
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestMethod("POST");
@@ -64,14 +64,14 @@ public class HTTPVersionCheck implements Runnable
     @Override
     public void run()
     {
-//        try
-//        {
-//            this.sendPost();
-//        }
-//        catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }
-//        Emulator.getThreading().run(this, 1000);
+
+
+
+
+
+
+
+
+
     }
 }

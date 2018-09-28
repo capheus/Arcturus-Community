@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class BotsComponent {
 
-    private final THashMap<Integer, Bot> bots = new THashMap<Integer, Bot>();
+    private final THashMap<Integer, Bot> bots = new THashMap<>();
 
     public BotsComponent(Habbo habbo)
     {

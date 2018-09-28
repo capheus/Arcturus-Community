@@ -2,15 +2,10 @@ package com.eu.habbo.habbohotel.commands;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
-import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
-import com.eu.habbo.messages.outgoing.users.UserCurrencyComposer;
-import com.eu.habbo.messages.outgoing.users.UserPointsComposer;
 
-import java.util.Collection;
 import java.util.Map;
 
 public class MassPointsCommand extends Command
@@ -27,16 +22,16 @@ public class MassPointsCommand extends Command
         String amountString = "";
         if(params.length == 3)
         {
+            amountString = params[1];
             try
             {
-                type = Integer.valueOf(params[1]);
+                type = Integer.valueOf(params[2]);
             } catch (Exception e)
             {
                 gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_masspoints.invalid_type").replace("%types%", Emulator.getConfig().getValue("seasonal.types").replace(";", ", ")), RoomChatMessageBubbles.ALERT);
                 return true;
             }
 
-            amountString = params[2];
         }
         else if(params.length == 2)
         {

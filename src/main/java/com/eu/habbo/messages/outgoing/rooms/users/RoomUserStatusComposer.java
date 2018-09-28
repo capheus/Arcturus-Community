@@ -6,8 +6,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.procedure.TObjectObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 
 import java.util.Collection;
@@ -20,7 +18,7 @@ public class RoomUserStatusComposer extends MessageComposer
 
     public RoomUserStatusComposer(RoomUnit roomUnit)
     {
-        this.roomUnits = new THashSet<RoomUnit>();
+        this.roomUnits = new THashSet<>();
         this.roomUnits.add(roomUnit);
     }
 
@@ -46,7 +44,15 @@ public class RoomUserStatusComposer extends MessageComposer
                 this.response.appendInt(roomUnit.getId());
                 this.response.appendInt32(roomUnit.getPreviousLocation().x);
                 this.response.appendInt32(roomUnit.getPreviousLocation().y);
-                this.response.appendString(roomUnit.getPreviousLocation().getStackHeight() + "");
+
+                if (roomUnit.hasStatus(RoomUnitStatus.SIT) && !roomUnit.hasStatus(RoomUnitStatus.MOVE))
+                {
+                    this.response.appendString(roomUnit.getPreviousLocation().z + "");
+                }
+                else
+                {
+                    this.response.appendString(roomUnit.getPreviousLocation().getStackHeight() + "");
+                }
                 this.response.appendInt(roomUnit.getHeadRotation().getValue());
                 this.response.appendInt(roomUnit.getBodyRotation().getValue());
 
@@ -70,7 +76,14 @@ public class RoomUserStatusComposer extends MessageComposer
                     this.response.appendInt(habbo.getRoomUnit().getId());
                     this.response.appendInt32(habbo.getRoomUnit().getPreviousLocation().x);
                     this.response.appendInt32(habbo.getRoomUnit().getPreviousLocation().y);
-                    this.response.appendString(habbo.getRoomUnit().getPreviousLocation().getStackHeight() + "");
+                    if (habbo.getRoomUnit().hasStatus(RoomUnitStatus.SIT) && !habbo.getRoomUnit().hasStatus(RoomUnitStatus.MOVE))
+                    {
+                        this.response.appendString(habbo.getRoomUnit().getPreviousLocation().z + "");
+                    }
+                    else
+                    {
+                        this.response.appendString(habbo.getRoomUnit().getPreviousLocation().getStackHeight() + "");
+                    }
                     this.response.appendInt(habbo.getRoomUnit().getHeadRotation().getValue());
                     this.response.appendInt(habbo.getRoomUnit().getBodyRotation().getValue());
 

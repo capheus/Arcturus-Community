@@ -5,7 +5,10 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import gnu.trove.map.hash.THashMap;
 
 import java.lang.reflect.Method;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -13,9 +16,9 @@ public class NavigatorManager
 {
     public static int MAXIMUM_RESULTS_PER_PAGE = 10;
 
-    public final THashMap<Integer, NavigatorPublicCategory> publicCategories = new THashMap<Integer, NavigatorPublicCategory>();
-    public final ConcurrentHashMap<String, NavigatorFilterField> filterSettings = new ConcurrentHashMap<String, NavigatorFilterField>();
-    public final THashMap<String, NavigatorFilter> filters = new THashMap<String, NavigatorFilter>();
+    public final THashMap<Integer, NavigatorPublicCategory> publicCategories = new THashMap<>();
+    public final ConcurrentHashMap<String, NavigatorFilterField> filterSettings = new ConcurrentHashMap<>();
+    public final THashMap<String, NavigatorFilter> filters = new THashMap<>();
 
     public NavigatorManager()
     {

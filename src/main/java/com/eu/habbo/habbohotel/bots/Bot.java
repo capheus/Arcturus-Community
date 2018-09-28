@@ -22,6 +22,7 @@ import java.util.Arrays;
 
 public class Bot implements Runnable
 {
+    public static final String NO_CHAT_SET = "${bot.skill.chatter.configuration.text.placeholder}";
 
     private int id;
 
@@ -91,7 +92,7 @@ public class Bot implements Runnable
         this.chatAuto = false;
         this.chatRandom = false;
         this.chatDelay = 1000;
-        this.chatLines = new ArrayList<String>();
+        this.chatLines = new ArrayList<>();
         this.type = "generic_bot";
         this.room = null;
     }
@@ -108,7 +109,7 @@ public class Bot implements Runnable
         this.chatAuto       = set.getString("chat_auto").equals("1");
         this.chatRandom     = set.getString("chat_random").equals("1");
         this.chatDelay      = set.getShort("chat_delay");
-        this.chatLines      = new ArrayList<String>(Arrays.asList(set.getString("chat_lines").split("\r")));
+        this.chatLines      = new ArrayList<>(Arrays.asList(set.getString("chat_lines").split("\r")));
         this.type           = set.getString("type");
         this.effect         = set.getInt("effect");
         this.room           = null;
@@ -130,7 +131,7 @@ public class Bot implements Runnable
         this.chatRandom     = false;
         this.chatDelay      = 10;
         this.chatTimeOut    = Emulator.getIntUnixTimestamp() + this.chatDelay;
-        this.chatLines      = new ArrayList<String>(Arrays.asList(new String[] {"Default Message :D"}));
+        this.chatLines      = new ArrayList<>(Arrays.asList(new String[] {"Default Message :D"}));
         this.type           = bot.getType();
         this.effect         = bot.getEffect();
         this.room           = null;
@@ -220,12 +221,19 @@ public class Bot implements Runnable
                 if(this.room != null)
                 {
                     this.lastChatIndex = (this.chatRandom ? (short)Emulator.getRandom().nextInt(this.chatLines.size()) : (this.lastChatIndex == (this.chatLines.size() - 1) ? 0 : this.lastChatIndex++));
+
+                    if (this.lastChatIndex >= this.chatLines.size())
+                    {
+                        this.lastChatIndex = 0;
+                    }
+
                     this.talk(this.chatLines.get(this.lastChatIndex)
                             .replace("%owner%", this.room.getOwnerName())
                             .replace("%item_count%", this.room.itemCount() + "")
                             .replace("%name%", this.name)
                             .replace("%roomname%", this.room.getName())
                             .replace("%user_count%", this.room.getUserCount() + ""));
+
                     this.chatTimeOut = Emulator.getIntUnixTimestamp() + this.chatDelay;
                 }
             }
@@ -438,6 +446,12 @@ public class Bot implements Runnable
     }
 
 
+    public boolean hasChat()
+    {
+        return !this.chatLines.isEmpty();
+    }
+
+
     public void setChatRandom(boolean chatRandom)
     {
         this.chatRandom  = chatRandom;
@@ -453,8 +467,9 @@ public class Bot implements Runnable
 
     public void setChatDelay(short chatDelay)
     {
-        this.chatDelay   = chatDelay;
+        this.chatDelay   = (short)Math.min(Math.max(chatDelay, BotManager.MINIMUM_CHAT_SPEED), BotManager.MAXIMUM_CHAT_SPEED);
         this.needsUpdate = true;
+        this.chatTimeOut = Emulator.getIntUnixTimestamp() + this.chatDelay;
     }
 
 

@@ -77,7 +77,7 @@ public class WiredEffectMoveFurniTo extends InteractionWiredEffect
     @Override
     public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
     {
-        List<HabboItem> items = new ArrayList<HabboItem>();
+        List<HabboItem> items = new ArrayList<>();
 
         synchronized (this.items)
         {
@@ -115,7 +115,7 @@ public class WiredEffectMoveFurniTo extends InteractionWiredEffect
                                 indexOffset = this.indexOffset.get(targetItem.getId()) + spacing;
                             }
 
-                            RoomTile objectTile = room.getLayout().getTile(((HabboItem) targetItem).getX(), ((HabboItem) targetItem).getY());
+                            RoomTile objectTile = room.getLayout().getTile(targetItem.getX(), targetItem.getY());
 
                             if (objectTile != null)
                             {
@@ -145,7 +145,7 @@ public class WiredEffectMoveFurniTo extends InteractionWiredEffect
     @Override
     public String getWiredData()
     {
-        THashSet<HabboItem> items = new THashSet<HabboItem>();
+        THashSet<HabboItem> items = new THashSet<>();
 
         for(HabboItem item : this.items)
         {
@@ -171,7 +171,7 @@ public class WiredEffectMoveFurniTo extends InteractionWiredEffect
     @Override
     public void serializeWiredData(ServerMessage message, Room room)
     {
-        THashSet<HabboItem> items = new THashSet<HabboItem>();
+        THashSet<HabboItem> items = new THashSet<>();
 
         synchronized (this.items)
         {

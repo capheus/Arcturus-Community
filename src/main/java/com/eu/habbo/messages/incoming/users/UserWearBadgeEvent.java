@@ -15,7 +15,7 @@ public class UserWearBadgeEvent extends MessageHandler
     {
         BadgesComponent.resetSlots(this.client.getHabbo());
 
-        ArrayList<HabboBadge> updatedBadges = new ArrayList<HabboBadge>();
+        ArrayList<HabboBadge> updatedBadges = new ArrayList<>();
         for(int i = 0; i < 5; i++)
         {
             int slot = this.packet.readInt();

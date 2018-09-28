@@ -1,14 +1,15 @@
 package com.eu.habbo.util;
 
 import gnu.trove.map.hash.THashMap;
-import java.util.Map;
 import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.Map;
 
 public class FigureUtil
 {
     public static THashMap<String, String> getFigureBits(String looks)
     {
-        THashMap<String, String> bits = new THashMap<String, String>();
+        THashMap<String, String> bits = new THashMap<>();
         String[] sets = looks.split("\\.");
 
         for(String set : sets)

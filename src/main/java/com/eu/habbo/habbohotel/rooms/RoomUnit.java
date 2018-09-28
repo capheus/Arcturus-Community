@@ -20,7 +20,9 @@ import com.eu.habbo.util.pathfinding.Rotation;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 
-import java.util.*;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class RoomUnit
@@ -45,6 +47,8 @@ public class RoomUnit
     public boolean sitUpdate = false;
     public boolean isTeleporting = false;
     public boolean isKicked = false;
+    private boolean statusUpdate = false;
+    private boolean invisible = false;
 
     private final ConcurrentHashMap<RoomUnitStatus, String> status;
     private final THashMap<String, Object> cacheable;
@@ -68,7 +72,7 @@ public class RoomUnit
         this.inRoom = false;
         this.canWalk = true;
         this.status = new ConcurrentHashMap<>();
-        this.cacheable = new THashMap<String, Object>();
+        this.cacheable = new THashMap<>();
         this.roomUnitType = RoomUnitType.UNKNOWN;
         this.bodyRotation = RoomUserRotation.NORTH;
         this.bodyRotation = RoomUserRotation.NORTH;
@@ -318,7 +322,7 @@ public class RoomUnit
             //room.sendComposer(new RoomUserStatusComposer(this).compose());
 
             this.setZ(zHeight);
-            this.setCurrentLocation(room.getLayout().getTile((short) next.x, (short) next.y));
+            this.setCurrentLocation(room.getLayout().getTile(next.x, next.y));
             this.resetIdleTimer();
 
             if (habbo != null)
@@ -457,9 +461,12 @@ public class RoomUnit
 
     public void setGoalLocation(RoomTile goalLocation)
     {
-        if (goalLocation.state == RoomTileState.OPEN)
+        if (goalLocation != null)
         {
-            this.setGoalLocation(goalLocation, false);
+            if (goalLocation.state == RoomTileState.OPEN)
+            {
+                this.setGoalLocation(goalLocation, false);
+            }
         }
     }
 
@@ -479,9 +486,16 @@ public class RoomUnit
         if (goalLocation != null && !noReset)
         {
             this.goalLocation = goalLocation;
-            this.tilesWalked = 0;
             this.findPath();
-            this.cmdSit = false;
+            if (!this.path.isEmpty())
+            {
+                this.tilesWalked = 0;
+                this.cmdSit = false;
+            }
+            else
+            {
+                this.goalLocation = this.currentLocation;
+            }
         }
     }
 
@@ -527,6 +541,11 @@ public class RoomUnit
         }
     }
 
+    public void setPath(Deque<RoomTile> path)
+    {
+        this.path = path;
+    }
+
     public boolean isAtGoal()
     {
         return this.currentLocation.equals(this.goalLocation);
@@ -570,6 +589,16 @@ public class RoomUnit
     public void clearStatus()
     {
         this.status.clear();
+    }
+
+    public void statusUpdate(boolean update)
+    {
+        this.statusUpdate = update;
+    }
+
+    public boolean needsStatusUpdate()
+    {
+        return this.statusUpdate;
     }
 
     public TMap<String, Object> getCacheable()
@@ -680,5 +709,15 @@ public class RoomUnit
     public void setRightsLevel(RoomRightLevels rightsLevel)
     {
         this.rightsLevel = rightsLevel;
+    }
+
+    public void setInvisible(boolean invisible)
+    {
+        this.invisible = invisible;
+    }
+
+    public boolean isInvisible()
+    {
+        return this.invisible;
     }
 }

@@ -13,7 +13,7 @@ import java.util.Map;
 
 public abstract class InteractionCustomValues extends HabboItem
 {
-    public final THashMap<String, String> values = new THashMap<String, String>();
+    public final THashMap<String, String> values = new THashMap<>();
 
     public InteractionCustomValues(ResultSet set, Item baseItem, THashMap<String, String> defaultValues) throws SQLException
     {

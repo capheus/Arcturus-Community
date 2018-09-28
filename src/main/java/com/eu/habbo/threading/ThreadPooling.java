@@ -3,7 +3,9 @@ package com.eu.habbo.threading;
 import com.eu.habbo.Emulator;
 import io.netty.util.concurrent.DefaultThreadFactory;
 
-import java.util.concurrent.*;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class ThreadPooling
 {

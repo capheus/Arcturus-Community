@@ -1,9 +1,6 @@
 package com.eu.habbo.habbohotel.users;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.achievements.Achievement;
-import com.eu.habbo.habbohotel.achievements.AchievementManager;
-import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.modtool.ModToolBan;
 import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.permissions.Rank;
@@ -14,9 +11,7 @@ import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.modtool.ModToolComposer;
 import com.eu.habbo.messages.outgoing.users.UserPerksComposer;
 import com.eu.habbo.messages.outgoing.users.UserPermissionsComposer;
-import com.eu.habbo.messages.rcon.RCONMessage;
 import com.eu.habbo.plugin.events.users.UserRegisteredEvent;
-import gnu.trove.set.hash.THashSet;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -41,7 +36,7 @@ public class HabboManager
     {
         long millis = System.currentTimeMillis();
 
-        this.onlineHabbos = new ConcurrentHashMap<Integer, Habbo>();
+        this.onlineHabbos = new ConcurrentHashMap<>();
 
         Emulator.getLogging().logStart("Habbo Manager -> Loaded! (" + (System.currentTimeMillis() - millis) + " MS)");
     }
@@ -273,7 +268,7 @@ public class HabboManager
 
     public ArrayList<HabboInfo> getCloneAccounts(Habbo habbo, int limit)
     {
-        ArrayList<HabboInfo> habboInfo = new ArrayList<HabboInfo>();
+        ArrayList<HabboInfo> habboInfo = new ArrayList<>();
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE ip_register = ? OR ip_current = ? AND id != ? ORDER BY id DESC LIMIT ?"))
         {
@@ -310,7 +305,7 @@ public class HabboManager
             {
                 while (set.next())
                 {
-                    nameChanges.add(new AbstractMap.SimpleEntry<Integer, String>(set.getInt("timestamp"), set.getString("new_name")));
+                    nameChanges.add(new AbstractMap.SimpleEntry<>(set.getInt("timestamp"), set.getString("new_name")));
                 }
             }
         }
@@ -334,7 +329,7 @@ public class HabboManager
 
         Rank rank = Emulator.getGameEnvironment().getPermissionsManager().getRank(rankId);
 
-        if(habbo != null)
+        if(habbo != null && habbo.getHabboStats() != null)
         {
             habbo.getHabboInfo().setRank(rank);
             habbo.getClient().sendResponse(new UserPermissionsComposer(habbo));

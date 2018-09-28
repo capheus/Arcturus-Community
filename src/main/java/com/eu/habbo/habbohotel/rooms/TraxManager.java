@@ -7,7 +7,9 @@ import com.eu.habbo.habbohotel.items.interactions.InteractionJukeBox;
 import com.eu.habbo.habbohotel.items.interactions.InteractionMusicDisc;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
-import com.eu.habbo.messages.outgoing.rooms.items.jukebox.*;
+import com.eu.habbo.messages.outgoing.rooms.items.jukebox.JukeBoxMySongsComposer;
+import com.eu.habbo.messages.outgoing.rooms.items.jukebox.JukeBoxNowPlayingMessageComposer;
+import com.eu.habbo.messages.outgoing.rooms.items.jukebox.JukeBoxPlayListComposer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -125,7 +127,11 @@ public class TraxManager implements Disposable
 
     public SoundTrack currentSong()
     {
-        return Emulator.getGameEnvironment().getItemManager().getSoundTrack(this.songs.get(this.playingIndex).getSongId());
+        if (!this.songs.isEmpty() && this.playingIndex < this.songs.size())
+        {
+            return Emulator.getGameEnvironment().getItemManager().getSoundTrack(this.songs.get(this.playingIndex).getSongId());
+        }
+        return null;
     }
 
     public void addSong(int itemId)

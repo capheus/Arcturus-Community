@@ -1,10 +1,8 @@
 package com.eu.habbo.habbohotel.gameclients;
 
-import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
-
 import io.netty.channel.*;
 import io.netty.util.AttributeKey;
 
@@ -12,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.stream.Collectors;
 
 public class GameClientManager
 {
@@ -22,7 +19,7 @@ public class GameClientManager
     
     public GameClientManager()
     {
-        this.clients = new ConcurrentHashMap<ChannelId, GameClient>();
+        this.clients = new ConcurrentHashMap<>();
     }
     
     public ConcurrentMap<ChannelId, GameClient> getSessions()
@@ -137,7 +134,7 @@ public class GameClientManager
 
     public List<Habbo> getHabbosWithIP(String ip)
     {
-        List<Habbo> habbos = new ArrayList<Habbo>();
+        List<Habbo> habbos = new ArrayList<>();
 
         for (GameClient client : this.clients.values())
         {
@@ -155,7 +152,7 @@ public class GameClientManager
 
     public List<Habbo> getHabbosWithMachineId(String machineId)
     {
-        List<Habbo> habbos = new ArrayList<Habbo>();
+        List<Habbo> habbos = new ArrayList<>();
 
         for (GameClient client : this.clients.values())
         {

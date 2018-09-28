@@ -21,7 +21,7 @@ public class WiredEffectLowerFurni extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.TELEPORT;
 
-    private THashSet<HabboItem> items = new THashSet<HabboItem>();
+    private THashSet<HabboItem> items = new THashSet<>();
 
     private int offset = 0;
 
@@ -38,7 +38,7 @@ public class WiredEffectLowerFurni extends InteractionWiredEffect
     @Override
     public void serializeWiredData(ServerMessage message, Room room)
     {
-        THashSet<HabboItem> items = new THashSet<HabboItem>();
+        THashSet<HabboItem> items = new THashSet<>();
 
         for(HabboItem item : this.items)
         {
@@ -137,7 +137,7 @@ public class WiredEffectLowerFurni extends InteractionWiredEffect
     @Override
     public void loadWiredData(ResultSet set, Room room) throws SQLException
     {
-        this.items = new THashSet<HabboItem>();
+        this.items = new THashSet<>();
         String wiredData = set.getString("wired_data");
 
         if(wiredData.contains("\t"))
@@ -151,14 +151,17 @@ public class WiredEffectLowerFurni extends InteractionWiredEffect
             catch (Exception e)
             {}
 
-            if (data[1].contains(";"))
+            if (data.length >= 2)
             {
-                for (String s : data[1].split(";"))
+                if (data[1].contains(";"))
                 {
-                    HabboItem item = room.getHabboItem(Integer.valueOf(s));
+                    for (String s : data[1].split(";"))
+                    {
+                        HabboItem item = room.getHabboItem(Integer.valueOf(s));
 
-                    if (item != null)
-                        this.items.add(item);
+                        if (item != null)
+                            this.items.add(item);
+                    }
                 }
             }
         }

@@ -3,7 +3,6 @@ package com.eu.habbo.habbohotel.items.interactions;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.pets.Pet;
-import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
@@ -127,7 +126,7 @@ public class InteractionWater extends InteractionDefault
 
     private void recalculate(Room room)
     {
-        THashMap<Integer, TIntArrayList> tiles = new THashMap<Integer, TIntArrayList>();
+        THashMap<Integer, TIntArrayList> tiles = new THashMap<>();
 
         for (HabboItem item : room.getRoomSpecialTypes().getItemsOfType(InteractionWater.class))
         {

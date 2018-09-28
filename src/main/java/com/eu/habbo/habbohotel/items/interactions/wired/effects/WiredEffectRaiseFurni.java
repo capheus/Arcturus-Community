@@ -21,7 +21,7 @@ public class WiredEffectRaiseFurni extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.TELEPORT;
 
-    private THashSet<HabboItem> items = new THashSet<HabboItem>();
+    private THashSet<HabboItem> items = new THashSet<>();
 
     private int offset = 0;
 
@@ -38,7 +38,7 @@ public class WiredEffectRaiseFurni extends InteractionWiredEffect
     @Override
     public void serializeWiredData(ServerMessage message, Room room)
     {
-        THashSet<HabboItem> items = new THashSet<HabboItem>();
+        THashSet<HabboItem> items = new THashSet<>();
 
         for(HabboItem item : this.items)
         {
@@ -127,7 +127,7 @@ public class WiredEffectRaiseFurni extends InteractionWiredEffect
     @Override
     public void loadWiredData(ResultSet set, Room room) throws SQLException
     {
-        this.items = new THashSet<HabboItem>();
+        this.items = new THashSet<>();
         String wiredData = set.getString("wired_data");
 
         if(wiredData.contains("\t"))

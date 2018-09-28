@@ -74,30 +74,30 @@ public class ModToolComposer extends MessageComposer implements TObjectProcedure
     public boolean execute(ModToolCategory category)
     {
         this.response.appendString(category.getName());
-//        this.response.appendBoolean(false);
-//        this.response.appendInt(category.getPresets().size());
+
+
 //
-//        TIntObjectIterator<ModToolPreset> iterator = category.getPresets().iterator();
+
 //
-//        for(int i = category.getPresets().size(); i-- > 0;)
-//        {
-//            try
-//            {
-//                iterator.advance();
-//            }
-//            catch (NoSuchElementException e)
-//            {
-//                break;
-//            }
-//            this.response.appendString(iterator.value().name);
-//            this.response.appendString(iterator.value().message);
-//            this.response.appendInt(iterator.value().banLength);
-//            this.response.appendInt(1); //avatarban
-//            this.response.appendInt(iterator.value().muteLength);
-//            this.response.appendInt(1); //tradelock
-//            this.response.appendString(iterator.value().reminder);
-//            this.response.appendBoolean(false); //ShowHabboWay
-//        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         return true;
     }

@@ -13,10 +13,9 @@ import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.MessagesForYouComposer;
 import com.eu.habbo.messages.outgoing.handshake.*;
 import com.eu.habbo.messages.outgoing.inventory.InventoryAchievementsComposer;
+import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.inventory.UserEffectsListComposer;
 import com.eu.habbo.messages.outgoing.modtool.CfhTopicsMessageComposer;
-import com.eu.habbo.messages.outgoing.users.FavoriteRoomsCountComposer;
-import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.modtool.ModToolComposer;
 import com.eu.habbo.messages.outgoing.navigator.*;
 import com.eu.habbo.messages.outgoing.unknown.BuildersClubExpiredComposer;
@@ -74,16 +73,17 @@ public class SecureLoginEvent extends MessageHandler
                 }
                 catch (Exception e)
                 {
+                    e.printStackTrace();
                     Emulator.getGameServer().getGameClientManager().disposeClient(this.client.getChannel());
                     return;
                 }
-                ArrayList<ServerMessage> messages = new ArrayList<ServerMessage>();
+                ArrayList<ServerMessage> messages = new ArrayList<>();
 
                 messages.add(new SecureLoginOKComposer().compose());
                 messages.add(new UserHomeRoomComposer(this.client.getHabbo().getHabboInfo().getHomeRoom(), 0).compose());
                 messages.add(new UserEffectsListComposer(habbo).compose());
                 messages.add(new UserClothesComposer(this.client.getHabbo()).compose());
-                messages.add(new NewUserIdentityComposer().compose());
+                messages.add(new NewUserIdentityComposer(habbo).compose());
                 messages.add(new UserPermissionsComposer(this.client.getHabbo()).compose());
                 messages.add(new SessionRightsComposer().compose());
                 messages.add(new SomeConnectionComposer().compose());
@@ -91,7 +91,7 @@ public class SecureLoginEvent extends MessageHandler
                 messages.add(new UserAchievementScoreComposer(this.client.getHabbo()).compose());
                 messages.add(new UnknownComposer4().compose());
                 messages.add(new UnknownComposer5().compose());
-                //messages.add(new BuildersClubExpiredComposer().compose());
+                messages.add(new BuildersClubExpiredComposer().compose());
                 messages.add(new CfhTopicsMessageComposer().compose());
                 messages.add(new FavoriteRoomsCountComposer(this.client.getHabbo()).compose());
                 messages.add(new GameCenterGameListComposer().compose());

@@ -82,7 +82,7 @@ public class InteractionMultiHeight extends HabboItem
                 if(this.isWalkable())
                 {
                     THashSet<Habbo> habbos = room.getHabbosOnItem(this);
-                    THashSet<RoomUnit> updatedUnits = new THashSet<RoomUnit>();
+                    THashSet<RoomUnit> updatedUnits = new THashSet<>();
                     for (Habbo habbo : habbos)
                     {
                         if(habbo.getRoomUnit() == null)

@@ -35,8 +35,8 @@ public class CraftingCraftSecretEvent extends MessageHandler
 
             if (altar != null)
             {
-                Set<HabboItem> habboItems = new THashSet<HabboItem>();
-                Map<Item, Integer> items = new THashMap<Item, Integer>();
+                Set<HabboItem> habboItems = new THashSet<>();
+                Map<Item, Integer> items = new THashMap<>();
 
                 for (int i = 0; i < count; i++)
                 {
@@ -83,7 +83,11 @@ public class CraftingCraftSecretEvent extends MessageHandler
                         }
 
                         this.client.sendResponse(new CraftingResultComposer(recipe));
-                        this.client.getHabbo().getHabboStats().addRecipe(recipe.getId());
+                        if (!this.client.getHabbo().getHabboStats().hasRecipe(recipe.getId()))
+                        {
+                            this.client.getHabbo().getHabboStats().addRecipe(recipe.getId());
+                            AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("ACH_AtcgSecret"));
+                        }
                         this.client.getHabbo().getInventory().getItemsComponent().addItem(rewardItem);
                         this.client.sendResponse(new AddHabboItemComposer(rewardItem));
                         for (HabboItem item : habboItems)
@@ -93,6 +97,7 @@ public class CraftingCraftSecretEvent extends MessageHandler
                             Emulator.getThreading().run(new QueryDeleteHabboItem(item));
                         }
                         this.client.sendResponse(new InventoryRefreshComposer());
+
                         return;
                     }
                 }

@@ -5,7 +5,6 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
-import com.eu.habbo.messages.ServerMessage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -52,6 +51,15 @@ public class InteractionPressurePlate extends InteractionDefault
         super.onWalkOn(roomUnit, room, objects);
 
         this.setExtradata("1");
+        for (RoomTile tile : room.getLayout().getTilesAt(room.getLayout().getTile(this.getX(), this.getY()), this.getBaseItem().getWidth(), this.getBaseItem().getLength(), this.getRotation()))
+        {
+            if (!room.hasHabbosAt(tile.x, tile.y) && !roomUnit.getGoal().is(tile.x, tile.y))
+            {
+                this.setExtradata("0");
+                break;
+            }
+        }
+
         room.updateItemState(this);
     }
 

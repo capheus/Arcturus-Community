@@ -41,19 +41,19 @@ public class BaseJumpLoadGameComposer extends MessageComposer
             this.response.appendString("accessToken");
             this.response.appendString(Emulator.getConfig().getValue("username") + "\t" + Emulator.version + "\t" + this.client.getHabbo().getHabboInfo().getId() + "\t" + this.client.getHabbo().getHabboInfo().getUsername() + "\t" + this.client.getHabbo().getHabboInfo().getLook() + "\t" + this.client.getHabbo().getHabboInfo().getCredits() + "\t" + FASTFOOD_KEY);
             this.response.appendString("gameServerHost");
-            this.response.appendString("arcturus.wf");
+            this.response.appendString("arcturus.pw");
             this.response.appendString("gameServerPort");
             this.response.appendString("3002");
             this.response.appendString("socketPolicyPort");
             this.response.appendString("3002");
-//        this.response.appendString("accessToken");
-//        this.response.appendString(this.client.getHabbo().getHabboInfo().getUsername() + "-" + this.client.getHabbo().getHabboInfo().getLook());
-//        this.response.appendString("gameServerHost");
-//        this.response.appendString("localhost");
-//        this.response.appendString("gameServerPort");
-//        this.response.appendString("3002");
-//        this.response.appendString("socketPolicyPort");
-//        this.response.appendString("3003");
+
+
+
+
+
+
+
+
         }
         return this.response;
     }

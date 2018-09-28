@@ -10,7 +10,8 @@ public class UnknownComposer5 extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.UnknownComposer5);
-        this.response.appendInt(0);
+        this.response.appendString(""); //Box color
+        this.response.appendString(""); //Key color
         return this.response;
     }
 }

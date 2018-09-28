@@ -33,7 +33,7 @@ public class UserClubComposer extends MessageComposer
             int years = (int) Math.floor(days / 365);
 
             //if(years > 0)
-            //    days = days - (years * 365);
+
 
             int months = 0;
 

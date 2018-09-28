@@ -27,7 +27,7 @@ public class RoomWallItemsComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomWallItemsComposer);
-        THashMap<Integer, String> userNames = new THashMap<Integer, String>();
+        THashMap<Integer, String> userNames = new THashMap<>();
         TIntObjectMap<String> furniOwnerNames = this.room.getFurniOwnerNames();
         TIntObjectIterator<String> iterator = furniOwnerNames.iterator();
 

@@ -21,7 +21,7 @@ public class WiredConditionTriggerOnFurni extends InteractionWiredCondition
 {
     public static final WiredConditionType type = WiredConditionType.TRIGGER_ON_FURNI;
 
-    private THashSet<HabboItem> items = new THashSet<HabboItem>();
+    private THashSet<HabboItem> items = new THashSet<>();
 
     public WiredConditionTriggerOnFurni(ResultSet set, Item baseItem) throws SQLException
     {
@@ -152,7 +152,7 @@ public class WiredConditionTriggerOnFurni extends InteractionWiredCondition
 
     private void refresh()
     {
-        THashSet<HabboItem> items = new THashSet<HabboItem>();
+        THashSet<HabboItem> items = new THashSet<>();
 
         Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
         if(room == null)

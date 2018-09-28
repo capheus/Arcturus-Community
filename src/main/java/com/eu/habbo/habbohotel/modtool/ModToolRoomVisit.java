@@ -26,7 +26,7 @@ public class ModToolRoomVisit implements Comparable<ModToolRoomVisit>
         this.roomName = roomName;
         this.timestamp = timestamp;
         this.exitTimestamp = exitTimestamp;
-        this.chat = new THashSet<ModToolChatLog>();
+        this.chat = new THashSet<>();
     }
 
     @Override

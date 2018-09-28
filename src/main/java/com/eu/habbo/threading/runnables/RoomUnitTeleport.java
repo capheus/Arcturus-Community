@@ -1,9 +1,11 @@
 package com.eu.habbo.threading.runnables;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
+import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUnitOnRollerComposer;
 
 public class RoomUnitTeleport implements Runnable
@@ -30,7 +32,20 @@ public class RoomUnitTeleport implements Runnable
     public void run()
     {
         RoomTile t = this.room.getLayout().getTile((short) x, (short) y);
-        this.roomUnit.setGoalLocation(t);
+
+        HabboItem topItem = this.room.getTopItemAt(this.roomUnit.getCurrentLocation().x, this.roomUnit.getCurrentLocation().y);
+        if (topItem != null)
+        {
+            try
+            {
+                topItem.onWalkOff(this.roomUnit, this.room, new Object[]{this});
+            }
+            catch (Exception e)
+            {
+                Emulator.getLogging().logErrorLine(e);
+            }
+        }
+        this.roomUnit.setCurrentLocation(t);
         this.roomUnit.removeStatus(RoomUnitStatus.MOVE);
         this.room.sendComposer(new RoomUnitOnRollerComposer(this.roomUnit, null, t, this.room).compose());
         this.room.giveEffect(this.roomUnit, this.newEffect);

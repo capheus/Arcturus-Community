@@ -52,26 +52,26 @@ public class RoomPlaceItemEvent extends MessageHandler
         {
             rentSpace = room.getHabboItem(this.client.getHabbo().getHabboStats().rentedItemId);
 
-//            if(rentSpace == null)
-//            {
-//                this.client.getHabbo().getHabboStats().setRentedTimeEnd(0);
-//                this.client.getHabbo().getHabboStats().setRentedItemId(0);
+
+
+
+
 //
-//                return;
-//            }
-//            else
-//            {
-//                if(rentSpace instanceof InteractionRentableSpace)
-//                {
-//                    if(!((InteractionRentableSpace) rentSpace).isRented() || ((InteractionRentableSpace) rentSpace).getRenterId() != this.client.getHabbo().getHabboInfo().getId())
-//                    {
-//                        this.client.getHabbo().getHabboStats().setRentedTimeEnd(0);
-//                        this.client.getHabbo().getHabboStats().setRentedItemId(0);
+
+
+
+
+
+
+
+
+
+
 //
-//                        return;
-//                    }
-//                }
-//            }
+
+
+
+
         }
         else
         {
@@ -116,7 +116,7 @@ public class RoomPlaceItemEvent extends MessageHandler
             return;
         }
 
-        THashSet<RoomTile> updatedTiles = new THashSet<RoomTile>();
+        THashSet<RoomTile> updatedTiles = new THashSet<>();
         if(item.getBaseItem().getType() == FurnitureType.FLOOR)
         {
             short x = Short.valueOf(values[1]);
@@ -263,14 +263,14 @@ public class RoomPlaceItemEvent extends MessageHandler
         room.addHabboItem(item);
         item.setRoomId(room.getId());
 
-//        if(!updatedTiles.isEmpty())
-//        {
-//            for (RoomTile t : updatedTiles)
-//            {
-//                t.setStackHeight(room.getStackHeight(t.x, t.y, false));
-//            }
-//            room.sendComposer(new UpdateStackHeightComposer(updatedTiles).compose());
-//        }
+
+
+
+
+
+
+
+
         room.updateTiles(updatedTiles);
         for (RoomTile tile : updatedTiles)
         {

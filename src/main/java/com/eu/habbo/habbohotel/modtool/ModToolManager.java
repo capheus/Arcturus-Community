@@ -9,8 +9,9 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboInfo;
 import com.eu.habbo.habbohotel.users.HabboManager;
 import com.eu.habbo.messages.ClientMessage;
-import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
-import com.eu.habbo.messages.outgoing.modtool.*;
+import com.eu.habbo.messages.outgoing.modtool.ModToolIssueHandledComposer;
+import com.eu.habbo.messages.outgoing.modtool.ModToolIssueInfoComposer;
+import com.eu.habbo.messages.outgoing.modtool.ModToolUserInfoComposer;
 import com.eu.habbo.plugin.events.support.SupportRoomActionEvent;
 import com.eu.habbo.plugin.events.support.SupportTicketEvent;
 import com.eu.habbo.plugin.events.support.SupportUserAlertedEvent;
@@ -29,7 +30,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class ModToolManager
 {
@@ -224,7 +224,7 @@ public class ModToolManager
 
     public ArrayList<ModToolChatLog> getRoomChatlog(int roomId)
     {
-        ArrayList<ModToolChatLog> chatlogs = new ArrayList<ModToolChatLog>();
+        ArrayList<ModToolChatLog> chatlogs = new ArrayList<>();
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.username, users.id, chatlogs_room.* FROM chatlogs_room INNER JOIN users ON users.id = chatlogs_room.user_from_id WHERE room_id = ? ORDER BY timestamp DESC LIMIT 150"))
         {
@@ -247,7 +247,7 @@ public class ModToolManager
 
     public ArrayList<ModToolChatLog> getUserChatlog(int userId)
     {
-        ArrayList<ModToolChatLog> chatlogs = new ArrayList<ModToolChatLog>();
+        ArrayList<ModToolChatLog> chatlogs = new ArrayList<>();
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.username, users.id, chatlogs_room.* FROM chatlogs_room INNER JOIN users ON users.id = chatlogs_room.user_from_id WHERE user_from_id = ? ORDER BY timestamp DESC LIMIT 150"))
         {
@@ -296,7 +296,7 @@ public class ModToolManager
 
     public ArrayList<ModToolRoomVisit> getUserRoomVisitsAndChatlogs(int userId)
     {
-        ArrayList<ModToolRoomVisit> chatlogs = new ArrayList<ModToolRoomVisit>();
+        ArrayList<ModToolRoomVisit> chatlogs = new ArrayList<>();
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT rooms.name, users.username, room_enter_log.timestamp AS enter_timestamp, room_enter_log.exit_timestamp, chatlogs_room.* FROM room_enter_log INNER JOIN rooms ON room_enter_log.room_id = rooms.id INNER JOIN users ON room_enter_log.user_id = users.id LEFT JOIN chatlogs_room ON room_enter_log.user_id = chatlogs_room.user_from_id AND room_enter_log.room_id = chatlogs_room.room_id AND chatlogs_room.timestamp >= room_enter_log.timestamp AND chatlogs_room.timestamp < room_enter_log.exit_timestamp WHERE chatlogs_room.user_from_id = ? ORDER BY room_enter_log.timestamp DESC LIMIT 500"))
         {
             statement.setInt(1, userId);
@@ -342,7 +342,7 @@ public class ModToolManager
 
     public THashSet<ModToolRoomVisit> requestUserRoomVisits(Habbo habbo)
     {
-        THashSet<ModToolRoomVisit> roomVisits = new THashSet<ModToolRoomVisit>();
+        THashSet<ModToolRoomVisit> roomVisits = new THashSet<>();
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT rooms.name, room_enter_log.* FROM room_enter_log INNER JOIN rooms ON rooms.id = room_enter_log.room_id WHERE user_id = ? AND timestamp >= ? ORDER BY timestamp DESC LIMIT 50"))
         {
@@ -371,7 +371,7 @@ public class ModToolManager
 
     public THashSet<ModToolRoomVisit> getVisitsForRoom(Room room, int amount, boolean groupUser, int fromTimestamp, int toTimestamp, String excludeUsername)
     {
-        THashSet<ModToolRoomVisit> roomVisits = new THashSet<ModToolRoomVisit>();
+        THashSet<ModToolRoomVisit> roomVisits = new THashSet<>();
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM (" +
                 "SELECT " +

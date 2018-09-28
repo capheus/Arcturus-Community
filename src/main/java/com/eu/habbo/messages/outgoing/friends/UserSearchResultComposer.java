@@ -24,7 +24,7 @@ public class UserSearchResultComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.UserSearchResultComposer);
-        THashSet<MessengerBuddy> u = new THashSet<MessengerBuddy>();
+        THashSet<MessengerBuddy> u = new THashSet<>();
 
         for(MessengerBuddy buddy : this.users)
         {

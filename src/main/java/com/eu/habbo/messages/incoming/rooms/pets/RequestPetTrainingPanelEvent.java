@@ -14,7 +14,7 @@ public class RequestPetTrainingPanelEvent extends MessageHandler
         if(this.client.getHabbo().getHabboInfo().getCurrentRoom() == null)
             return;
 
-        Pet pet = (Pet) this.client.getHabbo().getHabboInfo().getCurrentRoom().getPet(petId);
+        Pet pet = this.client.getHabbo().getHabboInfo().getCurrentRoom().getPet(petId);
 
         if(pet != null)
             this.client.sendResponse(new PetTrainingPanelComposer(pet));

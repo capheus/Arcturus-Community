@@ -25,13 +25,13 @@ public class WiredConditionFurniHaveFurni extends InteractionWiredCondition
     public WiredConditionFurniHaveFurni(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
-        this.items = new THashSet<HabboItem>();
+        this.items = new THashSet<>();
     }
 
     public WiredConditionFurniHaveFurni(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
     {
         super(id, userId, item, extradata, limitedStack, limitedSells);
-        this.items = new THashSet<HabboItem>();
+        this.items = new THashSet<>();
     }
 
     @Override
@@ -186,7 +186,7 @@ public class WiredConditionFurniHaveFurni extends InteractionWiredCondition
 
     private void refresh()
     {
-        THashSet<HabboItem> items = new THashSet<HabboItem>();
+        THashSet<HabboItem> items = new THashSet<>();
 
         Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
         if(room == null)

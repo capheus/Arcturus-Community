@@ -1,13 +1,12 @@
 package com.eu.habbo.messages;
 
 import com.eu.habbo.Emulator;
-
-import java.io.IOException;
-import java.nio.charset.Charset;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
+
+import java.io.IOException;
+import java.nio.charset.Charset;
 
 public class ServerMessage
 {
@@ -15,7 +14,11 @@ public class ServerMessage
     private ByteBufOutputStream stream;
     private ByteBuf channelBuffer;
 
-    public ServerMessage() {}
+    public ServerMessage()
+    {
+        this.channelBuffer = Unpooled.buffer();
+        this.stream = new ByteBufOutputStream(this.channelBuffer);
+    }
 
     public ServerMessage(int header)
     {

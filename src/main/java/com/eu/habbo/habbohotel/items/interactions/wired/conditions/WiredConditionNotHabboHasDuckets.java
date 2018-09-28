@@ -8,7 +8,7 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class WiredConditionNotHabboHasDuckets extends WiredConditionNotHabboWearsBadge
+public class WiredConditionNotHabboHasDuckets extends WiredConditionNotHabboHasEffect
 {
     public WiredConditionNotHabboHasDuckets(ResultSet set, Item baseItem) throws SQLException
     {
@@ -23,22 +23,12 @@ public class WiredConditionNotHabboHasDuckets extends WiredConditionNotHabboWear
     @Override
     public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
     {
-        try
-        {
-            Habbo habbo = room.getHabbo(roomUnit);
+        Habbo habbo = room.getHabbo(roomUnit);
 
-            if (habbo != null)
-            {
-                return habbo.getHabboInfo().getPixels() < Integer.valueOf(this.badge);
-            }
-        }
-        catch (Exception e)
+        if (habbo != null)
         {
-
+            return habbo.getHabboInfo().getPixels() < this.effectId;
         }
-        finally
-        {
-            return false;
-        }
+        return false;
     }
 }

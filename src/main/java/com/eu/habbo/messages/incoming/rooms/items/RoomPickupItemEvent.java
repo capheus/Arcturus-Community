@@ -45,16 +45,16 @@ public class RoomPickupItemEvent extends MessageHandler
             }
         }
 
-//            if(item.getUserId() == this.client.getHabbo().getHabboInfo().getId() || (room.getGuildId() > 0 && room.guildRightLevel(this.client.getHabbo()) >= 2) || this.client.getHabbo().hasPermission(Permission.ACC_ANYROOMOWNER))
-//            {
-//                if (room.getGuildId() == 0 && this.client.getHabbo().hasPermission(Permission.ACC_ANYROOMOWNER))
-//                    item.setUserId(this.client.getHabbo().getHabboInfo().getId());
+
+
+
+
 //
-//                room.pickUpItem(item, this.client.getHabbo());
-//            }
-//            else
-//            {
-//                room.ejectUserItem(item);
-//            }
+
+
+
+
+
+
     }
 }

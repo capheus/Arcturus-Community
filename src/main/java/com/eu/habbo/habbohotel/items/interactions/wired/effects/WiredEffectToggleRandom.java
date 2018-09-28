@@ -27,7 +27,7 @@ public class WiredEffectToggleRandom extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.TOGGLE_RANDOM;
 
-    private final THashSet<HabboItem> items =  new THashSet<HabboItem>();
+    private final THashSet<HabboItem> items =  new THashSet<>();
 
     public WiredEffectToggleRandom(ResultSet set, Item baseItem) throws SQLException
     {
@@ -42,7 +42,7 @@ public class WiredEffectToggleRandom extends InteractionWiredEffect
     @Override
     public void serializeWiredData(ServerMessage message, Room room)
     {
-        THashSet<HabboItem> items = new THashSet<HabboItem>();
+        THashSet<HabboItem> items = new THashSet<>();
 
         for(HabboItem item : this.items)
         {

@@ -17,9 +17,9 @@ public class ProfileFriendsComposer extends MessageComposer
 {
 
     private Habbo habbo;
-    private final List<MessengerBuddy> lovers = new ArrayList<MessengerBuddy>();
-    private final List<MessengerBuddy> friends = new ArrayList<MessengerBuddy>();
-    private final List<MessengerBuddy> haters = new ArrayList<MessengerBuddy>();
+    private final List<MessengerBuddy> lovers = new ArrayList<>();
+    private final List<MessengerBuddy> friends = new ArrayList<>();
+    private final List<MessengerBuddy> haters = new ArrayList<>();
     private final int userId;
 
     public ProfileFriendsComposer(THashMap<Integer, THashSet<MessengerBuddy>> map, int userId)

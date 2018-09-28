@@ -71,10 +71,10 @@ public class PetManager
     {
         long millis = System.currentTimeMillis();
 
-        this.petRaces = new THashMap<Integer, THashSet<PetRace>>();
-        this.petData = new THashMap<Integer, PetData>();
+        this.petRaces = new THashMap<>();
+        this.petData = new THashMap<>();
         this.breedingPetType = new TIntIntHashMap();
-        this.breedingReward = new THashMap<Integer, TIntObjectHashMap<ArrayList<PetBreedingReward>>>();
+        this.breedingReward = new THashMap<>();
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
         {
@@ -150,7 +150,7 @@ public class PetManager
             while(set.next())
             {
                 if(this.petRaces.get(set.getInt("race")) == null)
-                    this.petRaces.put(set.getInt("race"), new THashSet<PetRace>());
+                    this.petRaces.put(set.getInt("race"), new THashSet<>());
 
                 this.petRaces.get(set.getInt("race")).add(new PetRace(set));
             }
@@ -226,7 +226,7 @@ public class PetManager
                 else
                 {
                     if(!PetData.generalPetVocals.containsKey(PetVocalsType.valueOf(set.getString("type").toUpperCase())))
-                        PetData.generalPetVocals.put(PetVocalsType.valueOf(set.getString("type").toUpperCase()), new THashSet<PetVocal>());
+                        PetData.generalPetVocals.put(PetVocalsType.valueOf(set.getString("type").toUpperCase()), new THashSet<>());
 
                     PetData.generalPetVocals.get(PetVocalsType.valueOf(set.getString("type").toUpperCase())).add(new PetVocal(set.getString("message")));
                 }
@@ -236,7 +236,7 @@ public class PetManager
 
     private void loadPetCommands(Connection connection) throws SQLException
     {
-        THashMap<Integer, PetCommand> commandsList = new THashMap<Integer, PetCommand>();
+        THashMap<Integer, PetCommand> commandsList = new THashMap<>();
         try (Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM pet_commands_data"))
         {
             while(set.next())
@@ -276,12 +276,12 @@ public class PetManager
                 PetBreedingReward reward = new PetBreedingReward(set);
                 if (!this.breedingReward.containsKey(reward.petType))
                 {
-                    this.breedingReward.put(reward.petType, new TIntObjectHashMap<ArrayList<PetBreedingReward>>());
+                    this.breedingReward.put(reward.petType, new TIntObjectHashMap<>());
                 }
 
                 if (!this.breedingReward.get(reward.petType).containsKey(reward.rarityLevel))
                 {
-                    this.breedingReward.get(reward.petType).put(reward.rarityLevel, new ArrayList<PetBreedingReward>());
+                    this.breedingReward.get(reward.petType).put(reward.rarityLevel, new ArrayList<>());
                 }
 
                 this.breedingReward.get(reward.petType).get(reward.rarityLevel).add(reward);
@@ -401,44 +401,52 @@ public class PetManager
     {
         int type = Integer.valueOf(item.getName().toLowerCase().replace("a0 pet", ""));
 
-        Pet pet;
-        if(type == 15)
-            pet = new HorsePet(type, Integer.valueOf(race), color, name, client.getHabbo().getHabboInfo().getId());
-        else if(type == 16)
-            pet = createMonsterplant(null, client.getHabbo(), false, null);
-        else
-            pet = new Pet(type,
-                Integer.valueOf(race),
-                color,
-                name,
-                client.getHabbo().getHabboInfo().getId()
-        );
+        if (this.petData.containsKey(type))
+        {
+            Pet pet;
+            if (type == 15)
+                pet = new HorsePet(type, Integer.valueOf(race), color, name, client.getHabbo().getHabboInfo().getId());
+            else if (type == 16)
+                pet = createMonsterplant(null, client.getHabbo(), false, null);
+            else
+                pet = new Pet(type,
+                        Integer.valueOf(race),
+                        color,
+                        name,
+                        client.getHabbo().getHabboInfo().getId()
+                );
 
-        pet.needsUpdate = true;
-        pet.run();
-        return pet;
+            pet.needsUpdate = true;
+            pet.run();
+            return pet;
+        }
+        return null;
     }
 
     public Pet createPet(int type, String name, GameClient client)
     {
-        Pet pet = new Pet(type, Emulator.getRandom().nextInt(this.petRaces.get(type).size() + 1), "FFFFFF", name, client.getHabbo().getHabboInfo().getId());
-        pet.needsUpdate = true;
-        pet.run();
-        return pet;
+        if (this.petData.containsKey(type))
+        {
+            Pet pet = new Pet(type, Emulator.getRandom().nextInt(this.petRaces.get(type).size() + 1), "FFFFFF", name, client.getHabbo().getHabboInfo().getId());
+            pet.needsUpdate = true;
+            pet.run();
+            return pet;
+        }
+        return null;
     }
 
     public MonsterplantPet createMonsterplant(Room room, Habbo habbo, boolean rare, RoomTile t)
     {
         MonsterplantPet pet = new MonsterplantPet(
                 habbo.getHabboInfo().getId(),   //Owner ID
-                randomBody(rare ? 4 : 0),                              // Type
-                randomColor(rare ? 4 : 0),                                  // Color
-                Emulator.getRandom().nextInt(12) + 1,                              // Mouth
-                Emulator.getRandom().nextInt(11),                                  // Mouthcolor
-                Emulator.getRandom().nextInt(12) + 1,                              // Nose
-                Emulator.getRandom().nextInt(11),                                  // NoseColor
-                Emulator.getRandom().nextInt(12) + 1,                              // Eyes
-                Emulator.getRandom().nextInt(11)                                   // EyesColor
+                randomBody(rare ? 4 : 0),
+                randomColor(rare ? 4 : 0),
+                Emulator.getRandom().nextInt(12) + 1,
+                Emulator.getRandom().nextInt(11),
+                Emulator.getRandom().nextInt(12) + 1,
+                Emulator.getRandom().nextInt(11),
+                Emulator.getRandom().nextInt(12) + 1,
+                Emulator.getRandom().nextInt(11)
         );
 
         pet.setUserId(habbo.getHabboInfo().getId());
@@ -545,7 +553,7 @@ public class PetManager
 
     public static int random(int low, int high, double bias)
     {
-        double r = Math.random();    // random between 0 and 1
+        double r = Math.random();
         r = Math.pow(r, bias);
         return (int) (low + (high - low) * r);
     }

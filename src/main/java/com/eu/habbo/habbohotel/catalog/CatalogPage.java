@@ -12,7 +12,6 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public abstract class CatalogPage implements Comparable<CatalogPage>, ISerialize
 {
@@ -36,9 +35,9 @@ public abstract class CatalogPage implements Comparable<CatalogPage>, ISerialize
     protected String textDetails;
     protected String textTeaser;
     protected TIntArrayList offerIds = new TIntArrayList();
-    protected THashMap<Integer, CatalogPage> childPages = new THashMap<Integer, CatalogPage>();;
-    private TIntObjectMap<CatalogItem> catalogItems = TCollections.synchronizedMap(new TIntObjectHashMap<CatalogItem>());
-    private ArrayList<Integer> included = new ArrayList<Integer>();
+    protected THashMap<Integer, CatalogPage> childPages = new THashMap<>();;
+    private TIntObjectMap<CatalogItem> catalogItems = TCollections.synchronizedMap(new TIntObjectHashMap<>());
+    private ArrayList<Integer> included = new ArrayList<>();
 
     public CatalogPage(ResultSet set) throws SQLException
     {
@@ -76,6 +75,7 @@ public abstract class CatalogPage implements Comparable<CatalogPage>, ISerialize
                 catch (Exception e)
                 {
                     Emulator.getLogging().logErrorLine(e);
+                    Emulator.getLogging().logErrorLine("Failed to parse includes column value of (" + id + ") for catalog page (" + this.id + ")");
                 }
             }
         }

@@ -24,7 +24,7 @@ import java.util.NoSuchElementException;
 
 public class ItemsComponent
 {
-    private final TIntObjectMap<HabboItem> items = TCollections.synchronizedMap(new TIntObjectHashMap<HabboItem>());
+    private final TIntObjectMap<HabboItem> items = TCollections.synchronizedMap(new TIntObjectHashMap<>());
 
     private final HabboInventory inventory;
 
@@ -36,7 +36,7 @@ public class ItemsComponent
 
     public static THashMap<Integer, HabboItem> loadItems(Habbo habbo)
     {
-        THashMap<Integer, HabboItem> itemsList = new THashMap<Integer, HabboItem>();
+        THashMap<Integer, HabboItem> itemsList = new THashMap<>();
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM items WHERE room_id = ? AND user_id = ?"))
         {
@@ -170,7 +170,7 @@ public class ItemsComponent
 
     public THashSet<HabboItem> getItemsAsValueCollection()
     {
-        THashSet<HabboItem> items = new THashSet<HabboItem>();
+        THashSet<HabboItem> items = new THashSet<>();
         items.addAll(this.items.valueCollection());
 
         return items;

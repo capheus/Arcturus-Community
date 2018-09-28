@@ -13,7 +13,7 @@ public class BuildersClubExpiredComposer extends MessageComposer
         this.response.appendInt(Integer.MAX_VALUE);
         this.response.appendInt(0);
         this.response.appendInt(100);
-        this.response.appendInt(100000);
+        this.response.appendInt(Integer.MAX_VALUE);
         this.response.appendInt(0);
         return this.response;
     }

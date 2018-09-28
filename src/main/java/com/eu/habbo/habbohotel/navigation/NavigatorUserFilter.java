@@ -21,7 +21,7 @@ public class NavigatorUserFilter extends NavigatorFilter
     public List<SearchResultList> getResult(Habbo habbo)
     {
         int i = 0;
-        List<SearchResultList> resultLists = new ArrayList<SearchResultList>();
+        List<SearchResultList> resultLists = new ArrayList<>();
         List<Room> rooms = Emulator.getGameEnvironment().getRoomManager().getRoomsForHabbo(habbo);
         Collections.sort(rooms);
         resultLists.add(new SearchResultList(i, "my", "", SearchAction.NONE, habbo.getHabboStats().navigatorWindowSettings.getListModeForCategory("my"), habbo.getHabboStats().navigatorWindowSettings.getDisplayModeForCategory("my"), rooms, true, true));

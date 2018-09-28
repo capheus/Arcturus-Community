@@ -26,7 +26,7 @@ public class CannonKickAction implements Runnable
     @Override
     public void run()
     {
-        THashMap<String, String> dater = new THashMap<String, String>();
+        THashMap<String, String> dater = new THashMap<>();
         dater.put("title", "${notification.room.kick.cannonball.title}");
         dater.put("message", "${notification.room.kick.cannonball.message}");
 

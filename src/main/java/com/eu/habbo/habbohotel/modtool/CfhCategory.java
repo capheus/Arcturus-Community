@@ -14,7 +14,7 @@ public class CfhCategory
     {
         this.id = id;
         this.name = name;
-        this.topics = TCollections.synchronizedMap(new TIntObjectHashMap<CfhTopic>());
+        this.topics = TCollections.synchronizedMap(new TIntObjectHashMap<>());
     }
 
     public void addTopic(CfhTopic topic)

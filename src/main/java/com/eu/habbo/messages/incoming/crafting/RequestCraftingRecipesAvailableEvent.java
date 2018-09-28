@@ -6,9 +6,7 @@ import com.eu.habbo.habbohotel.crafting.CraftingRecipe;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.crafting.CraftingRecipeComposer;
 import com.eu.habbo.messages.outgoing.crafting.CraftingRecipesAvailableComposer;
-import com.eu.habbo.messages.outgoing.crafting.CraftingResultComposer;
 import gnu.trove.map.hash.THashMap;
 
 import java.util.Map;
@@ -26,7 +24,7 @@ public class RequestCraftingRecipesAvailableEvent extends MessageHandler
 
         if (altar != null)
         {
-            Map<Item, Integer> items = new THashMap<Item, Integer>();
+            Map<Item, Integer> items = new THashMap<>();
 
             int count = this.packet.readInt();
             for (int i = 0; i < count; i++)

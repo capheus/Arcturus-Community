@@ -2,7 +2,6 @@ package com.eu.habbo.habbohotel.items;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.habbohotel.users.HabboInfo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ISerialize;
 import com.eu.habbo.messages.ServerMessage;
@@ -17,7 +16,7 @@ public class NewUserGift implements ISerialize
     private final int id;
     private final Type type;
     private final String imageUrl;
-    private Map<String, String> items = new HashMap<String, String>();
+    private Map<String, String> items = new HashMap<>();
 
     public NewUserGift(ResultSet set) throws SQLException
     {
