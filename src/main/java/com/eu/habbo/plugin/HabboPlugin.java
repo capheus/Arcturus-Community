@@ -14,9 +14,9 @@ public abstract class HabboPlugin
 
     public HabboPluginConfiguration configuration;
 
-    public abstract void onEnable();
+    public abstract void onEnable() throws Exception;
 
-    public abstract void onDisable();
+    public abstract void onDisable() throws Exception;
 
     public boolean isRegistered(Class<? extends  Event> clazz)
     {

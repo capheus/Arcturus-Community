@@ -40,7 +40,18 @@ public class PointsCommand extends Command
                         }
                     }
 
-                    int amount = Integer.valueOf(params[2]);
+                    int amount = 0;
+
+                    try
+                    {
+                        amount = Integer.valueOf(params[2]);
+                    }
+                    catch (Exception e)
+                    {
+                        gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_points.invalid_amount"), RoomChatMessageBubbles.ALERT);
+                        return true;
+                    }
+
                     if (amount != 0)
                     {
                         habbo.givePoints(type, amount);

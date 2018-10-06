@@ -39,7 +39,10 @@ public class PetTrainingPanelComposer extends MessageComposer
             }
         }
 
-        Collections.sort(enabled);
+        if (!enabled.isEmpty())
+        {
+            Collections.sort(enabled);
+        }
 
         this.response.appendInt(enabled.size());
 

@@ -11,6 +11,8 @@ import java.sql.SQLException;
 
 public class InteractionPostIt extends HabboItem
 {
+    public static String STICKYPOLE_PREFIX_TEXT = "";
+
     public InteractionPostIt(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);

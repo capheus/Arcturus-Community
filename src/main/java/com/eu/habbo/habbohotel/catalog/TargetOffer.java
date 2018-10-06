@@ -1,17 +1,20 @@
 package com.eu.habbo.habbohotel.catalog;
 
 
-import com.eu.habbo.messages.ISerialize;
+import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.users.cache.HabboOfferPurchase;
 import com.eu.habbo.messages.ServerMessage;
 
-import java.util.List;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public class TargetOffer implements ISerialize
+public class TargetOffer
 {
-    private final int unknownInt1;
+    public static int ACTIVE_TARGET_OFFER_ID = 0;
+
     private final int id;
+    private final int catalogItem;
     private final String identifier;
-    private final String unknownString1;
     private final int priceInCredits;
     private final int priceInActivityPoints;
     private final int activityPointsType;
@@ -20,50 +23,111 @@ public class TargetOffer implements ISerialize
     private final String title;
     private final String description;
     private final String imageUrl;
-    private final String unknownString2;
-    private final int type;
-    private final List<String> unknownStringList;
+    private final String icon;
+    private final String[] vars;
 
-    public TargetOffer(int unknownInt1, int id, String identifier, String unknownString1, int priceInCredits, int priceInActivityPoints, int activityPointsType, int purchaseLimit, int expirationTime, String title, String description, String imageUrl, String unknownString2, int type, List<String> unknownStringList)
+    public TargetOffer(ResultSet set) throws SQLException
     {
-        this.unknownInt1 = unknownInt1;
-        this.id = id;
-        this.identifier = identifier;
-        this.unknownString1 = unknownString1;
-        this.priceInCredits = priceInCredits;
-        this.priceInActivityPoints = priceInActivityPoints;
-        this.activityPointsType = activityPointsType;
-        this.purchaseLimit = purchaseLimit;
-        this.expirationTime = expirationTime;
-        this.title = title;
-        this.description = description;
-        this.imageUrl = imageUrl;
-        this.unknownString2 = unknownString2;
-        this.type = type;
-        this.unknownStringList = unknownStringList;
+        this.id = set.getInt("id");
+        this.identifier = set.getString("offer_code");
+        this.priceInCredits = set.getInt("credits");
+        this.priceInActivityPoints = set.getInt("points");
+        this.activityPointsType = set.getInt("points_type");
+        this.title = set.getString("title");
+        this.description = set.getString("description");
+        this.imageUrl = set.getString("image");
+        this.icon = set.getString("icon");
+        this.purchaseLimit = set.getInt("purchase_limit");
+        this.expirationTime = set.getInt("end_timestamp");
+        this.vars = set.getString("vars").split(";");
+        this.catalogItem = set.getInt("catalog_item");
     }
 
-    @Override
-    public void serialize(ServerMessage message)
+    public void serialize(ServerMessage message, HabboOfferPurchase purchase)
     {
-        message.appendInt(this.unknownInt1);
+        message.appendInt(purchase.getState());
         message.appendInt(this.id);
         message.appendString(this.identifier);
-        message.appendString(this.unknownString1);
+        message.appendString(this.identifier);
         message.appendInt(this.priceInCredits);
         message.appendInt(this.priceInActivityPoints);
         message.appendInt(this.activityPointsType);
-        message.appendInt(this.purchaseLimit);
-        message.appendInt(this.expirationTime);
+        message.appendInt(Math.max(this.purchaseLimit - purchase.getAmount(), 0));
+        message.appendInt(Math.max(Emulator.getIntUnixTimestamp() - this.expirationTime, 0));
         message.appendString(this.title);
         message.appendString(this.description);
         message.appendString(this.imageUrl);
-        message.appendString(this.unknownString2);
-        message.appendInt(this.type);
-        message.appendInt(this.unknownStringList.size());
-        for (String s : this.unknownStringList)
+        message.appendString(this.icon);
+        message.appendInt(0);
+        message.appendInt(this.vars.length);
+        for (String variable : this.vars)
         {
-            message.appendString(s);
+            message.appendString(variable);
         }
+    }
+
+    public int getId()
+    {
+        return this.id;
+    }
+
+    public String getIdentifier()
+    {
+        return this.identifier;
+    }
+
+    public int getPriceInCredits()
+    {
+        return this.priceInCredits;
+    }
+
+    public int getPriceInActivityPoints()
+    {
+        return this.priceInActivityPoints;
+    }
+
+    public int getActivityPointsType()
+    {
+        return this.activityPointsType;
+    }
+
+    public int getPurchaseLimit()
+    {
+        return this.purchaseLimit;
+    }
+
+    public int getExpirationTime()
+    {
+        return this.expirationTime;
+    }
+
+    public String getTitle()
+    {
+        return this.title;
+    }
+
+    public String getDescription()
+    {
+        return this.description;
+    }
+
+    public String getImageUrl()
+    {
+        return this.imageUrl;
+    }
+
+    public String getIcon()
+    {
+        return this.icon;
+    }
+
+    public String[] getVars()
+    {
+        return this.vars;
+    }
+
+    public int getCatalogItem()
+    {
+        return this.catalogItem;
     }
 }

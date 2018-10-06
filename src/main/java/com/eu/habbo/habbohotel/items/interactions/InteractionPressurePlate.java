@@ -5,11 +5,13 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.users.HabboItem;
+import com.eu.habbo.messages.ServerMessage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class InteractionPressurePlate extends InteractionDefault
+public class InteractionPressurePlate extends HabboItem
 {
     public InteractionPressurePlate(ResultSet set, Item baseItem) throws SQLException
     {
@@ -40,6 +42,15 @@ public class InteractionPressurePlate extends InteractionDefault
     }
 
     @Override
+    public void serializeExtradata(ServerMessage serverMessage)
+    {
+        serverMessage.appendInt((this.isLimited() ? 256 : 0));
+        serverMessage.appendString(this.getExtradata());
+
+        super.serializeExtradata(serverMessage);
+    }
+
+    @Override
     public void onWalk(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
     {
 
@@ -51,12 +62,16 @@ public class InteractionPressurePlate extends InteractionDefault
         super.onWalkOn(roomUnit, room, objects);
 
         this.setExtradata("1");
-        for (RoomTile tile : room.getLayout().getTilesAt(room.getLayout().getTile(this.getX(), this.getY()), this.getBaseItem().getWidth(), this.getBaseItem().getLength(), this.getRotation()))
+
+        if (this.getBaseItem().getWidth() > 1 || this.getBaseItem().getLength() > 1)
         {
-            if (!room.hasHabbosAt(tile.x, tile.y) && !roomUnit.getGoal().is(tile.x, tile.y))
+            for (RoomTile tile : room.getLayout().getTilesAt(room.getLayout().getTile(this.getX(), this.getY()), this.getBaseItem().getWidth(), this.getBaseItem().getLength(), this.getRotation()))
             {
-                this.setExtradata("0");
-                break;
+                if (!room.hasHabbosAt(tile.x, tile.y) && !roomUnit.getGoal().is(tile.x, tile.y))
+                {
+                    this.setExtradata("0");
+                    break;
+                }
             }
         }
 

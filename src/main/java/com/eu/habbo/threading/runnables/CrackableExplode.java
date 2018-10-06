@@ -44,7 +44,7 @@ public class CrackableExplode implements Runnable
         {
             this.habboItem.reset(this.room);
         }
-        HabboItem newItem = Emulator.getGameEnvironment().getItemManager().createItem(this.habboItem.getUserId(), Emulator.getGameEnvironment().getItemManager().getCrackableReward(this.habboItem.getBaseItem().getId()), 0, 0, "");
+        HabboItem newItem = Emulator.getGameEnvironment().getItemManager().createItem(this.habboItem.allowAnyone() ? habbo.getHabboInfo().getId() : this.habboItem.getUserId(), Emulator.getGameEnvironment().getItemManager().getCrackableReward(this.habboItem.getBaseItem().getId()), 0, 0, "");
 
         if (newItem != null)
         {

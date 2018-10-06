@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.incoming.rooms.items;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.items.interactions.InteractionPostIt;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
@@ -21,12 +22,18 @@ public class PostItDeleteEvent extends MessageHandler
 
         HabboItem item = room.getHabboItem(itemId);
 
-        if(item == null || item.getUserId() != this.client.getHabbo().getHabboInfo().getId())
-            return;
+        if (item instanceof InteractionPostIt)
+        {
+            if (item == null)
+                return;
 
-        item.setRoomId(0);
-        room.removeHabboItem(item);
-        room.sendComposer(new RemoveWallItemComposer(item).compose());
-        Emulator.getThreading().run(new QueryDeleteHabboItem(item));
+            if (item.getUserId() == this.client.getHabbo().getHabboInfo().getId() || room.isOwner(this.client.getHabbo()))
+            {
+                item.setRoomId(0);
+                room.removeHabboItem(item);
+                room.sendComposer(new RemoveWallItemComposer(item).compose());
+                Emulator.getThreading().run(new QueryDeleteHabboItem(item));
+            }
+        }
     }
 }

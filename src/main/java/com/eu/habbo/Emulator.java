@@ -33,7 +33,7 @@ public final class Emulator
     public final static int MAJOR = 1;
 
 
-    public final static int MINOR = 12;
+    public final static int MINOR = 13;
 
 
     public final static int BUILD = 0;
@@ -121,9 +121,9 @@ public final class Emulator
             Emulator.rconServer = new RCONServer(getConfig().getValue("rcon.host", "127.0.0.1"), getConfig().getInt("rcon.port", 30001));
             Emulator.gameEnvironment = new GameEnvironment();
             Emulator.gameEnvironment.load();
-            Emulator.gameServer.initialise();
+            Emulator.gameServer.initializePipeline();
             Emulator.gameServer.connect();
-            Emulator.rconServer.initialise();
+            Emulator.rconServer.initializePipeline();
             Emulator.rconServer.connect();
             Emulator.badgeImager = new BadgeImager();
             if (Emulator.getConfig().getBoolean("camera.enabled"))
@@ -154,7 +154,7 @@ public final class Emulator
 
             if (Emulator.getConfig().getValue("username").isEmpty())
             {
-                Emulator.getLogging().logErrorLine("No account has been found in config.ini Please create an account on Arcturus.pw and edit the config.ini in order to maximize usage of Arcturus! http://arcturus.wf");
+                Emulator.getLogging().logErrorLine("No account has been found in config.ini Please create an account on Arcturus.pw and edit the config.ini in order to maximize usage of Arcturus! http://arcturus.pw");
             }
 
             Emulator.getThreading().run(new Runnable()

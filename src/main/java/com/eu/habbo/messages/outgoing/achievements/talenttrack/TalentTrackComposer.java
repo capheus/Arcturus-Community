@@ -95,7 +95,7 @@ public class TalentTrackComposer extends MessageComposer
 
                                 if (finalState != TalentTrackState.LOCKED)
                                 {
-                                    if (achievementLevel.progress <= progress)
+                                    if (achievementLevel != null && achievementLevel.progress <= progress)
                                     {
                                         response.appendInt(2);
                                     }
@@ -111,7 +111,7 @@ public class TalentTrackComposer extends MessageComposer
                                     allCompleted[0] = false;
                                 }
                                 response.appendInt(progress);
-                                response.appendInt(achievementLevel.progress);
+                                response.appendInt(achievementLevel != null ? achievementLevel.progress : 0);
                             }
                             else
                             {
@@ -128,17 +128,31 @@ public class TalentTrackComposer extends MessageComposer
                     });
 
 
-                    this.response.appendInt(level.perks.length);
-                    for (String perk : level.perks)
+                    if (level.perks.length > 0)
                     {
-                        this.response.appendString(perk);
+                        this.response.appendInt(level.perks.length);
+                        for (String perk : level.perks)
+                        {
+                            this.response.appendString(perk);
+                        }
+                    }
+                    else
+                    {
+                        this.response.appendInt(-1);
                     }
 
-                    this.response.appendInt(level.items.size());
-                    for (Item item : level.items)
+                    if (!level.items.isEmpty())
                     {
-                        this.response.appendString(item.getName());
-                        this.response.appendInt(0);
+                        this.response.appendInt(level.items.size());
+                        for (Item item : level.items)
+                        {
+                            this.response.appendString(item.getName());
+                            this.response.appendInt(0);
+                        }
+                    }
+                    else
+                    {
+                        this.response.appendInt(-1);
                     }
                 }
                 catch (NoSuchElementException e)

@@ -25,8 +25,6 @@ public class SendRoomBundle extends RCONMessage<SendRoomBundle.JSON>
 
             if (page != null && (page instanceof RoomBundleLayout))
             {
-                String username = "";
-
                 if (habbo != null)
                 {
                     ((RoomBundleLayout) page).buyRoom(habbo);
@@ -44,9 +42,12 @@ public class SendRoomBundle extends RCONMessage<SendRoomBundle.JSON>
         }
     }
 
-    public class JSON
+    public static class JSON
     {
+
         public int user_id;
+
+
         public int catalog_page;
     }
 }

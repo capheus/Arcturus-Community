@@ -14,18 +14,19 @@ import com.eu.habbo.messages.outgoing.generic.alerts.StaffAlertWithLinkComposer;
 import com.eu.habbo.messages.outgoing.inventory.*;
 import com.eu.habbo.messages.outgoing.rooms.FloodCounterComposer;
 import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserIgnoredComposer;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserShoutComposer;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserTalkComposer;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
+import com.eu.habbo.messages.outgoing.rooms.users.*;
 import com.eu.habbo.messages.outgoing.users.*;
 import com.eu.habbo.plugin.events.users.UserCreditsEvent;
 import com.eu.habbo.plugin.events.users.UserDisconnectEvent;
 import com.eu.habbo.plugin.events.users.UserPointsEvent;
+import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
 import java.net.InetSocketAddress;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class Habbo implements Runnable
 {
@@ -151,7 +152,7 @@ public class Habbo implements Runnable
             Emulator.getPluginManager().fireEvent(new UserDisconnectEvent(this));
         }
 
-        if(this.disconnected || this.disconnecting)
+        if (this.disconnected || this.disconnecting)
             return;
 
         this.disconnecting = true;
@@ -171,8 +172,7 @@ public class Habbo implements Runnable
                     room.removeFromQueue(this);
                 }
             }
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             Emulator.getLogging().logErrorLine(e);
         }
@@ -190,13 +190,11 @@ public class Habbo implements Runnable
             AchievementManager.saveAchievements(this);
 
             this.habboStats.dispose();
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             Emulator.getLogging().logErrorLine(e);
             return;
-        }
-        finally
+        } finally
         {
             Emulator.getGameEnvironment().getRoomManager().unloadRoomsForHabbo(this);
             Emulator.getGameEnvironment().getHabboManager().removeHabbo(this);
@@ -204,10 +202,11 @@ public class Habbo implements Runnable
         Emulator.getLogging().logUserLine(this.habboInfo.getUsername() + " disconnected.");
         this.client = null;
     }
+
     @Override
     public void run()
     {
-        if(this.needsUpdate())
+        if (this.needsUpdate())
         {
             this.habboInfo.run();
             this.needsUpdate(false);
@@ -471,5 +470,47 @@ public class Habbo implements Runnable
         }
 
         return 0;
+    }
+
+    public void clearCaches()
+    {
+        int timestamp = Emulator.getIntUnixTimestamp();
+        THashMap<Integer, List<Integer>> newLog = new THashMap<>();
+        for (Map.Entry<Integer, List<Integer>> ltdLog : this.habboStats.ltdPurchaseLog.entrySet())
+        {
+            for (Integer time : ltdLog.getValue())
+            {
+                if (time > timestamp)
+                {
+                    if (!newLog.containsKey(ltdLog.getKey()))
+                    {
+                        newLog.put(ltdLog.getKey(), new ArrayList<Integer>());
+                    }
+
+                    newLog.get(ltdLog.getKey()).add(time);
+                }
+            }
+        }
+
+        this.habboStats.ltdPurchaseLog = newLog;
+    }
+
+
+    public void respect(Habbo target)
+    {
+        if(target != null && target != this.client.getHabbo())
+
+        {
+            target.getHabboStats().respectPointsReceived++;
+            this.client.getHabbo().getHabboStats().respectPointsGiven++;
+            this.client.getHabbo().getHabboStats().respectPointsToGive--;
+            this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserRespectComposer(target).compose());
+            this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserActionComposer(this.client.getHabbo().getRoomUnit(), RoomUserAction.THUMB_UP).compose());
+
+            AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("RespectGiven"));
+            AchievementManager.progressAchievement(target, Emulator.getGameEnvironment().getAchievementManager().getAchievement("RespectEarned"));
+
+            this.client.getHabbo().getHabboInfo().getCurrentRoom().unIdle(this.client.getHabbo());
+        }
     }
 }

@@ -312,7 +312,6 @@ public class Outgoing
     public final static int UpdateUserLookComposer = 2429;
     public final static int RoomUserIgnoredComposer = 207;
     public final static int PetBreedingFailedComposer = 1625;
-    public final static int HabboNameChangedComposer = 118;
     public final static int RoomUserNameChangedComposer = 2182;
     public final static int LoveLockFurniStartComposer = 3753;
     public final static int LoveLockFurniFriendConfirmedComposer = 382;

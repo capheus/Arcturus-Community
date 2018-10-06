@@ -15,15 +15,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.Normalizer;
+import java.util.regex.Pattern;
 
 public class WordFilter
 {
     //Configuration. Loaded from database & updated accordingly.
     public static boolean ENABLED_FRIENDCHAT = true;
+    public static String DEFAULT_REPLACEMENT = "bobba";
 
-    THashSet<WordFilterWord> autoReportWords = new THashSet<>();
-    THashSet<WordFilterWord> hideMessageWords = new THashSet<>();
-    THashSet<WordFilterWord> words = new THashSet<>();
+    protected THashSet<WordFilterWord> autoReportWords = new THashSet<>();
+    protected THashSet<WordFilterWord> hideMessageWords = new THashSet<>();
+    protected THashSet<WordFilterWord> words = new THashSet<>();
 
     public WordFilter()
     {
@@ -77,8 +79,8 @@ public class WordFilter
 
     public String normalise(String message)
     {
-        return Normalizer.normalize(message, Normalizer.Form.NFD)
-                .replaceAll("[^\\p{ASCII}]", "").replaceAll("\\p{M}", "").replace("1", "i").replace("2", "z").replace("3", "e").replace("4","a").replace("5", "s").replace("8", "b").replace("0", "o");
+        return DIACRITICS_AND_FRIENDS.matcher(Normalizer.normalize(StringUtils.stripAccents(message), Normalizer.Form.NFKD).replaceAll("[,.;:'\"]", "").replace("I", "l")
+                .replaceAll("[^\\p{ASCII}*$]", "").replaceAll("\\p{M}", "").replaceAll("^\\p{M}*$]", "").replaceAll("[1|]", "i").replace("2", "z").replace("3", "e").replace("4","a").replace("5", "s").replace("8", "b").replace("0", "o").replace(" ", "").replace("$", "s").replace("ß", "b").trim()).replaceAll("");
     }
 
 
@@ -192,7 +194,7 @@ public class WordFilter
         {
             WordFilterWord word = (WordFilterWord) iterator.next();
 
-            if(message.contains(word.key))
+            if(StringUtils.containsIgnoreCase(message, word.key))
             {
                 if(habbo != null)
                 {
@@ -209,5 +211,18 @@ public class WordFilter
         {
             roomChatMessage.setMessage(message);
         }
+    }
+
+    private static final Pattern DIACRITICS_AND_FRIENDS = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
+
+    private static String stripDiacritics(String str) {
+        str = Normalizer.normalize(str, Normalizer.Form.NFD);
+        str = DIACRITICS_AND_FRIENDS.matcher(str).replaceAll("");
+        return str;
+    }
+
+    public void addWord(WordFilterWord word)
+    {
+        this.words.add(word);
     }
 }

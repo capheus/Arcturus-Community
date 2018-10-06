@@ -5,8 +5,12 @@ import com.eu.habbo.habbohotel.achievements.Achievement;
 import com.eu.habbo.habbohotel.achievements.TalentTrackType;
 import com.eu.habbo.habbohotel.catalog.CatalogItem;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
+import com.eu.habbo.habbohotel.rooms.RoomTrade;
+import com.eu.habbo.habbohotel.users.cache.HabboOfferPurchase;
 import gnu.trove.list.array.TIntArrayList;
+import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.THashMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.stack.array.TIntArrayStack;
 
 import java.sql.Connection;
@@ -35,7 +39,7 @@ public class HabboStats implements Runnable
     public boolean blockFriendRequests;
     public boolean blockRoomInvites;
     public boolean blockStaffAlerts;
-    public boolean allowTrade;
+    private boolean allowTrade;
     public boolean preferOldChat;
     public boolean blockCameraFollow;
     public RoomChatMessageBubbles chatColor;
@@ -63,11 +67,12 @@ public class HabboStats implements Runnable
     private final THashMap<Achievement, Integer> achievementCache;
     private final THashMap<Integer, CatalogItem> recentPurchases;
     private final TIntArrayList favoriteRooms;
-    public final TIntArrayList ignoredUsers;
+    private final TIntArrayList ignoredUsers;
     public final TIntArrayList secretRecipes;
 
     public int citizenshipLevel = -1;
     public int helpersLevel = -1;
+    public boolean perkTrade = false;
 
     public final HabboNavigatorWindowSettings navigatorWindowSettings;
     public final THashMap<String, Object> cache;
@@ -88,8 +93,13 @@ public class HabboStats implements Runnable
     public TIntArrayList calendarRewardsClaimed;
 
     public boolean allowNameChange = false;
+    public boolean isPurchasingFurniture = false;
 
     public THashMap<Integer, List<Integer>> ltdPurchaseLog = new THashMap<>(0);
+    public long lastTradeTimestamp = Emulator.getIntUnixTimestamp();
+    public long lastPurchaseTimestamp = Emulator.getIntUnixTimestamp();
+    public long lastGiftTimestamp = Emulator.getIntUnixTimestamp();
+    public TIntObjectMap<HabboOfferPurchase> offerCache = new TIntObjectHashMap<>();
 
     private HabboStats(ResultSet set, Habbo habbo) throws SQLException
     {
@@ -136,6 +146,7 @@ public class HabboStats implements Runnable
         this.nux = set.getString("nux").equals("1");
         this.muteEndTime = set.getInt("mute_end_timestamp");
         this.allowNameChange = set.getString("allow_name_change").equalsIgnoreCase("1");
+        this.perkTrade = set.getString("perk_trade").equalsIgnoreCase("1");
         this.nuxReward = nux;
 
         try (PreparedStatement statement = set.getStatement().getConnection().prepareStatement("SELECT * FROM user_window_settings WHERE user_id = ? LIMIT 1"))
@@ -221,6 +232,30 @@ public class HabboStats implements Runnable
                 }
             }
         }
+
+        try (PreparedStatement ignoredPlayersStatement = set.getStatement().getConnection().prepareStatement("SELECT target_id FROM users_ignored WHERE user_id = ?"))
+        {
+            ignoredPlayersStatement.setInt(1, this.habbo.getHabboInfo().getId());
+            try (ResultSet ignoredSet = ignoredPlayersStatement.executeQuery())
+            {
+                while (ignoredSet.next())
+                {
+                    this.ignoredUsers.add(ignoredSet.getInt(1));
+                }
+            }
+        }
+
+        try (PreparedStatement loadOfferPurchaseStatement = set.getStatement().getConnection().prepareStatement("SELECT * FROM users_target_offer_purchases WHERE user_id = ?"))
+        {
+            loadOfferPurchaseStatement.setInt(1, this.habbo.getHabboInfo().getId());
+            try (ResultSet offerSet = loadOfferPurchaseStatement.executeQuery())
+            {
+                while (offerSet.next())
+                {
+                    this.offerCache.put(offerSet.getInt("offer_id"), new HabboOfferPurchase(offerSet));
+                }
+            }
+        }
     }
 
     @Override
@@ -228,7 +263,7 @@ public class HabboStats implements Runnable
     {
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
         {
-            try (PreparedStatement statement = connection.prepareStatement("UPDATE users_settings SET achievement_score = ?, respects_received = ?, respects_given = ?, daily_respect_points = ?, block_following = ?, block_friendrequests = ?, online_time = online_time + ?, guild_id = ?, daily_pet_respect_points = ?, club_expire_timestamp = ?, login_streak = ?, rent_space_id = ?, rent_space_endtime = ?, volume_system = ?, volume_furni = ?, volume_trax = ?, block_roominvites = ?, old_chat = ?, block_camera_follow = ?, chat_color = ?, hof_points = ?, block_alerts = ?, talent_track_citizenship_level = ?, talent_track_helpers_level = ?, ignore_bots = ?, ignore_pets = ?, nux = ?, mute_end_timestamp = ?, allow_name_change = ? WHERE user_id = ? LIMIT 1"))
+            try (PreparedStatement statement = connection.prepareStatement("UPDATE users_settings SET achievement_score = ?, respects_received = ?, respects_given = ?, daily_respect_points = ?, block_following = ?, block_friendrequests = ?, online_time = online_time + ?, guild_id = ?, daily_pet_respect_points = ?, club_expire_timestamp = ?, login_streak = ?, rent_space_id = ?, rent_space_endtime = ?, volume_system = ?, volume_furni = ?, volume_trax = ?, block_roominvites = ?, old_chat = ?, block_camera_follow = ?, chat_color = ?, hof_points = ?, block_alerts = ?, talent_track_citizenship_level = ?, talent_track_helpers_level = ?, ignore_bots = ?, ignore_pets = ?, nux = ?, mute_end_timestamp = ?, allow_name_change = ?, perk_trade = ? WHERE user_id = ? LIMIT 1"))
             {
                 statement.setInt(1, this.achievementScore);
                 statement.setInt(2, this.respectPointsReceived);
@@ -259,7 +294,8 @@ public class HabboStats implements Runnable
                 statement.setString(27, this.nux ? "1" : "0");
                 statement.setInt(28, this.muteEndTime);
                 statement.setString(29, this.allowNameChange ? "1" : "0");
-                statement.setInt(30, this.habbo.getHabboInfo().getId());
+                statement.setString(30, this.perkTrade ? "1" : "0");
+                statement.setInt(31, this.habbo.getHabboInfo().getId());
                 statement.executeUpdate();
             }
 
@@ -272,6 +308,24 @@ public class HabboStats implements Runnable
                 statement.setString(5, this.navigatorWindowSettings.openSearches ? "1" : "0");
                 statement.setInt(6, this.habbo.getHabboInfo().getId());
                 statement.executeUpdate();
+            }
+
+            if (!this.offerCache.isEmpty())
+            {
+                try (PreparedStatement statement = connection.prepareStatement("UPDATE users_target_offer_purchases SET state = ?, amount = ?, last_purchase = ? WHERE user_id = ? AND offer_id = ?"))
+                {
+                    for (HabboOfferPurchase purchase : this.offerCache.valueCollection())
+                    {
+                        if (!purchase.needsUpdate()) continue;
+
+                        statement.setInt(1, purchase.getState());
+                        statement.setInt(2, purchase.getAmount());
+                        statement.setInt(3, purchase.getLastPurchaseTimestamp());
+                        statement.setInt(4, this.habbo.getHabboInfo().getId());
+                        statement.setInt(5, purchase.getOfferId());
+                        statement.execute();
+                    }
+                }
             }
 
             this.navigatorWindowSettings.save(connection);
@@ -656,5 +710,72 @@ public class HabboStats implements Runnable
         }
 
         return 0;
+    }
+
+    public void ignoreUser(int userId)
+    {
+        if (!this.userIgnored(userId))
+        {
+            this.ignoredUsers.add(userId);
+
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection();
+                 PreparedStatement statement = connection.prepareStatement("INSERT INTO users_ignored (user_id, target_id) VALUES (?, ?)"))
+            {
+                statement.setInt(1, this.habbo.getHabboInfo().getId());
+                statement.setInt(2, userId);
+                statement.execute();
+            }
+            catch (SQLException e)
+            {
+                Emulator.getLogging().logSQLException(e);
+            }
+        }
+    }
+
+    public void unignoreUser(int userId)
+    {
+        if (this.userIgnored(userId))
+        {
+            this.ignoredUsers.remove(userId);
+
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection();
+                 PreparedStatement statement = connection.prepareStatement("DELETE FROM users_ignored WHERE user_id = ? AND target_id = ?"))
+            {
+                statement.setInt(1, this.habbo.getHabboInfo().getId());
+                statement.setInt(2, userId);
+                statement.execute();
+            }
+            catch (SQLException e)
+            {
+                Emulator.getLogging().logSQLException(e);
+            }
+        }
+    }
+
+    public boolean userIgnored(int userId)
+    {
+        return this.ignoredUsers.contains(userId);
+    }
+
+    public boolean allowTrade()
+    {
+        if (RoomTrade.TRADING_REQUIRES_PERK)
+            return this.perkTrade && this.allowTrade;
+        else return this.allowTrade;
+    }
+
+    public void setAllowTrade(boolean allowTrade)
+    {
+        this.allowTrade = allowTrade;
+    }
+
+    public HabboOfferPurchase getHabboOfferPurchase(int offerId)
+    {
+        return this.offerCache.get(offerId);
+    }
+
+    public void addHabboOfferPurchase(HabboOfferPurchase offerPurchase)
+    {
+        this.offerCache.put(offerPurchase.getOfferId(), offerPurchase);
     }
 }

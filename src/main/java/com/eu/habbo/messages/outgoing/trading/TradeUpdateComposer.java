@@ -23,7 +23,7 @@ public class TradeUpdateComposer extends MessageComposer
         this.response.init(Outgoing.TradeUpdateComposer);
         for(RoomTradeUser roomTradeUser : this.roomTrade.getRoomTradeUsers())
         {
-            this.response.appendInt(roomTradeUser.getHabbo().getHabboInfo().getId());
+            this.response.appendInt(roomTradeUser.getUserId());
             this.response.appendInt(roomTradeUser.getItems().size());
 
             for(HabboItem item : roomTradeUser.getItems())

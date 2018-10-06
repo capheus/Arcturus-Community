@@ -2,10 +2,7 @@ package com.eu.habbo.habbohotel.items;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.*;
-import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.InteractionBattleBanzaiSphere;
-import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.InteractionBattleBanzaiTeleporter;
-import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.InteractionBattleBanzaiTile;
-import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.InteractionBattleBanzaiTimer;
+import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.*;
 import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.gates.InteractionBattleBanzaiGateBlue;
 import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.gates.InteractionBattleBanzaiGateGreen;
 import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.gates.InteractionBattleBanzaiGateRed;
@@ -225,6 +222,7 @@ public class ItemManager
             this.interactionsList.add(new ItemInteraction("wf_act_give_respect",        WiredEffectGiveRespect.class));
             this.interactionsList.add(new ItemInteraction("wf_act_alert",               WiredEffectAlert.class));
             this.interactionsList.add(new ItemInteraction("wf_act_give_handitem",       WiredEffectGiveHandItem.class));
+            this.interactionsList.add(new ItemInteraction("wf_act_match_to_sshot2",     WiredEffectMatchFurniStaff.class));
 
 
             this.interactionsList.add(new ItemInteraction("wf_cnd_has_furni_on",     WiredConditionFurniHaveFurni.class));
@@ -283,6 +281,7 @@ public class ItemManager
             this.interactionsList.add(new ItemInteraction("battlebanzai_tile",              InteractionBattleBanzaiTile.class));
             this.interactionsList.add(new ItemInteraction("battlebanzai_random_teleport",   InteractionBattleBanzaiTeleporter.class));
             this.interactionsList.add(new ItemInteraction("battlebanzai_sphere",            InteractionBattleBanzaiSphere.class));
+            this.interactionsList.add(new ItemInteraction("battlebanzai_puck",              InteractionBattleBanzaiPuck.class));
 
 
             this.interactionsList.add(new ItemInteraction("battlebanzai_gate_blue",         InteractionBattleBanzaiGateBlue.class));

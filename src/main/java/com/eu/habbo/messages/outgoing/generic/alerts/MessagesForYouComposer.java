@@ -5,11 +5,12 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MessagesForYouComposer extends MessageComposer
 {
     private String[] messages;
-    private ArrayList<String> newMessages;
+    private List<String> newMessages;
 
     public MessagesForYouComposer(String[] messages)
     {
@@ -17,7 +18,7 @@ public class MessagesForYouComposer extends MessageComposer
         this.newMessages = new ArrayList<>();
     }
 
-    public MessagesForYouComposer(ArrayList<String> newMessages)
+    public MessagesForYouComposer(List<String> newMessages)
     {
         this.newMessages = newMessages;
         this.messages = new String[]{};

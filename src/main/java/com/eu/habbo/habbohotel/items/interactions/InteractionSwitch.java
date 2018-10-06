@@ -31,4 +31,10 @@ public class InteractionSwitch extends InteractionDefault
     {
         return true;
     }
+
+    @Override
+    public boolean isUsable()
+    {
+        return true;
+    }
 }

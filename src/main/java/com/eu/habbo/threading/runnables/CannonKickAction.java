@@ -1,6 +1,7 @@
 package com.eu.habbo.threading.runnables;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.interactions.InteractionCannon;
 import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.rooms.Room;
@@ -16,16 +17,19 @@ public class CannonKickAction implements Runnable
 {
     private final InteractionCannon cannon;
     private final Room room;
+    private final GameClient client;
 
-    public CannonKickAction(InteractionCannon cannon, Room room)
+    public CannonKickAction(InteractionCannon cannon, Room room, GameClient client)
     {
         this.cannon = cannon;
         this.room = room;
+        this.client = client;
     }
 
     @Override
     public void run()
     {
+        client.getHabbo().getRoomUnit().setCanWalk(true);
         THashMap<String, String> dater = new THashMap<>();
         dater.put("title", "${notification.room.kick.cannonball.title}");
         dater.put("message", "${notification.room.kick.cannonball.message}");

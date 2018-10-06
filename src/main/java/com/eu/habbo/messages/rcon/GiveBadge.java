@@ -100,9 +100,12 @@ public class GiveBadge extends RCONMessage<GiveBadge.GiveBadgeJSON>
         }
     }
 
-    public class GiveBadgeJSON
+    public static class GiveBadgeJSON
     {
+
         public int user_id = -1;
+
+
         public String badge;
     }
 }

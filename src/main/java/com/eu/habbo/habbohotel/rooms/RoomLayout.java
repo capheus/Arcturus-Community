@@ -293,7 +293,7 @@ public class RoomLayout
 
                     double height = (room.getLayout().getStackHeightAtSquare(currentAdj.x, currentAdj.y) - room.getLayout().getStackHeightAtSquare(current.x, current.y));
 
-                    if ((!ALLOW_FALLING && height < -MAXIMUM_STEP_HEIGHT) || (height - (room.canSitAt(currentAdj.x, currentAdj.y) ? 0.5 : 0) > MAXIMUM_STEP_HEIGHT && !room.canLayAt(currentAdj.x, currentAdj.y)))
+                    if ((!ALLOW_FALLING && height < -MAXIMUM_STEP_HEIGHT) || ((!room.canSitAt(currentAdj.x, currentAdj.y) && height > MAXIMUM_STEP_HEIGHT) && !room.canLayAt(currentAdj.x, currentAdj.y)))
                         continue;
 
                     if (!this.room.isAllowWalkthrough() && room.hasHabbosAt(currentAdj.x, currentAdj.y)) continue;

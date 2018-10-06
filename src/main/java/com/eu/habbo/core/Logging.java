@@ -1,8 +1,10 @@
 package com.eu.habbo.core;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.util.callback.HTTPPostError;
 import gnu.trove.set.hash.THashSet;
+import io.netty.util.internal.ConcurrentSet;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -65,6 +67,8 @@ public class Logging
 
 
     private final THashSet<Loggable> commandLogs = new THashSet<>();
+
+    private ConcurrentSet<Loggable> chatLogs = new ConcurrentSet<>();
 
     public Logging()
     {
@@ -332,11 +336,16 @@ public class Logging
         }
     }
 
+    public void addChatLog(Loggable chatLog)
+    {
+        this.chatLogs.add(chatLog);
+    }
+
     public void saveLogs()
     {
         if (Emulator.getDatabase() != null && Emulator.getDatabase().getDataSource() != null)
         {
-            if (!this.errorLogs.isEmpty() || !this.commandLogs.isEmpty())
+            if (!this.errorLogs.isEmpty() || !this.commandLogs.isEmpty() || !this.chatLogs.isEmpty())
             {
                 try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
                 {
@@ -371,6 +380,23 @@ public class Logging
                             }
                             this.commandLogs.clear();
                         }
+                    }
+
+                    if (!this.chatLogs.isEmpty())
+                    {
+                        ConcurrentSet<Loggable> chatLogs = this.chatLogs;
+                        this.chatLogs = new ConcurrentSet<>();
+
+                        try (PreparedStatement statement = connection.prepareStatement(RoomChatMessage.insertQuery))
+                        {
+                            for (Loggable log : chatLogs)
+                            {
+                                log.log(statement);
+                            }
+
+                            statement.executeBatch();
+                        }
+                        chatLogs.clear();
                     }
                 }
                 catch (SQLException e)

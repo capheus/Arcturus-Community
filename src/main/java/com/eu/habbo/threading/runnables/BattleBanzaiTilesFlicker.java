@@ -51,7 +51,7 @@ public class BattleBanzaiTilesFlicker implements Runnable
             for(HabboItem item : this.room.getRoomSpecialTypes().getItemsOfType(InteractionBattleBanzaiSphere.class))
             {
                 item.setExtradata("0");
-                this.room.updateItem(item);
+                this.room.updateItemState(item);
             }
             return;
         }

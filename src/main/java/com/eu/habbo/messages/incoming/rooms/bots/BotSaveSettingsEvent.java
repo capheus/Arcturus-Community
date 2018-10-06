@@ -127,7 +127,7 @@ public class BotSaveSettingsEvent extends MessageHandler
                     break;
 
                 case 3:
-                    bot.getRoomUnit().setCanWalk(!bot.getRoomUnit().canWalk());
+                    bot.setCanWalk(!bot.canWalk());
                     bot.needsUpdate(true);
                     break;
 

@@ -48,8 +48,8 @@ public class RoomUsersComposer extends MessageComposer
             this.response.appendString(this.habbo.getHabboInfo().getMotto());
             this.response.appendString(this.habbo.getHabboInfo().getLook());
             this.response.appendInt(this.habbo.getRoomUnit().getId()); //Room Unit ID
-            this.response.appendInt32(this.habbo.getRoomUnit().getX());
-            this.response.appendInt32(this.habbo.getRoomUnit().getY());
+            this.response.appendInt(this.habbo.getRoomUnit().getX());
+            this.response.appendInt(this.habbo.getRoomUnit().getY());
             this.response.appendString(this.habbo.getRoomUnit().getZ() + "");
             this.response.appendInt(this.habbo.getRoomUnit().getBodyRotation().getValue());
             this.response.appendInt(1);
@@ -83,8 +83,8 @@ public class RoomUsersComposer extends MessageComposer
                     this.response.appendString(habbo.getHabboInfo().getMotto());
                     this.response.appendString(habbo.getHabboInfo().getLook());
                     this.response.appendInt(habbo.getRoomUnit().getId()); //Room Unit ID
-                    this.response.appendInt32(habbo.getRoomUnit().getX());
-                    this.response.appendInt32(habbo.getRoomUnit().getY());
+                    this.response.appendInt(habbo.getRoomUnit().getX());
+                    this.response.appendInt(habbo.getRoomUnit().getY());
                     this.response.appendString(habbo.getRoomUnit().getZ() + "");
                     this.response.appendInt(habbo.getRoomUnit().getBodyRotation().getValue());
                     this.response.appendInt(1);
@@ -114,8 +114,8 @@ public class RoomUsersComposer extends MessageComposer
             this.response.appendString(this.bot.getMotto());
             this.response.appendString(this.bot.getFigure());
             this.response.appendInt(this.bot.getRoomUnit().getId());
-            this.response.appendInt32(this.bot.getRoomUnit().getX());
-            this.response.appendInt32(this.bot.getRoomUnit().getY());
+            this.response.appendInt(this.bot.getRoomUnit().getX());
+            this.response.appendInt(this.bot.getRoomUnit().getY());
             this.response.appendString(this.bot.getRoomUnit().getZ() + "");
             this.response.appendInt(this.bot.getRoomUnit().getBodyRotation().getValue());
             this.response.appendInt(4);
@@ -144,8 +144,8 @@ public class RoomUsersComposer extends MessageComposer
                 this.response.appendString(bot.getMotto());
                 this.response.appendString(bot.getFigure());
                 this.response.appendInt(bot.getRoomUnit().getId());
-                this.response.appendInt32(bot.getRoomUnit().getX());
-                this.response.appendInt32(bot.getRoomUnit().getY());
+                this.response.appendInt(bot.getRoomUnit().getX());
+                this.response.appendInt(bot.getRoomUnit().getY());
                 this.response.appendString(bot.getRoomUnit().getZ() + "");
                 this.response.appendInt(bot.getRoomUnit().getBodyRotation().getValue());
                 this.response.appendInt(4);

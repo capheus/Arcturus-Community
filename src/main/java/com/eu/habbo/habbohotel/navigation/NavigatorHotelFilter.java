@@ -50,7 +50,7 @@ public class NavigatorHotelFilter extends NavigatorFilter
             List<SearchResultList> resultLists = new ArrayList<>();
             int i = 0;
 
-            for (Map.Entry<Integer, List<Room>> set : Emulator.getGameEnvironment().getRoomManager().findRooms(filterField, value, roomCategory).entrySet())
+            for (Map.Entry<Integer, List<Room>> set : Emulator.getGameEnvironment().getRoomManager().findRooms(filterField, value, roomCategory, showInvisible).entrySet())
             {
                 if (!set.getValue().isEmpty())
                 {

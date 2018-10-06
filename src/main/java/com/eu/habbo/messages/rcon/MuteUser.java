@@ -49,9 +49,12 @@ public class MuteUser extends RCONMessage<MuteUser.JSON>
         }
     }
 
-    public class JSON
+    public static class JSON
     {
+
         public int user_id;
+
+
         public int duration;
     }
 }

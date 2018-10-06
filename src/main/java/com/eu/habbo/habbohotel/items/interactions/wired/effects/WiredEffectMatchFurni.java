@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
+import com.eu.habbo.habbohotel.rooms.RoomTileState;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredEffectType;
@@ -29,6 +30,7 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
     private boolean state = false;
     private boolean direction = false;
     private boolean position = false;
+    public boolean checkForWiredResetPermission = true;
 
     public WiredEffectMatchFurni(ResultSet set, Item baseItem) throws SQLException
     {
@@ -52,7 +54,7 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
             HabboItem item = room.getHabboItem(setting.itemId);
             if(item != null)
             {
-                if(this.state && item.allowWiredResetState())
+                if(this.state && (this.checkForWiredResetPermission && item.allowWiredResetState()))
                 {
                     if(!setting.state.equals(" "))
                     {
@@ -73,14 +75,17 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
                 {
                     RoomTile t = room.getLayout().getTile((short) setting.x, (short) setting.y);
 
-                    if (!room.hasHabbosAt(t.x, t.y))
+                    if (t.state == RoomTileState.OPEN)
                     {
-                        tilesToUpdate.addAll(room.getLayout().getTilesAt(t, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), oldRotation));
+                        if (!room.hasHabbosAt(t.x, t.y))
+                        {
+                            tilesToUpdate.addAll(room.getLayout().getTilesAt(t, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), oldRotation));
 
-                        double offsetZ = setting.z - item.getZ();
+                            double offsetZ = setting.z - item.getZ();
 
-                        room.sendComposer(new FloorItemOnRollerComposer(item, null, t, offsetZ, room).compose());
-                        tilesToUpdate.addAll(room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), oldRotation));
+                            room.sendComposer(new FloorItemOnRollerComposer(item, null, t, offsetZ, room).compose());
+                            tilesToUpdate.addAll(room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), oldRotation));
+                        }
                     }
                 }
 
@@ -118,7 +123,7 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
 
                     if (i != null)
                     {
-                        data += item.toString(i.allowWiredResetState()) + ";";
+                        data += item.toString(this.checkForWiredResetPermission && i.allowWiredResetState()) + ";";
                     }
                 }
             }
@@ -232,7 +237,7 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
             HabboItem item = room.getHabboItem(itemId);
 
             if (item != null)
-                this.settings.add(new WiredMatchFurniSetting(item.getId(), item.allowWiredResetState() ? item.getExtradata() : " ", item.getRotation(), item.getX(), item.getY(), item.getZ()));
+                this.settings.add(new WiredMatchFurniSetting(item.getId(), this.checkForWiredResetPermission && item.allowWiredResetState() ? item.getExtradata() : " ", item.getRotation(), item.getX(), item.getY(), item.getZ()));
         }
 
         this.setDelay(packet.readInt());

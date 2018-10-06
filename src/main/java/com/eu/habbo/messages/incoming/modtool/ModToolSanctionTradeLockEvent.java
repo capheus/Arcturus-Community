@@ -22,7 +22,7 @@ public class ModToolSanctionTradeLockEvent extends MessageHandler
 
             if (habbo != null)
             {
-                habbo.getHabboStats().allowTrade = false;
+                habbo.getHabboStats().setAllowTrade(false);
                 habbo.alert(message);
             }
             else

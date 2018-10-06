@@ -43,9 +43,12 @@ public class GiveCredits extends RCONMessage<GiveCredits.JSONGiveCredits>
         }
     }
 
-    public class JSONGiveCredits
+    public static class JSONGiveCredits
     {
-        private int user_id;
-        private int credits;
+
+        public int user_id;
+
+
+        public int credits;
     }
 }

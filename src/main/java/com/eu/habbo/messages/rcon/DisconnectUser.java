@@ -42,9 +42,12 @@ public class DisconnectUser extends RCONMessage<DisconnectUser.DisconnectUserJSO
         this.message = Emulator.getTexts().getValue("commands.succes.cmd_disconnect.disconnected").replace("%user%", target.getHabboInfo().getUsername());
     }
 
-    public class DisconnectUserJSON
+    public static class DisconnectUserJSON
     {
+
         public int user_id = -1;
+
+
         public String username;
     }
 }

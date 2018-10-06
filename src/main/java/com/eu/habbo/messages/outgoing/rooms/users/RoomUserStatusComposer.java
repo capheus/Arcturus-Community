@@ -42,17 +42,17 @@ public class RoomUserStatusComposer extends MessageComposer
             for(RoomUnit roomUnit : this.roomUnits)
             {
                 this.response.appendInt(roomUnit.getId());
-                this.response.appendInt32(roomUnit.getPreviousLocation().x);
-                this.response.appendInt32(roomUnit.getPreviousLocation().y);
+                this.response.appendInt(roomUnit.getPreviousLocation().x);
+                this.response.appendInt(roomUnit.getPreviousLocation().y);
+                this.response.appendString(roomUnit.getPreviousLocationZ() + "");
 
-                if (roomUnit.hasStatus(RoomUnitStatus.SIT) && !roomUnit.hasStatus(RoomUnitStatus.MOVE))
-                {
-                    this.response.appendString(roomUnit.getPreviousLocation().z + "");
-                }
-                else
-                {
-                    this.response.appendString(roomUnit.getPreviousLocation().getStackHeight() + "");
-                }
+
+
+
+
+
+
+
                 this.response.appendInt(roomUnit.getHeadRotation().getValue());
                 this.response.appendInt(roomUnit.getBodyRotation().getValue());
 
@@ -64,7 +64,6 @@ public class RoomUserStatusComposer extends MessageComposer
 
                 this.response.appendString(status);
                 roomUnit.setPreviousLocation(roomUnit.getCurrentLocation());
-                roomUnit.getPreviousLocation().setStackHeight(roomUnit.getZ());
             }
         }
         else {
@@ -74,16 +73,17 @@ public class RoomUserStatusComposer extends MessageComposer
                 for (Habbo habbo : this.habbos)
                 {
                     this.response.appendInt(habbo.getRoomUnit().getId());
-                    this.response.appendInt32(habbo.getRoomUnit().getPreviousLocation().x);
-                    this.response.appendInt32(habbo.getRoomUnit().getPreviousLocation().y);
-                    if (habbo.getRoomUnit().hasStatus(RoomUnitStatus.SIT) && !habbo.getRoomUnit().hasStatus(RoomUnitStatus.MOVE))
-                    {
-                        this.response.appendString(habbo.getRoomUnit().getPreviousLocation().z + "");
-                    }
-                    else
-                    {
-                        this.response.appendString(habbo.getRoomUnit().getPreviousLocation().getStackHeight() + "");
-                    }
+                    this.response.appendInt(habbo.getRoomUnit().getPreviousLocation().x);
+                    this.response.appendInt(habbo.getRoomUnit().getPreviousLocation().y);
+                    this.response.appendString(habbo.getRoomUnit().getPreviousLocationZ() + "");
+
+
+
+
+
+
+
+
                     this.response.appendInt(habbo.getRoomUnit().getHeadRotation().getValue());
                     this.response.appendInt(habbo.getRoomUnit().getBodyRotation().getValue());
 
@@ -95,7 +95,6 @@ public class RoomUserStatusComposer extends MessageComposer
                     }
                     this.response.appendString(status);
                     habbo.getRoomUnit().setPreviousLocation(habbo.getRoomUnit().getCurrentLocation());
-                    habbo.getRoomUnit().getPreviousLocation().setStackHeight(habbo.getRoomUnit().getZ());
                 }
             }
         }

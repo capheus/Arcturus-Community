@@ -13,6 +13,7 @@ import com.eu.habbo.threading.runnables.CannonResetCooldownAction;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class InteractionCannon extends HabboItem
 {
@@ -61,13 +62,22 @@ public class InteractionCannon extends HabboItem
             return;
 
         RoomTile tile = room.getLayout().getTile(this.getX(), this.getY());
-        
-        if ((client == null || tile.distance(client.getHabbo().getRoomUnit().getCurrentLocation()) <= 2) && !this.cooldown)
+        RoomTile fuseTile = this.getRotation() >= 4 ? tile : room.getLayout().getTileInFront(tile, ((this.getRotation() % 2) + 2) % 8);
+        List<RoomTile> tiles = room.getLayout().getTilesAround(fuseTile);
+        tiles.remove(room.getLayout().getTileInFront(tile, (this.getRotation() + (this.getRotation() >= 4 ? -1 : 0)) % 8));
+        tiles.remove(room.getLayout().getTileInFront(tile, (this.getRotation() + (this.getRotation() >= 4 ? 5 : 4)) % 8));
+
+        if ((client == null || tiles.contains(client.getHabbo().getRoomUnit().getCurrentLocation())) && !this.cooldown &&
+            client.getHabbo().getRoomUnit().canWalk())
         {
+            client.getHabbo().getRoomUnit().setCanWalk(false);
+            client.getHabbo().getRoomUnit().setGoalLocation(client.getHabbo().getRoomUnit().getCurrentLocation());
             this.cooldown = true;
             this.setExtradata(this.getExtradata().equals("1") ? "0" : "1");
             room.updateItemState(this);
-            Emulator.getThreading().run(new CannonKickAction(this, room), 750);
+            client.getHabbo().getRoomUnit().lookAtPoint(fuseTile);
+            client.getHabbo().getRoomUnit().statusUpdate(true);
+            Emulator.getThreading().run(new CannonKickAction(this, room, client), 750);
             Emulator.getThreading().run(new CannonResetCooldownAction(this), 2000);
         }
     }
@@ -94,5 +104,12 @@ public class InteractionCannon extends HabboItem
     public void onPickUp(Room room)
     {
         this.setExtradata("0");
+    }
+
+
+    @Override
+    public boolean isUsable()
+    {
+        return true;
     }
 }

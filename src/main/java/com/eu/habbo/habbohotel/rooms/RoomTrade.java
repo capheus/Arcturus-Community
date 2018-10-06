@@ -18,6 +18,7 @@ public class RoomTrade
 {
     //Configuration. Loaded from database & updated accordingly.
     public static boolean TRADING_ENABLED = true;
+    public static boolean TRADING_REQUIRES_PERK = true;
 
     private final List<RoomTradeUser> users;
     private boolean tradeCompleted;
@@ -31,8 +32,16 @@ public class RoomTrade
         this.users.add(new RoomTradeUser(userOne));
         this.users.add(new RoomTradeUser(userTwo));
         this.room = room;
+    }
 
+    public void start()
+    {
+        this.initializeTradeStatus();
+        this.openTrade();
+    }
 
+    protected void initializeTradeStatus()
+    {
         for(RoomTradeUser roomTradeUser : this.users)
         {
             if(!roomTradeUser.getHabbo().getRoomUnit().hasStatus(RoomUnitStatus.TRADING))
@@ -42,7 +51,10 @@ public class RoomTrade
                     room.sendComposer(new RoomUserStatusComposer(roomTradeUser.getHabbo().getRoomUnit()).compose());
             }
         }
+    }
 
+    protected void openTrade()
+    {
         sendMessageToUsers(new TradeStartComposer(this));
     }
 
@@ -53,6 +65,7 @@ public class RoomTrade
         if(user.getItems().contains(item))
             return;
 
+        habbo.getInventory().getItemsComponent().removeHabboItem(item);
         user.getItems().add(item);
 
         clearAccepted();
@@ -67,6 +80,7 @@ public class RoomTrade
         {
             if(!user.getItems().contains(item)) 
             {
+                habbo.getInventory().getItemsComponent().removeHabboItem(item);
                 user.getItems().add(item);
             }
         }
@@ -82,6 +96,7 @@ public class RoomTrade
         if(!user.getItems().contains(item))
             return;
 
+        habbo.getInventory().getItemsComponent().addItem(item);
         user.getItems().remove(item);
 
         clearAccepted();
@@ -103,7 +118,7 @@ public class RoomTrade
         }
         if(accepted)
         {
-            sendMessageToUsers(new TradingWaitingConfirmComposer());
+            this.sendMessageToUsers(new TradingWaitingConfirmComposer());
         }
     }
 
@@ -113,7 +128,7 @@ public class RoomTrade
 
         user.confirm();
 
-        sendMessageToUsers(new TradeAcceptedComposer(user));
+        this.sendMessageToUsers(new TradeAcceptedComposer(user));
         boolean accepted = true;
         for(RoomTradeUser roomTradeUser : this.users)
         {
@@ -124,9 +139,10 @@ public class RoomTrade
         {
             if (tradeItems())
             {
-                closeWindow();
-                sendMessageToUsers(new TradeCompleteComposer());
+                this.closeWindow();
+                this.sendMessageToUsers(new TradeCompleteComposer());
             }
+
             this.room.stopTrade(this);
         }
     }
@@ -137,9 +153,9 @@ public class RoomTrade
         {
             for(HabboItem item : roomTradeUser.getItems())
             {
-                if(roomTradeUser.getHabbo().getInventory().getItemsComponent().getHabboItem(item.getId()) == null)
+                if(roomTradeUser.getHabbo().getInventory().getItemsComponent().getHabboItem(item.getId()) != null)
                 {
-                    sendMessageToUsers(new TradeClosedComposer(roomTradeUser.getHabbo().getRoomUnit().getId(), TradeClosedComposer.ITEMS_NOT_FOUND));
+                    this.sendMessageToUsers(new TradeClosedComposer(roomTradeUser.getHabbo().getRoomUnit().getId(), TradeClosedComposer.ITEMS_NOT_FOUND));
                     return false;
                 }
             }
@@ -188,8 +204,6 @@ public class RoomTrade
                         item.setUserId(userTwoId);
                         statement.setInt(1, userTwoId);
                         statement.setInt(2, item.getId());
-                        userOne.getHabbo().getInventory().getItemsComponent().removeHabboItem(item);
-                        userTwo.getHabbo().getInventory().getItemsComponent().addItem(item);
                         statement.addBatch();
 
                         if (logTrades)
@@ -206,8 +220,6 @@ public class RoomTrade
                         item.setUserId(userOneId);
                         statement.setInt(1, userOneId);
                         statement.setInt(2, item.getId());
-                        userTwo.getHabbo().getInventory().getItemsComponent().removeHabboItem(item);
-                        userOne.getHabbo().getInventory().getItemsComponent().addItem(item);
                         statement.addBatch();
 
                         if (logTrades)
@@ -233,15 +245,24 @@ public class RoomTrade
             Emulator.getLogging().logSQLException(e);
         }
 
-        userOne.getHabbo().getClient().sendResponse(new AddHabboItemComposer(userTwo.getItems()));
-        userTwo.getHabbo().getClient().sendResponse(new AddHabboItemComposer(userOne.getItems()));
+        THashSet<HabboItem> itemsUserOne = new THashSet<>(userOne.getItems());
+        THashSet<HabboItem> itemsUserTwo = new THashSet<>(userTwo.getItems());
+
+        userOne.clearItems();
+        userTwo.clearItems();
+
+        userOne.getHabbo().getInventory().getItemsComponent().addItems(itemsUserTwo);
+        userTwo.getHabbo().getInventory().getItemsComponent().addItems(itemsUserOne);
+
+        userOne.getHabbo().getClient().sendResponse(new AddHabboItemComposer(itemsUserTwo));
+        userTwo.getHabbo().getClient().sendResponse(new AddHabboItemComposer(itemsUserOne));
 
         userOne.getHabbo().getClient().sendResponse(new InventoryRefreshComposer());
         userTwo.getHabbo().getClient().sendResponse(new InventoryRefreshComposer());
         return true;
     }
 
-    void clearAccepted()
+    protected void clearAccepted()
     {
         for(RoomTradeUser user : this.users)
         {
@@ -249,15 +270,21 @@ public class RoomTrade
         }
     }
 
-    void updateWindow()
+    protected void updateWindow()
     {
         this.sendMessageToUsers(new TradeUpdateComposer(this));
     }
 
+    private void returnItems()
+    {
+        for (RoomTradeUser user : this.users)
+        {
+            user.putItemsIntoInventory();
+        }
+    }
     private void closeWindow()
     {
         removeStatusses();
-
         sendMessageToUsers(new TradeCloseWindowComposer());
     }
 
@@ -265,6 +292,7 @@ public class RoomTrade
     {
         this.removeStatusses();
         this.clearAccepted();
+        this.returnItems();
         for (RoomTradeUser user : this.users)
         {
             user.clearItems();
@@ -298,7 +326,7 @@ public class RoomTrade
         return null;
     }
 
-    void sendMessageToUsers(MessageComposer message)
+    public void sendMessageToUsers(MessageComposer message)
     {
         for(RoomTradeUser roomTradeUser : this.users)
         {

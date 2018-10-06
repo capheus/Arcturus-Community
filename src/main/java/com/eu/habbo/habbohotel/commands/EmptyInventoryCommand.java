@@ -23,7 +23,7 @@ public class EmptyInventoryCommand extends Command
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
-        if(params.length == 1 || (params.length >= 2 && !params[1].equals(Emulator.getTexts().getValue("generic.yes"))))
+        if(params.length == 1 || (params.length == 2 && !params[1].equals(Emulator.getTexts().getValue("generic.yes"))))
         {
            if(gameClient.getHabbo().getHabboInfo().getCurrentRoom() != null)
            {

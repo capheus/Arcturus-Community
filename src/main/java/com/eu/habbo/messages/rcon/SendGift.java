@@ -99,10 +99,15 @@ public class SendGift extends RCONMessage<SendGift.SendGiftJSON>
         }
     }
 
-    public class SendGiftJSON
+    public static class SendGiftJSON
     {
+
         public int user_id = -1;
+
+
         public int itemid = -1;
+
+
         public String message = "";
     }
 }

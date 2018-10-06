@@ -36,9 +36,12 @@ public class ExecuteCommand extends RCONMessage<ExecuteCommand.JSONExecuteComman
         }
     }
 
-    public class JSONExecuteCommand
+    public static class JSONExecuteCommand
     {
+
         public int user_id;
+
+
         public String command;
     }
 }

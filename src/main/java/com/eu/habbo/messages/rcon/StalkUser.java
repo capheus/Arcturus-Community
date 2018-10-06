@@ -52,9 +52,12 @@ public class StalkUser extends RCONMessage<StalkUser.StalkUserJSON>
         }
     }
 
-    public class StalkUserJSON
+    public static class StalkUserJSON
     {
+
         public int user_id;
+
+
         public int follow_id;
     }
 }

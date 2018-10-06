@@ -48,7 +48,7 @@ public class UserPerksComposer extends MessageComposer
 
         this.response.appendString("TRADE");
         this.response.appendString("requirement.unfulfilled.no_trade_lock");
-        this.response.appendBoolean(this.habbo.getHabboStats().allowTrade);
+        this.response.appendBoolean(this.habbo.getHabboStats().allowTrade());
 
         this.response.appendString("HEIGHTMAP_EDITOR_BETA");
         this.response.appendString("requirement.unfulfilled.feature_disabled");

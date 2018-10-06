@@ -84,4 +84,10 @@ public class InteractionGate extends HabboItem
     {
         return true;
     }
+
+    @Override
+    public boolean isUsable()
+    {
+        return true;
+    }
 }

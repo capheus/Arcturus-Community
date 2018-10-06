@@ -3,11 +3,14 @@ package com.eu.habbo.plugin;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.core.Easter;
 import com.eu.habbo.habbohotel.bots.BotManager;
+import com.eu.habbo.habbohotel.catalog.CatalogManager;
+import com.eu.habbo.habbohotel.catalog.TargetOffer;
 import com.eu.habbo.habbohotel.catalog.marketplace.MarketPlace;
 import com.eu.habbo.habbohotel.games.battlebanzai.BattleBanzaiGame;
 import com.eu.habbo.habbohotel.games.freeze.FreezeGame;
 import com.eu.habbo.habbohotel.games.tag.TagGame;
 import com.eu.habbo.habbohotel.items.ItemManager;
+import com.eu.habbo.habbohotel.items.interactions.InteractionPostIt;
 import com.eu.habbo.habbohotel.items.interactions.games.football.InteractionFootballGate;
 import com.eu.habbo.habbohotel.messenger.Messenger;
 import com.eu.habbo.habbohotel.modtool.WordFilter;
@@ -18,10 +21,12 @@ import com.eu.habbo.habbohotel.users.HabboManager;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.messages.PacketManager;
 import com.eu.habbo.messages.incoming.floorplaneditor.FloorPlanEditorSaveEvent;
+import com.eu.habbo.messages.incoming.hotelview.HotelViewRequestLTDAvailabilityEvent;
 import com.eu.habbo.plugin.events.emulator.EmulatorConfigUpdatedEvent;
 import com.eu.habbo.plugin.events.roomunit.RoomUnitLookAtPointEvent;
 import com.eu.habbo.plugin.events.users.*;
 import com.eu.habbo.threading.runnables.RoomTrashing;
+import com.eu.habbo.threading.runnables.ShutdownEmulator;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import gnu.trove.iterator.hash.TObjectHashIterator;
@@ -245,16 +250,21 @@ public class PluginManager
 
                 if (p != null)
                 {
-                    p.onDisable();
 
                     try
                     {
+                        p.onDisable();
                         p.stream.close();
                         p.classLoader.close();
                     }
                     catch (IOException e)
                     {
                         Emulator.getLogging().logErrorLine(e);
+                    }
+                    catch (Exception ex)
+                    {
+                        Emulator.getLogging().logErrorLine("[CRITICAL][PLUGIN] Failed to disable " + p.configuration.name + " caused by: " + ex.getLocalizedMessage());
+                        Emulator.getLogging().logErrorLine(ex);
                     }
                 }
             }
@@ -316,11 +326,13 @@ public class PluginManager
         MarketPlace.MARKETPLACE_CURRENCY = Emulator.getConfig().getInt("hotel.marketplace.currency");
         Messenger.SAVE_PRIVATE_CHATS = Emulator.getConfig().getBoolean("save.private.chats", false);
         PacketManager.DEBUG_SHOW_PACKETS = Emulator.getConfig().getBoolean("debug.show.packets");
+        PacketManager.MULTI_THREADED_PACKET_HANDLING = Emulator.getConfig().getBoolean("io.client.multithreaded.handler");
         Room.HABBO_CHAT_DELAY = Emulator.getConfig().getBoolean("room.chat.delay", false);
         RoomChatMessage.SAVE_ROOM_CHATS = Emulator.getConfig().getBoolean("save.room.chats", false);
         RoomLayout.MAXIMUM_STEP_HEIGHT = Emulator.getConfig().getDouble("pathfinder.step.maximum.height", 1.1);
         RoomLayout.ALLOW_FALLING = Emulator.getConfig().getBoolean("pathfinder.step.allow.falling", true);
-        RoomTrade.TRADING_ENABLED = Emulator.getConfig().getBoolean("hotel.trading.enabled");
+        RoomTrade.TRADING_ENABLED = Emulator.getConfig().getBoolean("hotel.trading.enabled") && !ShutdownEmulator.instantiated;
+        RoomTrade.TRADING_REQUIRES_PERK = Emulator.getConfig().getBoolean("hotel.trading.requires.perk");
         WordFilter.ENABLED_FRIENDCHAT = Emulator.getConfig().getBoolean("hotel.wordfilter.messenger");
 
         BotManager.MINIMUM_CHAT_SPEED = Emulator.getConfig().getInt("hotel.bot.chat.minimum.interval");
@@ -358,5 +370,16 @@ public class PluginManager
         Room.PREFIX_FORMAT = Emulator.getConfig().getValue("room.chat.prefix.format");
         FloorPlanEditorSaveEvent.MAXIMUM_FLOORPLAN_WIDTH_LENGTH = Emulator.getConfig().getInt("hotel.floorplan.max.widthlength");
         FloorPlanEditorSaveEvent.MAXIMUM_FLOORPLAN_SIZE = Emulator.getConfig().getInt("hotel.floorplan.max.totalarea");
+
+        HotelViewRequestLTDAvailabilityEvent.ENABLED = Emulator.getConfig().getBoolean("hotel.view.ltdcountdown.enabled");
+        HotelViewRequestLTDAvailabilityEvent.TIMESTAMP =  Emulator.getConfig().getInt("hotel.view.ltdcountdown.timestamp");
+        HotelViewRequestLTDAvailabilityEvent.ITEM_ID = Emulator.getConfig().getInt("hotel.view.ltdcountdown.itemid");
+        HotelViewRequestLTDAvailabilityEvent.PAGE_ID = Emulator.getConfig().getInt("hotel.view.ltdcountdown.pageid");
+        HotelViewRequestLTDAvailabilityEvent.ITEM_NAME = Emulator.getConfig().getValue("hotel.view.ltdcountdown.itename");
+        InteractionPostIt.STICKYPOLE_PREFIX_TEXT = Emulator.getConfig().getValue("hotel.room.stickypole.prefix");
+        TargetOffer.ACTIVE_TARGET_OFFER_ID = Emulator.getConfig().getInt("hotel.targetoffer.id");
+        WordFilter.DEFAULT_REPLACEMENT = Emulator.getConfig().getValue("hotel.wordfilter.replacement");
+        CatalogManager.PURCHASE_COOLDOWN = Emulator.getConfig().getInt("hotel.catalog.purchase.cooldown");
+
     }
 }

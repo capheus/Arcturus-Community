@@ -26,8 +26,7 @@ public class UpdateCatalog extends RCONMessage<UpdateCatalog.JSONUpdateCatalog>
         Emulator.getGameEnvironment().getCraftingManager().reload();
     }
 
-    public class JSONUpdateCatalog
+    public static class JSONUpdateCatalog
     {
-
     }
 }

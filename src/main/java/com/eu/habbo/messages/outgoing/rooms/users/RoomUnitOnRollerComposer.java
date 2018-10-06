@@ -39,10 +39,10 @@ public class RoomUnitOnRollerComposer extends MessageComposer
         }
 
         this.response.init(Outgoing.ObjectOnRollerComposer);
-        this.response.appendInt32(this.roomUnit.getX());
-        this.response.appendInt32(this.roomUnit.getY());
-        this.response.appendInt32(this.newLocation.x);
-        this.response.appendInt32(this.newLocation.y);
+        this.response.appendInt(this.roomUnit.getX());
+        this.response.appendInt(this.roomUnit.getY());
+        this.response.appendInt(this.newLocation.x);
+        this.response.appendInt(this.newLocation.y);
         this.response.appendInt(0);
         this.response.appendInt(this.roller == null ? 0 : this.roller.getId());
         this.response.appendInt(2);

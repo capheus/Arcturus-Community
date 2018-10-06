@@ -86,7 +86,7 @@ public class RoomManager
 
     public CustomRoomLayout loadCustomLayout(Room room)
     {
-        RoomLayout layout = null;
+        CustomRoomLayout layout = null;
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM room_models_custom WHERE id = ? LIMIT 1"))
         {
             statement.setInt(1, room.getId());
@@ -103,7 +103,7 @@ public class RoomManager
             Emulator.getLogging().logSQLException(e);
         }
 
-        return (CustomRoomLayout) layout;
+        return layout;
     }
 
     private void loadRoomCategories()
@@ -146,10 +146,10 @@ public class RoomManager
     }
 
     private static final int page = 0;
-    public THashMap<Integer, List<Room>> findRooms(NavigatorFilterField filterField, String value, int category)
+    public THashMap<Integer, List<Room>> findRooms(NavigatorFilterField filterField, String value, int category, boolean showInvisible)
     {
         THashMap<Integer, List<Room>> rooms = new THashMap<>();
-        String query = filterField.databaseQuery + " AND rooms.state != 'invisible' " + (category >= 0 ? "AND rooms.category = '" + category + "'" : "") + "  ORDER BY rooms.users, rooms.id DESC LIMIT " + (page * NavigatorManager.MAXIMUM_RESULTS_PER_PAGE)  + "" + ((page * NavigatorManager.MAXIMUM_RESULTS_PER_PAGE) + NavigatorManager.MAXIMUM_RESULTS_PER_PAGE);
+        String query = filterField.databaseQuery + " AND rooms.state NOT LIKE " + (showInvisible ? "''" : "'invisible'")  + (category >= 0 ? "AND rooms.category = '" + category + "'" : "") + "  ORDER BY rooms.users, rooms.id DESC LIMIT " + (page * NavigatorManager.MAXIMUM_RESULTS_PER_PAGE)  + "" + ((page * NavigatorManager.MAXIMUM_RESULTS_PER_PAGE) + NavigatorManager.MAXIMUM_RESULTS_PER_PAGE);
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement(query))
         {
             statement.setString(1, (filterField.comparator == NavigatorFilterComparator.EQUALS ? value : "%" + value + "%"));
@@ -951,7 +951,7 @@ public class RoomManager
                     habbo.getClient().sendResponse(new RoomUnitIdleComposer(roomHabbo.getRoomUnit()));
                 }
 
-                if (roomHabbo.getHabboStats().ignoredUsers.contains(habbo.getHabboInfo().getId()))
+                if (roomHabbo.getHabboStats().userIgnored(habbo.getHabboInfo().getId()))
                 {
                     roomHabbo.getClient().sendResponse(new RoomUserIgnoredComposer(habbo, RoomUserIgnoredComposer.IGNORED));
                 }
@@ -960,7 +960,7 @@ public class RoomManager
                 {
                     habbo.getClient().sendResponse(new RoomUserIgnoredComposer(roomHabbo, RoomUserIgnoredComposer.MUTED));
                 }
-                else if (habbo.getHabboStats().ignoredUsers.contains(roomHabbo.getHabboInfo().getId()))
+                else if (habbo.getHabboStats().userIgnored(roomHabbo.getHabboInfo().getId()))
                 {
                     habbo.getClient().sendResponse(new RoomUserIgnoredComposer(roomHabbo, RoomUserIgnoredComposer.IGNORED));
                 }
@@ -1029,7 +1029,7 @@ public class RoomManager
         WiredHandler.handle(WiredTriggerType.ENTER_ROOM, habbo.getRoomUnit(), room, null);
         room.habboEntered(habbo);
 
-        if (!habbo.getHabboStats().nux && room.isOwner(habbo))
+        if (!habbo.getHabboStats().nux && (room.isOwner(habbo) || room.isPublicRoom()))
         {
             UserNuxEvent.handle(habbo);
         }

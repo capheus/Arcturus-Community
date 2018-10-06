@@ -6,6 +6,7 @@ import gnu.trove.set.hash.THashSet;
 
 public class RoomTradeUser
 {
+    private int userId;
     private final Habbo habbo;
     private boolean accepted;
     private boolean confirmed;
@@ -14,9 +15,25 @@ public class RoomTradeUser
     public RoomTradeUser(Habbo habbo)
     {
         this.habbo = habbo;
+
+        if (this.habbo != null)
+        {
+            this.userId = this.habbo.getHabboInfo().getId();
+        }
+
         this.accepted = false;
         this.confirmed = false;
         this.items = new THashSet<>();
+    }
+
+    public int getUserId()
+    {
+        return this.userId;
+    }
+
+    public void setUserId(int userId)
+    {
+        this.userId = userId;
     }
 
     public Habbo getHabbo()
@@ -49,9 +66,27 @@ public class RoomTradeUser
         this.items.add(item);
     }
 
+    public HabboItem getItem(int itemId)
+    {
+        for (HabboItem item : this.items)
+        {
+            if (item.getId() == itemId)
+            {
+                return item;
+            }
+        }
+
+        return null;
+    }
+
     public THashSet<HabboItem> getItems()
     {
         return this.items;
+    }
+
+    public void putItemsIntoInventory()
+    {
+        this.habbo.getInventory().getItemsComponent().addItems(this.items);
     }
 
     public void clearItems()

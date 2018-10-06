@@ -192,4 +192,9 @@ public class InteractionTeleport extends HabboItem
         }
     }
 
+    @Override
+    public boolean isUsable()
+    {
+        return true;
+    }
 }

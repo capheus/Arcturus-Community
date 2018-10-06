@@ -44,7 +44,7 @@ public class CameraResultURLEvent extends CameraIncomingMessage
                 habbo.getHabboInfo().setPhotoJSON("");
                 habbo.getHabboInfo().setPhotoURL("");
 
-                habbo.getClient().sendResponse(new GenericAlertComposer("Failed to create your image :("));
+                habbo.getClient().sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("camera.error.creation")));
                 return;
             }
         }

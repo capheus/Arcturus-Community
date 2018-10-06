@@ -39,9 +39,16 @@ public class TalkUser extends RCONMessage<TalkUser.JSON>
 
     public static class JSON
     {
+
         public String type;
+
+
         public int user_id;
+
+
         public int bubble_id = -1;
+
+
         public String message;
     }
 }

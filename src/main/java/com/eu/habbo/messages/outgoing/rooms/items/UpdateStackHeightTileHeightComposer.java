@@ -10,10 +10,10 @@ public class UpdateStackHeightTileHeightComposer extends MessageComposer
     private final HabboItem item;
     private final int height;
 
-    public UpdateStackHeightTileHeightComposer(HabboItem item, double height)
+    public UpdateStackHeightTileHeightComposer(HabboItem item, int height)
     {
         this.item = item;
-        this.height = (int)height;
+        this.height = height;
 
     }
 

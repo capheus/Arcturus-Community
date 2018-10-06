@@ -92,7 +92,7 @@ public class ReportEvent extends MessageHandler
                                     {
                                         if (cfhTopic.action == CfhActionType.AUTO_IGNORE)
                                         {
-                                            client.getHabbo().getHabboStats().ignoredUsers.add(reported.getHabboInfo().getId());
+                                            client.getHabbo().getHabboStats().ignoreUser(reported.getHabboInfo().getId());
                                             client.sendResponse(new RoomUserIgnoredComposer(reported, RoomUserIgnoredComposer.IGNORED));
                                         }
 
@@ -129,7 +129,7 @@ public class ReportEvent extends MessageHandler
                             {
                                 if(cfhTopic.action == CfhActionType.AUTO_IGNORE)
                                 {
-                                    client.getHabbo().getHabboStats().ignoredUsers.add(issue.reportedId);
+                                    client.getHabbo().getHabboStats().ignoreUser(issue.reportedId);
                                     Habbo reported = Emulator.getGameEnvironment().getHabboManager().getHabbo(issue.reportedId);
                                     if (reported != null)
                                     {

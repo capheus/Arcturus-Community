@@ -18,8 +18,6 @@ public class ShutdownEmulator implements Runnable
             {
                 Emulator.getGameServer().getGameClientManager().sendBroadcastResponse(message);
             }
-
-            Emulator.getConfig().update("hotel.trading.enabled", "0");
         }
     }
     @Override

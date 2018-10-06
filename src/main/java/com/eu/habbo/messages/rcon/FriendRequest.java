@@ -58,9 +58,12 @@ public class FriendRequest extends RCONMessage<FriendRequest.JSON>
         }
     }
 
-    public class JSON
+    public static class JSON
     {
+
         public int user_id;
+
+
         public int target_id;
     }
 }

@@ -116,8 +116,13 @@ public class RotateMoveItemEvent extends MessageHandler
         //room.removeHabboItem(item.getId());
 
         double checkStackHeight = item.getZ();
-
         Rectangle newSquare = RoomLayout.getRectangle(x, y, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), rotation);
+        if (room.getStackHeight(x, y, false, item) != (double)room.getLayout().getTile((short)x, (short)y).z && item instanceof InteractionRoller)
+        {
+            this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
+            this.client.sendResponse(new FloorItemUpdateComposer(item));
+            return;
+        }
 
         //if (x != item.getX() || y != item.getY() || item.getRotation() != rotation)
         if (hasStackHelper == null)
@@ -130,8 +135,7 @@ public class RotateMoveItemEvent extends MessageHandler
                     double testheight = room.getStackHeight(i, j, false, item);
                     if (
                             (checkStackHeight != testheight && !(item instanceof InteractionStackHelper)) ||
-                            (!room.getHabbosAt(i, j).isEmpty() && !(oldX == x && oldY == y) && !(item instanceof InteractionStackHelper)) ||
-                            (checkStackHeight > 0 && item instanceof InteractionRoller)
+                            (!room.getHabbosAt(i, j).isEmpty() && !(oldX == x && oldY == y) && !(item instanceof InteractionStackHelper))
                         )
                     {
                         this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));

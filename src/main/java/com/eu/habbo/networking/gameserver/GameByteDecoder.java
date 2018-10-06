@@ -42,7 +42,7 @@ public class GameByteDecoder extends ByteToMessageDecoder
                     "  </cross-domain-policy>" + (char) 0, CharsetUtil.UTF_8));
 
             f.channel().close();
-            ctx.close();
+            ctx.channel().close();
             return;
         }
 

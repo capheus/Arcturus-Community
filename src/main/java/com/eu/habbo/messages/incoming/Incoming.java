@@ -340,6 +340,10 @@ public class Incoming
     public static final int ChangeChatBubbleEvent = 1030;
     public static final int LoveLockStartConfirmEvent = 3775;
 
+    public static final int HotelViewRequestLTDAvailabilityEvent = 410;
+    public static final int PurchaseTargetOfferEvent = 1826;
+    public static final int TargetOfferStateEvent = 2041;
+
 
     public static final int UNKNOWN_SNOWSTORM_6000 = 6000;
     public static final int UNKNOWN_SNOWSTORM_6001 = 6001;

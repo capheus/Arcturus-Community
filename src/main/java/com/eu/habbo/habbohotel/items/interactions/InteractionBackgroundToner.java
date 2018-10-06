@@ -106,4 +106,10 @@ public class InteractionBackgroundToner extends HabboItem
     {
         super.onWalkOff(roomUnit, room, objects);
     }
+
+    @Override
+    public boolean isUsable()
+    {
+        return true;
+    }
 }

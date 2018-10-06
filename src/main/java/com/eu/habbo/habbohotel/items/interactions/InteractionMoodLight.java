@@ -67,4 +67,10 @@ public class InteractionMoodLight extends HabboItem
             }
         }
     }
+
+    @Override
+    public boolean isUsable()
+    {
+        return true;
+    }
 }

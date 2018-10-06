@@ -158,10 +158,10 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
         message.appendString(s);
         message.appendInt(4);
             message.appendInt(this.rewardTime);
-            message.appendInt32(this.uniqueRewards);
+            message.appendInt(this.uniqueRewards);
             message.appendInt(this.limit);
             message.appendInt(this.limitationInterval);
-        message.appendInt32(this.limit > 0);
+        message.appendInt(this.limit > 0);
         message.appendInt(this.getType().code);
         message.appendInt(this.getDelay());
 

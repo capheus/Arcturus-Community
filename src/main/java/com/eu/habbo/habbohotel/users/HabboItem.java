@@ -77,8 +77,8 @@ public abstract class HabboItem implements Runnable, IEventTriggers
         {
             serverMessage.appendInt(this.getId());
             serverMessage.appendInt(this.baseItem.getSpriteId());
-            serverMessage.appendInt32(this.x);
-            serverMessage.appendInt32(this.y);
+            serverMessage.appendInt(this.x);
+            serverMessage.appendInt(this.y);
             serverMessage.appendInt(getRotation());
             serverMessage.appendString(Double.toString(this.z));
 
@@ -422,5 +422,10 @@ public abstract class HabboItem implements Runnable, IEventTriggers
     public boolean allowWiredResetState()
     {
         return false;
+    }
+
+    public boolean isUsable()
+    {
+        return this.baseItem.getStateCount() > 1;
     }
 }

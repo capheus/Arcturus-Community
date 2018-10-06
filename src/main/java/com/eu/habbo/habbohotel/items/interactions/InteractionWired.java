@@ -122,4 +122,10 @@ public abstract class InteractionWired extends HabboItem
         this.cooldown = newMillis;
         return true;
     }
+
+    @Override
+    public boolean isUsable()
+    {
+        return true;
+    }
 }

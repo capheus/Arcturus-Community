@@ -1,3 +1,4 @@
+logging/
 *.iml
 .idea/
 target/**
@@ -6,9 +7,9 @@ packet.pkt
 plugins/**
 src/main/resources/
 src/test/
-logging/
 target/
 config.ini
 *.txt
-logging/**
-logging/
+*.jar
+*.log
+*.zip

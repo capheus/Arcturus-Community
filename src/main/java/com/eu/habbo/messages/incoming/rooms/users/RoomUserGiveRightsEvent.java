@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.incoming.rooms.users;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
 import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -23,9 +24,21 @@ public class RoomUserGiveRightsEvent extends MessageHandler
         {
             Habbo target = room.getHabbo(userId);
 
-            if(!Emulator.getPluginManager().fireEvent(new UserRightsGivenEvent(this.client.getHabbo(), target)).isCancelled())
+            if (target != null)
             {
-                room.giveRights(target);
+                if (!Emulator.getPluginManager().fireEvent(new UserRightsGivenEvent(this.client.getHabbo(), target)).isCancelled())
+                {
+                    room.giveRights(target);
+                }
+            }
+            else
+            {
+                MessengerBuddy buddy = this.client.getHabbo().getMessenger().getFriend(userId);
+
+                if (buddy != null)
+                {
+                    room.giveRights(userId);
+                }
             }
         }
     }

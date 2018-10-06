@@ -34,10 +34,10 @@ public class FloorItemOnRollerComposer extends MessageComposer
         short oldY = this.item.getY();
 
         this.response.init(Outgoing.ObjectOnRollerComposer);
-        this.response.appendInt32(this.item.getX());
-        this.response.appendInt32(this.item.getY());
-        this.response.appendInt32(this.newLocation.x);
-        this.response.appendInt32(this.newLocation.y);
+        this.response.appendInt(this.item.getX());
+        this.response.appendInt(this.item.getY());
+        this.response.appendInt(this.newLocation.x);
+        this.response.appendInt(this.newLocation.y);
         this.response.appendInt(1);
         this.response.appendInt(this.item.getId());
         this.response.appendString(Double.toString(this.item.getZ()));

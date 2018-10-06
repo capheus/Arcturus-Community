@@ -201,7 +201,6 @@ public class BattleBanzaiGame extends Game
             }
             else
             {
-                this.stop();
 
                 GameTeam winningTeam = null;
 
@@ -244,6 +243,8 @@ public class BattleBanzaiGame extends Game
                         Emulator.getThreading().run(new BattleBanzaiTilesFlicker(this.lockedTiles.get(winningTeam.teamColor), winningTeam.teamColor, this.room));
                     }
                 }
+                
+                this.stop();
 
                 this.isRunning = false;
             }

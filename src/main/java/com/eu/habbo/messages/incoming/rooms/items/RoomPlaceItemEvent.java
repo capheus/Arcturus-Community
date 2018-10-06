@@ -162,9 +162,9 @@ public class RoomPlaceItemEvent extends MessageHandler
                 }
             }
 
-            double checkStackHeight = room.getStackHeight(x, y, true);
+            double checkStackHeight = room.getStackHeight(x, y, false);
 
-            if (checkStackHeight > 0 && item instanceof InteractionRoller)
+            if (checkStackHeight != (double)room.getLayout().getTile(x, y).z && item instanceof InteractionRoller)
             {
                 this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
                 return;

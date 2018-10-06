@@ -18,7 +18,7 @@ public class RCONServerHandler extends ChannelInboundHandlerAdapter
     {
         String adress = ctx.channel().remoteAddress().toString().split(":")[0].replace("/", "");
 
-        for(String s : RCONServer.allowedAdresses)
+        for(String s : Emulator.getRconServer().allowedAdresses)
         {
             if(s.equalsIgnoreCase(adress))
             {
@@ -26,7 +26,7 @@ public class RCONServerHandler extends ChannelInboundHandlerAdapter
             }
         }
 
-        ctx.close();
+        ctx.channel().close();
         Emulator.getLogging().logDebugLine("Remote connection closed: " + adress + ". IP not allowed!");
     }
 

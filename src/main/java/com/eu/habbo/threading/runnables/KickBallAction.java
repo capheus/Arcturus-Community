@@ -8,8 +8,9 @@ import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemOnRollerComposer;
 
-public class KickBallAction implements Runnable
-{
+
+public class KickBallAction implements Runnable {
+
     private final InteractionPushable ball; //The item which is moving
     private final Room room; //The room that the item belongs to
     private final RoomUnit kicker; //The Habbo which initiated the move of the item
@@ -33,14 +34,17 @@ public class KickBallAction implements Runnable
     {
         if(this.dead || !this.room.isLoaded())
             return;
-        
+
         if(this.currentStep < this.totalSteps)
-        {            
-            RoomTile next = this.room.getLayout().getTileInFront(this.room.getLayout().getTile(this.ball.getX(), this.ball.getY()), this.currentDirection.getValue());
-            if (next != null && !this.ball.validMove(this.room, this.room.getLayout().getTile(this.ball.getX(), this.ball.getY()), next))
+        {
+            RoomTile currentTile = this.room.getLayout().getTile(this.ball.getX(), this.ball.getY());
+            RoomTile next = this.room.getLayout().getTileInFront(currentTile, this.currentDirection.getValue());
+
+            if (next == null || !this.ball.validMove(this.room, this.room.getLayout().getTile(this.ball.getX(), this.ball.getY()), next))
             {
                 RoomUserRotation oldDirection = this.currentDirection;
                 this.currentDirection = this.ball.getBounceDirection(this.room, this.currentDirection);
+
                 if(this.currentDirection != oldDirection)
                 {
                     this.ball.onBounce(this.room, oldDirection, this.currentDirection, this.kicker);
@@ -55,14 +59,14 @@ public class KickBallAction implements Runnable
             {
                 //Move the ball & run again
                 this.currentStep++;
-                
+
                 int delay = this.ball.getNextRollDelay(this.currentStep, this.totalSteps); //Algorithm to work out the delay till next run
-                
+
                 if(this.ball.canStillMove(this.room, this.room.getLayout().getTile(this.ball.getX(), this.ball.getY()), next, this.currentDirection, this.kicker, delay, this.currentStep, this.totalSteps))
                 {
                     this.ball.onMove(this.room, this.room.getLayout().getTile(this.ball.getX(), this.ball.getY()), next, this.currentDirection, this.kicker, delay, this.currentStep, this.totalSteps);
 
-                    this.room.sendComposer(new FloorItemOnRollerComposer(this.ball, null, next, this.ball.getZ() - this.room.getStackHeight(next.x, next.y, false), this.room).compose());
+                    this.room.sendComposer(new FloorItemOnRollerComposer(this.ball, null, next, next.getStackHeight() - this.ball.getZ(), this.room).compose());
 
                     Emulator.getThreading().run(this, (long)delay);
                 }
@@ -80,4 +84,5 @@ public class KickBallAction implements Runnable
             dead = true;
         }
     }
+
 }

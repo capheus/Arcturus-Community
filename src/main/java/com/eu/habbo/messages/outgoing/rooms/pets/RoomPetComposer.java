@@ -50,8 +50,8 @@ public class RoomPetComposer extends MessageComposer implements TIntObjectProced
             this.response.appendString(pet.getPetData().getType() + " " + pet.getRace() + " " + pet.getColor() + " " + ((pet instanceof HorsePet ? (((HorsePet) pet).hasSaddle() ? "3" : "2") + " 2 " + ((HorsePet) pet).getHairStyle() + " " + ((HorsePet) pet).getHairColor() + " 3 " + ((HorsePet) pet).getHairStyle() + " " + ((HorsePet) pet).getHairColor() + (((HorsePet) pet).hasSaddle() ? " 4 9 0" : "") : pet instanceof MonsterplantPet ? (((MonsterplantPet) pet).look.isEmpty() ? "2 1 8 6 0 -1 -1" : ((MonsterplantPet) pet).look) : "2 2 -1 0 3 -1 0")));
         }
         this.response.appendInt(pet.getRoomUnit().getId());
-        this.response.appendInt32(pet.getRoomUnit().getX());
-        this.response.appendInt32(pet.getRoomUnit().getY());
+        this.response.appendInt(pet.getRoomUnit().getX());
+        this.response.appendInt(pet.getRoomUnit().getY());
         this.response.appendString(pet.getRoomUnit().getZ() + "");
         this.response.appendInt(0);
         this.response.appendInt(2);

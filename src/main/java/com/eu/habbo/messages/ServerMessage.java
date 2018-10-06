@@ -110,19 +110,6 @@ public class ServerMessage
         }
     }
 
-    @Deprecated
-    public void appendInt32(Integer obj)
-    {
-        try
-        {
-            this.stream.writeInt(obj.intValue());
-        }
-        catch(IOException e)
-        {
-            Emulator.getLogging().logPacketError(e);
-        }
-    }
-
     public void appendInt(Integer obj)
     {
         try
@@ -135,13 +122,13 @@ public class ServerMessage
         }
     }
 
-    public void appendInt32(Short obj)
+    public void appendInt(Short obj)
     {
         this.appendShort(0);
         this.appendShort(obj);
     }
 
-    public void appendInt32(Byte obj)
+    public void appendInt(Byte obj)
     {
         try
         {
@@ -153,7 +140,7 @@ public class ServerMessage
         }
     }
 
-    public void appendInt32(Boolean obj)
+    public void appendInt(Boolean obj)
     {
         try
         {

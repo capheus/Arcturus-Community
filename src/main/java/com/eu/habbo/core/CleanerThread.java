@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Map;
 
 public class CleanerThread implements Runnable {
 
@@ -35,6 +36,9 @@ public class CleanerThread implements Runnable {
 
 
     public static final int SAVE_ERROR_LOGS = 30;
+
+
+    public static final int CLEAR_CACHED_VALUES = 60 * 60;
 
 
     private static final int CALLBACK_TIME = 60*15;
@@ -62,6 +66,9 @@ public class CleanerThread implements Runnable {
     private static int LAST_DAILY_REFILL = Emulator.getIntUnixTimestamp();
 
     private static int LAST_CALLBACK = Emulator.getIntUnixTimestamp();
+
+
+    private static int LAST_HABBO_CACHE_CLEARED = Emulator.getIntUnixTimestamp();
 
     public CleanerThread()
     {
@@ -129,6 +136,12 @@ public class CleanerThread implements Runnable {
             LAST_DAILY_REFILL = time;
         }
 
+        if (time - LAST_HABBO_CACHE_CLEARED > CLEAR_CACHED_VALUES)
+        {
+            clearCachedValues();
+            LAST_HABBO_CACHE_CLEARED = time;
+        }
+
         SearchRoomsEvent.cachedResults.clear();
         SearchUserEvent.cachedResults.clear();
     }
@@ -187,6 +200,27 @@ public class CleanerThread implements Runnable {
             {
                 habbo.getHabboStats().petRespectPointsToGive = Emulator.getConfig().getInt("hotel.daily.respect");
                 habbo.getHabboStats().respectPointsToGive = Emulator.getConfig().getInt("hotel.daily.respect.pets");
+            }
+        }
+    }
+
+    private void clearCachedValues()
+    {
+        Habbo habbo = null;
+        for(Map.Entry<Integer, Habbo> map : Emulator.getGameEnvironment().getHabboManager().getOnlineHabbos().entrySet())
+        {
+            habbo = map.getValue();
+
+            try
+            {
+                if (habbo != null)
+                {
+                    habbo.clearCaches();
+                }
+            }
+            catch (Exception e)
+            {
+                Emulator.getLogging().logErrorLine(e);
             }
         }
     }

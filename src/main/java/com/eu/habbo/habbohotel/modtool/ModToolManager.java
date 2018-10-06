@@ -12,10 +12,7 @@ import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.outgoing.modtool.ModToolIssueHandledComposer;
 import com.eu.habbo.messages.outgoing.modtool.ModToolIssueInfoComposer;
 import com.eu.habbo.messages.outgoing.modtool.ModToolUserInfoComposer;
-import com.eu.habbo.plugin.events.support.SupportRoomActionEvent;
-import com.eu.habbo.plugin.events.support.SupportTicketEvent;
-import com.eu.habbo.plugin.events.support.SupportUserAlertedEvent;
-import com.eu.habbo.plugin.events.support.SupportUserBannedEvent;
+import com.eu.habbo.plugin.events.support.*;
 import com.eu.habbo.threading.runnables.InsertModToolIssue;
 import gnu.trove.TCollections;
 import gnu.trove.map.TIntObjectMap;
@@ -693,7 +690,12 @@ public class ModToolManager
 
     public void updateTicketToMods(ModToolIssue issue)
     {
-        Emulator.getGameEnvironment().getHabboManager().sendPacketToHabbosWithPermission(new ModToolIssueInfoComposer(issue).compose(), Permission.ACC_SUPPORTTOOL);
+        SupportTicketStatusChangedEvent event = new SupportTicketStatusChangedEvent(null, issue);
+
+        if (!Emulator.getPluginManager().fireEvent(event).isCancelled())
+        {
+            Emulator.getGameEnvironment().getHabboManager().sendPacketToHabbosWithPermission(new ModToolIssueInfoComposer(issue).compose(), Permission.ACC_SUPPORTTOOL);
+        }
     }
 
     public void addTicket(ModToolIssue issue)

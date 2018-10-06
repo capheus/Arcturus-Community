@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.commands;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
+import com.eu.habbo.habbohotel.rooms.RoomTrade;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.HotelWillCloseInMinutesComposer;
@@ -55,6 +56,7 @@ public class ShutdownCommand extends Command
         {
             message = new HotelWillCloseInMinutesComposer(minutes).compose();
         }
+        RoomTrade.TRADING_ENABLED = false;
         ShutdownEmulator.timestamp = Emulator.getIntUnixTimestamp() + (60 * minutes);
         Emulator.getThreading().run(new ShutdownEmulator(message), minutes * 60 * 1000);
         return true;

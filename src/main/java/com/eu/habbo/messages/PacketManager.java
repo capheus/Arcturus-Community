@@ -225,6 +225,8 @@ public class PacketManager
         this.registerHandler(Incoming.GetClubDataEvent,                         RequestClubDataEvent.class);
         this.registerHandler(Incoming.RequestClubGiftsEvent,                    RequestClubGiftsEvent.class);
         this.registerHandler(Incoming.CatalogSearchedItemEvent,                 CatalogSearchedItemEvent.class);
+        this.registerHandler(Incoming.PurchaseTargetOfferEvent,                 PurchaseTargetOfferEvent.class);
+        this.registerHandler(Incoming.TargetOfferStateEvent,                    TargetOfferStateEvent.class);
     }
 
     private void registerEvent() throws Exception
@@ -327,6 +329,7 @@ public class PacketManager
         this.registerHandler(Incoming.HotelViewDataEvent,                       HotelViewDataEvent.class);
         this.registerHandler(Incoming.HotelViewRequestBadgeRewardEvent,         HotelViewRequestBadgeRewardEvent.class);
         this.registerHandler(Incoming.HotelViewClaimBadgeRewardEvent,           HotelViewClaimBadgeRewardEvent.class);
+        this.registerHandler(Incoming.HotelViewRequestLTDAvailabilityEvent,     HotelViewRequestLTDAvailabilityEvent.class);
     }
 
     private void registerInventory() throws Exception
@@ -619,4 +622,5 @@ public class PacketManager
     }
 
     public static boolean DEBUG_SHOW_PACKETS = false;
+    public static boolean MULTI_THREADED_PACKET_HANDLING = false;
 }

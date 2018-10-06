@@ -2,6 +2,7 @@ package com.eu.habbo.networking.gameserver;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.core.Logging;
+import com.eu.habbo.messages.PacketManager;
 import com.eu.habbo.threading.runnables.ChannelReadHandler;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -17,7 +18,7 @@ public class GameMessageHandler extends ChannelInboundHandlerAdapter
     {
         if (!Emulator.getGameServer().getGameClientManager().addClient(ctx))
         {
-            ctx.close();
+            ctx.channel().close();
             return;
         }
     }
@@ -25,7 +26,7 @@ public class GameMessageHandler extends ChannelInboundHandlerAdapter
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx)
     {
-        ctx.close();
+        ctx.channel().close();
     }
 
     @Override
@@ -33,7 +34,15 @@ public class GameMessageHandler extends ChannelInboundHandlerAdapter
     {
         try
         {
-            Emulator.getThreading().run(new ChannelReadHandler(ctx, msg));
+            ChannelReadHandler handler = new ChannelReadHandler(ctx, msg);
+
+            if (PacketManager.MULTI_THREADED_PACKET_HANDLING)
+            {
+                Emulator.getThreading().run(handler);
+                return;
+            }
+
+            handler.run();
         }
         catch (Exception e)
         {
@@ -44,8 +53,10 @@ public class GameMessageHandler extends ChannelInboundHandlerAdapter
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception
     {
-        ctx.close();
+        ctx.channel().close();
     }
+
+
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
@@ -58,6 +69,6 @@ public class GameMessageHandler extends ChannelInboundHandlerAdapter
             }
         }
 
-        ctx.close();
+        ctx.channel().close();
     }
 }

@@ -74,6 +74,8 @@ public class Bot implements Runnable
 
     private int effect;
 
+    private boolean canWalk = true;
+
 
     private boolean needsUpdate;
 
@@ -112,6 +114,7 @@ public class Bot implements Runnable
         this.chatLines      = new ArrayList<>(Arrays.asList(set.getString("chat_lines").split("\r")));
         this.type           = set.getString("type");
         this.effect         = set.getInt("effect");
+        this.canWalk        = set.getString("freeroam").equals("1");
         this.room           = null;
         this.roomUnit       = null;
         this.chatTimeOut    = Emulator.getIntUnixTimestamp() + this.chatDelay;
@@ -171,7 +174,7 @@ public class Bot implements Runnable
                 statement.setDouble(9, this.roomUnit == null ? 0 : this.roomUnit.getZ());
                 statement.setInt(10, this.roomUnit == null ? 0 : this.roomUnit.getBodyRotation().getValue());
                 statement.setInt(11, this.roomUnit == null ? 0 : this.roomUnit.getDanceType().getType());
-                statement.setString(12, this.roomUnit == null ? "0" : this.roomUnit.canWalk() ? "1" : "0");
+                statement.setString(12, this.canWalk ? "1" : "0");
                 String text = "";
                 for(String s : this.chatLines)
                 {
@@ -193,11 +196,11 @@ public class Bot implements Runnable
     }
 
 
-    public void cycle(boolean canWalk)
+    public void cycle(boolean allowBotsWalk)
     {
         if(this.roomUnit != null)
         {
-            if(canWalk && this.getRoomUnit().canWalk())
+            if(allowBotsWalk && this.canWalk)
             {
                 if (!this.roomUnit.isWalking())
                 {
@@ -566,5 +569,15 @@ public class Bot implements Runnable
     public static void dispose()
     {
 
+    }
+
+    public boolean canWalk()
+    {
+        return this.canWalk;
+    }
+
+    public void setCanWalk(boolean canWalk)
+    {
+        this.canWalk = canWalk;
     }
 }

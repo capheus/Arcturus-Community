@@ -6,7 +6,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,7 +25,7 @@ public class InteractionMonsterPlantSeed extends HabboItem
     @Override
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
-        client.sendResponse(new GenericAlertComposer("We're in the progress of implementing monster plants.\r\n Stay tuned!\r-Arcturus Emulator"));
+        //client.sendResponse(new GenericAlertComposer("We're in the progress of implementing monster plants.\r\n Stay tuned!\r-Arcturus Emulator"));
     }
 
     @Override

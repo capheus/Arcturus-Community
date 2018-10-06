@@ -129,4 +129,10 @@ public class InteractionVendingMachine extends HabboItem
 
         super.serializeExtradata(serverMessage);
     }
+
+    @Override
+    public boolean isUsable()
+    {
+        return true;
+    }
 }

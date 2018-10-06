@@ -75,6 +75,7 @@ public class InteractionMultiHeight extends HabboItem
                 {
                     this.setExtradata("" + (Integer.valueOf(this.getExtradata()) + 1) % (this.getBaseItem().getMultiHeights().length));
                     this.needsUpdate(true);
+                    room.updateTiles(room.getLayout().getTilesAt(room.getLayout().getTile(this.getX(), this.getY()), this.getBaseItem().getWidth(), this.getBaseItem().getLength(), this.getRotation()));
                     room.updateItemState(this);
                     room.sendComposer(new UpdateStackHeightComposer(this.getX(), this.getY(), this.getBaseItem().getMultiHeights()[Integer.valueOf(this.getExtradata())] * 256.0D).compose());
                 }
@@ -100,6 +101,7 @@ public class InteractionMultiHeight extends HabboItem
                             else
                             {
                                 habbo.getRoomUnit().setZ(this.getZ() + this.getBaseItem().getMultiHeights()[(this.getExtradata().isEmpty() ? 0 : Integer.valueOf(this.getExtradata()) % (this.getBaseItem().getMultiHeights().length))]);
+                                habbo.getRoomUnit().setPreviousLocationZ(habbo.getRoomUnit().getZ());
                             }
                         }
 

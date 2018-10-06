@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
@@ -67,6 +68,7 @@ public class InteractionBattleBanzaiTeleporter extends HabboItem
         if (habbo != null)
         {
             this.setExtradata("1");
+            roomUnit.removeStatus(RoomUnitStatus.MOVE);
             HabboItem target = room.getRoomSpecialTypes().getRandomTeleporter();
 
             while (target == this && room.getRoomSpecialTypes().getBanzaiTeleporters().size() > 1)

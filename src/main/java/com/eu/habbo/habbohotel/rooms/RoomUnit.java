@@ -30,6 +30,7 @@ public class RoomUnit
     private int id;
     private RoomTile startLocation;
     private RoomTile previousLocation;
+    private double previousLocationZ;
     private RoomTile currentLocation;
     private RoomTile goalLocation;
 
@@ -47,6 +48,7 @@ public class RoomUnit
     public boolean sitUpdate = false;
     public boolean isTeleporting = false;
     public boolean isKicked = false;
+    public int kickCount = 0;
     private boolean statusUpdate = false;
     private boolean invisible = false;
 
@@ -143,7 +145,7 @@ public class RoomUnit
             {
                 this.sitUpdate = true;
 
-                if (room.hasHabbosAt(next.x, next.y))
+                if ( room.hasHabbosAt(next.x, next.y))
                 {
                     return false;
                 }
@@ -305,7 +307,9 @@ public class RoomUnit
                 zHeight += room.getLayout().getHeightAtSquare(next.x, next.y);
             }
 
-            this.previousLocation = this.currentLocation;
+
+            this.setPreviousLocation(this.getCurrentLocation());
+
             this.setStatus(RoomUnitStatus.MOVE, next.x + "," + next.y + "," + zHeight);
             if (habbo != null)
             {
@@ -523,9 +527,20 @@ public class RoomUnit
         return this.previousLocation;
     }
 
+    public double getPreviousLocationZ()
+    {
+        return this.previousLocationZ;
+    }
+
+    public void setPreviousLocationZ(double z)
+    {
+        this.previousLocationZ = z;
+    }
+
     public void setPreviousLocation(RoomTile previousLocation)
     {
         this.previousLocation = previousLocation;
+        this.previousLocationZ = this.z;
     }
 
     public void setPathFinderRoom(Room room)
@@ -555,8 +570,6 @@ public class RoomUnit
     {
         return !isAtGoal() && this.canWalk;
     }
-
-
 
     public String getStatus(RoomUnitStatus key)
     {

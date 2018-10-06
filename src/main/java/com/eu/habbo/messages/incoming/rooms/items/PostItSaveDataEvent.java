@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.incoming.rooms.items;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.items.PostItColor;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPostIt;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -14,6 +15,17 @@ public class PostItSaveDataEvent extends MessageHandler
         int itemId = this.packet.readInt();
         String color = this.packet.readString();
         String text = this.packet.readString();
+
+        if (text.length() > 366)
+        {
+            Emulator.getGameEnvironment().getModToolManager().quickTicket(this.client.getHabbo(), "Scripter", Emulator.getTexts().getValue("scripter.warning.sticky.size").replace("%username%", this.client.getHabbo().getHabboInfo().getUsername()).replace("%amount%", text.length() + "").replace("%limit%", "366"));
+
+            if (text.length() >= 400)
+            {
+                this.client.getHabbo().alert("8=====D~~~~~<br><br>Computer Says:<b><u>NO</u></b>");
+            }
+            return;
+        }
 
         text = text.replace(((char) 9) + "", "");
         if(text.startsWith("#") || text.startsWith(" #"))
@@ -37,7 +49,7 @@ public class PostItSaveDataEvent extends MessageHandler
         if(item == null || !(item instanceof InteractionPostIt))
             return;
 
-        if(!color.equalsIgnoreCase("FFFF33") && !room.hasRights(this.client.getHabbo())&& item.getUserId() != this.client.getHabbo().getHabboInfo().getId())
+        if(!color.equalsIgnoreCase(PostItColor.YELLOW.hexColor) && !room.hasRights(this.client.getHabbo())&& item.getUserId() != this.client.getHabbo().getHabboInfo().getId())
         {
             if(!text.startsWith(item.getExtradata().replace(item.getExtradata().split(" ")[0], "")))
             {
@@ -51,8 +63,9 @@ public class PostItSaveDataEvent extends MessageHandler
         }
 
         if(color.isEmpty())
-            color = "FFFF33";
+            color = PostItColor.YELLOW.hexColor;
 
+        item.setUserId(room.getOwnerId());
         item.setExtradata(color + " " + text);
         item.needsUpdate(true);
         room.updateItem(item);

@@ -281,10 +281,14 @@ public class WiredHandler
                     int pixels = Integer.valueOf(rewardReceived.value);
                     habbo.givePixels(pixels);
                 }
-                else  if(rewardReceived.type.equalsIgnoreCase("points"))
+                else  if(rewardReceived.type.startsWith("points"))
                 {
                     int points = Integer.valueOf(rewardReceived.value);
-                    habbo.givePoints(points);
+                    int type = 5;
+
+                    try { type = Integer.valueOf(rewardReceived.type.replace("points", "")); } catch ( Exception e) {}
+
+                    habbo.givePoints(type, points);
                 }
                 else if(rewardReceived.type.equalsIgnoreCase("furni"))
                 {

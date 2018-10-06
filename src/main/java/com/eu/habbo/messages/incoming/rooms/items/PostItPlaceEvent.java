@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.incoming.rooms.items;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPostIt;
 import com.eu.habbo.habbohotel.items.interactions.InteractionStickyPole;
 import com.eu.habbo.habbohotel.rooms.Room;
@@ -8,6 +9,7 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.inventory.RemoveHabboItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.AddWallItemComposer;
+import com.eu.habbo.messages.outgoing.rooms.items.PostItStickyPoleOpenComposer;
 
 public class PostItPlaceEvent extends MessageHandler
 {
@@ -37,6 +39,14 @@ public class PostItPlaceEvent extends MessageHandler
                     this.client.getHabbo().getInventory().getItemsComponent().removeHabboItem(item);
                     this.client.sendResponse(new RemoveHabboItemComposer(item.getId()));
                     Emulator.getThreading().run(item);
+
+                    if (room.getOwnerId() != this.client.getHabbo().getHabboInfo().getId())
+                    {
+                        AchievementManager.progressAchievement(room.getOwnerId(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("NotesReceived"));
+                        AchievementManager.progressAchievement(this.client.getHabbo().getHabboInfo().getId(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("NotesLeft"));
+                    }
+
+                    this.client.sendResponse(new PostItStickyPoleOpenComposer(item));
                 }
             }
         }

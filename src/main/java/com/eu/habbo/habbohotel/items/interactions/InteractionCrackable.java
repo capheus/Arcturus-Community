@@ -166,4 +166,10 @@ public class InteractionCrackable extends HabboItem
         this.setExtradata("0");
         room.updateItem(this);
     }
+
+    @Override
+    public boolean isUsable()
+    {
+        return false;
+    }
 }

@@ -9,6 +9,7 @@ import com.eu.habbo.messages.outgoing.achievements.AchievementProgressComposer;
 import com.eu.habbo.messages.outgoing.achievements.AchievementUnlockedComposer;
 import com.eu.habbo.messages.outgoing.achievements.talenttrack.TalentLevelUpdateComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
+import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserDataComposer;
 import com.eu.habbo.messages.outgoing.users.AddUserBadgeComposer;
 import com.eu.habbo.messages.outgoing.users.UserBadgesComposer;
@@ -218,6 +219,21 @@ public class AchievementManager
 
         AchievementLevel newLevel = achievement.getLevelForProgress(currentProgress + amount);
 
+        for (TalentTrackType type : TalentTrackType.values())
+        {
+            if (Emulator.getGameEnvironment().getAchievementManager().talentTrackLevels.containsKey(type))
+            {
+                for (Map.Entry<Integer, TalentTrackLevel> entry : Emulator.getGameEnvironment().getAchievementManager().talentTrackLevels.get(type).entrySet())
+                {
+                    if (entry.getValue().achievements.containsKey(achievement))
+                    {
+                        Emulator.getGameEnvironment().getAchievementManager().handleTalentTrackAchievement(habbo, type, achievement);
+                        break;
+                    }
+                }
+            }
+        }
+
         if(newLevel == null || (oldLevel.level == newLevel.level && newLevel.level < achievement.levels.size()))
         {
             habbo.getClient().sendResponse(new AchievementProgressComposer(habbo, achievement));
@@ -278,20 +294,6 @@ public class AchievementManager
             if (habbo.getHabboInfo().getCurrentRoom() != null)
             {
                 habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserDataComposer(habbo).compose());
-            }
-
-            for (TalentTrackType type : TalentTrackType.values())
-            {
-                if (Emulator.getGameEnvironment().getAchievementManager().talentTrackLevels.containsKey(type))
-                {
-                    for (Map.Entry<Integer, TalentTrackLevel> entry : Emulator.getGameEnvironment().getAchievementManager().talentTrackLevels.get(type).entrySet())
-                    {
-                        if (entry.getValue().achievements.containsKey(achievement))
-                        {
-                            Emulator.getGameEnvironment().getAchievementManager().handleTalentTrackAchievement(habbo, type, achievement);
-                        }
-                    }
-                }
             }
         }
     }
@@ -403,39 +405,49 @@ public class AchievementManager
     {
         TalentTrackLevel currentLevel = this.calculateTalenTrackLevel(habbo, type);
 
-        if (currentLevel.level > habbo.getHabboStats().talentTrackLevel(type))
+        if (currentLevel != null)
         {
-            for (int i = habbo.getHabboStats().talentTrackLevel(type); i <= currentLevel.level; i++)
+            if (currentLevel.level > habbo.getHabboStats().talentTrackLevel(type))
             {
-                TalentTrackLevel level = this.getTalentTrackLevel(type, i);
-
-                if (level != null)
+                for (int i = habbo.getHabboStats().talentTrackLevel(type); i <= currentLevel.level; i++)
                 {
-                    for (Item item : level.items)
-                    {
-                        HabboItem rewardItem = Emulator.getGameEnvironment().getItemManager().createItem(habbo.getHabboInfo().getId(), item, 0, 0, "");
-                        habbo.getInventory().getItemsComponent().addItem(rewardItem);
-                        habbo.getClient().sendResponse(new AddHabboItemComposer(rewardItem));
-                    }
+                    TalentTrackLevel level = this.getTalentTrackLevel(type, i);
 
-                    for (String badge : level.badges)
+                    if (level != null)
                     {
-                        if (!badge.isEmpty())
+                        for (Item item : level.items)
                         {
-                            HabboBadge b = new HabboBadge(0, badge, 0, habbo);
-                            Emulator.getThreading().run(b);
-                            habbo.getInventory().getBadgesComponent().addBadge(b);
-                            habbo.getClient().sendResponse(new AddUserBadgeComposer(b));
+                            HabboItem rewardItem = Emulator.getGameEnvironment().getItemManager().createItem(habbo.getHabboInfo().getId(), item, 0, 0, "");
+                            habbo.getInventory().getItemsComponent().addItem(rewardItem);
+                            habbo.getClient().sendResponse(new AddHabboItemComposer(rewardItem));
+                            habbo.getClient().sendResponse(new InventoryRefreshComposer());
                         }
-                    }
 
-                    habbo.getClient().sendResponse(new TalentLevelUpdateComposer(type, level));
+                        for (String badge : level.badges)
+                        {
+                            if (!badge.isEmpty())
+                            {
+                                HabboBadge b = new HabboBadge(0, badge, 0, habbo);
+                                Emulator.getThreading().run(b);
+                                habbo.getInventory().getBadgesComponent().addBadge(b);
+                                habbo.getClient().sendResponse(new AddUserBadgeComposer(b));
+                            }
+                        }
+
+                        for (String perk : level.perks)
+                        {
+                            if (perk.equalsIgnoreCase("TRADE"))
+                            {
+                                habbo.getHabboStats().perkTrade = true;
+                            }
+                        }
+                        habbo.getClient().sendResponse(new TalentLevelUpdateComposer(type, level));
+                    }
                 }
             }
+
+            habbo.getHabboStats().setTalentLevel(type, currentLevel.level);
         }
-
-
-        habbo.getHabboStats().setTalentLevel(type, currentLevel.level);
     }
 
     public TalentTrackLevel getTalentTrackLevel(TalentTrackType type, int level)

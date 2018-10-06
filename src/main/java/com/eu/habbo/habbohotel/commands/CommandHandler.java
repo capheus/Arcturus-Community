@@ -56,6 +56,7 @@ public class CommandHandler
         addCommand(new EventCommand());
         addCommand(new FacelessCommand());
         addCommand(new FastwalkCommand());
+        addCommand(new FilterWordCommand());
         addCommand(new FreezeBotsCommand());
         addCommand(new FreezeCommand());
         addCommand(new GiftCommand());
@@ -86,6 +87,7 @@ public class CommandHandler
         addCommand(new PixelCommand());
         addCommand(new PluginsCommand());
         addCommand(new PointsCommand());
+        addCommand(new PromoteTargetOfferCommand());
         addCommand(new PullCommand());
         addCommand(new PushCommand());
         addCommand(new RedeemCommand());

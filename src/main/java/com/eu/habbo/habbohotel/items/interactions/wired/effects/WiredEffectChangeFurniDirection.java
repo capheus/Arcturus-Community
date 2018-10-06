@@ -188,6 +188,7 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
     @Override
     public boolean saveData(ClientMessage packet, GameClient gameClient)
     {
+        this.items.clear();
         packet.readInt();
         this.startRotation = RoomUserRotation.fromValue(packet.readInt());
         this.rotateAction = packet.readInt();

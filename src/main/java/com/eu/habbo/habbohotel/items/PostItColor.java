@@ -1,5 +1,7 @@
 package com.eu.habbo.habbohotel.items;
 
+import com.eu.habbo.Emulator;
+
 public enum PostItColor
 {
 
@@ -31,5 +33,10 @@ public enum PostItColor
         }
 
         return true;
+    }
+
+    public static PostItColor randomColorNotYellow()
+    {
+        return PostItColor.values()[Emulator.getRandom().nextInt(3)];
     }
 }

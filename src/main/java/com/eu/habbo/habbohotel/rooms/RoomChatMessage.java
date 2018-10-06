@@ -1,31 +1,33 @@
 package com.eu.habbo.habbohotel.rooms;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.core.Loggable;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ISerialize;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.Incoming;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-public class RoomChatMessage implements Runnable, ISerialize
+public class RoomChatMessage implements Runnable, ISerialize, Loggable
 {
+    public static String insertQuery = "INSERT INTO chatlogs_room (user_from_id, user_to_id, message, timestamp, room_id) VALUES (?, ?, ?, ?, ?)";
     public static int MAXIMUM_LENGTH = 100;
     //Configuration. Loaded from database & updated accordingly.
     public static boolean SAVE_ROOM_CHATS = false;
     public static int[] BANNED_BUBBLES = {};
 
+    private int roomUnitId;
     private String message;
     private String unfilteredMessage;
     private RoomChatMessageBubbles bubble;
     private final Habbo habbo;
+    public int roomId;
     private Habbo targetHabbo;
-    private final RoomUnit roomUnit;
     private byte emotion;
     public boolean isCommand = false;
     public boolean filtered = false;
@@ -65,7 +67,7 @@ public class RoomChatMessage implements Runnable, ISerialize
 
         this.unfilteredMessage = this.message;
         this.habbo = message.client.getHabbo();
-        this.roomUnit = habbo.getRoomUnit();
+        this.roomUnitId = habbo.getRoomUnit().getId();
 
         this.checkEmotion();
 
@@ -79,7 +81,7 @@ public class RoomChatMessage implements Runnable, ISerialize
         this.habbo = chatMessage.getHabbo();
         this.targetHabbo = chatMessage.getTargetHabbo();
         this.bubble = chatMessage.getBubble();
-        this.roomUnit = chatMessage.roomUnit;
+        this.roomUnitId = chatMessage.roomUnitId;
         this.emotion = (byte)chatMessage.getEmotion();
     }
 
@@ -89,7 +91,7 @@ public class RoomChatMessage implements Runnable, ISerialize
         this.unfilteredMessage = message;
         this.habbo = null;
         this.bubble = bubble;
-        this.roomUnit = roomUnit;
+        this.roomUnitId = roomUnit.getId();
     }
 
     public RoomChatMessage(String message, Habbo habbo, RoomChatMessageBubbles bubble)
@@ -99,7 +101,7 @@ public class RoomChatMessage implements Runnable, ISerialize
         this.habbo = habbo;
         this.bubble = bubble;
         this.checkEmotion();
-        this.roomUnit = habbo.getRoomUnit();
+        this.roomUnitId = habbo.getRoomUnit().getId();
         this.message = this.message.replace("\r", "").replace("\n", "");
 
         if(this.bubble.isOverridable() && this.getHabbo().getHabboStats().chatColor != RoomChatMessageBubbles.NORMAL)
@@ -114,7 +116,7 @@ public class RoomChatMessage implements Runnable, ISerialize
         this.targetHabbo = targetHabbo;
         this.bubble = bubble;
         this.checkEmotion();
-        this.roomUnit = this.habbo.getRoomUnit();
+        this.roomUnitId = this.habbo.getRoomUnit().getId();
         this.message = this.message.replace("\r", "").replace("\n", "");
 
         if(this.bubble.isOverridable() && this.getHabbo().getHabboStats().chatColor != RoomChatMessageBubbles.NORMAL)
@@ -147,48 +149,18 @@ public class RoomChatMessage implements Runnable, ISerialize
         if(habbo == null)
             return;
 
-        if(SAVE_ROOM_CHATS)
+        if(this.message.length() > RoomChatMessage.MAXIMUM_LENGTH)
         {
-            if(this.message.length() > 255)
+            try
             {
-                try
-                {
-                    this.message = this.message.substring(0, 254);
-                }
-                catch (Exception e)
-                {
-                    Emulator.getLogging().logErrorLine(e);
-                }
+                this.message = this.message.substring(0, RoomChatMessage.MAXIMUM_LENGTH-1);
             }
-
-            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO chatlogs_room (user_from_id, user_to_id, message, timestamp, room_id) VALUES (?, ?, ?, ?, ?)"))
+            catch (Exception e)
             {
-                statement.setInt(1,this.habbo.getHabboInfo().getId());
-
-                if(this.targetHabbo != null)
-                    statement.setInt(2, this.targetHabbo.getHabboInfo().getId());
-                else
-                    statement.setInt(2, 0);
-
-                statement.setString(3, this.unfilteredMessage);
-                statement.setInt(4, Emulator.getIntUnixTimestamp());
-
-                if(this.habbo.getHabboInfo().getCurrentRoom() != null)
-                {
-                    statement.setInt(5, this.habbo.getHabboInfo().getCurrentRoom().getId());
-                }
-                else
-                {
-                    statement.setInt(5, 0);
-                }
-
-                statement.executeUpdate();
-            }
-            catch(SQLException e)
-            {
-                Emulator.getLogging().logSQLException(e);
+                Emulator.getLogging().logErrorLine(e);
             }
         }
+        Emulator.getLogging().addChatLog(this);
     }
 
     public String getMessage()
@@ -253,7 +225,7 @@ public class RoomChatMessage implements Runnable, ISerialize
 
         try
         {
-            message.appendInt(this.roomUnit.getId());
+            message.appendInt(this.roomUnitId);
             message.appendString(this.getMessage());
             message.appendInt(this.getEmotion());
             message.appendInt(this.getBubble().getType());
@@ -295,5 +267,30 @@ public class RoomChatMessage implements Runnable, ISerialize
                 this.message = "";
             }
         }
+    }
+
+    @Override
+    public void log(PreparedStatement statement) throws SQLException
+    {
+        statement.setInt(1,this.habbo.getHabboInfo().getId());
+
+        if(this.targetHabbo != null)
+            statement.setInt(2, this.targetHabbo.getHabboInfo().getId());
+        else
+            statement.setInt(2, 0);
+
+        statement.setString(3, this.unfilteredMessage);
+        statement.setInt(4, Emulator.getIntUnixTimestamp());
+
+        if(this.habbo.getHabboInfo().getCurrentRoom() != null)
+        {
+            statement.setInt(5, this.habbo.getHabboInfo().getCurrentRoom().getId());
+        }
+        else
+        {
+            statement.setInt(5, 0);
+        }
+
+        statement.addBatch();
     }
 }

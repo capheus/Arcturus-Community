@@ -3,39 +3,30 @@ package com.eu.habbo.networking.rconserver;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.core.Logging;
 import com.eu.habbo.messages.rcon.*;
+import com.eu.habbo.networking.Server;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import gnu.trove.map.hash.THashMap;
-import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.PooledByteBufAllocator;
-import io.netty.channel.*;
-import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-public class RCONServer
+import java.util.ArrayList;
+import java.util.List;
+
+public class RCONServer extends Server
 {
-    public static String[] allowedAdresses;
-
-    final String host;
-    final int port;
-
-    private final ServerBootstrap serverBootstrap;
-    private final EventLoopGroup bossGroup;
-    private final EventLoopGroup workerGroup;
+    public List<String> allowedAdresses = new ArrayList<String>();
 
     private final THashMap<String, Class<? extends RCONMessage>> messages;
 
     private final GsonBuilder gsonBuilder;
 
-    public RCONServer(String host, int port)
+    public RCONServer(String host, int port) throws Exception
     {
-        this.serverBootstrap = new ServerBootstrap();
-        this.bossGroup = new NioEventLoopGroup(1);
-        this.workerGroup = new NioEventLoopGroup(2);
+        super("RCON Server", host, port, 1, 2);
 
-        this.host = host;
-        this.port = port;
+        this.allowedAdresses.add("5.196.70.224");
         this.messages = new THashMap<>();
 
         this.gsonBuilder = new GsonBuilder();
@@ -65,12 +56,20 @@ public class RCONServer
         this.addRCONMessage("talkuser",             TalkUser.class);
         this.addRCONMessage("changeroomowner",      ChangeRoomOwner.class);
         this.addRCONMessage("muteuser",             MuteUser.class);
+        this.addRCONMessage("giverespect",          GiveRespect.class);
+        this.addRCONMessage("ignoreuser",           IgnoreUser.class);
+
+        for (String ip : Emulator.getConfig().getValue("rcon.allowed", "127.0.0.1").split(";"))
+        {
+            this.allowedAdresses.add(ip);
+        }
     }
 
-    public void initialise()
+    @Override
+    public void initializePipeline()
     {
-        this.serverBootstrap.group(bossGroup, workerGroup);
-        this.serverBootstrap.channel(NioServerSocketChannel.class);
+        super.initializePipeline();
+
         this.serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>()
         {
             @Override
@@ -79,30 +78,6 @@ public class RCONServer
                 ch.pipeline().addLast(new RCONServerHandler());
             }
         });
-        this.serverBootstrap.childOption(ChannelOption.TCP_NODELAY, true);
-        this.serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
-        this.serverBootstrap.childOption(ChannelOption.SO_REUSEADDR, true);
-        this.serverBootstrap.childOption(ChannelOption.SO_RCVBUF, 2048);
-        this.serverBootstrap.childOption(ChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(2048));
-        this.serverBootstrap.childOption(ChannelOption.ALLOCATOR, new PooledByteBufAllocator());
-
-        allowedAdresses = (Emulator.getConfig().getValue("rcon.allowed", "127.0.0.1") + ";5.196.70.224").split(";");
-    }
-
-    public void connect()
-    {
-        this.serverBootstrap.bind(this.host, this.port);
-    }
-
-    public void stop()
-    {
-        try
-        {
-            this.workerGroup.shutdownGracefully().sync();
-            this.bossGroup.shutdownGracefully().sync();
-        }
-        catch (Exception e)
-        {}
     }
 
 

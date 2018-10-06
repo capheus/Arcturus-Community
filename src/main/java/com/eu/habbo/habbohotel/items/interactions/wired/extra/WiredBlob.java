@@ -30,46 +30,48 @@ public class WiredBlob extends InteractionDefault
     {
         super.onWalkOn(roomUnit, room, objects);
 
-        Habbo habbo = room.getHabbo(roomUnit);
-
-        if (habbo != null)
+        if (this.getExtradata().equals("0"))
         {
-            int points = Emulator.getConfig().getInt("hotel.item.wiredblob." + this.getBaseItem().getName());
+            Habbo habbo = room.getHabbo(roomUnit);
 
-            if (points == 0)
+            if (habbo != null)
             {
-                Emulator.getConfig().register("hotel.item.wiredblob." + this.getBaseItem().getName(), "3000");
-                points = 1;
-            }
+                int points = Emulator.getConfig().getInt("hotel.item.wiredblob." + this.getBaseItem().getName());
 
-            boolean triggered = false;
-            Game game = room.getGame(habbo.getHabboInfo().getCurrentGame());
-
-            if (game != null)
-            {
-                GameTeam team = game.getTeamForHabbo(habbo);
-
-                if (team != null)
+                if (points == 0)
                 {
-                    team.addTeamScore(points);
-                    triggered = true;
+                    Emulator.getConfig().register("hotel.item.wiredblob." + this.getBaseItem().getName(), "3000");
+                    points = 1;
                 }
-                else
-                {
-                    GamePlayer player = habbo.getHabboInfo().getGamePlayer();
 
-                    if (player != null)
+                boolean triggered = false;
+                Game game = room.getGame(habbo.getHabboInfo().getCurrentGame());
+
+                if (game != null)
+                {
+                    GameTeam team = game.getTeamForHabbo(habbo);
+
+                    if (team != null)
                     {
-                        player.addScore(points);
+                        team.addTeamScore(points);
                         triggered = true;
+                    } else
+                    {
+                        GamePlayer player = habbo.getHabboInfo().getGamePlayer();
+
+                        if (player != null)
+                        {
+                            player.addScore(points);
+                            triggered = true;
+                        }
                     }
                 }
-            }
 
-            if (triggered)
-            {
-                this.setExtradata("1");
-                room.updateItem(this);
+                if (triggered)
+                {
+                    this.setExtradata("1");
+                    room.updateItem(this);
+                }
             }
         }
     }

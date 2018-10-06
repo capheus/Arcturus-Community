@@ -37,10 +37,15 @@ public class ProgressAchievement extends RCONMessage<ProgressAchievement.Progres
         }
     }
 
-    public class ProgressAchievementJSON
+    public static class ProgressAchievementJSON
     {
+
         public int user_id;
+
+
         public int achievement_id;
+
+
         public int progress;
     }
 }

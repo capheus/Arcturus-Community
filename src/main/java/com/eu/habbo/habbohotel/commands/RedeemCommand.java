@@ -23,6 +23,8 @@ public class RedeemCommand extends Command
     @Override
     public boolean handle(final GameClient gameClient, String[] params) throws Exception
     {
+        if (gameClient.getHabbo().getHabboInfo().getCurrentRoom().getActiveTradeForHabbo(gameClient.getHabbo()) != null)
+            return false;
         ArrayList<HabboItem> items = new ArrayList<>();
 
         int credits = 0;
@@ -30,48 +32,48 @@ public class RedeemCommand extends Command
 
         TIntIntMap points = new TIntIntHashMap();
 
-
         for(HabboItem item : gameClient.getHabbo().getInventory().getItemsComponent().getItemsAsValueCollection())
         {
             if (item.getBaseItem().getName().startsWith("CF_") || item.getBaseItem().getName().startsWith("CFC_") || item.getBaseItem().getName().startsWith("DF_") || item.getBaseItem().getName().startsWith("PF_"))
             {
-                items.add(item);
-                if ((item.getBaseItem().getName().startsWith("CF_") || item.getBaseItem().getName().startsWith("CFC_")) && !item.getBaseItem().getName().contains("_diamond_"))
+                if (item.getUserId() == gameClient.getHabbo().getHabboInfo().getId())
                 {
-                    try
+                    items.add(item);
+                    if ((item.getBaseItem().getName().startsWith("CF_") || item.getBaseItem().getName().startsWith("CFC_")) && !item.getBaseItem().getName().contains("_diamond_"))
                     {
-                        credits += Integer.valueOf(item.getBaseItem().getName().split("_")[1]);
-                    } catch (Exception e)
-                    {
-                    }
+                        try
+                        {
+                            credits += Integer.valueOf(item.getBaseItem().getName().split("_")[1]);
+                        } catch (Exception e)
+                        {
+                        }
 
-                } else if (item.getBaseItem().getName().startsWith("PF_"))
-                {
-                    try
+                    } else if (item.getBaseItem().getName().startsWith("PF_"))
                     {
-                        pixels += Integer.valueOf(item.getBaseItem().getName().split("_")[1]);
-                    } catch (Exception e)
+                        try
+                        {
+                            pixels += Integer.valueOf(item.getBaseItem().getName().split("_")[1]);
+                        } catch (Exception e)
+                        {
+                        }
+                    } else if (item.getBaseItem().getName().startsWith("DF_"))
                     {
-                    }
-                } else if (item.getBaseItem().getName().startsWith("DF_"))
-                {
-                    int pointsType = 0;
-                    int pointsAmount = 0;
+                        int pointsType = 0;
+                        int pointsAmount = 0;
 
-                    pointsType = Integer.valueOf(item.getBaseItem().getName().split("_")[1]);
-                    pointsAmount = Integer.valueOf(item.getBaseItem().getName().split("_")[2]);
+                        pointsType = Integer.valueOf(item.getBaseItem().getName().split("_")[1]);
+                        pointsAmount = Integer.valueOf(item.getBaseItem().getName().split("_")[2]);
 
-                    points.adjustOrPutValue(pointsType, pointsAmount, pointsAmount);
-                }
-                else if (item.getBaseItem().getName().startsWith("CF_diamond_"))
-                {
-                    try
+                        points.adjustOrPutValue(pointsType, pointsAmount, pointsAmount);
+                    } else if (item.getBaseItem().getName().startsWith("CF_diamond_"))
                     {
-                        int amount = Integer.valueOf(item.getBaseItem().getName().split("_")[2]);
-                        points.adjustOrPutValue(5, amount, amount);
-                    }
-                    catch (Exception e)
-                    {
+                        try
+                        {
+                            int amount = Integer.valueOf(item.getBaseItem().getName().split("_")[2]);
+                            points.adjustOrPutValue(5, amount, amount);
+                        } catch (Exception e)
+                        {
+                        }
                     }
                 }
             }

@@ -43,9 +43,12 @@ public class GivePixels extends RCONMessage<GivePixels.JSONGivePixels>
         }
     }
 
-    public class JSONGivePixels
+    public static class JSONGivePixels
     {
-        private int user_id;
-        private int pixels;
+
+        public int user_id;
+
+
+        public int pixels;
     }
 }

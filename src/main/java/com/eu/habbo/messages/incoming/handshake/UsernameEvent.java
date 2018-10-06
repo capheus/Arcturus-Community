@@ -2,9 +2,11 @@ package com.eu.habbo.messages.incoming.handshake;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
+import com.eu.habbo.habbohotel.catalog.TargetOffer;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.events.calendar.AdventCalendarDataComposer;
 import com.eu.habbo.messages.outgoing.unknown.NuxAlertComposer;
+import com.eu.habbo.messages.outgoing.unknown.TargetedOfferComposer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -108,6 +110,15 @@ public class UsernameEvent extends MessageHandler
             this.client.sendResponse(new NuxAlertComposer("openView/calendar"));
         }
 
+        if (TargetOffer.ACTIVE_TARGET_OFFER_ID > 0)
+        {
+            TargetOffer offer = Emulator.getGameEnvironment().getCatalogManager().getTargetOffer(TargetOffer.ACTIVE_TARGET_OFFER_ID);
+
+            if (offer != null)
+            {
+                this.client.sendResponse(new TargetedOfferComposer(this.client.getHabbo(), offer));
+            }
+        }
 
         this.client.getHabbo().getHabboInfo().setLastOnline(Emulator.getIntUnixTimestamp());
     }

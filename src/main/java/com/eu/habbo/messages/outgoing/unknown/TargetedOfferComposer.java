@@ -1,16 +1,20 @@
 package com.eu.habbo.messages.outgoing.unknown;
 
 import com.eu.habbo.habbohotel.catalog.TargetOffer;
+import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.habbohotel.users.cache.HabboOfferPurchase;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class TargetedOfferComposer extends MessageComposer
 {
+    private final Habbo habbo;
     private final TargetOffer offer;
 
-    public TargetedOfferComposer(TargetOffer offer)
+    public TargetedOfferComposer(Habbo habbo, TargetOffer offer)
     {
+        this.habbo = habbo;
         this.offer = offer;
     }
 
@@ -18,7 +22,8 @@ public class TargetedOfferComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.TargetedOfferComposer);
-        this.offer.serialize(this.response);
+        HabboOfferPurchase purchase = HabboOfferPurchase.getOrCreate(this.habbo, this.offer.getId());
+        this.offer.serialize(this.response, purchase);
         return this.response;
     }
 }

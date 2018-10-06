@@ -97,4 +97,10 @@ public class InteractionDice extends HabboItem
     {
         return false;
     }
+
+    @Override
+    public boolean isUsable()
+    {
+        return true;
+    }
 }

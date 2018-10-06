@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.UpdateStackHeightComposer;
+import com.eu.habbo.messages.outgoing.rooms.items.UpdateStackHeightTileHeightComposer;
 import gnu.trove.set.hash.THashSet;
 
 public class SetStackHelperHeightEvent extends MessageHandler
@@ -24,38 +25,17 @@ public class SetStackHelperHeightEvent extends MessageHandler
 
             if(item instanceof InteractionStackHelper)
             {
-                int stackerHeight = this.packet.readInt();
 
-                item.setExtradata(stackerHeight + "");
-
-                double height = 0;
 
                 Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
-                THashSet<RoomTile> tiles = room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
+                RoomTile itemTile = room.getLayout().getTile(item.getX(), item.getY());
+                int stackerHeight = Math.min(Math.max(this.packet.readInt(), itemTile.z * 100), 4000);
+                THashSet<RoomTile> tiles = room.getLayout().getTilesAt(itemTile, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
 
+                double height = 0;
                 if(stackerHeight >= 0)
                 {
                     height = stackerHeight / 100.0D;
-                }
-                else
-                {
-                    for (RoomTile tile : tiles)
-                    {
-                        double tileHeight = this.client.getHabbo().getHabboInfo().getCurrentRoom().getTopHeightAt(tile.x, tile.y);
-
-                        if (tileHeight > height)
-                        {
-                            height = tileHeight;
-                        }
-                    }
-                }
-
-                for (RoomTile tile : tiles)
-                {
-                    if (height < tile.z)
-                    {
-                        height = tile.z;
-                    }
                 }
 
                 for (RoomTile tile : tiles)
@@ -69,6 +49,7 @@ public class SetStackHelperHeightEvent extends MessageHandler
                 this.client.getHabbo().getHabboInfo().getCurrentRoom().updateItem(item);
                 this.client.getHabbo().getHabboInfo().getCurrentRoom().updateTiles(tiles);
                 this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new UpdateStackHeightComposer(tiles).compose());
+                this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new UpdateStackHeightTileHeightComposer(item, (int)((height) * 100)).compose());
             }
         }
     }

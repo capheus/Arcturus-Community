@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.commands;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.messages.outgoing.users.UserPerksComposer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -38,8 +39,9 @@ public class AllowTradingCommand extends Command
 
             if (habbo != null)
             {
-                habbo.getHabboStats().allowTrade = enabled;
+                habbo.getHabboStats().setAllowTrade(enabled);
                 gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_allow_trading." + (enabled ? "enabled" : "disabled")).replace("%username%", params[1]));
+                habbo.getClient().sendResponse(new UserPerksComposer(habbo));
                 return true;
             }
             else
