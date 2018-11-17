@@ -20,8 +20,10 @@ public class SearchResultList implements ISerialize, Comparable<SearchResultList
     public final List<Room> rooms;
     public final boolean filter;
     public final boolean showInvisible;
+    public final DisplayOrder displayOrder;
+    public final int categoryOrder;
 
-    public SearchResultList(int order, String code, String query, SearchAction action, ListMode mode, DisplayMode hidden, List<Room> rooms, boolean filter, boolean showInvisible)
+    public SearchResultList(int order, String code, String query, SearchAction action, ListMode mode, DisplayMode hidden, List<Room> rooms, boolean filter, boolean showInvisible, DisplayOrder displayOrder, int categoryOrder)
     {
         this.order = order;
         this.code = code;
@@ -32,6 +34,8 @@ public class SearchResultList implements ISerialize, Comparable<SearchResultList
         this.hidden = hidden;
         this.filter = filter;
         this.showInvisible = showInvisible;
+        this.displayOrder = displayOrder;
+        this.categoryOrder = categoryOrder;
     }
 
     @Override
@@ -72,11 +76,15 @@ public class SearchResultList implements ISerialize, Comparable<SearchResultList
     @Override
     public int compareTo(SearchResultList o)
     {
-        if (this.code.equalsIgnoreCase("popular"))
+        if (this.displayOrder == DisplayOrder.ACTIVITY)
         {
-            return -1;
-        }
+            if (this.code.equalsIgnoreCase("popular"))
+            {
+                return -1;
+            }
 
-        return this.rooms.size() - o.rooms.size();
+            return this.rooms.size() - o.rooms.size();
+        }
+        return this.categoryOrder - o.categoryOrder;
     }
 }

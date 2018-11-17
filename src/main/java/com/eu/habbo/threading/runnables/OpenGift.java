@@ -9,6 +9,7 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.PresentItemOpenedComposer;
+import gnu.trove.set.hash.THashSet;
 
 public class OpenGift implements Runnable
 {
@@ -30,7 +31,8 @@ public class OpenGift implements Runnable
         {
             HabboItem inside = null;
 
-            for (HabboItem i : ((InteractionGift) item).items)
+            THashSet<HabboItem> items = ((InteractionGift) item).loadItems();
+            for (HabboItem i : items)
             {
                 if(inside == null)
                     inside = i;
@@ -40,14 +42,14 @@ public class OpenGift implements Runnable
                 i.run();
             }
 
-            this.habbo.getInventory().getItemsComponent().addItems(((InteractionGift) this.item).items);
+            this.habbo.getInventory().getItemsComponent().addItems(items);
 
             RoomTile tile = this.room.getLayout().getTile(this.item.getX(), this.item.getY());
             if (tile != null)
             {
                 this.room.updateTile(tile);
             }
-            this.habbo.getClient().sendResponse(new AddHabboItemComposer(((InteractionGift) this.item).items));
+            this.habbo.getClient().sendResponse(new AddHabboItemComposer(items));
             this.habbo.getClient().sendResponse(new InventoryRefreshComposer());
 
 

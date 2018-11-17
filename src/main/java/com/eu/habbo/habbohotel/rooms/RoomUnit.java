@@ -151,7 +151,7 @@ public class RoomUnit
                 }
             }
 
-            Deque<RoomTile> peekPath = room.getLayout().findPath(this.currentLocation, this.path.peek());
+            Deque<RoomTile> peekPath = room.getLayout().findPath(this.currentLocation, this.path.peek(), this.goalLocation);
             if (peekPath.size() >= 3)
             {
                 peekPath.pop(); //Start
@@ -467,7 +467,7 @@ public class RoomUnit
     {
         if (goalLocation != null)
         {
-            if (goalLocation.state == RoomTileState.OPEN)
+            if (goalLocation.state != RoomTileState.INVALID)
             {
                 this.setGoalLocation(goalLocation, false);
             }
@@ -552,7 +552,7 @@ public class RoomUnit
     {
         if (this.room != null && this.room.getLayout() != null && this.goalLocation != null && (this.goalLocation.isWalkable() || this.room.canSitOrLayAt(this.goalLocation.x, this.goalLocation.y)))
         {
-            this.path = this.room.getLayout().findPath(this.currentLocation, this.goalLocation);
+            this.path = this.room.getLayout().findPath(this.currentLocation, this.goalLocation, this.goalLocation);
         }
     }
 

@@ -3,10 +3,7 @@ package com.eu.habbo.messages.incoming.guilds.forums;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.guilds.Guild;
 import com.eu.habbo.habbohotel.guilds.forums.GuildForum;
-import com.eu.habbo.habbohotel.guilds.forums.GuildForumComment;
-import com.eu.habbo.habbohotel.guilds.forums.GuildForumThread;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.guilds.forums.UnknownGuildForumComposer6;
 
 
 public class GuildForumModerateMessageEvent extends MessageHandler
@@ -24,21 +21,21 @@ public class GuildForumModerateMessageEvent extends MessageHandler
             return;
 
         GuildForum forum = Emulator.getGameEnvironment().getGuildForumManager().getGuildForum(guildId);
-        GuildForumThread thread = forum.getThread(threadId);
 
-        if (thread != null)
-        {
-          GuildForumComment comment =  thread.getComment(messageId);
-          comment.setState(GuildForum.ThreadState.fromValue(state));
-          comment.setAdminId(this.client.getHabbo().getHabboInfo().getId());
-          comment.setAdminName(this.client.getHabbo().getHabboInfo().getUsername());
-          Emulator.getThreading().run(comment);
+//
 
-          this.client.sendResponse(new UnknownGuildForumComposer6(guildId, threadId, comment));
 
-        } else
-        {
 
-        }
+
+
+
+
+//
+
+//
+
+
+
+
     }
 }

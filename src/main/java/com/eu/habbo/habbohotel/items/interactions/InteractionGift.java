@@ -22,8 +22,6 @@ public class InteractionGift extends HabboItem
     private String sender = "";
     private String look = "";
 
-    public THashSet<HabboItem> items = new THashSet<>();
-
     public boolean explode = false;
 
     public InteractionGift(ResultSet set, Item baseItem) throws SQLException
@@ -136,15 +134,6 @@ public class InteractionGift extends HabboItem
             this.showSender = false;
             this.message = "Please delete this present. Thanks!";
         }
-
-        this.items.clear();
-        for (int anItemId : itemId)
-        {
-            if (anItemId == 0)
-                continue;
-
-            this.items.add(Emulator.getGameEnvironment().getItemManager().loadHabboItem(anItemId));
-        }
     }
 
     public int getColorId()
@@ -155,5 +144,19 @@ public class InteractionGift extends HabboItem
     public int getRibbonId()
     {
         return ribbonId;
+    }
+
+    public THashSet<HabboItem> loadItems()
+    {
+        THashSet<HabboItem> items = new THashSet<>();
+        for (int anItemId : itemId)
+        {
+            if (anItemId == 0)
+                continue;
+
+            items.add(Emulator.getGameEnvironment().getItemManager().loadHabboItem(anItemId));
+        }
+
+        return items;
     }
 }

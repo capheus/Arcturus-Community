@@ -3,11 +3,7 @@ package com.eu.habbo.messages.incoming.guilds.forums;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.guilds.Guild;
 import com.eu.habbo.habbohotel.guilds.forums.GuildForum;
-import com.eu.habbo.habbohotel.guilds.forums.GuildForumThread;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
-import com.eu.habbo.messages.outgoing.guilds.forums.GuildForumCommentsComposer;
-import com.eu.habbo.messages.outgoing.guilds.forums.GuildForumDataComposer;
 
 public class GuildForumThreadsMessagesEvent extends MessageHandler
 {
@@ -24,17 +20,17 @@ public class GuildForumThreadsMessagesEvent extends MessageHandler
             return;
 
         GuildForum forum = Emulator.getGameEnvironment().getGuildForumManager().getGuildForum(guildId);
-        GuildForumThread thread = forum.getThread(threadId);
+
+//
+//
 
 
-        if (thread.getState() == GuildForum.ThreadState.HIDDEN_BY_ADMIN && guild.getOwnerId() != this.client.getHabbo().getHabboInfo().getId())
-        {
-            this.client.sendResponse(new BubbleAlertComposer("forums.error.access_denied"));
-        } else
-        {
-            this.client.sendResponse(new GuildForumCommentsComposer(guildId, threadId, index, thread.getComments(index, limit)));
-        }
 
-        this.client.sendResponse(new GuildForumDataComposer(Emulator.getGameEnvironment().getGuildForumManager().getGuildForum(guildId), this.client.getHabbo()));
+
+
+
+
+//
+
     }
 }

@@ -4,10 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
-import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.rooms.RoomTile;
-import com.eu.habbo.habbohotel.rooms.RoomUnit;
-import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
+import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredEffectType;
@@ -160,19 +157,23 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
                                     item.getBaseItem().getWidth(),
                                     item.getBaseItem().getLength());
 
-                            for (int x = rectangle.x; x < rectangle.x + rectangle.getWidth(); x++)
+                            double offset = 0;
+                            for (short x = (short)rectangle.x; x < rectangle.x + rectangle.getWidth(); x++)
                             {
-                                for (int y = rectangle.y; y < rectangle.y + rectangle.getHeight(); y++)
+                                for (short y = (short)rectangle.y; y < rectangle.y + rectangle.getHeight(); y++)
                                 {
+                                    RoomTile tile = room.getLayout().getTile(x, y);
+                                    if (tile.state == RoomTileState.INVALID) continue;
+
                                     HabboItem i = room.getTopItemAt(x, y, item);
 
                                     if (i == null || i == item || i.getBaseItem().allowStack())
                                     {
-                                        double offset = room.getStackHeight(newTile.x, newTile.y, false) - item.getZ();
-                                        room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, offset, room).compose());
+                                        offset = Math.max(room.getStackHeight(newTile.x, newTile.y, false, item) - item.getZ(), offset);
                                     }
                                 }
                             }
+                            room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, offset, room).compose());
                         }
                     }
                 }
@@ -330,6 +331,6 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
     @Override
     protected long requiredCooldown()
     {
-        return 495;
+        return 0;
     }
 }

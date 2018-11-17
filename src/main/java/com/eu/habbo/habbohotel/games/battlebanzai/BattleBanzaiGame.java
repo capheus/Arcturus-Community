@@ -12,6 +12,7 @@ import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.Interaction
 import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.gates.InteractionBattleBanzaiGate;
 import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.scoreboards.InteractionBattleBanzaiScoreboard;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.rooms.RoomUserAction;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -118,6 +119,8 @@ public class BattleBanzaiGame extends Game
             return;
 
         super.start();
+
+        this.refreshGates();
 
         Emulator.getThreading().run(this, 0);
     }
@@ -262,14 +265,17 @@ public class BattleBanzaiGame extends Game
 
         this.timeLeft = 0;
 
-        for (HabboItem item : this.room.getFloorItems())
-        {
-            if (item instanceof InteractionBattleBanzaiTile || item instanceof InteractionBattleBanzaiScoreboard)
-            {
-                item.setExtradata("0");
-                this.room.updateItemState(item);
-            }
-        }
+        //Think on Habbo the counters and tiles stay as is untill the game restarts.
+
+
+
+
+
+
+
+
+
+        this.refreshGates();
 
         this.lockedTiles.clear();
     }
@@ -382,5 +388,16 @@ public class BattleBanzaiGame extends Game
             scoreboard.setExtradata(totalScore + "");
             this.room.updateItemState(scoreboard);
         }
+    }
+
+    private void refreshGates()
+    {
+        THashSet<RoomTile> tilesToUpdate = new THashSet<>();
+        for (HabboItem item : this.room.getRoomSpecialTypes().getBattleBanzaiGates().values())
+        {
+            tilesToUpdate.add(this.room.getLayout().getTile(item.getX(), item.getY()));
+        }
+
+        this.room.updateTiles(tilesToUpdate);
     }
 }

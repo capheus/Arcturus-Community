@@ -155,6 +155,7 @@ public class InteractionFootball extends InteractionPushable
     @Override
     public boolean validMove(Room room, RoomTile from, RoomTile to)
     {
+        if (to == null) return false;
         HabboItem topItem = room.getTopItemAt(to.x, to.y, this);
         return !(!room.getLayout().tileWalkable(to.x, to.y) || (topItem != null && (!topItem.getBaseItem().allowStack() || topItem.getBaseItem().allowSit() || topItem.getBaseItem().allowLay())));
     }

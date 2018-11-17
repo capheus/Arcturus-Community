@@ -14,7 +14,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class NavigatorManager
 {
+
     public static int MAXIMUM_RESULTS_PER_PAGE = 10;
+
+
+    public static boolean CATEGORY_SORT_USING_ORDER_NUM = false;
 
     public final THashMap<Integer, NavigatorPublicCategory> publicCategories = new THashMap<>();
     public final ConcurrentHashMap<String, NavigatorFilterField> filterSettings = new ConcurrentHashMap<>();
@@ -62,7 +66,16 @@ public class NavigatorManager
 
                         if (category != null)
                         {
-                            category.addRoom(Emulator.getGameEnvironment().getRoomManager().loadRoom(set.getInt("room_id")));
+                            Room room = Emulator.getGameEnvironment().getRoomManager().loadRoom(set.getInt("room_id"));
+
+                            if (room != null)
+                            {
+                                category.addRoom(room);
+                            }
+                            else
+                            {
+                                Emulator.getLogging().logErrorLine("Public room defined in navigator_publics does not exist!");
+                            }
                         }
                     }
                 }

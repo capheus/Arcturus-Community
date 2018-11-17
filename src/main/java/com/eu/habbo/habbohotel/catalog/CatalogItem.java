@@ -64,6 +64,9 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
     protected boolean needsUpdate;
 
 
+    protected int orderNumber;
+
+
     protected HashMap<Integer, Integer> bundle;
 
     public CatalogItem(ResultSet set) throws SQLException
@@ -94,6 +97,7 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
         this.clubOnly     = set.getBoolean("club_only");
         this.haveOffer    = set.getBoolean("have_offer");
         this.offerId      = set.getInt("offer_id");
+        this.orderNumber = set.getInt("order_number");
 
         this.bundle = new HashMap<>();
         this.loadBundle();
@@ -206,6 +210,12 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
     public boolean isLimited()
     {
         return this.limitedStack > 0;
+    }
+
+
+    public int getOrderNumber()
+    {
+        return this.orderNumber;
     }
 
 
@@ -436,8 +446,16 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
 
     @SuppressWarnings("NullableProblems")
     @Override
-    public int compareTo(CatalogItem catalogItem) {
-        return this.getId() - catalogItem.getId();
+    public int compareTo(CatalogItem catalogItem)
+    {
+        if (CatalogManager.SORT_USING_ORDERNUM)
+        {
+            return this.getOrderNumber() - catalogItem.getOrderNumber();
+        }
+        else
+        {
+            return this.getId() - catalogItem.getId();
+        }
     }
 
 

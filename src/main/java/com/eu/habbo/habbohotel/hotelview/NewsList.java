@@ -1,20 +1,20 @@
 package com.eu.habbo.habbohotel.hotelview;
 
 import com.eu.habbo.Emulator;
-import gnu.trove.set.hash.THashSet;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class NewsList
 {
-    private final THashSet<NewsWidget> newsWidgets;
+    private final ArrayList<NewsWidget> newsWidgets;
 
     public NewsList()
     {
-        this.newsWidgets = new THashSet<>();
+        this.newsWidgets = new ArrayList<>();
         this.reload();
     }
 
@@ -39,7 +39,7 @@ public class NewsList
     }
 
 
-    public THashSet<NewsWidget> getNewsWidgets()
+    public ArrayList<NewsWidget> getNewsWidgets()
     {
         return newsWidgets;
     }

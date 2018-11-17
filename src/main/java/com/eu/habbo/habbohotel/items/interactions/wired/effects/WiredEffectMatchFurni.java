@@ -49,6 +49,7 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
     {
         THashSet<RoomTile> tilesToUpdate = new THashSet<>(this.settings.size());
         //this.refresh();
+
         for(WiredMatchFurniSetting setting : this.settings)
         {
             HabboItem item = room.getHabboItem(setting.itemId);
@@ -59,6 +60,7 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
                     if(!setting.state.equals(" "))
                     {
                         item.setExtradata(setting.state);
+                        tilesToUpdate.addAll(room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
                     }
                 }
 

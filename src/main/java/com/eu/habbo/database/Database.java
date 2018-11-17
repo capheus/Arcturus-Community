@@ -24,7 +24,7 @@ public class Database
             this.databasePool = new DatabasePool();
             if (!this.databasePool.getStoragePooling(config))
             {
-                Emulator.getLogging().logStart("Failed to connect to the database. Shutting down...");
+                Emulator.getLogging().logStart("Failed to connect to the database. Please check config.ini and make sure the MySQL process is running. Shutting down...");
                 SQLException = true;
                 return;
             }

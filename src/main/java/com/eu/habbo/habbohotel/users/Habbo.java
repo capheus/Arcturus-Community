@@ -149,7 +149,7 @@ public class Habbo implements Runnable
     {
         if (!Emulator.isShuttingDown)
         {
-            Emulator.getPluginManager().fireEvent(new UserDisconnectEvent(this));
+            if(Emulator.getPluginManager().fireEvent(new UserDisconnectEvent(this)).isCancelled()) return;
         }
 
         if (this.disconnected || this.disconnecting)

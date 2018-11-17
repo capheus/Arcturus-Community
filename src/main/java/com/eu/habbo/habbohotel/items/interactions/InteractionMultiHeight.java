@@ -48,7 +48,7 @@ public class InteractionMultiHeight extends HabboItem
     @Override
     public boolean isWalkable()
     {
-        return this.getBaseItem().allowWalk() || this.getBaseItem().allowSit();
+        return this.getBaseItem().allowWalk();
     }
 
     @Override

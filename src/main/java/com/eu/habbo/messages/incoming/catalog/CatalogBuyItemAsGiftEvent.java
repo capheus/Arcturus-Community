@@ -152,8 +152,6 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
 
                     CatalogItem item = page.getCatalogItem(itemId);
 
-                    Item cBaseItem = null;
-
                     if (item == null)
                     {
                         this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR).compose());
@@ -286,7 +284,6 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
 
                                         for (int k = 0; k < item.getItemAmount(baseItem.getId()); k++)
                                         {
-                                            cBaseItem = baseItem;
                                             if (!baseItem.getName().contains("avatar_effect"))
                                             {
                                                 if (baseItem.getType() == FurnitureType.BADGE)

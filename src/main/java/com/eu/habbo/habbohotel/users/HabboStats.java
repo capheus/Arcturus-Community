@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.users;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.Achievement;
+import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.achievements.TalentTrackType;
 import com.eu.habbo.habbohotel.catalog.CatalogItem;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
@@ -263,7 +264,7 @@ public class HabboStats implements Runnable
     {
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
         {
-            try (PreparedStatement statement = connection.prepareStatement("UPDATE users_settings SET achievement_score = ?, respects_received = ?, respects_given = ?, daily_respect_points = ?, block_following = ?, block_friendrequests = ?, online_time = online_time + ?, guild_id = ?, daily_pet_respect_points = ?, club_expire_timestamp = ?, login_streak = ?, rent_space_id = ?, rent_space_endtime = ?, volume_system = ?, volume_furni = ?, volume_trax = ?, block_roominvites = ?, old_chat = ?, block_camera_follow = ?, chat_color = ?, hof_points = ?, block_alerts = ?, talent_track_citizenship_level = ?, talent_track_helpers_level = ?, ignore_bots = ?, ignore_pets = ?, nux = ?, mute_end_timestamp = ?, allow_name_change = ?, perk_trade = ? WHERE user_id = ? LIMIT 1"))
+            try (PreparedStatement statement = connection.prepareStatement("UPDATE users_settings SET achievement_score = ?, respects_received = ?, respects_given = ?, daily_respect_points = ?, block_following = ?, block_friendrequests = ?, online_time = online_time + ?, guild_id = ?, daily_pet_respect_points = ?, club_expire_timestamp = ?, login_streak = ?, rent_space_id = ?, rent_space_endtime = ?, volume_system = ?, volume_furni = ?, volume_trax = ?, block_roominvites = ?, old_chat = ?, block_camera_follow = ?, chat_color = ?, hof_points = ?, block_alerts = ?, talent_track_citizenship_level = ?, talent_track_helpers_level = ?, ignore_bots = ?, ignore_pets = ?, nux = ?, mute_end_timestamp = ?, allow_name_change = ?, perk_trade = ?, can_trade = ? WHERE user_id = ? LIMIT 1"))
             {
                 statement.setInt(1, this.achievementScore);
                 statement.setInt(2, this.respectPointsReceived);
@@ -295,7 +296,8 @@ public class HabboStats implements Runnable
                 statement.setInt(28, this.muteEndTime);
                 statement.setString(29, this.allowNameChange ? "1" : "0");
                 statement.setString(30, this.perkTrade ? "1" : "0");
-                statement.setInt(31, this.habbo.getHabboInfo().getId());
+                statement.setString(31, this.allowTrade ? "1" : "0");
+                statement.setInt(32, this.habbo.getHabboInfo().getId());
                 statement.executeUpdate();
             }
 
@@ -759,7 +761,7 @@ public class HabboStats implements Runnable
 
     public boolean allowTrade()
     {
-        if (RoomTrade.TRADING_REQUIRES_PERK)
+        if (AchievementManager.TALENTTRACK_ENABLED && RoomTrade.TRADING_REQUIRES_PERK)
             return this.perkTrade && this.allowTrade;
         else return this.allowTrade;
     }

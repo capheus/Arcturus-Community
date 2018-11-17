@@ -51,8 +51,13 @@ public abstract class HabboItem implements Runnable, IEventTriggers
         this.z = set.getDouble("z");
         this.rotation = set.getInt("rot");
         this.extradata = set.getString("extra_data");
-        this.limitedStack = Integer.parseInt(set.getString("limited_data").split(":")[0]);
-        this.limitedSells = Integer.parseInt(set.getString("limited_data").split(":")[1]);
+
+        String ltdData = set.getString("limited_data");
+        if (!ltdData.isEmpty())
+        {
+            this.limitedStack = Integer.parseInt(set.getString("limited_data").split(":")[0]);
+            this.limitedSells = Integer.parseInt(set.getString("limited_data").split(":")[1]);
+        }
     }
 
     public HabboItem(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
@@ -112,7 +117,7 @@ public abstract class HabboItem implements Runnable, IEventTriggers
         else
             serverMessage.appendString(this.extradata);
         serverMessage.appendInt(-1);
-        serverMessage.appendInt(this.getBaseItem().getStateCount() > 1 || this instanceof InteractionCrackable || this instanceof InteractionMultiHeight ? 1 : 0);
+        serverMessage.appendInt(this.isUsable());
         serverMessage.appendInt(this.getUserId());
     }
 

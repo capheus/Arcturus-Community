@@ -67,7 +67,7 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
             RoomTile targetTile = room.getLayout().getTileInFront(room.getLayout().getTile(entry.getKey().getX(), entry.getKey().getY()), entry.getValue().getValue());
 
             int count = 1;
-            while ((targetTile == null || !targetTile.allowStack() || targetTile.state == RoomTileState.BLOCKED) && count < 8)
+            while ((targetTile == null || !targetTile.getAllowStack() || targetTile.state == RoomTileState.INVALID) && count < 8)
             {
                 entry.setValue(nextRotation(entry.getValue()));
                 targetTile = room.getLayout().getTileInFront(room.getLayout().getTile(entry.getKey().getX(), entry.getKey().getY()), entry.getValue().getValue());

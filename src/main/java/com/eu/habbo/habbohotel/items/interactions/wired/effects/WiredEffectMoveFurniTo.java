@@ -122,7 +122,7 @@ public class WiredEffectMoveFurniTo extends InteractionWiredEffect
                                 THashSet<RoomTile> refreshTiles = room.getLayout().getTilesAt(room.getLayout().getTile(((HabboItem) object).getX(), ((HabboItem) object).getY()), ((HabboItem) object).getBaseItem().getWidth(), ((HabboItem) object).getBaseItem().getLength(), ((HabboItem) object).getRotation());
 
                                 RoomTile tile = room.getLayout().getTileInFront(objectTile, this.direction, indexOffset);
-                                if (tile == null || !tile.allowStack())
+                                if (tile == null || !tile.getAllowStack())
                                 {
                                     indexOffset = 0;
                                     tile = room.getLayout().getTileInFront(objectTile, this.direction, indexOffset);

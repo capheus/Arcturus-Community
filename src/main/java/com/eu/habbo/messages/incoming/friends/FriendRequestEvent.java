@@ -81,12 +81,12 @@ public class FriendRequestEvent extends MessageHandler
                 return;
             }
 
-            if(this.client.getHabbo().getMessenger().getFriends().values().size() >= Messenger.MAXIMUM_FRIENDS)
+            if(this.client.getHabbo().getMessenger().getFriends().values().size() >= Messenger.MAXIMUM_FRIENDS && !this.client.getHabbo().hasPermission("acc_infinite_friends"))
             {
                 this.client.sendResponse(new FriendRequestErrorComposer(FriendRequestErrorComposer.FRIEND_LIST_OWN_FULL));
                 return;
             }
-                Messenger.makeFriendRequest(this.client.getHabbo().getHabboInfo().getId(), id);
+            Messenger.makeFriendRequest(this.client.getHabbo().getHabboInfo().getId(), id);
         }
         else
         {

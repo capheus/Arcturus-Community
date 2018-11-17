@@ -8,6 +8,7 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class GuildForumThread implements ISerialize, Runnable
 {
@@ -28,8 +29,7 @@ public class GuildForumThread implements ISerialize, Runnable
     private int adminId;
     private String adminName = "";
 
-    //public final TIntObjectHashMap<GuildForumComment> comments;
-    public final List<GuildForumComment> comments;
+    public final ConcurrentHashMap<Integer, GuildForumComment> comments = new ConcurrentHashMap<>();
 
     public GuildForumThread(Habbo habbo, int threadId, int guildId, String subject, String message, int timestamp)
     {
@@ -44,9 +44,6 @@ public class GuildForumThread implements ISerialize, Runnable
         this.lastAuthorId = this.authorId;
         this.lastAuthorName = this.authorName;
         this.lastCommentTimestamp = this.timestamp;
-
-        //this.comments = new TIntObjectHashMap<GuildForumComment>();
-        this.comments = new ArrayList<>();
     }
 
     //Via de database inladen;
@@ -70,9 +67,7 @@ public class GuildForumThread implements ISerialize, Runnable
         this.lastAuthorName = this.authorName;
         this.lastCommentTimestamp = this.timestamp;
 
-        this.comments = new ArrayList<>();
         this.addComment(new GuildForumComment(set, 0));
-
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT " +
                 "author.username AS author_name, " +
@@ -93,7 +88,7 @@ public class GuildForumThread implements ISerialize, Runnable
                 {
                     if (!commentSet.isLast())
                     {
-                        this.comments.add(new GuildForumComment(commentSet, index));
+                        this.comments.put(set.getInt("id"), new GuildForumComment(commentSet, index));
                     }
                     else
                     {
@@ -112,23 +107,20 @@ public class GuildForumThread implements ISerialize, Runnable
 
     public void addComment(GuildForumComment comment)
     {
-        synchronized (this.comments)
+        if (comment.getIndex() == -1)
         {
-            if (comment.getIndex() == -1)
+            if (!this.comments.isEmpty())
             {
-                if (!this.comments.isEmpty())
-                {
-                    GuildForumComment previousComment = this.comments.get(this.comments.size() - 1);
+                GuildForumComment previousComment = this.comments.get(this.comments.size() - 1);
 
-                    if (previousComment != null)
-                    {
-                        comment.setIndex(previousComment.getIndex() + 1);
-                    }
+                if (previousComment != null)
+                {
+                    comment.setIndex(previousComment.getIndex() + 1);
                 }
             }
-
-            this.comments.add(comment);
         }
+
+        this.comments.put(comment.getId(), comment);
 
         this.lastAuthorId = comment.getUserId();
         this.lastAuthorName = comment.getUserName();
@@ -183,10 +175,11 @@ public class GuildForumThread implements ISerialize, Runnable
 
     public List<GuildForumComment> getComments(int page, int limit)
     {
-        synchronized (this.comments)
-        {
-            return this.comments.subList(page,  (page + limit) > this.comments.size() ? this.comments.size() : (page + limit));
-        }
+        return new ArrayList<>();
+
+
+
+
     }
 
     public int getId()

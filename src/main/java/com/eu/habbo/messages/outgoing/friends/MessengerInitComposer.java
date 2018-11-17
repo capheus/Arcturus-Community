@@ -21,7 +21,7 @@ public class MessengerInitComposer extends MessageComposer
         this.response.appendInt(300);
         this.response.appendInt(1337);
 
-        if (this.habbo.hasPermission("acc_inifnite_friends"))
+        if (this.habbo.hasPermission("acc_infinite_friends"))
         {
             this.response.appendInt(10000);
         }

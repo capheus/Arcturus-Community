@@ -48,7 +48,7 @@ public class InteractionPuzzleBox extends HabboItem
 
         RoomTile tile = room.getLayout().getTileInFront(room.getLayout().getTile(this.getX(), this.getY()), client.getHabbo().getRoomUnit().getBodyRotation().getValue());
 
-        if (tile == null || !room.tileWalkable(tile))
+        if (tile == null || !room.tileWalkable(tile) || room.hasHabbosAt(tile.x, tile.y))
         {
             return;
         }

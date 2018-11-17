@@ -35,6 +35,7 @@ import com.eu.habbo.messages.outgoing.users.MutedWhisperComposer;
 import com.eu.habbo.plugin.events.navigator.NavigatorRoomCreatedEvent;
 import com.eu.habbo.plugin.events.rooms.RoomUncachedEvent;
 import com.eu.habbo.plugin.events.users.UserEnterRoomEvent;
+import com.eu.habbo.plugin.events.users.UserExitRoomEvent;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.procedure.TIntProcedure;
@@ -741,6 +742,8 @@ public class RoomManager
 
         habbo.getClient().sendResponse(new RoomScoreComposer(room.getScore(), !this.hasVotedForRoom(habbo, room)));
 
+        habbo.getRoomUnit().setFastWalk(habbo.getRoomUnit().isFastWalk() && habbo.hasPermission("cmd_fastwalk", room.hasRights(habbo)));
+
         if (room.isPromoted())
         {
             habbo.getClient().sendResponse(new RoomPromotionMessageComposer(room, room.getPromotion()));
@@ -1053,6 +1056,11 @@ public class RoomManager
 
     public void leaveRoom(Habbo habbo, Room room)
     {
+        leaveRoom(habbo, room, true);
+    }
+
+    public void leaveRoom(Habbo habbo, Room room, boolean redirectToHotelView)
+    {
         if(habbo.getHabboInfo().getCurrentRoom() != null && habbo.getHabboInfo().getCurrentRoom() == room)
         {
             habbo.getRoomUnit().setPathFinderRoom(null);
@@ -1073,8 +1081,12 @@ public class RoomManager
             }
             this.logExit(habbo);
             room.removeHabbo(habbo);
+
             room.sendComposer(new RoomUserRemoveComposer(habbo.getRoomUnit()).compose());
-            habbo.getClient().sendResponse(new HotelViewComposer());
+            if (redirectToHotelView)
+            {
+                habbo.getClient().sendResponse(new HotelViewComposer());
+            }
             habbo.getHabboInfo().setCurrentRoom(null);
             habbo.getRoomUnit().isKicked = false;
 
@@ -1086,6 +1098,7 @@ public class RoomManager
     }
     public void logExit(Habbo habbo)
     {
+        Emulator.getPluginManager().fireEvent(new UserExitRoomEvent(habbo, UserExitRoomEvent.UserExitRoomReason.DOOR));
         if(habbo.getRoomUnit().getCacheable().containsKey("control"))
         {
             Habbo control = (Habbo)habbo.getRoomUnit().getCacheable().remove("control");

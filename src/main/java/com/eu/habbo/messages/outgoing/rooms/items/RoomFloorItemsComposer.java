@@ -1,6 +1,5 @@
 package com.eu.habbo.messages.outgoing.rooms.items;
 
-import com.eu.habbo.habbohotel.items.interactions.InteractionDefault;
 import com.eu.habbo.habbohotel.items.interactions.InteractionGift;
 import com.eu.habbo.habbohotel.items.interactions.InteractionMusicDisc;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -55,7 +54,7 @@ public class RoomFloorItemsComposer extends MessageComposer
             this.response.appendInt(item instanceof InteractionGift ? ((((InteractionGift) item).getColorId() * 1000) + ((InteractionGift) item).getRibbonId()) : (item instanceof InteractionMusicDisc ? ((InteractionMusicDisc) item).getSongId() : 1));
             item.serializeExtradata(this.response);
             this.response.appendInt(-1);
-            this.response.appendInt(item.getBaseItem().getStateCount() > 1 && item.getClass().isAssignableFrom(InteractionDefault.class) ? 1 : 0);
+            this.response.appendInt(item.isUsable() ? 1 : 0);
             this.response.appendInt(item.getUserId());
         }
         return this.response;

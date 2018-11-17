@@ -48,6 +48,7 @@ class TeleportActionThree implements Runnable
 
         this.client.getHabbo().getRoomUnit().setLocation(targetRoom.getLayout().getTile(targetTeleport.getX(), targetTeleport.getY()));
         this.client.getHabbo().getRoomUnit().setZ(targetTeleport.getZ());
+        this.client.getHabbo().getRoomUnit().setPreviousLocationZ(targetTeleport.getZ());
         this.client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[targetTeleport.getRotation() % 8]);
         this.client.getHabbo().getRoomUnit().removeStatus(RoomUnitStatus.MOVE);
 
@@ -63,7 +64,7 @@ class TeleportActionThree implements Runnable
 
         this.client.getHabbo().getHabboInfo().setCurrentRoom(targetRoom);
         //Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, this.room, "0"), 500);
-        Emulator.getThreading().run(new TeleportActionFour(targetTeleport, targetRoom, this.client), this.currentTeleport instanceof InteractionTeleportTile ? 500 : 1000);
+        Emulator.getThreading().run(new TeleportActionFour(targetTeleport, targetRoom, this.client), this.currentTeleport instanceof InteractionTeleportTile ? 0 : 500);
 
     }
 }

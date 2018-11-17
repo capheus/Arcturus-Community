@@ -34,7 +34,7 @@ public class WiredBlob extends InteractionDefault
         {
             Habbo habbo = room.getHabbo(roomUnit);
 
-            if (habbo != null)
+            if (habbo != null && habbo.getHabboInfo().getCurrentGame() != null)
             {
                 int points = Emulator.getConfig().getInt("hotel.item.wiredblob." + this.getBaseItem().getName());
 

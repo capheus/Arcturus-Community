@@ -216,7 +216,16 @@ public class PetManager
                 {
                     if (this.petData.containsKey(set.getInt("pet_id")))
                     {
-                        this.petData.get(set.getInt("pet_id")).petVocals.get(PetVocalsType.valueOf(set.getString("type").toUpperCase())).add(new PetVocal(set.getString("message")));
+                        PetVocalsType petVocalsType = PetVocalsType.valueOf(set.getString("type").toUpperCase());
+
+                        if (petVocalsType != null)
+                        {
+                            this.petData.get(set.getInt("pet_id")).petVocals.get(petVocalsType).add(new PetVocal(set.getString("message")));
+                        }
+                        else
+                        {
+                            Emulator.getLogging().logErrorLine("Unknown pet vocal type " + set.getString("type"));
+                        }
                     }
                     else
                     {

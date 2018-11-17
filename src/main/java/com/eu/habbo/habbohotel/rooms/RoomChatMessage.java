@@ -24,6 +24,7 @@ public class RoomChatMessage implements Runnable, ISerialize, Loggable
     private int roomUnitId;
     private String message;
     private String unfilteredMessage;
+    private int timestamp = 0;
     private RoomChatMessageBubbles bubble;
     private final Habbo habbo;
     public int roomId;
@@ -68,6 +69,7 @@ public class RoomChatMessage implements Runnable, ISerialize, Loggable
         this.unfilteredMessage = this.message;
         this.habbo = message.client.getHabbo();
         this.roomUnitId = habbo.getRoomUnit().getId();
+        this.timestamp = Emulator.getIntUnixTimestamp();
 
         this.checkEmotion();
 
@@ -280,7 +282,7 @@ public class RoomChatMessage implements Runnable, ISerialize, Loggable
             statement.setInt(2, 0);
 
         statement.setString(3, this.unfilteredMessage);
-        statement.setInt(4, Emulator.getIntUnixTimestamp());
+        statement.setInt(4, this.timestamp);
 
         if(this.habbo.getHabboInfo().getCurrentRoom() != null)
         {

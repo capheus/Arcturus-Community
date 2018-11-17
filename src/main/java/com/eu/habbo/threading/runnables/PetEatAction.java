@@ -39,11 +39,11 @@ public class PetEatAction implements Runnable
                 {
                     if (this.pet.getPetData().getType() == 26)
                     {
-                        AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(this.pet.getUserId()), Emulator.getGameEnvironment().getAchievementManager().getAchievement("GnomeFeedingFeeding"), 20);
+                        AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(this.pet.getUserId()), Emulator.getGameEnvironment().getAchievementManager().getAchievement("GnomeFeeding"), 20);
                     }
                     else
                     {
-                        AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(this.pet.getUserId()), Emulator.getGameEnvironment().getAchievementManager().getAchievement("LeprechaunFeedingFeeding"), 20);
+                        AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(this.pet.getUserId()), Emulator.getGameEnvironment().getAchievementManager().getAchievement("LeprechaunFeeding"), 20);
                     }
                 }
                 else

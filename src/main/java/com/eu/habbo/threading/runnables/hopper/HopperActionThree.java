@@ -36,7 +36,7 @@ class HopperActionThree implements Runnable
 
         if(this.teleportOne.getRoomId() != targetRoomId)
         {
-            Emulator.getGameEnvironment().getRoomManager().leaveRoom(this.client.getHabbo(), this.room);
+            Emulator.getGameEnvironment().getRoomManager().leaveRoom(this.client.getHabbo(), this.room, false);
             targetRoom = Emulator.getGameEnvironment().getRoomManager().loadRoom(this.targetRoomId);
             Emulator.getGameEnvironment().getRoomManager().enterRoom(this.client.getHabbo(), targetRoom.getId(), "", false);
         }

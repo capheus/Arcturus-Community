@@ -21,6 +21,7 @@ import com.eu.habbo.messages.outgoing.navigator.*;
 import com.eu.habbo.messages.outgoing.unknown.BuildersClubExpiredComposer;
 import com.eu.habbo.messages.outgoing.unknown.NewUserIdentityComposer;
 import com.eu.habbo.messages.outgoing.users.*;
+import com.eu.habbo.plugin.events.emulator.SSOAuthenticationEvent;
 import com.eu.habbo.plugin.events.users.UserLoginEvent;
 
 import java.util.ArrayList;
@@ -36,6 +37,8 @@ public class SecureLoginEvent extends MessageHandler
             return;
 
         String sso = this.packet.readString().replace(" ", "");
+
+        if (Emulator.getPluginManager().fireEvent(new SSOAuthenticationEvent(sso)).isCancelled()) return;
 
         if (sso == null || sso.isEmpty())
         {

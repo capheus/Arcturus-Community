@@ -25,14 +25,17 @@ public class ChannelReadHandler implements Runnable
         int length = m.readInt();
         short header = m.readShort();
         GameClient client = ctx.attr(GameClientManager.CLIENT).get();
+
         int count = 0;
-        if (Emulator.getIntUnixTimestamp() - client.lastPacketCounterCleared > 1)
+        if (client != null)
         {
-            client.incomingPacketCounter.clear();
-        }
-        else
-        {
-            count = client.incomingPacketCounter.getOrDefault(header, 0);
+            if (Emulator.getIntUnixTimestamp() - client.lastPacketCounterCleared > 1)
+            {
+                client.incomingPacketCounter.clear();
+            } else
+            {
+                count = client.incomingPacketCounter.getOrDefault(header, 0);
+            }
         }
         if (count <= 10)
         {

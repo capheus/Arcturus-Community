@@ -9,7 +9,6 @@ public class RoomTile
 
     private double stackHeight = 0;
     private boolean allowStack = true;
-    private boolean walkable = true;
 
 
     private RoomTile previous = null;
@@ -19,22 +18,14 @@ public class RoomTile
     private short hCosts;
 
 
-    public RoomTile(short x, short y, short z, RoomTileState state, boolean walkable, boolean allowStack)
+    public RoomTile(short x, short y, short z, RoomTileState state, boolean allowStack)
     {
         this.x = x;
         this.y = y;
         this.z = z;
         this.stackHeight = z;
-
         this.state = state;
-
-        this.walkable = walkable;
-        this.allowStack = allowStack;
-        if (this.state == RoomTileState.BLOCKED)
-        {
-            this.allowStack = false;
-            this.walkable = false;
-        }
+        this.setAllowStack(allowStack);
     }
 
     public RoomTile(RoomTile tile)
@@ -44,16 +35,14 @@ public class RoomTile
         this.z = tile.z;
         this.stackHeight = tile.stackHeight;
         this.state = tile.state;
-        this.walkable = tile.walkable;
         this.allowStack = tile.allowStack;
         this.diagonally = tile.diagonally;
         this.gCosts = tile.gCosts;
         this.hCosts = tile.hCosts;
 
-        if (this.state == RoomTileState.BLOCKED)
+        if (this.state == RoomTileState.INVALID)
         {
             this.allowStack = false;
-            this.walkable = false;
         }
     }
 
@@ -76,19 +65,24 @@ public class RoomTile
         }
     }
 
-    public boolean allowStack()
+    public boolean getAllowStack()
     {
         return this.allowStack;
     }
 
-    public void allowStack(boolean allowStack)
+    public void setAllowStack(boolean allowStack)
     {
         this.allowStack = allowStack;
+
+        if (this.state == RoomTileState.INVALID)
+        {
+            this.allowStack = false;
+        }
     }
 
     public short relativeHeight()
     {
-        if (this.state == RoomTileState.BLOCKED || !allowStack)
+        if (this.state == RoomTileState.INVALID || !allowStack)
         {
             return Short.MAX_VALUE;
         }
@@ -203,12 +197,17 @@ public class RoomTile
 
     public boolean isWalkable()
     {
-        return this.walkable && this.state != RoomTileState.BLOCKED;
+        return this.state == RoomTileState.OPEN;
     }
 
-    public void setWalkable(boolean walkable)
+    public RoomTileState getState()
     {
-        this.walkable = walkable;
+        return this.state;
+    }
+
+    public void setState(RoomTileState state)
+    {
+        this.state = state;
     }
 
     public boolean is(short x, short y)

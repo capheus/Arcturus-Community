@@ -280,6 +280,8 @@ public class FreezeGame extends Game
 
         super.start();
 
+        this.refreshGates();
+
         WiredHandler.handle(WiredTriggerType.GAME_STARTS, null, this.room, null);
         this.setFreezeTileState("1");
         this.run();
@@ -398,6 +400,8 @@ public class FreezeGame extends Game
             }
         }
 
+        this.refreshGates();
+
         this.setFreezeTileState("0");
     }
 
@@ -449,5 +453,17 @@ public class FreezeGame extends Game
         MAX_SNOWBALLS = Emulator.getConfig().getInt("hotel.freeze.powerup.max.snowballs");
         FREEZE_LOOSE_POINTS = Emulator.getConfig().getInt("hotel.freeze.points.freeze");
         POWERUP_STACK = Emulator.getConfig().getBoolean("hotel.freeze.powerup.protection.stack");
+    }
+
+
+    private void refreshGates()
+    {
+        THashSet<RoomTile> tilesToUpdate = new THashSet<>();
+        for (HabboItem item : this.room.getRoomSpecialTypes().getFreezeGates().values())
+        {
+            tilesToUpdate.add(this.room.getLayout().getTile(item.getX(), item.getY()));
+        }
+
+        this.room.updateTiles(tilesToUpdate);
     }
 }

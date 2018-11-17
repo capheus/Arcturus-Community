@@ -208,4 +208,10 @@ public abstract class InteractionGameTimer extends HabboItem
     }
 
     public abstract Class<? extends Game> getGameType();
+
+    @Override
+    public boolean allowWiredResetState()
+    {
+        return true;
+    }
 }

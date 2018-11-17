@@ -13,7 +13,7 @@ public class Incoming
     public static final int PickNewUserGiftEvent = 1822;
     public static final int FootballGateSaveLookEvent = 924;
     public static final int MannequinSaveLookEvent = 2209;
-    public static final int RequestCatalogPageEvent = 412; //PRODUCTION-201611291003-338511768
+    public static final int RequestCatalogPageEvent = 412;
     public static final int RequestWearingBadgesEvent = 2091;
     public static final int BotPickupEvent = 3323;
     public static final int HorseRideEvent = 1036;
@@ -343,6 +343,17 @@ public class Incoming
     public static final int HotelViewRequestLTDAvailabilityEvent = 410;
     public static final int PurchaseTargetOfferEvent = 1826;
     public static final int TargetOfferStateEvent = 2041;
+
+    public static final int GuildForumDataEvent = 3149;
+    public static final int UNKNOWN_GUILD_FORUMS_EVENT2 = 3900;
+    public static final int UNKNOWN_GUILD_FORUMS_EVENT3 = 873;
+    public static final int GuildForumListEvent = 436;
+    public static final int UNKNOWN_GUILD_FORUMS_EVENT5 = 232;
+    public static final int UNKNOWN_GUILD_FORUMS_EVENT6 = 2214;
+    public static final int UNKNOWN_GUILD_FORUMS_EVENT7 = 3529;
+    public static final int UNKNOWN_GUILD_FORUMS_EVENT8 = 1397;
+    public static final int UNKNOWN_GUILD_FORUMS_EVENT9 = 3045;
+    public static final int UNKNOWN_GUILD_FORUMS_EVENT10 = 286;
 
 
     public static final int UNKNOWN_SNOWSTORM_6000 = 6000;

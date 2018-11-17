@@ -88,6 +88,9 @@ public class CatalogManager
 
     public static int PURCHASE_COOLDOWN = 3;
 
+
+    public static boolean SORT_USING_ORDERNUM = false;
+
     public final THashMap<Integer, CalendarRewardObject> calendarRewards;
 
 

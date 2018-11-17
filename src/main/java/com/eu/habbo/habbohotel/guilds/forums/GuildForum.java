@@ -3,50 +3,19 @@ package com.eu.habbo.habbohotel.guilds.forums;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.guilds.Guild;
 import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.messages.ISerialize;
 import com.eu.habbo.messages.ServerMessage;
-import gnu.trove.map.hash.TIntObjectHashMap;
-import gnu.trove.procedure.TObjectProcedure;
 
 import java.sql.*;
 
-public class GuildForum implements ISerialize
+public class GuildForum
 {
     private final int guild;
-    private int totalThreads;
-    private GuildForumComment lastComment = null;
-    private final TIntObjectHashMap<GuildForumThread> threads;
     private int lastRequested = Emulator.getIntUnixTimestamp();
+    private GuildForumComment lastComment = null;
 
     public GuildForum(int guild)
     {
         this.guild = guild;
-
-        this.threads = new TIntObjectHashMap<>();
-
-        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT author.username as author_name, author.look as look, COALESCE(admin.username, '') as admin_name, guilds_forums.id as thread_id, 0 as row_number, guilds_forums.* FROM guilds_forums " +
-                "INNER JOIN users AS author ON author.id = user_id " +
-                "LEFT JOIN users AS admin ON guilds_forums.admin_id = admin.id " +
-                "WHERE guild_id = ?"))
-        {
-            statement.setInt(1, this.guild);
-            try (ResultSet set = statement.executeQuery())
-            {
-                while (set.next())
-                {
-                    this.threads.put(set.getInt("id"), new GuildForumThread(set));
-                }
-            }
-        }
-        catch (SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
-        }
-    }
-
-    public GuildForumThread getThread(int threadId)
-    {
-            return threads.get(threadId);
     }
 
     public GuildForumThread createThread(Habbo habbo, String subject, String message)
@@ -66,9 +35,7 @@ public class GuildForum implements ISerialize
             {
                 if (set.next())
                 {
-                    thread = new GuildForumThread(habbo, set.getInt(1), this.guild, subject, message, timestamp);
-                    this.threads.put(set.getInt(1),  //Thread id
-                            thread);
+                    return thread = new GuildForumThread(habbo, set.getInt(1), this.guild, subject, message, timestamp);
                 }
             }
         }
@@ -78,13 +45,6 @@ public class GuildForum implements ISerialize
         }
 
         return thread;
-    }
-
-    //TODO:
-
-    public void hideThread(int threadId)
-    {
-        this.threads.get(threadId).setState(ThreadState.HIDDEN_BY_ADMIN);
     }
 
     public int getGuild()
@@ -97,36 +57,23 @@ public class GuildForum implements ISerialize
         return this.lastRequested;
     }
 
-    @Override
-    public void serialize(ServerMessage message)
-    {
-
-    }
-
     public void serializeThreads(final ServerMessage message)
     {
-        synchronized (this.threads)
-        {
-            message.appendInt(this.threads.size());
 
-            this.threads.forEachValue(new TObjectProcedure<GuildForumThread>()
-            {
-                @Override
-                public boolean execute(GuildForumThread thread)
-                {
-                    thread.serialize(message);
-                    return true;
-                }
-            });
-        }
+
+
+
+
     }
 
     public int threadSize()
     {
-        synchronized (this.threads)
-        {
-            return this.threads.size();
-        }
+
+
+
+
+
+        return 0;
     }
 
     public void updateLastRequested()
@@ -173,7 +120,7 @@ public class GuildForum implements ISerialize
         response.appendString(guild.getBadge()); //k._icon = _arg_2.readString();            = icon
         response.appendInt(0); //k._SafeStr_11338 = _arg_2._SafeStr_5878(); (?)
         response.appendInt(0); //k._SafeStr_19191 = _arg_2._SafeStr_5878();  = rating
-        response.appendInt(this.totalThreads); //k._SafeStr_11328 = _arg_2._SafeStr_5878();  = total_messages
+        response.appendInt(0); //k._SafeStr_11328 = _arg_2._SafeStr_5878();  = total_messages
         response.appendInt(0); //k._SafeStr_19192 = _arg_2._SafeStr_5878();  = new_messages
 
         if (this.lastComment != null)

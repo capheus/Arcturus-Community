@@ -16,6 +16,7 @@ public class RoomCategory implements Comparable<RoomCategory> {
     private int maxUserCount;
     private boolean official;
     private ListMode displayMode;
+    private int order;
 
     public RoomCategory(ResultSet set) throws SQLException
     {
@@ -27,6 +28,7 @@ public class RoomCategory implements Comparable<RoomCategory> {
         this.maxUserCount = set.getInt("max_user_count");
         this.official = set.getString("public").equals("1");
         this.displayMode = ListMode.fromType(set.getInt("list_type"));
+        this.order = set.getInt("order_num");
     }
 
     public int getId() {
@@ -64,6 +66,11 @@ public class RoomCategory implements Comparable<RoomCategory> {
     public ListMode getDisplayMode()
     {
         return this.displayMode;
+    }
+
+    public int getOrder()
+    {
+        return this.order;
     }
 
     @Override

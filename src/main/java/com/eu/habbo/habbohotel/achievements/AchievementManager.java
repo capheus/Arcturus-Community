@@ -25,6 +25,8 @@ import java.util.Map;
 
 public class AchievementManager
 {
+    public static boolean TALENTTRACK_ENABLED = false;
+
 
     private final THashMap<String, Achievement> achievements;
 
@@ -219,16 +221,19 @@ public class AchievementManager
 
         AchievementLevel newLevel = achievement.getLevelForProgress(currentProgress + amount);
 
-        for (TalentTrackType type : TalentTrackType.values())
+        if (AchievementManager.TALENTTRACK_ENABLED)
         {
-            if (Emulator.getGameEnvironment().getAchievementManager().talentTrackLevels.containsKey(type))
+            for (TalentTrackType type : TalentTrackType.values())
             {
-                for (Map.Entry<Integer, TalentTrackLevel> entry : Emulator.getGameEnvironment().getAchievementManager().talentTrackLevels.get(type).entrySet())
+                if (Emulator.getGameEnvironment().getAchievementManager().talentTrackLevels.containsKey(type))
                 {
-                    if (entry.getValue().achievements.containsKey(achievement))
+                    for (Map.Entry<Integer, TalentTrackLevel> entry : Emulator.getGameEnvironment().getAchievementManager().talentTrackLevels.get(type).entrySet())
                     {
-                        Emulator.getGameEnvironment().getAchievementManager().handleTalentTrackAchievement(habbo, type, achievement);
-                        break;
+                        if (entry.getValue().achievements.containsKey(achievement))
+                        {
+                            Emulator.getGameEnvironment().getAchievementManager().handleTalentTrackAchievement(habbo, type, achievement);
+                            break;
+                        }
                     }
                 }
             }

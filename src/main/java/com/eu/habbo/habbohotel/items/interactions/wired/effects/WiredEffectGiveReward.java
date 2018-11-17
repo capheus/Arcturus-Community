@@ -137,7 +137,7 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
 
         if (client.getHabbo().hasPermission("acc_superwired"))
         {
-            client.getHabbo().whisper(Emulator.getTexts().getValue("hotel.wired.superwired.info"), RoomChatMessageBubbles.ALERT);
+            client.getHabbo().whisper(Emulator.getTexts().getValue("hotel.wired.superwired.info"), RoomChatMessageBubbles.BOT);
         }
     }
 
@@ -245,5 +245,11 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
     public boolean requiresTriggeringUser()
     {
         return true;
+    }
+
+    @Override
+    protected long requiredCooldown()
+    {
+        return 0;
     }
 }

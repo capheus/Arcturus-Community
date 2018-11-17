@@ -59,8 +59,6 @@ public class InteractionTeleport extends HabboItem
 
         if(room != null && client != null && objects.length <= 1)
         {
-
-
             RoomTile tile = room.getLayout().getTileInFront(room.getLayout().getTile(this.getX(), this.getY()), this.getRotation());
             RoomTile teleportPosition = room.getLayout().getTile(getX(), getY());
 

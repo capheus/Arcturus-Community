@@ -53,7 +53,7 @@ public class TargetOffer
         message.appendInt(this.priceInActivityPoints);
         message.appendInt(this.activityPointsType);
         message.appendInt(Math.max(this.purchaseLimit - purchase.getAmount(), 0));
-        message.appendInt(Math.max(Emulator.getIntUnixTimestamp() - this.expirationTime, 0));
+        message.appendInt(Math.max(this.expirationTime - Emulator.getIntUnixTimestamp(), 0));
         message.appendString(this.title);
         message.appendString(this.description);
         message.appendString(this.imageUrl);

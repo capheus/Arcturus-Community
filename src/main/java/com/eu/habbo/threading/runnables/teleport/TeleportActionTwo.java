@@ -95,6 +95,9 @@ class TeleportActionTwo implements Runnable
             }
         }
 
+        this.currentTeleport.setExtradata("1");
+        this.room.updateItem(this.currentTeleport);
+
         if(((InteractionTeleport) this.currentTeleport).getTargetRoomId() == 0)
         {
             //Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, room, "1"), 0);
@@ -102,11 +105,8 @@ class TeleportActionTwo implements Runnable
             return;
         }
 
-        this.currentTeleport.setExtradata("0");
-        this.room.updateItem(this.currentTeleport);
-
         Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, room, "2"), delayOffset);
         Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, room, "0"), delayOffset + 1000);
-        Emulator.getThreading().run(new TeleportActionThree(this.currentTeleport, this.room, this.client), delayOffset + 500);
+        Emulator.getThreading().run(new TeleportActionThree(this.currentTeleport, this.room, this.client), delayOffset + 0);
     }
 }

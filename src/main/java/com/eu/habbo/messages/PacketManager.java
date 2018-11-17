@@ -29,6 +29,8 @@ import com.eu.habbo.messages.incoming.guardians.GuardianNoUpdatesWantedEvent;
 import com.eu.habbo.messages.incoming.guardians.GuardianVoteEvent;
 import com.eu.habbo.messages.incoming.guides.*;
 import com.eu.habbo.messages.incoming.guilds.*;
+import com.eu.habbo.messages.incoming.guilds.forums.GuildForumDataEvent;
+import com.eu.habbo.messages.incoming.guilds.forums.GuildForumListEvent;
 import com.eu.habbo.messages.incoming.handshake.*;
 import com.eu.habbo.messages.incoming.helper.RequestTalentTrackEvent;
 import com.eu.habbo.messages.incoming.hotelview.*;
@@ -70,15 +72,13 @@ import com.eu.habbo.plugin.EventHandler;
 import com.eu.habbo.plugin.events.emulator.EmulatorConfigUpdatedEvent;
 import gnu.trove.map.hash.THashMap;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class PacketManager
 {
     private final THashMap<Integer, Class<? extends MessageHandler>> incoming;
-    private final THashMap<Integer, Map.Entry<Object, Method>> callables;
+    private final THashMap<Integer, List<ICallable>> callables;
     private static final List<Integer> logList = new ArrayList<>();
 
     public PacketManager() throws Exception
@@ -111,6 +111,7 @@ public class PacketManager
         this.registerGameCenter();
     }
 
+
     public void registerHandler(Integer header, Class<? extends MessageHandler> handler) throws Exception
     {
         if (header < 0)
@@ -124,15 +125,31 @@ public class PacketManager
         this.incoming.putIfAbsent(header, handler);
     }
 
-    public void registerCallable(Integer header, Map.Entry<Object, Method> objectMethodEntry)
+
+    public void registerCallable(Integer header, ICallable callable)
     {
-        this.callables.put(header, objectMethodEntry);
+        this.callables.putIfAbsent(header, new ArrayList<>());
+        this.callables.get(header).add(callable);
     }
 
-    public void unregisterCallable(Integer header)
+
+    public void unregisterCallables(Integer header, ICallable callable)
     {
-        this.callables.remove(header);
+        if (this.callables.containsKey(header))
+        {
+            this.callables.get(header).remove(callable);
+        }
     }
+
+
+    public void unregisterCallables(Integer header)
+    {
+        if (this.callables.containsKey(header))
+        {
+            this.callables.clear();
+        }
+    }
+
 
     public void handlePacket(GameClient client, ClientMessage packet)
     {
@@ -161,11 +178,9 @@ public class PacketManager
 
                 if (this.callables.containsKey(packet.getMessageId()))
                 {
-                    Map.Entry<Object, Method> entry = this.callables.get(packet.getMessageId());
-
-                    if (entry.getKey() != null)
+                    for (ICallable callable : this.callables.get(packet.getMessageId()))
                     {
-                        entry.getValue().invoke(entry.getKey(), handler);
+                        callable.call(handler);
                     }
                 }
 
@@ -509,7 +524,16 @@ public class PacketManager
         this.registerHandler(Incoming.GuildConfirmRemoveMemberEvent,            GuildConfirmRemoveMemberEvent.class);
         this.registerHandler(Incoming.GuildRemoveFavoriteEvent,                 GuildRemoveFavoriteEvent.class);
         this.registerHandler(Incoming.GuildDeleteEvent,                         GuildDeleteEvent.class);
-        //this.registerHandler(Incoming.GetHabboGuildBadgesMessageEvent, GetHabboGuildBadgesMessageEvent.class);
+        this.registerHandler(Incoming.GetHabboGuildBadgesMessageEvent,          GetHabboGuildBadgesMessageEvent.class);
+
+        this.registerHandler(Incoming.GuildForumDataEvent,              GuildForumDataEvent.class);
+        this.registerHandler(Incoming.GuildForumListEvent,              GuildForumListEvent.class);
+
+
+
+
+
+
     }
 
     void registerPets() throws Exception

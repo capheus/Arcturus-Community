@@ -86,7 +86,7 @@ public class CraftingCraftSecretEvent extends MessageHandler
                         if (!this.client.getHabbo().getHabboStats().hasRecipe(recipe.getId()))
                         {
                             this.client.getHabbo().getHabboStats().addRecipe(recipe.getId());
-                            AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("ACH_AtcgSecret"));
+                            AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("AtcgSecret"));
                         }
                         this.client.getHabbo().getInventory().getItemsComponent().addItem(rewardItem);
                         this.client.sendResponse(new AddHabboItemComposer(rewardItem));

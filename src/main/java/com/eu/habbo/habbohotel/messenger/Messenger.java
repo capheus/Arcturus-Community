@@ -8,6 +8,7 @@ import com.eu.habbo.messages.outgoing.friends.UpdateFriendComposer;
 import com.eu.habbo.plugin.events.users.friends.UserAcceptFriendRequestEvent;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
+import org.apache.commons.lang3.StringUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -142,7 +143,7 @@ public class Messenger
 
         for(Map.Entry<Integer, MessengerBuddy> map : this.friends.entrySet())
         {
-            if(map.getValue().getUsername().contains(username))
+            if(StringUtils.containsIgnoreCase(map.getValue().getUsername(), username))
             {
                 users.add(map.getValue());
             }

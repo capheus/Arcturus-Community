@@ -28,7 +28,7 @@ public class TeleportActionOne implements Runnable
         if (this.client.getHabbo().getHabboInfo().getCurrentRoom() != this.room)
             return;
 
-        int delay = 1000;
+        int delay = 500;
 
         if (this.currentTeleport instanceof InteractionTeleportTile)
         {

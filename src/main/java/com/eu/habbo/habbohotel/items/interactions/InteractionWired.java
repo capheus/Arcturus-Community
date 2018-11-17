@@ -124,6 +124,12 @@ public abstract class InteractionWired extends HabboItem
     }
 
     @Override
+    public boolean allowWiredResetState()
+    {
+        return false;
+    }
+
+    @Override
     public boolean isUsable()
     {
         return true;

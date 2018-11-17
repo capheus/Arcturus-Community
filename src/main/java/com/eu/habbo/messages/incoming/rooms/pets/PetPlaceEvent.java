@@ -72,7 +72,7 @@ public class PetPlaceEvent extends MessageHandler
             tile = room.getLayout().getTile((short) x, (short) y);
         }
 
-        if(tile == null || !tile.isWalkable() || !tile.allowStack())
+        if(tile == null || !tile.isWalkable() || !tile.getAllowStack())
         {
             this.client.sendResponse(new PetErrorComposer(PetErrorComposer.ROOM_ERROR_PETS_SELECTED_TILE_NOT_FREE));
             return;

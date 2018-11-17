@@ -615,7 +615,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         if (tile != null)
         {
             tile.setStackHeight(this.getStackHeight(tile.x, tile.y, false));
-            tile.setWalkable(this.canWalkAt(tile) || this.canSitAt(tile.x, tile.y));
+
+            tile.setState(this.calculateTileState(tile));
         }
     }
 
@@ -625,12 +626,84 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         {
             this.tileCache.remove(tile);
             tile.setStackHeight(this.getStackHeight(tile.x, tile.y, false));
-            tile.setWalkable(this.canWalkAt(tile) || this.canSitAt(tile.x, tile.y));
+            tile.setState(this.calculateTileState(tile));
         }
 
         this.sendComposer(new UpdateStackHeightComposer(tiles).compose());
     }
 
+    private RoomTileState calculateTileState(RoomTile tile)
+    {
+        if (tile.state == RoomTileState.INVALID)
+            return RoomTileState.INVALID;
+
+        if (tile.x == 2)
+        {
+            if (tile.y == 23)
+            {
+                boolean test = true;
+            }
+        }
+        RoomTileState result = RoomTileState.OPEN;
+        HabboItem lowestItem = null;
+        HabboItem lowestChair = null;
+        for (HabboItem item : this.getItemsAt(tile))
+        {
+            if (lowestChair != null && item.getZ() > lowestChair.getZ() + 1.5)
+            {
+                continue;
+            }
+
+            if (lowestItem == null || lowestItem.getZ() < item.getZ())
+            {
+                lowestItem = item;
+
+                result = checkStateForItem(lowestItem);
+            }
+            else if (lowestItem.getZ() == item.getZ())
+            {
+                if (result == RoomTileState.OPEN)
+                {
+                    result = checkStateForItem(item);
+                }
+            }
+            else
+            {
+                if (item.getBaseItem().allowSit())
+                {
+                    lowestChair = item;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private RoomTileState checkStateForItem(HabboItem item)
+    {
+        RoomTileState result = RoomTileState.BLOCKED;
+
+        if (item.isWalkable())
+        {
+            result = RoomTileState.OPEN;
+        }
+        else
+        {
+            result = RoomTileState.BLOCKED;
+        }
+
+        if (item.getBaseItem().allowSit())
+        {
+            result = RoomTileState.SIT;
+        }
+
+        if (item.getBaseItem().allowLay())
+        {
+            result = RoomTileState.LAY;
+        }
+
+        return result;
+    }
     public boolean tileWalkable(RoomTile t)
     {
         return this.tileWalkable(t.x, t.y);
@@ -749,6 +822,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         Habbo habbo = (picker != null && picker.getHabboInfo().getId() == item.getId() ? picker : Emulator.getGameServer().getGameClientManager().getHabbo(item.getUserId()));
         if (habbo != null) {
             habbo.getInventory().getItemsComponent().addItem(item);
+            habbo.getClient().sendResponse(new AddHabboItemComposer(item));
             habbo.getClient().sendResponse(new InventoryRefreshComposer());
         }
         Emulator.getThreading().run(item);
@@ -1263,13 +1337,13 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         final boolean[] foundRightHolder = {false};
 
-        this.tileCache.clear();
 
         boolean loaded = false;
         synchronized (this.loadLock)
         {
             loaded = this.loaded;
         }
+        this.tileCache.clear();
         if(loaded)
         {
             if (!this.scheduledTasks.isEmpty())
@@ -1317,7 +1391,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                             HabboItem newRoller = null;
 
                             THashSet<Habbo> habbosOnRoller = getHabbosAt(roller.getX(), roller.getY());
-                            THashSet<HabboItem> itemsOnRoller = getItemsAt(roller.getX(), roller.getY(), roller.getZ() + roller.getBaseItem().getHeight());
+                            THashSet<HabboItem> itemsOnRoller = new THashSet<HabboItem>(getItemsAt(roller.getX(), roller.getY()));
 
                             itemsOnRoller.remove(roller);
 
@@ -1327,21 +1401,21 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                     return true;
                             }
 
-                            RoomTile roomTile = layout.getTileInFront(layout.getTile(roller.getX(), roller.getY()), roller.getRotation());
+                            RoomTile tileInFront = layout.getTileInFront(layout.getTile(roller.getX(), roller.getY()), roller.getRotation());
 
-                            if (roomTile == null)
+                            if (tileInFront == null)
                                 return true;
 
-                            if(!layout.tileExists(roomTile.x, roomTile.y))
+                            if(!layout.tileExists(tileInFront.x, tileInFront.y))
                                 return true;
 
-                            if (roomTile.state == RoomTileState.BLOCKED)
+                            if (tileInFront.state == RoomTileState.INVALID)
                                 return true;
 
-                            if (!getHabbosAt(roomTile.x, roomTile.y).isEmpty())
+                            if (hasHabbosAt(tileInFront.x, tileInFront.y))
                                 return true;
 
-                            THashSet<HabboItem> itemsNewTile = getItemsAt(roomTile);
+                            THashSet<HabboItem> itemsNewTile = new THashSet<HabboItem>(getItemsAt(tileInFront.x, tileInFront.y));
                             itemsNewTile.removeAll(itemsOnRoller);
                             List<HabboItem> toRemove = new ArrayList<>();
                             for (HabboItem item : itemsOnRoller)
@@ -1352,7 +1426,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                 }
                             }
                             itemsOnRoller.removeAll(toRemove);
-                            HabboItem topItem = getTopItemAt(roomTile.x, roomTile.y);
+                            HabboItem topItem = getTopItemAt(tileInFront.x, tileInFront.y);
 
                             boolean allowUsers = true;
                             boolean allowFurniture = true;
@@ -1385,14 +1459,20 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                             }
 
                             double zOffset = 0;
-                            if(newRoller == null)
+                            if(newRoller != null)
+                            {
+                                if (!itemsNewTile.isEmpty() && (newRoller == null || itemsNewTile.size() > 1))
+                                {
+                                    return true;
+                                }
+                            }
+                            else
                             {
                                 zOffset = -roller.getBaseItem().getHeight();
                             }
 
                             if (allowFurniture || (!allowFurniture && !stackContainsRoller))
                             {
-
                                 Event furnitureRolledEvent = null;
 
                                 if (Emulator.getPluginManager().isRegistered(FurnitureRolledEvent.class, true))
@@ -1400,15 +1480,15 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                     furnitureRolledEvent = new FurnitureRolledEvent(null, null, null);
                                 }
 
-                                //if (newRoller == null || topItem == newRoller)
+                                if (newRoller == null || topItem == newRoller)
                                 {
                                     for (HabboItem item : itemsOnRoller)
                                     {
-                                        //if (item.getX() == roller.getX() && item.getY() == roller.getY())
+                                        if (item.getX() == roller.getX() && item.getY() == roller.getY())
                                         {
                                             if (furnitureRolledEvent != null)
                                             {
-                                                furnitureRolledEvent = new FurnitureRolledEvent(item, roller, roomTile);
+                                                furnitureRolledEvent = new FurnitureRolledEvent(item, roller, tileInFront);
                                                 Emulator.getPluginManager().fireEvent(furnitureRolledEvent);
 
                                                 if (furnitureRolledEvent.isCancelled())
@@ -1416,7 +1496,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                             }
 
                                             if (item != roller)
-                                                messages.add(new FloorItemOnRollerComposer(item, roller, roomTile, zOffset, room));
+                                                messages.add(new FloorItemOnRollerComposer(item, roller, tileInFront, zOffset, room));
                                         }
                                     }
                                 }
@@ -1438,7 +1518,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                                     if (!habbo.getRoomUnit().hasStatus(RoomUnitStatus.MOVE))
                                     {
-                                        RoomTile tile = roomTile.copy();
+                                        RoomTile tile = tileInFront.copy();
                                         tile.setStackHeight(habbo.getRoomUnit().getZ() + zOffset);
                                         if(roomUserRolledEvent != null)
                                         {
@@ -1502,7 +1582,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                         if (habbo.getRoomUnit().kickCount >= 5)
                         {
-                            System.out.println("KICKED");
                             this.scheduledTasks.add(new Runnable()
                             {
                                 @Override
@@ -3301,6 +3380,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             habbo.getRoomUnit().setLocation(tile);
             habbo.getRoomUnit().setGoalLocation(tile);
             habbo.getRoomUnit().setZ(z);
+            habbo.getRoomUnit().setPreviousLocationZ(z);
             this.updateHabbo(habbo);
         }
     }
@@ -3725,6 +3805,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             }
             catch (Exception e)
             {
+                e.printStackTrace();
                 break;
             }
 
@@ -4132,7 +4213,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             return false;
         }
 
-        if (roomTile.state == RoomTileState.BLOCKED)
+        if (roomTile.state == RoomTileState.INVALID)
             return false;
 
         HabboItem topItem = null;
@@ -4797,11 +4878,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 }
                 catch (Exception e)
                 {
+                    e.printStackTrace();
                     break;
                 }
-
-                if (iterator.value().getUserId() != this.ownerId)
-                    continue;
 
                 if (habbo != null && iterator.value().getUserId() == habbo.getHabboInfo().getId())
                     continue;

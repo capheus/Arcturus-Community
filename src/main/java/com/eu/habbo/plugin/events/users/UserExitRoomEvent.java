@@ -8,7 +8,8 @@ public class UserExitRoomEvent extends UserEvent
     {
         DOOR(false),
         KICKED_HABBO(false),
-        KICKED_IDLE(true);
+        KICKED_IDLE(true),
+        TELEPORT(false);
 
         public final boolean cancellable;
 

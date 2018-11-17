@@ -37,34 +37,27 @@ public class InteractionEffectTile extends InteractionPressurePlate
     public void onWalkOff(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
     {
         super.onWalkOff(roomUnit, room, objects);
-
-        Habbo habbo = room.getHabbo(roomUnit);
-
-        if (habbo.getRoomUnit().getEffectId() == 0)
-        {
-            if (habbo.getHabboInfo().getGender().equals(HabboGender.M))
-            {
-                room.giveEffect(habbo.getRoomUnit(), this.getBaseItem().getEffectM());
-            } else
-            {
-                room.giveEffect(habbo.getRoomUnit(), this.getBaseItem().getEffectF());
-            }
-        }
-        else
-        {
-            if ((habbo.getHabboInfo().getGender().equals(HabboGender.M) && habbo.getRoomUnit().getEffectId() == this.getBaseItem().getEffectM()) ||
-                    habbo.getHabboInfo().getGender().equals(HabboGender.F) && habbo.getRoomUnit().getEffectId() == this.getBaseItem().getEffectF()
-                    )
-            {
-                room.giveEffect(habbo.getRoomUnit(), 0);
-            }
-        }
     }
 
     @Override
     public void onWalk(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
     {
+        super.onWalk(roomUnit, room, objects);
+    }
 
+    @Override
+    public void onWalkOn(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
+    {
+        super.onWalkOn(roomUnit, room, objects);
+        Habbo habbo = room.getHabbo(roomUnit);
+
+        if (habbo.getHabboInfo().getGender().equals(HabboGender.M))
+        {
+            room.giveEffect(habbo.getRoomUnit(), this.getBaseItem().getEffectM());
+        } else
+        {
+            room.giveEffect(habbo.getRoomUnit(), this.getBaseItem().getEffectF());
+        }
     }
 
     @Override

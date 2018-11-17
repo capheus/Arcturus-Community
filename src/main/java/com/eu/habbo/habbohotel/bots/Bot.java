@@ -252,7 +252,7 @@ public class Bot implements Runnable
             if(Emulator.getPluginManager().fireEvent(event).isCancelled())
                 return;
 
-            this.room.botChat(new RoomUserTalkComposer(new RoomChatMessage(event.message, this.roomUnit, RoomChatMessageBubbles.BOT)).compose());
+            this.room.botChat(new RoomUserTalkComposer(new RoomChatMessage(event.message, this.roomUnit, RoomChatMessageBubbles.BOT_RENTABLE)).compose());
         }
     }
 
@@ -265,7 +265,7 @@ public class Bot implements Runnable
             if(Emulator.getPluginManager().fireEvent(event).isCancelled())
                 return;
 
-            this.room.botChat(new RoomUserShoutComposer(new RoomChatMessage(event.message, this.roomUnit, RoomChatMessageBubbles.BOT)).compose());
+            this.room.botChat(new RoomUserShoutComposer(new RoomChatMessage(event.message, this.roomUnit, RoomChatMessageBubbles.BOT_RENTABLE)).compose());
         }
     }
 
@@ -278,7 +278,7 @@ public class Bot implements Runnable
             if(Emulator.getPluginManager().fireEvent(event).isCancelled())
                 return;
 
-            event.target.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(event.message, this.roomUnit, RoomChatMessageBubbles.BOT)));
+            event.target.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(event.message, this.roomUnit, RoomChatMessageBubbles.BOT_RENTABLE)));
         }
     }
 

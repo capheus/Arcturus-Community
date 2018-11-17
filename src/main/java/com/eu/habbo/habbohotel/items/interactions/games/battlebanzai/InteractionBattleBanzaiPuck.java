@@ -142,7 +142,7 @@ public class InteractionBattleBanzaiPuck extends InteractionPushable
     {
         HabboItem topItem = room.getTopItemAt(to.x, to.y, this);
         return topItem != null && topItem instanceof InteractionBattleBanzaiTile;
-        //return !(!room.getLayout().tileWalkable(to.x, to.y) || (topItem != null && (!topItem.getBaseItem().allowStack() || topItem.getBaseItem().allowSit() || topItem.getBaseItem().allowLay())));
+        //return !(!room.getLayout().tileWalkable(to.x, to.y) || (topItem != null && (!topItem.getBaseItem().setAllowStack() || topItem.getBaseItem().allowSit() || topItem.getBaseItem().allowLay())));
     }
 
     @Override

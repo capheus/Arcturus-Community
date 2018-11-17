@@ -11,6 +11,7 @@ import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.modtool.ModToolComposer;
 import com.eu.habbo.messages.outgoing.users.UserPerksComposer;
 import com.eu.habbo.messages.outgoing.users.UserPermissionsComposer;
+import com.eu.habbo.plugin.events.users.UserRankChangedEvent;
 import com.eu.habbo.plugin.events.users.UserRegisteredEvent;
 
 import java.sql.Connection;
@@ -326,7 +327,6 @@ public class HabboManager
         {
             throw new Exception("Rank ID (" + rankId + ") does not exist");
         }
-
         Rank rank = Emulator.getGameEnvironment().getPermissionsManager().getRank(rankId);
 
         if(habbo != null && habbo.getHabboStats() != null)
@@ -362,6 +362,8 @@ public class HabboManager
                 Emulator.getLogging().logSQLException(e);
             }
         }
+
+        Emulator.getPluginManager().fireEvent(new UserRankChangedEvent(habbo));
     }
 
     public void giveCredits(int userId, int credits)

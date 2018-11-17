@@ -9,6 +9,7 @@ import com.eu.habbo.messages.outgoing.rooms.users.ChangeNameUpdatedComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserNameChangedComposer;
 import com.eu.habbo.messages.outgoing.users.ChangeNameCheckResultComposer;
 import com.eu.habbo.messages.outgoing.users.UserDataComposer;
+import com.eu.habbo.plugin.events.users.UserNameChangedEvent;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -56,6 +57,7 @@ public class ConfirmChangeNameEvent extends MessageHandler
                 this.client.getHabbo().getHabboInfo().setUsername(name);
                 this.client.getHabbo().getHabboInfo().run();
 
+                Emulator.getPluginManager().fireEvent(new UserNameChangedEvent(this.client.getHabbo(), oldName));
                 for (Room room : Emulator.getGameEnvironment().getRoomManager().getRoomsForHabbo(this.client.getHabbo()))
                 {
                     room.setOwnerName(name);
