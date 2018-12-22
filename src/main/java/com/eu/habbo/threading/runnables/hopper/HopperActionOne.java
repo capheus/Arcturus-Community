@@ -30,6 +30,7 @@ public class HopperActionOne implements Runnable
         this.room.scheduledComposers.add(new RoomUserStatusComposer(this.client.getHabbo().getRoomUnit()).compose());
         this.client.getHabbo().getRoomUnit().setLocation(this.room.getLayout().getTile(this.teleportOne.getX(), this.teleportOne.getY()));
         this.client.getHabbo().getRoomUnit().setZ(this.teleportOne.getZ());
+        this.client.getHabbo().getRoomUnit().setPreviousLocationZ(this.teleportOne.getZ());
 
         Emulator.getThreading().run(new Runnable()
         {

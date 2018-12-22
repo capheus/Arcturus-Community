@@ -5,7 +5,9 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.interactions.InteractionGuildFurni;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.guilds.GuildJoinErrorComposer;
+import com.eu.habbo.messages.outgoing.unknown.GuildMembershipRequestedComposer;
 import gnu.trove.TCollections;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.TIntObjectMap;
@@ -317,7 +319,18 @@ public class GuildManager
                 if(userId == 0 && !error)
                 {
                     if (guild.getState() == GuildState.LOCKED)
+                    {
                         guild.increaseRequestCount();
+                        ServerMessage membershipRequestMessage = new GuildMembershipRequestedComposer(guild.getId(), client.getHabbo().getHabboInfo().getId()).compose();
+                        for (GuildMember member : this.getOnlyAdmins(guild).values())
+                        {
+                            Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(member.getUserId());
+                            if (habbo != null)
+                            {
+                                habbo.getClient().sendResponse(membershipRequestMessage);
+                            }
+                        }
+                    }
                     else
                     {
                         guild.increaseMemberCount();

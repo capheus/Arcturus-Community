@@ -5,7 +5,7 @@ import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.catalog.TargetOffer;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.events.calendar.AdventCalendarDataComposer;
-import com.eu.habbo.messages.outgoing.unknown.NuxAlertComposer;
+import com.eu.habbo.messages.outgoing.habboway.nux.NuxAlertComposer;
 import com.eu.habbo.messages.outgoing.unknown.TargetedOfferComposer;
 
 import java.sql.Connection;

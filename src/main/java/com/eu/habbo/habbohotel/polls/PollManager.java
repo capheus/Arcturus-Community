@@ -15,6 +15,7 @@ public class PollManager
         this.loadPolls();
     }
 
+
     public void loadPolls()
     {
         synchronized (this.activePolls)
@@ -57,7 +58,7 @@ public class PollManager
                                     }
                                 }
 
-                                poll.lastQuestionId = question.getId();
+                                poll.lastQuestionId = question.id;
                             }
                         }
                     }
@@ -70,10 +71,12 @@ public class PollManager
         }
     }
 
+
     public Poll getPoll(int pollId)
     {
         return this.activePolls.get(pollId);
     }
+
 
     public static boolean donePoll(Habbo habbo, int pollId)
     {

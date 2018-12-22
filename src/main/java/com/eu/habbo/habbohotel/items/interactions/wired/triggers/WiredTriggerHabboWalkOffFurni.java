@@ -5,7 +5,6 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
-import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
@@ -15,6 +14,8 @@ import gnu.trove.set.hash.THashSet;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WiredTriggerHabboWalkOffFurni extends InteractionWiredTrigger
 {
@@ -40,16 +41,11 @@ public class WiredTriggerHabboWalkOffFurni extends InteractionWiredTrigger
     {
         if(stuff.length >= 1)
         {
-            Habbo habbo = room.getHabbo(roomUnit);
-
-            if (habbo != null)
+            if (stuff[0] instanceof HabboItem)
             {
-                if (stuff[0] instanceof HabboItem)
+                if(items.contains(stuff[0]))
                 {
-                    if(items.contains(stuff[0]))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
         }
@@ -63,10 +59,20 @@ public class WiredTriggerHabboWalkOffFurni extends InteractionWiredTrigger
 
         if(!items.isEmpty())
         {
+            List<HabboItem> toRemove = new ArrayList<>(0);
             for (HabboItem item : this.items)
             {
-                wiredData += item.getId() + ";";
+                if (item.getRoomId() == this.getRoomId())
+                {
+                    wiredData += item.getId() + ";";
+                }
+                else
+                {
+                    toRemove.add(item);
+                }
             }
+
+            this.items.removeAll(toRemove);
         }
         else
             wiredData += "\t";

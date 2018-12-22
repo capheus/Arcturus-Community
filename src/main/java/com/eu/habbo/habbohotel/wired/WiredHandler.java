@@ -46,6 +46,9 @@ public class WiredHandler
     {
         boolean talked = false;
 
+        if (!Emulator.isReady)
+            return false;
+
         if (room == null)
             return false;
 
@@ -83,26 +86,39 @@ public class WiredHandler
     public static boolean handle(InteractionWiredTrigger trigger, final RoomUnit roomUnit, final Room room, final Object[] stuff)
     {
         long millis = System.currentTimeMillis();
-        if(trigger.canExecute(millis) && trigger.execute(roomUnit, room, stuff))
+        if(Emulator.isReady && trigger.canExecute(millis) && trigger.execute(roomUnit, room, stuff))
         {
+            trigger.setCooldown(millis);
             trigger.activateBox(room);
 
             THashSet<InteractionWiredCondition> conditions = room.getRoomSpecialTypes().getConditions(trigger.getX(), trigger.getY());
             THashSet<InteractionWiredEffect> effects = room.getRoomSpecialTypes().getEffects(trigger.getX(), trigger.getY());
-
             if(Emulator.getPluginManager().fireEvent(new WiredStackTriggeredEvent(room, roomUnit, trigger, effects, conditions)).isCancelled())
                 return false;
 
-            for(InteractionWiredCondition condition : conditions)
+            if (!conditions.isEmpty())
             {
-                if(condition.execute(roomUnit, room, stuff))
+                ArrayList<WiredConditionType> matchedConditions = new ArrayList<>(conditions.size());
+                for (InteractionWiredCondition searchMatched : conditions)
                 {
-                    condition.activateBox(room);
+                    if (!matchedConditions.contains(searchMatched.getType()) && searchMatched.operator() == WiredConditionOperator.OR && searchMatched.execute(roomUnit, room, stuff))
+                    {
+                        matchedConditions.add(searchMatched.getType());
+                    }
                 }
-                else
+
+                for (InteractionWiredCondition condition : conditions)
                 {
-                    if(!Emulator.getPluginManager().fireEvent(new WiredConditionFailedEvent(room, roomUnit, trigger, condition)).isCancelled())
-                        return false;
+                    if ((condition.operator() == WiredConditionOperator.OR && matchedConditions.contains(condition.getType())) ||
+                        (condition.operator() == WiredConditionOperator.AND && condition.execute(roomUnit, room, stuff)))
+                    {
+                        condition.activateBox(room);
+                    }
+                    else
+                    {
+                        if (!Emulator.getPluginManager().fireEvent(new WiredConditionFailedEvent(room, roomUnit, trigger, condition)).isCancelled())
+                            return false;
+                    }
                 }
             }
 

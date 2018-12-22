@@ -15,7 +15,7 @@ public class AddFloorItemComposer extends MessageComposer
     public AddFloorItemComposer(HabboItem item, String itemOwnerName)
     {
         this.item = item;
-        this.itemOwnerName = itemOwnerName;
+        this.itemOwnerName = itemOwnerName == null ? "" : itemOwnerName;
     }
 
     @Override

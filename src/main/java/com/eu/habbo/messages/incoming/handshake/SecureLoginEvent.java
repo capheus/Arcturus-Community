@@ -19,7 +19,7 @@ import com.eu.habbo.messages.outgoing.modtool.CfhTopicsMessageComposer;
 import com.eu.habbo.messages.outgoing.modtool.ModToolComposer;
 import com.eu.habbo.messages.outgoing.navigator.*;
 import com.eu.habbo.messages.outgoing.unknown.BuildersClubExpiredComposer;
-import com.eu.habbo.messages.outgoing.unknown.NewUserIdentityComposer;
+import com.eu.habbo.messages.outgoing.habboway.nux.NewUserIdentityComposer;
 import com.eu.habbo.messages.outgoing.users.*;
 import com.eu.habbo.plugin.events.emulator.SSOAuthenticationEvent;
 import com.eu.habbo.plugin.events.users.UserLoginEvent;
@@ -33,8 +33,21 @@ public class SecureLoginEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
+        if (!this.client.getChannel().isOpen()) return;
+
         if(!Emulator.isReady)
             return;
+
+        if (Emulator.getGameEnvironment().getModToolManager().hasMACBan(this.client))
+        {
+            Emulator.getGameServer().getGameClientManager().disposeClient(this.client);
+            return;
+        }
+        if (Emulator.getGameEnvironment().getModToolManager().hasIPBan(this.client.getChannel()))
+        {
+            Emulator.getGameServer().getGameClientManager().disposeClient(this.client);
+            return;
+        }
 
         String sso = this.packet.readString().replace(" ", "");
 
@@ -42,17 +55,11 @@ public class SecureLoginEvent extends MessageHandler
 
         if (sso == null || sso.isEmpty())
         {
-            this.client.getChannel().close();
+            Emulator.getGameServer().getGameClientManager().disposeClient(this.client);
         }
 
         if(this.client.getHabbo() == null)
         {
-            if (Emulator.getGameEnvironment().getModToolManager().hasIPBan(this.client.getChannel()))
-            {
-                this.client.getChannel().close();
-                return;
-            }
-
             Habbo habbo = null;
             synchronized (this.client.getChannel())
             {
@@ -68,7 +75,7 @@ public class SecureLoginEvent extends MessageHandler
 
                     if (this.client.getHabbo().getHabboInfo() == null)
                     {
-                        Emulator.getGameServer().getGameClientManager().disposeClient(this.client.getChannel());
+                        Emulator.getGameServer().getGameClientManager().disposeClient(this.client);
                         return;
                     }
                     Emulator.getThreading().run(habbo);
@@ -77,7 +84,7 @@ public class SecureLoginEvent extends MessageHandler
                 catch (Exception e)
                 {
                     e.printStackTrace();
-                    Emulator.getGameServer().getGameClientManager().disposeClient(this.client.getChannel());
+                    Emulator.getGameServer().getGameClientManager().disposeClient(this.client);
                     return;
                 }
                 ArrayList<ServerMessage> messages = new ArrayList<>();
@@ -92,7 +99,7 @@ public class SecureLoginEvent extends MessageHandler
                 messages.add(new SomeConnectionComposer().compose());
                 messages.add(new DebugConsoleComposer().compose());
                 messages.add(new UserAchievementScoreComposer(this.client.getHabbo()).compose());
-                messages.add(new UnknownComposer4().compose());
+                messages.add(new IsFirstLoginOfDayComposer(true).compose());
                 messages.add(new UnknownComposer5().compose());
                 messages.add(new BuildersClubExpiredComposer().compose());
                 messages.add(new CfhTopicsMessageComposer().compose());
@@ -147,7 +154,7 @@ public class SecureLoginEvent extends MessageHandler
             }
             else
             {
-                this.client.getChannel().close();
+                Emulator.getGameServer().getGameClientManager().disposeClient(this.client);
             }
         }
     }

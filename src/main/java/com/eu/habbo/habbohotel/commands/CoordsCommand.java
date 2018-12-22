@@ -49,6 +49,10 @@ public class CoordsCommand extends Command {
                 "Tile Stack Height: " + tile.getStackHeight() + "\r" +
                 "Tile Walkable: " + (tile.isWalkable() ? "Yes" : "No") + "\r"));
             }
+            else
+            {
+                gameClient.getHabbo().whisper(Emulator.getTexts().getValue("generic.tile.not.exists"));
+            }
         }
         return true;
     }

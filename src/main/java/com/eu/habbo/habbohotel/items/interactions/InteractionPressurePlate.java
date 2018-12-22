@@ -90,8 +90,13 @@ public class InteractionPressurePlate extends HabboItem
     @Override
     public void onMove(Room room, RoomTile oldLocation, RoomTile newLocation)
     {
-        this.setExtradata("0");
-        room.updateItemState(this);
+        super.onMove(room, oldLocation, newLocation);
+
+        if (oldLocation != newLocation && oldLocation.getStackHeight() != newLocation.getStackHeight() && !room.hasHabbosAt(newLocation.x, newLocation.y))
+        {
+            this.setExtradata("0");
+            room.updateItemState(this);
+        }
     }
 
     @Override
@@ -99,4 +104,6 @@ public class InteractionPressurePlate extends HabboItem
     {
         return true;
     }
+
+
 }

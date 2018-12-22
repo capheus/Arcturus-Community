@@ -6,7 +6,7 @@ public class ConsoleShutdownCommand extends ConsoleCommand
 {
     public ConsoleShutdownCommand()
     {
-        super("stop", "");
+        super("stop", "Stop the emulator.");
     }
 
     @Override

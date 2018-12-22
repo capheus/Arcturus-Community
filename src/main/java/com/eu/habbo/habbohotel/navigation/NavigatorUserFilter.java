@@ -24,7 +24,7 @@ public class NavigatorUserFilter extends NavigatorFilter
         List<SearchResultList> resultLists = new ArrayList<>();
         List<Room> rooms = Emulator.getGameEnvironment().getRoomManager().getRoomsForHabbo(habbo);
         Collections.sort(rooms);
-        resultLists.add(new SearchResultList(i, "my", "", SearchAction.NONE, habbo.getHabboStats().navigatorWindowSettings.getListModeForCategory("my"), habbo.getHabboStats().navigatorWindowSettings.getDisplayModeForCategory("my"), rooms, true, true, DisplayOrder.ACTIVITY, -1));
+        resultLists.add(new SearchResultList(i, "my", "", SearchAction.NONE, habbo.getHabboStats().navigatorWindowSettings.getListModeForCategory("my"), habbo.getHabboStats().navigatorWindowSettings.getDisplayModeForCategory("my"), rooms, true, true, DisplayOrder.ORDER_NUM, i));
         i++;
 
         List<Room> favoriteRooms = Emulator.getGameEnvironment().getRoomManager().getRoomsFavourite(habbo);
@@ -32,28 +32,28 @@ public class NavigatorUserFilter extends NavigatorFilter
         if (!favoriteRooms.isEmpty())
         {
             Collections.sort(favoriteRooms);
-            resultLists.add(new SearchResultList(1, "favorites", "", SearchAction.NONE, habbo.getHabboStats().navigatorWindowSettings.getListModeForCategory("favorites"), habbo.getHabboStats().navigatorWindowSettings.getDisplayModeForCategory("favorites"), favoriteRooms, true, true, DisplayOrder.ACTIVITY, -1));
+            resultLists.add(new SearchResultList(i, "favorites", "", SearchAction.NONE, habbo.getHabboStats().navigatorWindowSettings.getListModeForCategory("favorites"), habbo.getHabboStats().navigatorWindowSettings.getDisplayModeForCategory("favorites"), favoriteRooms, true, true, DisplayOrder.ORDER_NUM, i));
             i++;
         }
 
         List<Room> frequentlyVisited = Emulator.getGameEnvironment().getRoomManager().getRoomsVisited(habbo, false, 10);
         if (!frequentlyVisited.isEmpty())
         {
-            resultLists.add(new SearchResultList(1, "history_freq", "", SearchAction.NONE, habbo.getHabboStats().navigatorWindowSettings.getListModeForCategory("history_freq"), habbo.getHabboStats().navigatorWindowSettings.getDisplayModeForCategory("history_freq"), frequentlyVisited, true, true, DisplayOrder.ACTIVITY, -1));
+            resultLists.add(new SearchResultList(i, "history_freq", "", SearchAction.NONE, habbo.getHabboStats().navigatorWindowSettings.getListModeForCategory("history_freq"), habbo.getHabboStats().navigatorWindowSettings.getDisplayModeForCategory("history_freq"), frequentlyVisited, true, true, DisplayOrder.ORDER_NUM, i));
             i++;
         }
 
         List<Room> groupRooms = Emulator.getGameEnvironment().getRoomManager().getGroupRooms(habbo, 25);
         if (!groupRooms.isEmpty())
         {
-            resultLists.add(new SearchResultList(1, "my_groups", "", SearchAction.NONE, habbo.getHabboStats().navigatorWindowSettings.getListModeForCategory("my_groups"), habbo.getHabboStats().navigatorWindowSettings.getDisplayModeForCategory("my_groups"), groupRooms, true, true, DisplayOrder.ACTIVITY, -1));
+            resultLists.add(new SearchResultList(i, "my_groups", "", SearchAction.NONE, habbo.getHabboStats().navigatorWindowSettings.getListModeForCategory("my_groups"), habbo.getHabboStats().navigatorWindowSettings.getDisplayModeForCategory("my_groups"), groupRooms, true, true, DisplayOrder.ORDER_NUM, i));
             i++;
         }
 
         List<Room> rightRooms = Emulator.getGameEnvironment().getRoomManager().getRoomsWithRights(habbo);
         if (!rightRooms.isEmpty())
         {
-            resultLists.add(new SearchResultList(1, "with_rights", "", SearchAction.NONE, habbo.getHabboStats().navigatorWindowSettings.getListModeForCategory("with_rights"), habbo.getHabboStats().navigatorWindowSettings.getDisplayModeForCategory("with_rights"), rightRooms, true, true, DisplayOrder.ACTIVITY, -1));
+            resultLists.add(new SearchResultList(i, "with_rights", "", SearchAction.NONE, habbo.getHabboStats().navigatorWindowSettings.getListModeForCategory("with_rights"), habbo.getHabboStats().navigatorWindowSettings.getDisplayModeForCategory("with_rights"), rightRooms, true, true, DisplayOrder.ORDER_NUM, i));
             i++;
         }
 

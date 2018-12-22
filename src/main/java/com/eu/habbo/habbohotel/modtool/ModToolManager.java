@@ -198,7 +198,7 @@ public class ModToolManager
         if(userId <= 0)
             return;
 
-        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM users INNER JOIN users_settings ON users.id = users_settings.user_id WHERE users.id = ? LIMIT 1"))
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.*, users_settings.*, permissions.rank_name, permissions.id as rank_id FROM users INNER JOIN users_settings ON users.id = users_settings.user_id INNER JOIN permissions ON permissions.id = users.rank WHERE users.id = ? LIMIT 1"))
         {
             statement.setInt(1, userId);
             try (ResultSet set = statement.executeQuery())
@@ -516,18 +516,20 @@ public class ModToolManager
 
         if (target != null)
         {
-            Emulator.getGameServer().getGameClientManager().disposeClient(target.getClient().getChannel());
+            Emulator.getGameServer().getGameClientManager().disposeClient(target.getClient());
         }
 
         if ((type == ModToolBanType.IP || type == ModToolBanType.SUPER) && target != null && !ban.ip.equals("offline"))
         {
             for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithIP(ban.ip))
             {
+                if (h.getHabboInfo().getRank().getId() >= moderator.getHabboInfo().getRank().getId()) continue;
+
                 ban = new ModToolBan(h.getHabboInfo().getId(), h != null ? h.getHabboInfo().getIpLogin() : "offline", h != null ? h.getClient().getMachineId() : "offline", moderator.getHabboInfo().getId(), Emulator.getIntUnixTimestamp() + duration, reason, type, cfhTopic);
                 Emulator.getPluginManager().fireEvent(new SupportUserBannedEvent(moderator, h, ban));
                 Emulator.getThreading().run(ban);
                 bans.add(ban);
-                Emulator.getGameServer().getGameClientManager().disposeClient(h.getClient().getChannel());
+                Emulator.getGameServer().getGameClientManager().disposeClient(h.getClient());
             }
         }
 
@@ -535,11 +537,13 @@ public class ModToolManager
         {
             for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithMachineId(ban.machineId))
             {
+                if (h.getHabboInfo().getRank().getId() >= moderator.getHabboInfo().getRank().getId()) continue;
+
                 ban = new ModToolBan(h.getHabboInfo().getId(), h != null ? h.getHabboInfo().getIpLogin() : "offline", h != null ? h.getClient().getMachineId() : "offline", moderator.getHabboInfo().getId(), Emulator.getIntUnixTimestamp() + duration, reason, type, cfhTopic);
                 Emulator.getPluginManager().fireEvent(new SupportUserBannedEvent(moderator, h, ban));
                 Emulator.getThreading().run(ban);
                 bans.add(ban);
-                Emulator.getGameServer().getGameClientManager().disposeClient(h.getClient().getChannel());
+                Emulator.getGameServer().getGameClientManager().disposeClient(h.getClient());
             }
         }
 
@@ -662,7 +666,7 @@ public class ModToolManager
 
     public boolean unban(String username)
     {
-        try  (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE bans INNER JOIN users ON bans.user_id = users.id SET ban_expire = ?, ban_reason = CONCAT('" + Emulator.getTexts().getValue("unbanned") + ": ', ban_reason) WHERE users.username = ? AND ban_expire > ?"))
+        try  (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE bans INNER JOIN users ON bans.user_id = users.id SET ban_expire = ?, ban_reason = CONCAT('" + Emulator.getTexts().getValue("unbanned") + ": ', ban_reason) WHERE users.username LIKE ? AND ban_expire > ?"))
         {
             statement.setInt(1, Emulator.getIntUnixTimestamp());
             statement.setString(2, username);

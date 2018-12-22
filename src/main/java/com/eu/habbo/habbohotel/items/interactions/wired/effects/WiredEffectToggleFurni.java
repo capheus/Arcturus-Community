@@ -47,62 +47,59 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
     @Override
     public void serializeWiredData(ServerMessage message, Room room)
     {
-        synchronized (this.items)
-        {
-            THashSet<HabboItem> items = new THashSet<>();
+		THashSet<HabboItem> items = new THashSet<>();
 
-            for (HabboItem item : this.items)
-            {
-                if (item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
-                    items.add(item);
-            }
+		for (HabboItem item : this.items)
+		{
+			if (item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
+				items.add(item);
+		}
 
-            for (HabboItem item : items)
-            {
-                this.items.remove(item);
-            }
+		for (HabboItem item : items)
+		{
+			this.items.remove(item);
+		}
 
-            message.appendBoolean(false);
-            message.appendInt(WiredHandler.MAXIMUM_FURNI_SELECTION);
-            message.appendInt(this.items.size());
-            for (HabboItem item : this.items)
-            {
-                message.appendInt(item.getId());
-            }
-            message.appendInt(this.getBaseItem().getSpriteId());
-            message.appendInt(this.getId());
-            message.appendString("");
-            message.appendInt(0);
-            message.appendInt(0);
-            message.appendInt(this.getType().code);
-            message.appendInt(this.getDelay());
+		message.appendBoolean(false);
+		message.appendInt(WiredHandler.MAXIMUM_FURNI_SELECTION);
+		message.appendInt(this.items.size());
+		for (HabboItem item : this.items)
+		{
+			message.appendInt(item.getId());
+		}
+		message.appendInt(this.getBaseItem().getSpriteId());
+		message.appendInt(this.getId());
+		message.appendString("");
+		message.appendInt(0);
+		message.appendInt(0);
+		message.appendInt(this.getType().code);
+		message.appendInt(this.getDelay());
 
-            if (this.requiresTriggeringUser())
-            {
-                List<Integer> invalidTriggers = new ArrayList<>();
-                room.getRoomSpecialTypes().getTriggers(this.getX(), this.getY()).forEach(new TObjectProcedure<InteractionWiredTrigger>()
-                {
-                    @Override
-                    public boolean execute(InteractionWiredTrigger object)
-                    {
-                        if (!object.isTriggeredByRoomUnit())
-                        {
-                            invalidTriggers.add(object.getBaseItem().getSpriteId());
-                        }
-                        return true;
-                    }
-                });
-                message.appendInt(invalidTriggers.size());
-                for (Integer i : invalidTriggers)
-                {
-                    message.appendInt(i);
-                }
-            }
-            else
-            {
-                message.appendInt(0);
-            }
-        }
+		if (this.requiresTriggeringUser())
+		{
+			List<Integer> invalidTriggers = new ArrayList<>();
+			room.getRoomSpecialTypes().getTriggers(this.getX(), this.getY()).forEach(new TObjectProcedure<InteractionWiredTrigger>()
+			{
+				@Override
+				public boolean execute(InteractionWiredTrigger object)
+				{
+					if (!object.isTriggeredByRoomUnit())
+					{
+						invalidTriggers.add(object.getBaseItem().getSpriteId());
+					}
+					return true;
+				}
+			});
+			message.appendInt(invalidTriggers.size());
+			for (Integer i : invalidTriggers)
+			{
+				message.appendInt(i);
+			}
+		}
+		else
+		{
+			message.appendInt(0);
+		}
     }
 
     @Override
@@ -111,22 +108,19 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
         packet.readInt();
         packet.readString();
 
-        synchronized (this.items)
-        {
-            this.items.clear();
+		this.items.clear();
 
-            int count = packet.readInt();
+		int count = packet.readInt();
 
-            for (int i = 0; i < count; i++)
-            {
-                HabboItem item = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(packet.readInt());
+		for (int i = 0; i < count; i++)
+		{
+			HabboItem item = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(packet.readInt());
 
-                if (item instanceof InteractionFreezeBlock || item instanceof InteractionFreezeTile || item instanceof InteractionCrackable)
-                    continue;
+			if (item instanceof InteractionFreezeBlock || item instanceof InteractionFreezeTile || item instanceof InteractionCrackable)
+				continue;
 
-                this.items.add(item);
-            }
-        }
+			this.items.add(item);
+		}
 
         this.setDelay(packet.readInt());
 
@@ -136,58 +130,51 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
     @Override
     public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
     {
-        synchronized (this.items)
-        {
-            Habbo habbo = room.getHabbo(roomUnit);
+		Habbo habbo = room.getHabbo(roomUnit);
 
-            HabboItem triggerItem = null;
+		HabboItem triggerItem = null;
 
-            if (stuff != null && stuff.length > 0)
-            {
-                if (stuff[0] instanceof HabboItem)
-                {
-                    triggerItem = (HabboItem) stuff[0];
-                }
-            }
+		if (stuff != null && stuff.length > 0)
+		{
+			if (stuff[0] instanceof HabboItem)
+			{
+				triggerItem = (HabboItem) stuff[0];
+			}
+		}
 
-            THashSet<HabboItem> itemsToRemove = new THashSet<>();
-            for (HabboItem item : this.items)
-            {
-                if (item == null || item.getRoomId() == 0 || item instanceof InteractionFreezeBlock || item instanceof InteractionFreezeTile)
-                {
-                    itemsToRemove.add(item);
-                    continue;
-                }
+		THashSet<HabboItem> itemsToRemove = new THashSet<>();
+		for (HabboItem item : this.items)
+		{
+			if (item == null || item.getRoomId() == 0 || item instanceof InteractionFreezeBlock || item instanceof InteractionFreezeTile)
+			{
+				itemsToRemove.add(item);
+				continue;
+			}
 
-                if (triggerItem == null && roomUnit == null)
-                {
-                    continue;
-                }
+			try
+			{
+				if (item.getBaseItem().getStateCount() > 1 || item instanceof InteractionGameTimer)
+				{
+					if (item instanceof InteractionGameTimer)
+					{
+						Game game = room.getGame(((InteractionGameTimer)item).getGameType());
+						if (game == null || game.isRunning)
+						{
+							continue;
+						}
+					}
 
-                try
-                {
-                    if (item.getBaseItem().getStateCount() > 1 || item instanceof InteractionGameTimer)
-                    {
-                        if (item instanceof InteractionGameTimer)
-                        {
-                            Game game = room.getGame(((InteractionGameTimer)item).getGameType());
-                            if (game == null || game.isRunning)
-                            {
-                                continue;
-                            }
-                        }
+					item.onClick(habbo != null ? habbo.getClient() : null, room, new Object[]{item.getExtradata().length() == 0 ? 0 : Integer.valueOf(item.getExtradata()), this.getType()});
+				}
+			}
+			catch (Exception e)
+			{
+				Emulator.getLogging().logErrorLine(e);
+			}
+		}
 
-                        item.onClick(habbo != null ? habbo.getClient() : null, room, new Object[]{item.getExtradata().length() == 0 ? 0 : Integer.valueOf(item.getExtradata()), this.getType()});
-                    }
-                }
-                catch (Exception e)
-                {
-                    Emulator.getLogging().logErrorLine(e);
-                }
-            }
-
-            this.items.removeAll(itemsToRemove);
-        }
+		this.items.removeAll(itemsToRemove);
+	
         return true;
     }
 
@@ -196,16 +183,13 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
     {
         String wiredData = this.getDelay() + "\t";
 
-        synchronized (this.items)
-        {
-            if(items != null && !items.isEmpty())
-            {
-                for (HabboItem item : this.items)
-                {
-                    wiredData += item.getId() + ";";
-                }
-            }
-        }
+		if(items != null && !items.isEmpty())
+		{
+			for (HabboItem item : this.items)
+			{
+				wiredData += item.getId() + ";";
+			}
+		}
 
         return wiredData;
     }
@@ -213,32 +197,29 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
     @Override
     public void loadWiredData(ResultSet set, Room room) throws SQLException
     {
-        synchronized (this.items)
-        {
-            this.items.clear();
-            String[] wiredData = set.getString("wired_data").split("\t");
+		this.items.clear();
+		String[] wiredData = set.getString("wired_data").split("\t");
 
-            if (wiredData.length >= 1)
-            {
-                this.setDelay(Integer.valueOf(wiredData[0]));
-            }
-            if (wiredData.length == 2)
-            {
-                if (wiredData[1].contains(";"))
-                {
-                    for (String s : wiredData[1].split(";"))
-                    {
-                        HabboItem item = room.getHabboItem(Integer.valueOf(s));
+		if (wiredData.length >= 1)
+		{
+			this.setDelay(Integer.valueOf(wiredData[0]));
+		}
+		if (wiredData.length == 2)
+		{
+			if (wiredData[1].contains(";"))
+			{
+				for (String s : wiredData[1].split(";"))
+				{
+					HabboItem item = room.getHabboItem(Integer.valueOf(s));
 
-                        if (item instanceof InteractionFreezeBlock || item instanceof InteractionFreezeTile || item instanceof InteractionCrackable)
-                            continue;
+					if (item instanceof InteractionFreezeBlock || item instanceof InteractionFreezeTile || item instanceof InteractionCrackable)
+						continue;
 
-                        if (item != null)
-                            this.items.add(item);
-                    }
-                }
-            }
-        }
+					if (item != null)
+						this.items.add(item);
+				}
+			}
+		}
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.habbohotel.users.inventory.BadgesComponent;
 import com.eu.habbo.messages.outgoing.inventory.InventoryBadgesComposer;
+import com.eu.habbo.messages.outgoing.users.UserBadgesComposer;
 
 public class TakeBadgeCommand extends Command
 {
@@ -47,6 +48,10 @@ public class TakeBadgeCommand extends Command
                 }
 
                 habbo.getClient().sendResponse(new InventoryBadgesComposer(habbo));
+                if (habbo.getHabboInfo().getCurrentRoom() != null)
+                {
+                    habbo.getHabboInfo().getCurrentRoom().sendComposer(new UserBadgesComposer(habbo.getInventory().getBadgesComponent().getWearingBadges(), habbo.getHabboInfo().getId()).compose());
+                }
             }
 
             gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_take_badge"), RoomChatMessageBubbles.ALERT);

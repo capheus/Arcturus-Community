@@ -9,7 +9,6 @@ import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserRemoveComposer;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 
 class TeleportActionThree implements Runnable
 {
@@ -60,7 +59,7 @@ class TeleportActionThree implements Runnable
 
         targetTeleport.setExtradata("2");
         targetRoom.updateItem(targetTeleport);
-        targetRoom.sendComposer(new RoomUserStatusComposer(this.client.getHabbo().getRoomUnit()).compose());
+        //targetRoom.sendComposer(new RoomUserStatusComposer(this.client.getHabbo().getRoomUnit()).compose());
 
         this.client.getHabbo().getHabboInfo().setCurrentRoom(targetRoom);
         //Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, this.room, "0"), 500);

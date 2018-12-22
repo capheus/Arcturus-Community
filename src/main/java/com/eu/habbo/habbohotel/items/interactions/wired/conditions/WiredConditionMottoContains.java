@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.items.interactions.InteractionWiredCondition;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.habbohotel.wired.WiredConditionOperator;
 import com.eu.habbo.habbohotel.wired.WiredConditionType;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
@@ -90,5 +91,11 @@ public class WiredConditionMottoContains extends InteractionWiredCondition
         this.motto = packet.readString();
 
         return true;
+    }
+
+    @Override
+    public WiredConditionOperator operator()
+    {
+        return WiredConditionOperator.OR;
     }
 }

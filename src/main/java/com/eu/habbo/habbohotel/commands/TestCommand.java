@@ -22,6 +22,7 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.MessagesForYouComposer;
+import com.eu.habbo.messages.outgoing.rooms.RoomQueueStatusMessage;
 import com.eu.habbo.messages.outgoing.rooms.pets.PetInformationComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.PetStatusUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserDataComposer;
@@ -56,9 +57,41 @@ public class TestCommand extends Command
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
 
+        if (params[1].equalsIgnoreCase("ut"))
+        {
+            RoomTile tile = gameClient.getHabbo().getRoomUnit().getCurrentLocation();
+            gameClient.getHabbo().getHabboInfo().getCurrentRoom().updateTile(tile);
+            return true;
+        }
+
+        if (params[1].equalsIgnoreCase("clients"))
+        {
+            System.out.println(Emulator.getGameServer().getGameClientManager().getSessions().size());
+        }
+
+        if (params[1].equalsIgnoreCase("queue"))
+        {
+            gameClient.sendResponse(new RoomQueueStatusMessage());
+            return true;
+        }
+        if (params[1].equalsIgnoreCase("public"))
+        {
+            gameClient.getHabbo().getHabboInfo().getCurrentRoom().setPublicRoom(true);
+            return true;
+        }
+
+        if (params[1].equalsIgnoreCase("randtel"))
+        {
+            RoomTile tile = gameClient.getHabbo().getHabboInfo().getCurrentRoom().getRandomWalkableTile();
+            gameClient.getHabbo().getRoomUnit().setCurrentLocation(tile);
+            gameClient.getHabbo().getHabboInfo().getCurrentRoom().updateHabbo(gameClient.getHabbo());
+            gameClient.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserStatusComposer(gameClient.getHabbo().getRoomUnit()).compose());
+            return true;
+        }
+
         if (params[1].equals("ach"))
         {
-            AchievementManager.progressAchievement(gameClient.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("GiftGiver"), 100);
+            AchievementManager.progressAchievement(gameClient.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("Jogger"), 1);
             return true;
         }
 

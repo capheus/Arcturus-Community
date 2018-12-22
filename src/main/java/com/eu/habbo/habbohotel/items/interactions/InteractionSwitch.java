@@ -1,8 +1,10 @@
 package com.eu.habbo.habbohotel.items.interactions;
 
+import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomLayout;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
 
 import java.sql.ResultSet;
@@ -36,5 +38,28 @@ public class InteractionSwitch extends InteractionDefault
     public boolean isUsable()
     {
         return true;
+    }
+
+    @Override
+    public void onClick(GameClient client, Room room, Object[] objects) throws Exception
+    {
+        if (!this.canToggle(client.getHabbo(), room))
+        {
+            RoomTile closestTile = null;
+            for (RoomTile tile : room.getLayout().getTilesAround(room.getLayout().getTile(this.getX(), this.getY())))
+            {
+                if (tile.isWalkable() && (closestTile == null || closestTile.distance(client.getHabbo().getRoomUnit().getCurrentLocation()) > tile.distance(client.getHabbo().getRoomUnit().getCurrentLocation())))
+                {
+                    closestTile = client.getHabbo().getRoomUnit().getCurrentLocation();
+                }
+            }
+
+            if (closestTile != null)
+            {
+                client.getHabbo().getRoomUnit().setGoalLocation(closestTile);
+            }
+        }
+
+        super.onClick(client, room, objects);
     }
 }

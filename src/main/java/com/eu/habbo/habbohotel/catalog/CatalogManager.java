@@ -86,7 +86,7 @@ public class CatalogManager
     public static int catalogItemAmount;
 
 
-    public static int PURCHASE_COOLDOWN = 3;
+    public static int PURCHASE_COOLDOWN = 1;
 
 
     public static boolean SORT_USING_ORDERNUM = false;
@@ -154,7 +154,7 @@ public class CatalogManager
         this.giftFurnis             = new THashMap<>();
         this.clubItems              = new THashSet<>();
         this.clubOffers             = new THashMap<>();
-        targetOffers                = new THashMap<>();
+        this.targetOffers           = new THashMap<>();
         this.clothing               = new THashMap<>();
         this.offerDefs              = new TIntIntHashMap();
         this.vouchers               = new ArrayList<>();
@@ -396,22 +396,19 @@ public class CatalogManager
 
     private void loadClubOffers() throws SQLException
     {
-        synchronized (this.clubOffers)
-        {
-            this.clubOffers.clear();
+		this.clubOffers.clear();
 
-            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM catalog_club_offers WHERE enabled = ?"))
-            {
-                statement.setString(1, "1");
-                try (ResultSet set = statement.executeQuery())
-                {
-                    while (set.next())
-                    {
-                        this.clubOffers.put(set.getInt("id"), new ClubOffer(set));
-                    }
-                }
-            }
-        }
+		try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM catalog_club_offers WHERE enabled = ?"))
+		{
+			statement.setString(1, "1");
+			try (ResultSet set = statement.executeQuery())
+			{
+				while (set.next())
+				{
+					this.clubOffers.put(set.getInt("id"), new ClubOffer(set));
+				}
+			}
+		}
     }
 
     private void loadTargetOffers() throws SQLException
@@ -1210,6 +1207,8 @@ public class CatalogManager
 
                                             Emulator.getThreading().run(habboItem);
                                             itemsList.add(habboItem);
+
+                                            AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("MusicCollector"));
                                         } else
                                         {
                                             HabboItem habboItem = Emulator.getGameEnvironment().getItemManager().createItem(habbo.getClient().getHabbo().getHabboInfo().getId(), baseItem, limitedStack, limitedNumber, extradata);

@@ -1,9 +1,12 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.conditions;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredCondition;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -11,17 +14,20 @@ import com.eu.habbo.habbohotel.wired.WiredConditionType;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
+import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.Map;
 
 public class WiredConditionFurniHaveHabbo extends InteractionWiredCondition
 {
     public static final WiredConditionType type = WiredConditionType.FURNI_HAVE_HABBO;
 
-    private boolean all;
-    private THashSet<HabboItem> items;
+    protected boolean all;
+    protected THashSet<HabboItem> items;
 
     public WiredConditionFurniHaveHabbo(ResultSet set, Item baseItem) throws SQLException
     {
@@ -50,14 +56,50 @@ public class WiredConditionFurniHaveHabbo extends InteractionWiredCondition
         if(this.items.isEmpty())
             return true;
 
+        THashMap<HabboItem, THashSet<RoomTile>> tiles = new THashMap<>();
         for(HabboItem item : this.items)
         {
-            THashSet<Habbo> habbos = room.getHabbosOnItem(item);
+            tiles.put(item, room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
+        }
 
-            if(habbos.isEmpty())
+        Collection<Habbo> habbos = room.getHabbos();
+        Collection<Bot> bots = room.getCurrentBots().valueCollection();
+        Collection<Pet> pets = room.getCurrentPets().valueCollection();
+
+        for (Map.Entry<HabboItem, THashSet<RoomTile>> set : tiles.entrySet())
+        {
+            boolean found = false;
+            for (Habbo habbo : habbos)
             {
-                return false;
+                if (set.getValue().contains(habbo.getRoomUnit().getCurrentLocation()))
+                {
+                    found = true;
+                }
             }
+
+            if (!found)
+            {
+                for (Bot bot : bots)
+                {
+                    if (set.getValue().contains(bot.getRoomUnit().getCurrentLocation()))
+                    {
+                        found = true;
+                    }
+                }
+            }
+
+            if (!found)
+            {
+                for (Pet pet : pets)
+                {
+                    if (set.getValue().contains(pet.getRoomUnit().getCurrentLocation()))
+                    {
+                        found = true;
+                    }
+                }
+            }
+
+            if (!found) return false;
         }
 
         return true;

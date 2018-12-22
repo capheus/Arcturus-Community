@@ -8,6 +8,8 @@ import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUnitOnRollerComposer;
 
+import java.util.LinkedList;
+
 public class RoomUnitTeleport implements Runnable
 {
     private RoomUnit roomUnit;
@@ -45,10 +47,21 @@ public class RoomUnitTeleport implements Runnable
                 Emulator.getLogging().logErrorLine(e);
             }
         }
+        this.roomUnit.setPath(new LinkedList<>());
         this.roomUnit.setCurrentLocation(t);
+        this.roomUnit.setPreviousLocation(t);
+        this.roomUnit.setZ(this.z);
+        this.roomUnit.setPreviousLocationZ(this.z);
         this.roomUnit.removeStatus(RoomUnitStatus.MOVE);
         this.room.sendComposer(new RoomUnitOnRollerComposer(this.roomUnit, null, t, this.room).compose());
-        this.room.giveEffect(this.roomUnit, this.newEffect);
+        Emulator.getThreading().run(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                room.giveEffect(roomUnit, newEffect);
+            }
+        }, 1000);
         this.room.updateHabbosAt(t.x, t.y);
     }
 }

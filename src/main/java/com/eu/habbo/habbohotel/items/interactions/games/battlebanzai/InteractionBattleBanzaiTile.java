@@ -41,7 +41,7 @@ public class InteractionBattleBanzaiTile extends HabboItem
     @Override
     public boolean isWalkable()
     {
-        return false;
+        return true;
     }
 
     @Override

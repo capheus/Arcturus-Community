@@ -33,7 +33,10 @@ public class NavigatorHotelFilter extends NavigatorFilter
             if (!set.getValue().isEmpty())
             {
                 RoomCategory category = Emulator.getGameEnvironment().getRoomManager().getCategory(set.getKey());
-                resultLists.add(new SearchResultList(i, category.getCaption(), category.getCaption(), SearchAction.MORE, habbo.getHabboStats().navigatorWindowSettings.getListModeForCategory(category.getCaptionSave()), habbo.getHabboStats().navigatorWindowSettings.getDisplayModeForCategory(category.getCaptionSave()), set.getValue(), true, showInvisible, DisplayOrder.ORDER_NUM, category.getOrder()));
+                if (category != null)
+                {
+                    resultLists.add(new SearchResultList(i, category.getCaption(), category.getCaption(), SearchAction.MORE, habbo.getHabboStats().navigatorWindowSettings.getListModeForCategory(category.getCaptionSave()), habbo.getHabboStats().navigatorWindowSettings.getDisplayModeForCategory(category.getCaptionSave()), set.getValue(), true, showInvisible, DisplayOrder.ORDER_NUM, category.getOrder()));
+                }
                 i++;
             }
         }
@@ -55,7 +58,11 @@ public class NavigatorHotelFilter extends NavigatorFilter
                 if (!set.getValue().isEmpty())
                 {
                     RoomCategory category = Emulator.getGameEnvironment().getRoomManager().getCategory(set.getKey());
-                    resultLists.add(new SearchResultList(i, category.getCaptionSave(), category.getCaption(), SearchAction.MORE, habbo.getHabboStats().navigatorWindowSettings.getListModeForCategory(category.getCaptionSave()), habbo.getHabboStats().navigatorWindowSettings.getDisplayModeForCategory(category.getCaptionSave()), set.getValue(), true, showInvisible, DisplayOrder.ACTIVITY, category.getOrder()));
+
+                    if (category != null)
+                    {
+                        resultLists.add(new SearchResultList(i, category.getCaptionSave(), category.getCaption(), SearchAction.MORE, habbo.getHabboStats().navigatorWindowSettings.getListModeForCategory(category.getCaptionSave()), habbo.getHabboStats().navigatorWindowSettings.getDisplayModeForCategory(category.getCaptionSave()), set.getValue(), true, showInvisible, DisplayOrder.ACTIVITY, category.getOrder()));
+                    }
                     i++;
                 }
             }

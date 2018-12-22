@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
+import com.eu.habbo.habbohotel.items.interactions.InteractionRoller;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
@@ -77,16 +78,45 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
                 {
                     RoomTile t = room.getLayout().getTile((short) setting.x, (short) setting.y);
 
-                    if (t.state == RoomTileState.OPEN)
+                    if (t != null)
                     {
-                        if (!room.hasHabbosAt(t.x, t.y))
+                        if (t.state != RoomTileState.INVALID)
                         {
-                            tilesToUpdate.addAll(room.getLayout().getTilesAt(t, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), oldRotation));
+                            if (!room.hasHabbosAt(t.x, t.y))
+                            {
+                                THashSet<RoomTile> tiles = room.getLayout().getTilesAt(t, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), setting.rotation);
+                                double highestZ = -1d;
+                                for (RoomTile tile : tiles)
+                                {
+                                    if (tile.state == RoomTileState.INVALID)
+                                    {
+                                        highestZ = -1d;
+                                        break;
+                                    }
 
-                            double offsetZ = setting.z - item.getZ();
+                                    if (item instanceof InteractionRoller && room.hasItemsAt(tile.x, tile.y))
+                                    {
+                                        highestZ = -1d;
+                                        break;
+                                    }
 
-                            room.sendComposer(new FloorItemOnRollerComposer(item, null, t, offsetZ, room).compose());
-                            tilesToUpdate.addAll(room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), oldRotation));
+                                    double stackHeight = room.getStackHeight(tile.x, tile.y, false, item);
+                                    if (stackHeight > highestZ)
+                                    {
+                                        highestZ = stackHeight;
+                                    }
+                                }
+
+                                if (highestZ != -1d)
+                                {
+                                    tilesToUpdate.addAll(tiles);
+
+                                    double offsetZ = highestZ - item.getZ();
+
+                                    tilesToUpdate.addAll(room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), oldRotation));
+                                    room.sendComposer(new FloorItemOnRollerComposer(item, null, t, offsetZ, room).compose());
+                                }
+                            }
                         }
                     }
                 }
@@ -152,8 +182,10 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
 
                 String[] stuff = items[i].split("-");
 
-                if (stuff.length == 6)
-                    this.settings.add(new WiredMatchFurniSetting(Integer.valueOf(stuff[0]), stuff[1], Integer.valueOf(stuff[2]), Integer.valueOf(stuff[3]), Integer.valueOf(stuff[4]), Double.valueOf(stuff[5])));
+                if (stuff.length >= 5)
+                {
+                    this.settings.add(new WiredMatchFurniSetting(Integer.valueOf(stuff[0]), stuff[1], Integer.valueOf(stuff[2]), Integer.valueOf(stuff[3]), Integer.valueOf(stuff[4])));
+                }
 
             }
             catch (Exception e)
@@ -239,7 +271,7 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
             HabboItem item = room.getHabboItem(itemId);
 
             if (item != null)
-                this.settings.add(new WiredMatchFurniSetting(item.getId(), this.checkForWiredResetPermission && item.allowWiredResetState() ? item.getExtradata() : " ", item.getRotation(), item.getX(), item.getY(), item.getZ()));
+                this.settings.add(new WiredMatchFurniSetting(item.getId(), this.checkForWiredResetPermission && item.allowWiredResetState() ? item.getExtradata() : " ", item.getRotation(), item.getX(), item.getY()));
         }
 
         this.setDelay(packet.readInt());
@@ -251,7 +283,7 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
     {
         Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
 
-        if(room != null)
+        if(room != null && room.isLoaded())
         {
             THashSet<WiredMatchFurniSetting> remove = new THashSet<>();
 

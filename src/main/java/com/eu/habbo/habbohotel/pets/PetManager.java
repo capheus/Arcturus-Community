@@ -16,7 +16,9 @@ import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
+import gnu.trove.procedure.TIntObjectProcedure;
 import gnu.trove.set.hash.THashSet;
+import org.apache.commons.math3.distribution.NormalDistribution;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -63,6 +65,7 @@ public class PetManager
             put(36, new ActionBreatheFire());
             put(38, new ActionTorch());
             put(43, new ActionEat());
+            put(46, new ActionBreed());
 
         }
     };
@@ -81,6 +84,7 @@ public class PetManager
             this.loadRaces(connection);
             this.loadPetData(connection);
             this.loadPetCommands(connection);
+            this.loadPetBreeding(connection);
         }
         catch (SQLException e)
         {
@@ -91,6 +95,7 @@ public class PetManager
 
         Emulator.getLogging().logStart("Pet Manager -> Loaded! (" + (System.currentTimeMillis() - millis) + " MS)");
     }
+
 
     public void reloadPetData()
     {
@@ -319,6 +324,35 @@ public class PetManager
         return null;
     }
 
+    public TIntObjectHashMap<ArrayList<PetBreedingReward>> getBreedingRewards(int petType)
+    {
+        return this.breedingReward.get(petType);
+    }
+
+    public int getRarityForOffspring(Pet pet)
+    {
+        final int[] rarityLevel = {0};
+
+        TIntObjectHashMap<ArrayList<PetBreedingReward>> offspringList = this.breedingReward.get(pet.getPetData().getType());
+
+        offspringList.forEachEntry(new TIntObjectProcedure<ArrayList<PetBreedingReward>>()
+        {
+            @Override
+            public boolean execute(int i, ArrayList<PetBreedingReward> petBreedingRewards)
+            {
+                if (petBreedingRewards.contains(pet.getRace()))
+                {
+                    rarityLevel[0] = i;
+                    return false;
+                }
+
+                return true;
+            }
+        });
+
+        return 4 - rarityLevel[0];
+    }
+
     public static int getLevel(int experience)
     {
         int index = 0;
@@ -434,9 +468,14 @@ public class PetManager
 
     public Pet createPet(int type, String name, GameClient client)
     {
+        return this.createPet(type, Emulator.getRandom().nextInt(this.petRaces.get(type).size() + 1), name, client);
+    }
+
+    public Pet createPet(int type, int race, String name, GameClient client)
+    {
         if (this.petData.containsKey(type))
         {
-            Pet pet = new Pet(type, Emulator.getRandom().nextInt(this.petRaces.get(type).size() + 1), "FFFFFF", name, client.getHabbo().getHabboInfo().getId());
+            Pet pet = new Pet(type, race, "FFFFFF", name, client.getHabbo().getHabboInfo().getId());
             pet.needsUpdate = true;
             pet.run();
             return pet;
@@ -593,5 +632,15 @@ public class PetManager
         }
 
         return false;
+    }
+
+    public static NormalDistribution getNormalDistributionForBreeding(int levelOne, int levelTwo)
+    {
+        return getNormalDistributionForBreeding((levelOne + levelTwo) / 2);
+    }
+
+    public static NormalDistribution getNormalDistributionForBreeding(double avgLevel)
+    {
+        return new NormalDistribution(avgLevel, (20 - (avgLevel / 2)) / 2);
     }
 }

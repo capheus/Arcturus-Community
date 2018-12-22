@@ -1,9 +1,12 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.conditions;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredCondition;
+import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -11,28 +14,38 @@ import com.eu.habbo.habbohotel.wired.WiredConditionType;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
+import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.Map;
 
 public class WiredConditionNotFurniHaveHabbo extends InteractionWiredCondition
 {
     public static final WiredConditionType type = WiredConditionType.NOT_FURNI_HAVE_HABBO;
 
-    private boolean all;
-    private THashSet<HabboItem> items;
+    protected boolean all;
+    protected THashSet<HabboItem> items;
 
     public WiredConditionNotFurniHaveHabbo(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
-        this.items = new THashSet<>();
+        items = new THashSet<>();
     }
 
     public WiredConditionNotFurniHaveHabbo(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
     {
         super(id, userId, item, extradata, limitedStack, limitedSells);
-        this.items = new THashSet<>();
+        items = new THashSet<>();
+    }
+
+    @Override
+    public void onPickUp()
+    {
+        this.items.clear();
+        this.all = false;
     }
 
     @Override
@@ -43,15 +56,54 @@ public class WiredConditionNotFurniHaveHabbo extends InteractionWiredCondition
         if(this.items.isEmpty())
             return true;
 
+        THashMap<HabboItem, THashSet<RoomTile>> tiles = new THashMap<>();
         for(HabboItem item : this.items)
         {
-            THashSet<Habbo> habbos = room.getHabbosOnItem(item);
-
-            if(habbos.isEmpty())
-                return true;
+            tiles.put(item, room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
         }
 
-        return false;
+        Collection<Habbo> habbos = room.getHabbos();
+        Collection<Bot> bots = room.getCurrentBots().valueCollection();
+        Collection<Pet> pets = room.getCurrentPets().valueCollection();
+
+        for (Map.Entry<HabboItem, THashSet<RoomTile>> set : tiles.entrySet())
+        {
+            if (!habbos.isEmpty())
+            {
+                for (Habbo habbo : habbos)
+                {
+                    if (set.getValue().contains(habbo.getRoomUnit().getCurrentLocation()))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if (!bots.isEmpty())
+            {
+                for (Bot bot : bots)
+                {
+                    if (set.getValue().contains(bot.getRoomUnit().getCurrentLocation()))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if (!pets.isEmpty())
+            {
+                for (Pet pet : pets)
+                {
+                    if (set.getValue().contains(pet.getRoomUnit().getCurrentLocation()))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+        }
+
+        return true;
     }
 
     @Override
@@ -93,13 +145,6 @@ public class WiredConditionNotFurniHaveHabbo extends InteractionWiredCondition
                 }
             }
         }
-    }
-
-    @Override
-    public void onPickUp()
-    {
-        this.items.clear();
-        this.all = false;
     }
 
     @Override

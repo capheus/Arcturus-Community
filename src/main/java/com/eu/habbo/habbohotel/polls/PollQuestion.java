@@ -12,14 +12,28 @@ import java.util.Map;
 
 public class PollQuestion implements ISerialize, Comparable<PollQuestion>
 {
-    private int id;
-    private int parentId;
-    private int type;
-    private String question;
-    private THashMap<Integer, String[]> options;
+
+    public final int id;
+
+
+    public final int parentId;
+
+
+    public final int type;
+
+
+    public final String question;
+
+
+    public final THashMap<Integer, String[]> options;
+
+
+    public final int minSelections;
+
+
+    public final int order;
+
     private ArrayList<PollQuestion> subQuestions;
-    private int minSelections;
-    private int order;
 
     public PollQuestion(ResultSet set) throws SQLException
     {
@@ -42,31 +56,6 @@ public class PollQuestion implements ISerialize, Comparable<PollQuestion>
                 this.options.put(i, new String[]{opts.split(";")[i].split(":")[0], opts.split(";")[i].split(":")[1]});
             }
         }
-    }
-
-    public int getId()
-    {
-        return this.id;
-    }
-
-    public int getType()
-    {
-        return this.type;
-    }
-
-    public String getQuestion()
-    {
-        return this.question;
-    }
-
-    public THashMap<Integer, String[]> getOptions()
-    {
-        return this.options;
-    }
-
-    public int getMinSelections()
-    {
-        return this.minSelections;
     }
 
     public void addSubQuestion(PollQuestion pollQuestion)

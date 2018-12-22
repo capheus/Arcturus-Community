@@ -10,13 +10,13 @@ import java.sql.SQLException;
 public class CustomRoomLayout extends RoomLayout implements Runnable
 {
     private boolean needsUpdate;
-    private Room room;
+    private final int roomId;
 
     public CustomRoomLayout(ResultSet set, Room room) throws SQLException
     {
         super(set, room);
 
-        this.room = room;
+        this.roomId = room.getId();
     }
 
     @Override
@@ -32,7 +32,7 @@ public class CustomRoomLayout extends RoomLayout implements Runnable
                 statement.setInt(2, this.getDoorY());
                 statement.setInt(3, this.getDoorDirection());
                 statement.setString(4, this.getHeightmap());
-                statement.setInt(5, this.room.getId());
+                statement.setInt(5, this.roomId);
                 statement.execute();
             }
             catch (SQLException e)

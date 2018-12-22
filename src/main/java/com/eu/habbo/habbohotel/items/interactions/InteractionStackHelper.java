@@ -24,13 +24,13 @@ public class InteractionStackHelper extends HabboItem
     @Override
     public boolean canWalkOn(RoomUnit roomUnit, Room room, Object[] objects)
     {
-        return true;
+        return false;
     }
 
     @Override
     public boolean isWalkable()
     {
-        return true;
+        return false;
     }
 
     @Override

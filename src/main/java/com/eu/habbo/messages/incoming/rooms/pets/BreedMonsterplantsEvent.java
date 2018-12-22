@@ -4,7 +4,7 @@ import com.eu.habbo.habbohotel.pets.MonsterplantPet;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-public class BreedPetsEvent extends MessageHandler
+public class BreedMonsterplantsEvent extends MessageHandler
 {
     @Override
     public void handle() throws Exception

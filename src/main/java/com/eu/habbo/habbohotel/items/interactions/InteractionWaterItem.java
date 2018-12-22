@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
+import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import gnu.trove.set.hash.THashSet;
 
@@ -52,30 +53,51 @@ public class InteractionWaterItem extends InteractionDefault
 
         Rectangle rectangle = RoomLayout.getRectangle(this.getX(), this.getY(), this.getBaseItem().getWidth(), this.getBaseItem().getLength(), this.getRotation());
 
-        for(int x = rectangle.x; x < rectangle.getWidth() + rectangle.x; x++)
+        boolean foundWater = true;
+        for(short x = (short)rectangle.x; x < rectangle.getWidth() + rectangle.x && foundWater; x++)
         {
-            for(int y = rectangle.y; y < rectangle.getHeight() + rectangle.y; y++)
+            for(short y = (short)rectangle.y; y < rectangle.getHeight() + rectangle.y && foundWater; y++)
             {
-                THashSet<HabboItem> items = room.getItemsAt(room.getLayout().getTile(this.getX(), this.getY()));
+                boolean tile = false;
+                THashSet<HabboItem> items = room.getItemsAt(room.getLayout().getTile(x, y));
 
                 for(HabboItem item : items)
                 {
-                    if(item instanceof InteractionWater)
+                    if (item instanceof InteractionWater)
                     {
-                        this.setExtradata("1");
-                        room.updateItem(this);
-                        return;
+                        tile = true;
+                        break;
                     }
+                }
+
+                if (!tile)
+                {
+                    foundWater = false;
                 }
             }
         }
 
+        if (foundWater)
+        {
+            this.setExtradata("1");
+            this.needsUpdate(true);
+            room.updateItem(this);
+            return;
+        }
+
         this.setExtradata("0");
+        this.needsUpdate(true);
         room.updateItem(this);
     }
 
     @Override
     public boolean allowWiredResetState()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean canToggle(Habbo habbo, Room room)
     {
         return false;
     }

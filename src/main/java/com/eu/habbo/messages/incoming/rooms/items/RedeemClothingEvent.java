@@ -3,10 +3,12 @@ package com.eu.habbo.messages.incoming.rooms.items;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.catalog.ClothItem;
 import com.eu.habbo.habbohotel.items.interactions.InteractionClothing;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
+import com.eu.habbo.messages.outgoing.rooms.UpdateStackHeightComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.RemoveFloorItemComposer;
 import com.eu.habbo.messages.outgoing.users.UserClothesComposer;
 import com.eu.habbo.threading.runnables.QueryDeleteHabboItem;
@@ -38,8 +40,10 @@ public class RedeemClothingEvent extends MessageHandler
                         if (!this.client.getHabbo().getInventory().getWardrobeComponent().getClothing().contains(clothing.id))
                         {
                             item.setRoomId(0);
+                            RoomTile tile = this.client.getHabbo().getHabboInfo().getCurrentRoom().getLayout().getTile(item.getX(), item.getY());
                             this.client.getHabbo().getHabboInfo().getCurrentRoom().removeHabboItem(item);
-                            this.client.getHabbo().getHabboInfo().getCurrentRoom().updateTile(this.client.getHabbo().getHabboInfo().getCurrentRoom().getLayout().getTile(item.getX(), item.getY()));
+                            this.client.getHabbo().getHabboInfo().getCurrentRoom().updateTile(tile);
+                            this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new UpdateStackHeightComposer(tile.x, tile.y, tile.relativeHeight()).compose());
                             this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RemoveFloorItemComposer(item, true).compose());
                             Emulator.getThreading().run(new QueryDeleteHabboItem(item));
 

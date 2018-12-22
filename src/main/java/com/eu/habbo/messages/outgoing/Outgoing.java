@@ -212,9 +212,9 @@ public class Outgoing
     public final static int ModToolIssueHandlerDimensionsComposer = 1576;
 
     //Uknown but work
-    public final static int UnknownComposer4 = 793;
+    public final static int IsFirstLoginOfDayComposer = 793;
     public final static int UnknownComposer5 = 2833;
-    public final static int UnknownComposer6 = 126;
+    public final static int IgnoredUsersComposer = 126;
     public final static int NewNavigatorMetaDataComposer = 3052;
     public final static int NewNavigatorSearchResultsComposer = 2690;
     public final static int MysticBoxStartOpenComposer = 3201;
@@ -242,7 +242,7 @@ public class Outgoing
     public final static int TalentTrackEmailFailedComposer = 1815;
     public final static int UnknownAvatarEditorComposer = 3473;
 
-    public final static int UnknownGuildComposer = 1180;
+    public final static int GuildMembershipRequestedComposer = 1180;
 
     public final static int GuildForumsUnreadMessagesCountComposer = 2379;
     public final static int GuildForumThreadMessagesComposer = 1862;
@@ -274,7 +274,7 @@ public class Outgoing
     public final static int RoomMutedComposer = 2533;
 
     public final static int HideDoorbellComposer = 3783;
-    public final static int RoomUnknown2Composer = 2208;
+    public final static int RoomQueueStatusMessage = 2208;
     public final static int RoomUnknown3Composer = 1033;
 
     public final static int EffectsListRemoveComposer = 2228;
@@ -375,14 +375,14 @@ public class Outgoing
     public final static int PetBreedingCompleted = 2527;
     public final static int RoomUserUnbannedComposer = 3429;
     public final static int HotelViewCommunityGoalComposer = 2525;
-    public final static int UnknownRoomVisitsComposer = 966;
+    public final static int UserClassificationComposer = 966;
     public final static int CanCreateEventComposer = 2599;
     public final static int UnknownGuild2Composer = 1459;
     public final static int YoutubeDisplayListComposer = 1112;
     public final static int YoutubeMessageComposer2 = 1411;
     public final static int YoutubeMessageComposer3 = 1554;
     public final static int RoomCategoryUpdateMessageComposer = 3896;
-    public final static int UnknownQuestComposer2 = 3625;
+    public final static int QuestsComposer = 3625;
     public final static int GiftReceiverNotFoundComposer = 1517;
     public final static int ConvertedForwardToRoomComposer = 1331;
     public final static int FavoriteRoomChangedComposer = 2524;
@@ -393,7 +393,7 @@ public class Outgoing
     public final static int HotelViewHideCommunityVoteButtonComposer = 1435;
     public final static int CatalogSearchResultComposer = 3388;
     public final static int FriendFindingRoomComposer = 1210;
-    public final static int UnknownQuestComposer1 = 230;
+    public final static int QuestComposer = 230;
     public final static int ModToolSanctionDataComposer = 2782;
     public final static int RoomEventMessageComposer = 2274;
 
@@ -419,7 +419,7 @@ public class Outgoing
     public final static int UnknownComposer_100 = 1553;
     public final static int UnknownComposer_1031 = 1001;
     public final static int ConnectionErrorComposer = 1004;
-    public final static int UnknownComposer_111 = 296;
+    public final static int BotForceOpenContextMenuComposer = 296;
     public final static int UnknownComposer_1111 = 1551;
     public final static int Game2WeeklyLeaderboardComposer = 2196;
     public final static int UnknownComposer_1165 = 904;
@@ -514,7 +514,7 @@ public class Outgoing
     public final static int SimplePollAnswersComposer = 1066;
     public final static int UnknownFurniModelComposer = 1501;
     public final static int UnknownAdManagerComposer = 1808;
-    public final static int UnknownWiredComposer = 1830;
+    public final static int WiredOpenComposer = 1830;
     public final static int UnknownCatalogPageOfferComposer = 1889;
     public final static int NuxAlertComposer = 2023;
     public final static int HotelViewExpiringCatalogPageCommposer = 2515;

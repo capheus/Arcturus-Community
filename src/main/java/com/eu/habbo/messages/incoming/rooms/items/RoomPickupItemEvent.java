@@ -44,17 +44,5 @@ public class RoomPickupItemEvent extends MessageHandler
                 room.ejectUserItem(item);
             }
         }
-
-
-
-
-
-//
-
-
-
-
-
-
     }
 }

@@ -491,6 +491,21 @@ public class RoomSpecialTypes
     }
 
 
+    public THashSet<InteractionWiredExtra> getExtras()
+    {
+        synchronized (this.wiredExtras)
+        {
+            THashSet<InteractionWiredExtra> conditions = new THashSet<>();
+
+            for (Map.Entry<Integer, InteractionWiredExtra> map : this.wiredExtras.entrySet())
+            {
+                conditions.add(map.getValue());
+            }
+
+            return conditions;
+        }
+    }
+
     public THashSet<InteractionWiredExtra> getExtras(int x, int y)
     {
         synchronized (this.wiredExtras)

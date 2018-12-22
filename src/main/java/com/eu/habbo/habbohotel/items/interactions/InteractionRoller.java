@@ -3,12 +3,16 @@ package com.eu.habbo.habbohotel.items.interactions;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
+import gnu.trove.set.hash.THashSet;
+import org.apache.commons.math3.util.Pair;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class InteractionRoller extends HabboItem
 {
@@ -65,5 +69,29 @@ public class InteractionRoller extends HabboItem
     public void onWalkOff(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
     {
         super.onWalkOff(roomUnit, room, objects);
+    }
+
+
+    @Override
+    public boolean canStackAt(Room room, List<Pair<RoomTile, THashSet<HabboItem>>> itemsAtLocation)
+    {
+        if (itemsAtLocation.isEmpty()) return false;
+
+        for (Pair<RoomTile, THashSet<HabboItem>> set : itemsAtLocation)
+        {
+            if (!set.getValue().isEmpty())
+            {
+                if (set.getValue().size() > 1)
+                {
+                    return false;
+                }
+                else if (!set.getValue().contains(this))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }

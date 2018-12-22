@@ -33,7 +33,7 @@ public final class Emulator
     public final static int MAJOR = 1;
 
 
-    public final static int MINOR = 14;
+    public final static int MINOR = 15;
 
 
     public final static int BUILD = 0;
@@ -70,7 +70,7 @@ public final class Emulator
     private static PluginManager            pluginManager;
     private static Random                   random;
     private static BadgeImager              badgeImager;
-    
+
     static
     {
         Thread hook = new Thread(new Runnable()
@@ -164,6 +164,7 @@ public final class Emulator
                 {
                     Emulator.getLogging().logStart("Thanks for using Arcturus. Contact: Skype: wesley.jabbo Discord: TheGeneral#0063");
                     Emulator.getLogging().logStart("-The General");
+                    System.out.println("Waiting for command: ");
                 }
             }, 3500);
 
@@ -173,12 +174,14 @@ public final class Emulator
             {
                 try
                 {
+
                     String line = reader.readLine();
 
                     if (line != null)
                     {
                         ConsoleCommand.handle(line);
                     }
+                    System.out.println("Waiting for command: ");
                 }
                 catch (Exception e)
                 {
@@ -355,12 +358,12 @@ public final class Emulator
     {
         cameraClient = client;
     }
-    
+
     public static int getTimeStarted()
     {
         return timeStarted;
     }
-    
+
     public static void prepareShutdown()
     {
         System.exit(0);
@@ -393,7 +396,7 @@ public final class Emulator
         }
         return res;
     }
-    
+
     public static Timestamp dateToTimeStamp(Date date)
     {
         return new Timestamp(date.getTime());
@@ -408,12 +411,12 @@ public final class Emulator
     {
         return dateToUnixTimestamp(getDate());
     }
-    
+
     public static int getIntUnixTimestamp()
     {
         return (int) (System.currentTimeMillis() / 1000);
     }
-    
+
     public static boolean isNumeric(String string)
         throws IllegalArgumentException
     {

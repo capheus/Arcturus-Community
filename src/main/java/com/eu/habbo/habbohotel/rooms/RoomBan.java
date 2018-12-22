@@ -9,9 +9,16 @@ import java.sql.SQLException;
 
 public class RoomBan
 {
+
     public final int roomId;
+
+
     public final int userId;
+
+
     public final String username;
+
+
     public final int endTimestamp;
 
     public RoomBan(int roomId, int userId, String username, int endTimestamp)
@@ -30,6 +37,7 @@ public class RoomBan
         this.endTimestamp = set.getInt("ends");
     }
 
+
     public void insert()
     {
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO room_bans (room_id, user_id, ends) VALUES (?, ?, ?)"))
@@ -44,6 +52,7 @@ public class RoomBan
             Emulator.getLogging().logSQLException(e);
         }
     }
+
 
     public void delete()
     {

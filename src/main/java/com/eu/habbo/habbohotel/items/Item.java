@@ -32,6 +32,7 @@ public class Item {
     private short effectF;
     private TIntArrayList vendingItems;
     private double[] multiHeights;
+    private String customParams;
 
     private ItemInteraction interactionType;
 
@@ -55,6 +56,10 @@ public class Item {
         this.width = set.getShort("width");
         this.length = set.getShort("length");
         this.height = set.getDouble("stack_height");
+        if (this.height == 0)
+        {
+            this.height = 1e-6;
+        }
         this.allowStack = set.getBoolean("allow_stack");
         this.allowWalk = set.getBoolean("allow_walk");
         this.allowSit = set.getBoolean("allow_sit");
@@ -70,7 +75,7 @@ public class Item {
         this.stateCount = set.getShort("interaction_modes_count");
         this.effectM = set.getShort("effect_id_male");
         this.effectF = set.getShort("effect_id_female");
-
+        this.customParams = set.getString("customparams");
         if(!set.getString("vending_ids").isEmpty())
         {
             this.vendingItems = new TIntArrayList();
@@ -81,7 +86,7 @@ public class Item {
             }
         }
 
-        if(this.interactionType.getType() == InteractionMultiHeight.class)
+        //if(this.interactionType.getType() == InteractionMultiHeight.class || this.interactionType.getType().isAssignableFrom(InteractionMultiHeight.class))
         {
             if(set.getString("multiheight").contains(";"))
             {
@@ -100,15 +105,18 @@ public class Item {
         }
     }
 
-    public int getId() {
+    public int getId()
+    {
         return this.id;
     }
 
-    public int getSpriteId() {
+    public int getSpriteId()
+    {
         return this.spriteId;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
 
@@ -122,47 +130,58 @@ public class Item {
         return this.type;
     }
 
-    public int getWidth() {
+    public int getWidth()
+    {
         return this.width;
     }
 
-    public int getLength() {
+    public int getLength()
+    {
         return this.length;
     }
 
-    public double getHeight() {
+    public double getHeight()
+    {
         return this.height;
     }
 
-    public boolean allowStack() {
+    public boolean allowStack()
+    {
         return this.allowStack;
     }
 
-    public boolean allowWalk() {
+    public boolean allowWalk()
+    {
         return this.allowWalk;
     }
 
-    public boolean allowSit() {
+    public boolean allowSit()
+    {
         return this.allowSit;
     }
 
-    public boolean allowLay() {
+    public boolean allowLay()
+    {
         return this.allowLay;
     }
 
-    public boolean allowRecyle() {
+    public boolean allowRecyle()
+    {
         return this.allowRecyle;
     }
 
-    public boolean allowTrade() {
+    public boolean allowTrade()
+    {
         return this.allowTrade;
     }
 
-    public boolean allowMarketplace() {
+    public boolean allowMarketplace()
+    {
         return this.allowMarketplace;
     }
 
-    public boolean allowGift() {
+    public boolean allowGift()
+    {
         return this.allowGift;
     }
 
@@ -171,15 +190,18 @@ public class Item {
         return this.allowInventoryStack;
     }
 
-    public int getStateCount() {
+    public int getStateCount()
+    {
         return this.stateCount;
     }
 
-    public int getEffectM() {
+    public int getEffectM()
+    {
         return this.effectM;
     }
 
-    public int getEffectF() {
+    public int getEffectF()
+    {
         return this.effectF;
     }
 

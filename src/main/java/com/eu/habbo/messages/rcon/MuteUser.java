@@ -10,9 +10,9 @@ import java.sql.SQLException;
 
 public class MuteUser extends RCONMessage<MuteUser.JSON>
 {
-    public MuteUser(Class<JSON> type)
+    public MuteUser()
     {
-        super(type);
+        super(MuteUser.JSON.class);
     }
 
     @Override

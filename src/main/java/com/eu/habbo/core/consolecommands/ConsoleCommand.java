@@ -5,7 +5,7 @@ import gnu.trove.map.hash.THashMap;
 public abstract class ConsoleCommand
 {
 
-    public static THashMap<String, ConsoleCommand> commands = new THashMap<>();
+    private static THashMap<String, ConsoleCommand> commands = new THashMap<>();
 
 
     public final String key;
@@ -27,6 +27,7 @@ public abstract class ConsoleCommand
         addCommand(new ConsoleInfoCommand());
         addCommand(new ConsoleTestCommand());
         addCommand(new ConsoleReconnectCameraCommand());
+        addCommand(new ShowInteractionsCommand());
     }
 
 
@@ -72,7 +73,7 @@ public abstract class ConsoleCommand
 
                 for (ConsoleCommand c : commands.values())
                 {
-                    System.out.println(c.key + " " + c.usage);
+                    System.out.println(c.key + " - " + c.usage);
                 }
             }
         }

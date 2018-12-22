@@ -79,65 +79,62 @@ public class WiredEffectMoveFurniTo extends InteractionWiredEffect
     {
         List<HabboItem> items = new ArrayList<>();
 
-        synchronized (this.items)
-        {
-            for (HabboItem item : this.items)
-            {
-                if (Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
-                    items.add(item);
-            }
+		for (HabboItem item : this.items)
+		{
+			if (Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
+				items.add(item);
+		}
 
-            for (HabboItem item : items)
-            {
-                this.items.remove(item);
-            }
+		for (HabboItem item : items)
+		{
+			this.items.remove(item);
+		}
 
-            if (this.items.isEmpty())
-                return false;
+		if (this.items.isEmpty())
+			return false;
 
-            if (stuff != null && stuff.length > 0)
-            {
-                for (Object object : stuff)
-                {
-                    if (object instanceof HabboItem)
-                    {
-                        HabboItem targetItem = this.items.get(Emulator.getRandom().nextInt(this.items.size()));
+		if (stuff != null && stuff.length > 0)
+		{
+			for (Object object : stuff)
+			{
+				if (object instanceof HabboItem)
+				{
+					HabboItem targetItem = this.items.get(Emulator.getRandom().nextInt(this.items.size()));
 
-                        if (targetItem != null)
-                        {
-                            int indexOffset = 0;
-                            if (!this.indexOffset.containsKey(targetItem.getId()))
-                            {
-                                this.indexOffset.put(targetItem.getId(), indexOffset);
-                            }
-                            else
-                            {
-                                indexOffset = this.indexOffset.get(targetItem.getId()) + spacing;
-                            }
+					if (targetItem != null)
+					{
+						int indexOffset = 0;
+						if (!this.indexOffset.containsKey(targetItem.getId()))
+						{
+							this.indexOffset.put(targetItem.getId(), indexOffset);
+						}
+						else
+						{
+							indexOffset = this.indexOffset.get(targetItem.getId()) + spacing;
+						}
 
-                            RoomTile objectTile = room.getLayout().getTile(targetItem.getX(), targetItem.getY());
+						RoomTile objectTile = room.getLayout().getTile(targetItem.getX(), targetItem.getY());
 
-                            if (objectTile != null)
-                            {
-                                THashSet<RoomTile> refreshTiles = room.getLayout().getTilesAt(room.getLayout().getTile(((HabboItem) object).getX(), ((HabboItem) object).getY()), ((HabboItem) object).getBaseItem().getWidth(), ((HabboItem) object).getBaseItem().getLength(), ((HabboItem) object).getRotation());
+						if (objectTile != null)
+						{
+							THashSet<RoomTile> refreshTiles = room.getLayout().getTilesAt(room.getLayout().getTile(((HabboItem) object).getX(), ((HabboItem) object).getY()), ((HabboItem) object).getBaseItem().getWidth(), ((HabboItem) object).getBaseItem().getLength(), ((HabboItem) object).getRotation());
 
-                                RoomTile tile = room.getLayout().getTileInFront(objectTile, this.direction, indexOffset);
-                                if (tile == null || !tile.getAllowStack())
-                                {
-                                    indexOffset = 0;
-                                    tile = room.getLayout().getTileInFront(objectTile, this.direction, indexOffset);
-                                }
+							RoomTile tile = room.getLayout().getTileInFront(objectTile, this.direction, indexOffset);
+							if (tile == null || !tile.getAllowStack())
+							{
+								indexOffset = 0;
+								tile = room.getLayout().getTileInFront(objectTile, this.direction, indexOffset);
+							}
 
-                                room.sendComposer(new FloorItemOnRollerComposer((HabboItem) object, null, tile, tile.getStackHeight() - ((HabboItem) object).getZ(), room).compose());
-                                refreshTiles.addAll(room.getLayout().getTilesAt(room.getLayout().getTile(((HabboItem) object).getX(), ((HabboItem) object).getY()), ((HabboItem) object).getBaseItem().getWidth(), ((HabboItem) object).getBaseItem().getLength(), ((HabboItem) object).getRotation()));
-                                room.updateTiles(refreshTiles);
-                                this.indexOffset.put(targetItem.getId(), indexOffset);
-                            }
-                        }
-                    }
-                }
-            }
-        }
+							room.sendComposer(new FloorItemOnRollerComposer((HabboItem) object, null, tile, tile.getStackHeight() - ((HabboItem) object).getZ(), room).compose());
+							refreshTiles.addAll(room.getLayout().getTilesAt(room.getLayout().getTile(((HabboItem) object).getX(), ((HabboItem) object).getY()), ((HabboItem) object).getBaseItem().getWidth(), ((HabboItem) object).getBaseItem().getLength(), ((HabboItem) object).getRotation()));
+							room.updateTiles(refreshTiles);
+							this.indexOffset.put(targetItem.getId(), indexOffset);
+						}
+					}
+				}
+			}
+		}
 
         return true;
     }
@@ -173,67 +170,61 @@ public class WiredEffectMoveFurniTo extends InteractionWiredEffect
     {
         THashSet<HabboItem> items = new THashSet<>();
 
-        synchronized (this.items)
-        {
-            for (HabboItem item : this.items)
-            {
-                if (item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
-                    items.add(item);
-            }
+		for (HabboItem item : this.items)
+		{
+			if (item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
+				items.add(item);
+		}
 
-            for (HabboItem item : items)
-            {
-                this.items.remove(item);
-            }
+		for (HabboItem item : items)
+		{
+			this.items.remove(item);
+		}
 
-            message.appendBoolean(false);
-            message.appendInt(WiredHandler.MAXIMUM_FURNI_SELECTION);
-            message.appendInt(this.items.size());
-            for (HabboItem item : this.items)
-                message.appendInt(item.getId());
-            message.appendInt(this.getBaseItem().getSpriteId());
-            message.appendInt(this.getId());
-            message.appendString("");
-            message.appendInt(2);
-            message.appendInt(this.direction);
-            message.appendInt(this.spacing);
-            message.appendInt(0);
-            message.appendInt(this.getType().code);
-            message.appendInt(this.getDelay());
-            message.appendInt(0);
-        }
+		message.appendBoolean(false);
+		message.appendInt(WiredHandler.MAXIMUM_FURNI_SELECTION);
+		message.appendInt(this.items.size());
+		for (HabboItem item : this.items)
+			message.appendInt(item.getId());
+		message.appendInt(this.getBaseItem().getSpriteId());
+		message.appendInt(this.getId());
+		message.appendString("");
+		message.appendInt(2);
+		message.appendInt(this.direction);
+		message.appendInt(this.spacing);
+		message.appendInt(0);
+		message.appendInt(this.getType().code);
+		message.appendInt(this.getDelay());
+		message.appendInt(0);
     }
 
     @Override
     public void loadWiredData(ResultSet set, Room room) throws SQLException
     {
-        synchronized (this.items)
-        {
-            this.items.clear();
+		this.items.clear();
 
-            String[] data = set.getString("wired_data").split("\t");
+		String[] data = set.getString("wired_data").split("\t");
 
-            if (data.length == 4)
-            {
-                try
-                {
-                    this.direction = Integer.valueOf(data[0]);
-                    this.spacing = Integer.valueOf(data[1]);
-                    this.setDelay(Integer.valueOf(data[2]));
-                }
-                catch (Exception e)
-                {
-                }
+		if (data.length == 4)
+		{
+			try
+			{
+				this.direction = Integer.valueOf(data[0]);
+				this.spacing = Integer.valueOf(data[1]);
+				this.setDelay(Integer.valueOf(data[2]));
+			}
+			catch (Exception e)
+			{
+			}
 
-                for (String s : data[3].split("\r"))
-                {
-                    HabboItem item = room.getHabboItem(Integer.valueOf(s));
+			for (String s : data[3].split("\r"))
+			{
+				HabboItem item = room.getHabboItem(Integer.valueOf(s));
 
-                    if (item != null)
-                        this.items.add(item);
-                }
-            }
-        }
+				if (item != null)
+					this.items.add(item);
+			}
+		}
     }
 
     @Override

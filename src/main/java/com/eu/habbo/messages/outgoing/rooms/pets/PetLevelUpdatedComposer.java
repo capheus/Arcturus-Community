@@ -1,4 +1,4 @@
-package com.eu.habbo.messages.outgoing.unknown;
+package com.eu.habbo.messages.outgoing.rooms.pets;
 
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.messages.ServerMessage;
@@ -8,12 +8,10 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 public class PetLevelUpdatedComposer extends MessageComposer
 {
     private final Pet pet;
-    private final int level;
 
-    public PetLevelUpdatedComposer(Pet pet, int level)
+    public PetLevelUpdatedComposer(Pet pet)
     {
         this.pet = pet;
-        this.level = level;
     }
 
     @Override
@@ -22,7 +20,7 @@ public class PetLevelUpdatedComposer extends MessageComposer
         this.response.init(Outgoing.PetLevelUpdatedComposer);
         this.response.appendInt(this.pet.getRoomUnit().getId());
         this.response.appendInt(this.pet.getId());
-        this.response.appendInt(this.level);
+        this.response.appendInt(this.pet.getLevel());
         return this.response;
     }
 }

@@ -11,7 +11,6 @@ import com.eu.habbo.habbohotel.users.HabboGender;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredEffectType;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.messages.outgoing.rooms.UpdateStackHeightComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import gnu.trove.set.hash.THashSet;
 
@@ -77,7 +76,7 @@ public class InteractionMultiHeight extends HabboItem
                     this.needsUpdate(true);
                     room.updateTiles(room.getLayout().getTilesAt(room.getLayout().getTile(this.getX(), this.getY()), this.getBaseItem().getWidth(), this.getBaseItem().getLength(), this.getRotation()));
                     room.updateItemState(this);
-                    room.sendComposer(new UpdateStackHeightComposer(this.getX(), this.getY(), this.getBaseItem().getMultiHeights()[Integer.valueOf(this.getExtradata())] * 256.0D).compose());
+                    //room.sendComposer(new UpdateStackHeightComposer(this.getX(), this.getY(), this.getBaseItem().getMultiHeights()[Integer.valueOf(this.getExtradata())] * 256.0D).compose());
                 }
 
                 if(this.isWalkable())
@@ -100,7 +99,7 @@ public class InteractionMultiHeight extends HabboItem
                             }
                             else
                             {
-                                habbo.getRoomUnit().setZ(this.getZ() + this.getBaseItem().getMultiHeights()[(this.getExtradata().isEmpty() ? 0 : Integer.valueOf(this.getExtradata()) % (this.getBaseItem().getMultiHeights().length))]);
+                                habbo.getRoomUnit().setZ(habbo.getRoomUnit().getCurrentLocation().getStackHeight());
                                 habbo.getRoomUnit().setPreviousLocationZ(habbo.getRoomUnit().getZ());
                             }
                         }

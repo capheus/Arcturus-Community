@@ -53,7 +53,14 @@ public class RoomTile
 
     public void setStackHeight(double stackHeight)
     {
-        if (stackHeight >= 0)
+        if (this.state == RoomTileState.INVALID)
+        {
+            this.stackHeight = Short.MAX_VALUE;
+            this.allowStack = false;
+            return;
+        }
+
+        if (stackHeight >= 0 && stackHeight != Short.MAX_VALUE)
         {
             this.stackHeight = stackHeight;
             this.allowStack = true;
@@ -67,17 +74,17 @@ public class RoomTile
 
     public boolean getAllowStack()
     {
+        if (this.state == RoomTileState.INVALID)
+        {
+            return false;
+        }
+
         return this.allowStack;
     }
 
     public void setAllowStack(boolean allowStack)
     {
         this.allowStack = allowStack;
-
-        if (this.state == RoomTileState.INVALID)
-        {
-            this.allowStack = false;
-        }
     }
 
     public short relativeHeight()

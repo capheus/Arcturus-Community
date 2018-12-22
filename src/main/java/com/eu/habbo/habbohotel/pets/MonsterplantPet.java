@@ -219,6 +219,8 @@ public class MonsterplantPet extends Pet implements IPetLook
                 }
             }
         }
+
+        super.cycle();
     }
 
     public int getType()
@@ -427,5 +429,11 @@ public class MonsterplantPet extends Pet implements IPetLook
         this.addExperience(10);
         this.room.sendComposer(new PetStatusUpdateComposer(this).compose());
         this.room.sendComposer(new RoomPetRespectComposer(this, RoomPetRespectComposer.PET_TREATED).compose());
+    }
+
+    @Override
+    public boolean canWalk()
+    {
+        return false;
     }
 }

@@ -107,7 +107,7 @@ public class RequestUserDataEvent extends MessageHandler
         else
         {
             Emulator.getLogging().logDebugLine("Habbo is NULL!");
-            this.client.getChannel().close();
+            Emulator.getGameServer().getGameClientManager().disposeClient(this.client);
         }
     }
 }

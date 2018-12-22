@@ -74,7 +74,7 @@ public class NavigatorManager
                             }
                             else
                             {
-                                Emulator.getLogging().logErrorLine("Public room defined in navigator_publics does not exist!");
+                                Emulator.getLogging().logErrorLine("Public room (ID: " + set.getInt("room_id") + " defined in navigator_publics does not exist!");
                             }
                         }
                     }

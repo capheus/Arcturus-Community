@@ -1,6 +1,7 @@
 package com.eu.habbo.threading.runnables;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionCrackable;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -16,13 +17,18 @@ public class CrackableExplode implements Runnable
     private final InteractionCrackable habboItem;
     private final Habbo habbo;
     private final boolean toInventory;
+    private short x;
+    private short y;
 
-    public CrackableExplode(Room room, InteractionCrackable item, Habbo habbo, boolean toInventory)
+    public CrackableExplode(Room room, InteractionCrackable item, Habbo habbo, boolean toInventory, short x, short y)
     {
         this.room = room;
         this.habboItem = item;
         this.habbo = habbo;
         this.toInventory = toInventory;
+
+        this.x = x;
+        this.y = y;
     }
 
     @Override
@@ -32,7 +38,7 @@ public class CrackableExplode implements Runnable
         {
             return;
         }
-
+//MAKING DINNER BRB
         if (!this.habboItem.resetable())
         {
             this.room.removeHabboItem(this.habboItem);
@@ -44,26 +50,33 @@ public class CrackableExplode implements Runnable
         {
             this.habboItem.reset(this.room);
         }
-        HabboItem newItem = Emulator.getGameEnvironment().getItemManager().createItem(this.habboItem.allowAnyone() ? habbo.getHabboInfo().getId() : this.habboItem.getUserId(), Emulator.getGameEnvironment().getItemManager().getCrackableReward(this.habboItem.getBaseItem().getId()), 0, 0, "");
+        Item rewardItem = Emulator.getGameEnvironment().getItemManager().getCrackableReward(this.habboItem.getBaseItem().getId());
 
-        if (newItem != null)
+        if (rewardItem != null)
         {
-            if (this.toInventory)
+            HabboItem newItem = Emulator.getGameEnvironment().getItemManager().createItem(this.habboItem.allowAnyone() ? habbo.getHabboInfo().getId() : this.habboItem.getUserId(), rewardItem, 0, 0, "");
+
+            if (newItem != null)
             {
-                habbo.getInventory().getItemsComponent().addItem(newItem);
-                habbo.getClient().sendResponse(new AddHabboItemComposer(newItem));
-                habbo.getClient().sendResponse(new InventoryRefreshComposer());
-            }
-            else
-            {
-                newItem.setX(this.habboItem.getX());
-                newItem.setY(this.habboItem.getY());
-                newItem.setZ(this.habboItem.getZ());
-                newItem.setRoomId(this.room.getId());
-                newItem.needsUpdate(true);
-                this.room.addHabboItem(newItem);
-                this.room.sendComposer(new AddFloorItemComposer(newItem, this.room.getFurniOwnerNames().get(newItem.getUserId())).compose());
+                if (this.toInventory)
+                {
+                    habbo.getInventory().getItemsComponent().addItem(newItem);
+                    habbo.getClient().sendResponse(new AddHabboItemComposer(newItem));
+                    habbo.getClient().sendResponse(new InventoryRefreshComposer());
+                } else
+                {
+                    newItem.setX(this.x);
+                    newItem.setY(this.y);
+                    newItem.setZ(room.getStackHeight(this.x, this.y, false));
+                    newItem.setRoomId(this.room.getId());
+                    newItem.needsUpdate(true);
+                    this.room.addHabboItem(newItem);
+                    this.room.sendComposer(new AddFloorItemComposer(newItem, this.room.getFurniOwnerNames().get(newItem.getUserId())).compose());
+                }
             }
         }
+
+
+        this.room.updateTile(room.getLayout().getTile(this.x, this.y));
     }
 }

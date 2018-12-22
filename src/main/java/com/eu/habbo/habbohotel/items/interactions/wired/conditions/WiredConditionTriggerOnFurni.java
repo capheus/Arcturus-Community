@@ -6,8 +6,8 @@ import com.eu.habbo.habbohotel.items.interactions.InteractionWiredCondition;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
-import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
+import com.eu.habbo.habbohotel.wired.WiredConditionOperator;
 import com.eu.habbo.habbohotel.wired.WiredConditionType;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.messages.ClientMessage;
@@ -39,11 +39,6 @@ public class WiredConditionTriggerOnFurni extends InteractionWiredCondition
         this.refresh();
 
         if(this.items.isEmpty())
-            return true;
-
-        Habbo habbo = room.getHabbo(roomUnit);
-
-        if(habbo == null)
             return true;
 
         for(HabboItem item : this.items)
@@ -169,5 +164,11 @@ public class WiredConditionTriggerOnFurni extends InteractionWiredCondition
         }
 
         this.items.removeAll(items);
+    }
+
+    @Override
+    public WiredConditionOperator operator()
+    {
+        return WiredConditionOperator.OR;
     }
 }

@@ -41,7 +41,6 @@ public class GameByteDecoder extends ByteToMessageDecoder
                     "  <allow-access-from domain=\"*\" to-ports=\"1-31111\" />\n" +
                     "  </cross-domain-policy>" + (char) 0, CharsetUtil.UTF_8));
 
-            f.channel().close();
             ctx.channel().close();
             return;
         }

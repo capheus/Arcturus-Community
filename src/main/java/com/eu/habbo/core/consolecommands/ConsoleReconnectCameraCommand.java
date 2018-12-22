@@ -6,7 +6,7 @@ public class ConsoleReconnectCameraCommand extends ConsoleCommand
 {
     public ConsoleReconnectCameraCommand()
     {
-        super("camera", "");
+        super("camera", "Attempt to reconnect to the camera server.");
     }
 
     @Override

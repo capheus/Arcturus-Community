@@ -4,6 +4,7 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.habbohotel.wired.WiredConditionOperator;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,7 +30,7 @@ public class WiredConditionHabboNotRank extends WiredConditionHabboWearsBadge
         {
             try
             {
-                return habbo.getHabboInfo().getRank().getId() < Integer.valueOf(this.badge);
+                return habbo.getHabboInfo().getRank().getId() != Integer.valueOf(this.badge);
             }
             catch (Exception e)
             {
@@ -38,5 +39,11 @@ public class WiredConditionHabboNotRank extends WiredConditionHabboWearsBadge
         }
 
         return false;
+    }
+
+    @Override
+    public WiredConditionOperator operator()
+    {
+        return WiredConditionOperator.OR;
     }
 }

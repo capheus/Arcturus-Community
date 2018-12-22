@@ -5,8 +5,13 @@ import java.sql.SQLException;
 
 public class PetBreedingReward
 {
+
     public final int petType;
+
+
     public final int rarityLevel;
+
+
     public final int breed;
 
     public PetBreedingReward(ResultSet set) throws SQLException

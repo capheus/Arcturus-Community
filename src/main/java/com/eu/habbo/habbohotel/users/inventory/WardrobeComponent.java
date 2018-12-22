@@ -109,19 +109,19 @@ public class WardrobeComponent
             this.habbo = habbo;
         }
 
-        public synchronized HabboGender getGender()
+        public HabboGender getGender()
         {
-            return gender;
+            return this.gender;
         }
 
-        public synchronized void setGender(HabboGender gender)
+        public void setGender(HabboGender gender)
         {
             this.gender = gender;
         }
 
         public Habbo getHabbo()
         {
-            return habbo;
+            return this.habbo;
         }
 
         public void setHabbo(Habbo habbo)
@@ -129,12 +129,12 @@ public class WardrobeComponent
             this.habbo = habbo;
         }
 
-        public synchronized String getLook()
+        public String getLook()
         {
-            return look;
+            return this.look;
         }
 
-        public synchronized void setLook(String look)
+        public void setLook(String look)
         {
             this.look = look;
         }
@@ -151,7 +151,7 @@ public class WardrobeComponent
 
         public int getSlotId()
         {
-            return slotId;
+            return this.slotId;
         }
 
         @Override

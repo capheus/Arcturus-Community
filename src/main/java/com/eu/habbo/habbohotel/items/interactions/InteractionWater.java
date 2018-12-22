@@ -1,18 +1,23 @@
 package com.eu.habbo.habbohotel.items.interactions;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
+import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
+import org.apache.commons.math3.util.Pair;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class InteractionWater extends InteractionDefault
 {
@@ -36,6 +41,28 @@ public class InteractionWater extends InteractionDefault
     public void onPickUp(Room room)
     {
         this.recalculate(room);
+
+        Object[] empty = new Object[]{};
+        for (Habbo habbo : room.getHabbosOnItem(this))
+        {
+            try
+            {
+                this.onWalkOff(habbo.getRoomUnit(), room, empty);
+            } catch (Exception e)
+            {
+
+            }
+        }
+
+        for (Bot bot : room.getBotsOnItem(this))
+        {
+            try
+            {
+                this.onWalkOff(bot.getRoomUnit(), room, empty);
+            }
+            catch (Exception e)
+            {}
+        }
     }
 
     @Override
@@ -69,27 +96,46 @@ public class InteractionWater extends InteractionDefault
             ((InteractionWaterItem) item).update();
         }
 
-        if (room.waterTiles.containsKey(this.getX() - 1) && room.waterTiles.get(this.getX() - 1).contains(this.getY() - 1)) _1  = 1;
-        if (room.waterTiles.containsKey(this.getX()    ) && room.waterTiles.get(this.getX()    ).contains(this.getY() - 1)) _2  = 1;
-        if (room.waterTiles.containsKey(this.getX() + 1) && room.waterTiles.get(this.getX() + 1).contains(this.getY() - 1)) _3  = 1;
-        if (room.waterTiles.containsKey(this.getX() + 2) && room.waterTiles.get(this.getX() + 2).contains(this.getY() - 1)) _4  = 1;
-        if (room.waterTiles.containsKey(this.getX() - 1) && room.waterTiles.get(this.getX() - 1).contains(this.getY()    )) _5  = 1;
-        if (room.waterTiles.containsKey(this.getX() + 2) && room.waterTiles.get(this.getX() + 2).contains(this.getY()    )) _6  = 1;
-        if (room.waterTiles.containsKey(this.getX() - 1) && room.waterTiles.get(this.getX() - 1).contains(this.getY() + 1)) _7  = 1;
-        if (room.waterTiles.containsKey(this.getX() + 2) && room.waterTiles.get(this.getX() + 2).contains(this.getY() + 1)) _8  = 1;
-        if (room.waterTiles.containsKey(this.getX() - 1) && room.waterTiles.get(this.getX() - 1).contains(this.getY() + 2)) _9  = 1;
-        if (room.waterTiles.containsKey(this.getX()    ) && room.waterTiles.get(this.getX()    ).contains(this.getY() + 2)) _10 = 1;
-        if (room.waterTiles.containsKey(this.getX() + 1) && room.waterTiles.get(this.getX() + 1).contains(this.getY() + 2)) _11 = 1;
-        if (room.waterTiles.containsKey(this.getX() + 2) && room.waterTiles.get(this.getX() + 2).contains(this.getY() + 2)) _12 = 1;
+        if (!this.getBaseItem().getName().equalsIgnoreCase("bw_water_2"))
+        {
+            if (room.waterTiles.containsKey(this.getX() - 1) && room.waterTiles.get(this.getX() - 1).contains(this.getY() - 1))
+                _1 = 1;
+            if (room.waterTiles.containsKey(this.getX()) && room.waterTiles.get(this.getX()).contains(this.getY() - 1))
+                _2 = 1;
+            if (room.waterTiles.containsKey(this.getX() + 1) && room.waterTiles.get(this.getX() + 1).contains(this.getY() - 1))
+                _3 = 1;
+            if (room.waterTiles.containsKey(this.getX() + 2) && room.waterTiles.get(this.getX() + 2).contains(this.getY() - 1))
+                _4 = 1;
+            if (room.waterTiles.containsKey(this.getX() - 1) && room.waterTiles.get(this.getX() - 1).contains(this.getY()))
+                _5 = 1;
+            if (room.waterTiles.containsKey(this.getX() + 2) && room.waterTiles.get(this.getX() + 2).contains(this.getY()))
+                _6 = 1;
+            if (room.waterTiles.containsKey(this.getX() - 1) && room.waterTiles.get(this.getX() - 1).contains(this.getY() + 1))
+                _7 = 1;
+            if (room.waterTiles.containsKey(this.getX() + 2) && room.waterTiles.get(this.getX() + 2).contains(this.getY() + 1))
+                _8 = 1;
+            if (room.waterTiles.containsKey(this.getX() - 1) && room.waterTiles.get(this.getX() - 1).contains(this.getY() + 2))
+                _9 = 1;
+            if (room.waterTiles.containsKey(this.getX()) && room.waterTiles.get(this.getX()).contains(this.getY() + 2))
+                _10 = 1;
+            if (room.waterTiles.containsKey(this.getX() + 1) && room.waterTiles.get(this.getX() + 1).contains(this.getY() + 2))
+                _11 = 1;
+            if (room.waterTiles.containsKey(this.getX() + 2) && room.waterTiles.get(this.getX() + 2).contains(this.getY() + 2))
+                _12 = 1;
+        }
 
-        if (_2  == 0 && !room.getLayout().tileWalkable(this.getX()              , (short) (this.getY() - 1))) _2  = 1;
-        if (_3  == 0 && !room.getLayout().tileWalkable((short) (this.getX() + 1), (short) (this.getY() - 1))) _3  = 1;
-        if (_5  == 0 && !room.getLayout().tileWalkable((short) (this.getX() - 1),          this.getY()     )) _5  = 1;
-        if (_6  == 0 && !room.getLayout().tileWalkable((short) (this.getX() + 2),          this.getY()     )) _6  = 1;
-        if (_7  == 0 && !room.getLayout().tileWalkable((short) (this.getX() - 1), (short) (this.getY() + 1))) _7  = 1;
-        if (_8  == 0 && !room.getLayout().tileWalkable((short) (this.getX() + 2), (short) (this.getY() + 1))) _8  = 1;
-        if (_10 == 0 && !room.getLayout().tileWalkable(this.getX()              , (short) (this.getY() + 2))) _10 = 1;
-        if (_11 == 0 && !room.getLayout().tileWalkable((short) (this.getX() + 1), (short) (this.getY() + 2))) _11 = 1;
+        //if (_1  == 0 && room.getLayout().isVoidTile((short)(this.getX() -1), (short) (this.getY() -1))) _1  = 1;
+        if (_2  == 0 && room.getLayout().isVoidTile(this.getX(), (short) (this.getY() - 1))) _2  = 1;
+        if (_3  == 0 && room.getLayout().isVoidTile((short) (this.getX() + 1), (short) (this.getY() - 1))) _3  = 1;
+        //if (_4  == 0 && room.getLayout().isVoidTile((short) (this.getX() + 2), (short) (this.getY() - 1))) _4  = 1;
+        if (_5  == 0 && room.getLayout().isVoidTile((short) (this.getX() - 1), this.getY())) _5  = 1;
+        if (_6  == 0 && room.getLayout().isVoidTile((short) (this.getX() + 2), this.getY())) _6  = 1;
+        if (_7  == 0 && room.getLayout().isVoidTile((short) (this.getX() - 1), (short) (this.getY() + 1))) _7  = 1;
+        if (_8  == 0 && room.getLayout().isVoidTile((short) (this.getX() + 2), (short) (this.getY() + 1))) _8  = 1;
+        //if (_9  == 0 && room.getLayout().isVoidTile((short)(this.getX() -1), (short) (this.getY() + 2))) _9 = 1;
+        if (_10 == 0 && room.getLayout().isVoidTile(this.getX(), (short) (this.getY() + 2))) _10 = 1;
+        if (_11 == 0 && room.getLayout().isVoidTile((short) (this.getX() + 1), (short) (this.getY() + 2))) _11 = 1;
+        //if (_12 == 0 && room.getLayout().isVoidTile((short) (this.getX() + 2), (short) (this.getY() + 2))) _12 = 1;
 
         int result = 0;
         result |= _1  << 11;
@@ -156,5 +202,28 @@ public class InteractionWater extends InteractionDefault
     public boolean allowWiredResetState()
     {
         return false;
+    }
+
+    @Override
+    public boolean canToggle(Habbo habbo, Room room)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean canStackAt(Room room, List<Pair<RoomTile, THashSet<HabboItem>>> itemsAtLocation)
+    {
+        for (Pair<RoomTile, THashSet<HabboItem>> set : itemsAtLocation)
+        {
+            for (HabboItem item : set.getValue())
+            {
+                if (!(item instanceof InteractionWater))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return super.canStackAt(room, itemsAtLocation);
     }
 }

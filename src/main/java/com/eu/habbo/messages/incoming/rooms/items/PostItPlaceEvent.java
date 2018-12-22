@@ -9,7 +9,6 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.inventory.RemoveHabboItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.AddWallItemComposer;
-import com.eu.habbo.messages.outgoing.rooms.items.PostItStickyPoleOpenComposer;
 
 public class PostItPlaceEvent extends MessageHandler
 {
@@ -46,7 +45,7 @@ public class PostItPlaceEvent extends MessageHandler
                         AchievementManager.progressAchievement(this.client.getHabbo().getHabboInfo().getId(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("NotesLeft"));
                     }
 
-                    this.client.sendResponse(new PostItStickyPoleOpenComposer(item));
+                    //this.client.sendResponse(new PostItStickyPoleOpenComposer(item));
                 }
             }
         }

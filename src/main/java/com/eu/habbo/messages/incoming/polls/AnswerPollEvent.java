@@ -53,11 +53,11 @@ public class AnswerPollEvent extends MessageHandler
 
             if(poll.lastQuestionId == questionId)
             {
-                if(poll.getBadgeReward().length() > 0)
+                if(poll.badgeReward.length() > 0)
                 {
-                    if(this.client.getHabbo().getInventory().getBadgesComponent().getBadge(poll.getBadgeReward()) == null)
+                    if(this.client.getHabbo().getInventory().getBadgesComponent().getBadge(poll.badgeReward) == null)
                     {
-                        HabboBadge badge = new HabboBadge(0, poll.getBadgeReward(), 0, this.client.getHabbo());
+                        HabboBadge badge = new HabboBadge(0, poll.badgeReward, 0, this.client.getHabbo());
                         Emulator.getThreading().run(badge);
                         this.client.getHabbo().getInventory().getBadgesComponent().addBadge(badge);
                         this.client.sendResponse(new AddUserBadgeComposer(badge));

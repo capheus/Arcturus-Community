@@ -40,6 +40,7 @@ public class RoomUnit
 
     private boolean inRoom;
     private boolean canWalk;
+    public boolean canRotate = true;
     private boolean fastWalk = false;
     public boolean animateWalk = false;
     public boolean cmdTeleport = false;
@@ -238,6 +239,15 @@ public class RoomUnit
                     item = lowestChair;
             }
 
+            if (next.equals(this.goalLocation) && next.state == RoomTileState.SIT)
+            {
+                if (item == null || item.getZ() - this.getZ() > RoomLayout.MAXIMUM_STEP_HEIGHT)
+                {
+                    this.status.remove(RoomUnitStatus.MOVE);
+                    return false;
+                }
+            }
+
             double zHeight = 0.0D;
 
             if (habbo != null)
@@ -252,7 +262,7 @@ public class RoomUnit
             if (habboItem != null)
             {
                 if (habboItem != item || !RoomLayout.pointInSquare(habboItem.getX(), habboItem.getY(), habboItem.getX() + habboItem.getBaseItem().getWidth() - 1, habboItem.getY() + habboItem.getBaseItem().getLength() - 1, next.x, next.y))
-                    habboItem.onWalkOff(this, room, null);
+                    habboItem.onWalkOff(this, room, new Object[]{this.getCurrentLocation(), next});
             }
 
             this.tilesWalked++;
@@ -682,6 +692,8 @@ public class RoomUnit
 
     public void lookAtPoint(RoomTile location)
     {
+        if (!this.canRotate) return;
+
         if(Emulator.getPluginManager().isRegistered(RoomUnitLookAtPointEvent.class, false))
         {
             Event lookAtPointEvent = new RoomUnitLookAtPointEvent(this.room, this, location);

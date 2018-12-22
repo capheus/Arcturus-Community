@@ -3,7 +3,7 @@ package com.eu.habbo.messages.incoming.users;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.unknown.NuxAlertComposer;
+import com.eu.habbo.messages.outgoing.habboway.nux.NuxAlertComposer;
 
 import java.util.HashMap;
 import java.util.Map;

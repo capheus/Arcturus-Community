@@ -84,6 +84,10 @@ public class WiredEffectWhisper extends InteractionWiredEffect
         packet.readInt();
 
         this.message = Emulator.getGameEnvironment().getWordFilter().filter(packet.readString(), null);
+        if (this.message.length() > 100)
+        {
+            this.message = "";
+        }
         packet.readInt();
         this.setDelay(packet.readInt());
         return true;

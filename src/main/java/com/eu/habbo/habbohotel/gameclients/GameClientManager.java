@@ -68,18 +68,22 @@ public class GameClientManager
 
         return this.clients.putIfAbsent(ctx.channel().id(), client) == null;
     }
-    
-    public void disposeClient(Channel channel)
+
+    public void disposeClient(GameClient client)
     {
-        GameClient client = this.getClient(channel);
+        client.getChannel().close();
+    }
+
+    private void disposeClient(Channel channel)
+    {
+        GameClient client = channel.attr(CLIENT).get();
 
         if (client != null)
         {
             client.dispose();
         }
-
-        channel.attr(CLIENT).set(null);
         channel.deregister();
+        channel.attr(CLIENT).set(null);
         channel.closeFuture();
         channel.close();
         this.clients.remove(channel.id());

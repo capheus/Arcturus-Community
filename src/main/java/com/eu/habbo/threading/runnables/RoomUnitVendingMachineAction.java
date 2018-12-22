@@ -39,7 +39,7 @@ public class RoomUnitVendingMachineAction implements Runnable
                             }
                             catch (Exception e)
                             {
-                                e.printStackTrace();
+                                Emulator.getLogging().logErrorLine(e);
                             }
                         }
                         else

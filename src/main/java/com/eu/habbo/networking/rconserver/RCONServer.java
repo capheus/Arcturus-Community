@@ -50,6 +50,7 @@ public class RCONServer extends Server
         this.addRCONMessage("updateuser",           UpdateUser.class);
         this.addRCONMessage("friendrequest",        FriendRequest.class);
         this.addRCONMessage("imagehotelalert",      ImageHotelAlert.class);
+        this.addRCONMessage("imagealertuser",       ImageAlertUser.class);
         this.addRCONMessage("stalkuser",            StalkUser.class);
         this.addRCONMessage("staffalert",           StaffAlert.class);
         this.addRCONMessage("modticket",            CreateModToolTicket.class);
@@ -58,6 +59,7 @@ public class RCONServer extends Server
         this.addRCONMessage("muteuser",             MuteUser.class);
         this.addRCONMessage("giverespect",          GiveRespect.class);
         this.addRCONMessage("ignoreuser",           IgnoreUser.class);
+        this.addRCONMessage("setmotto",             SetMotto.class);
 
         for (String ip : Emulator.getConfig().getValue("rcon.allowed", "127.0.0.1").split(";"))
         {

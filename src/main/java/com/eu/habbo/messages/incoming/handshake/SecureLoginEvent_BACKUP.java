@@ -12,7 +12,7 @@ import com.eu.habbo.messages.outgoing.handshake.SecureLoginOKComposer;
 import com.eu.habbo.messages.outgoing.handshake.SessionRightsComposer;
 import com.eu.habbo.messages.outgoing.modtool.ModToolComposer;
 import com.eu.habbo.messages.outgoing.navigator.*;
-import com.eu.habbo.messages.outgoing.unknown.NewUserIdentityComposer;
+import com.eu.habbo.messages.outgoing.habboway.nux.NewUserIdentityComposer;
 import com.eu.habbo.messages.outgoing.users.*;
 import com.eu.habbo.plugin.events.users.UserLoginEvent;
 

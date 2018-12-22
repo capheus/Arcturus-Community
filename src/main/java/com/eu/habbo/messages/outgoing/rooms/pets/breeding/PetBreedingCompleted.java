@@ -6,21 +6,21 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class PetBreedingCompleted extends MessageComposer
 {
-    public final int anInt1;
-    public final int anInt2;
+    public final int type;
+    public final int race;
 
-    public PetBreedingCompleted(int anInt1, int anInt2)
+    public PetBreedingCompleted(int type, int race)
     {
-        this.anInt1 = anInt1;
-        this.anInt2 = anInt2;
+        this.type = type;
+        this.race = race;
     }
 
     @Override
     public ServerMessage compose()
     {
         this.response.init(Outgoing.PetBreedingCompleted);
-        this.response.appendInt(this.anInt1);
-        this.response.appendInt(this.anInt2);
+        this.response.appendInt(this.type);
+        this.response.appendInt(this.race);
         return this.response;
     }
 }

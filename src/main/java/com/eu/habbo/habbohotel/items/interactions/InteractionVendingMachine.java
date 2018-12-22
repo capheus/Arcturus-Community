@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.*;
+import com.eu.habbo.habbohotel.users.HabboGender;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
@@ -20,11 +21,13 @@ public class InteractionVendingMachine extends HabboItem
     public InteractionVendingMachine(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
+        this.setExtradata("0");
     }
 
     public InteractionVendingMachine(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
     {
         super(id, userId, item, extradata, limitedStack, limitedSells);
+        this.setExtradata("0");
     }
 
     @Override
@@ -65,11 +68,14 @@ public class InteractionVendingMachine extends HabboItem
                         room.scheduledComposers.add(new FloorItemUpdateComposer(this).compose());
                         Emulator.getThreading().run(this, 1000);
                         Emulator.getThreading().run(new RoomUnitGiveHanditem(client.getHabbo().getRoomUnit(), room, this.getBaseItem().getRandomVendingItem()));
+
+                        if (this.getBaseItem().getEffectM() > 0 && client.getHabbo().getHabboInfo().getGender() == HabboGender.M) room.giveEffect(client.getHabbo(), this.getBaseItem().getEffectM());
+                        if (this.getBaseItem().getEffectF() > 0 && client.getHabbo().getHabboInfo().getGender() == HabboGender.F) room.giveEffect(client.getHabbo(), this.getBaseItem().getEffectF());
                     }
                 }
                 else
                 {
-                    if (!tile.isWalkable())
+                    if (!tile.isWalkable() && tile.state != RoomTileState.SIT && tile.state != RoomTileState.LAY)
                     {
                         for (RoomTile t : room.getLayout().getTilesAround(room.getLayout().getTile(this.getX(), this.getY())))
                         {

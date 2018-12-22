@@ -118,11 +118,13 @@ public abstract class InteractionWired extends HabboItem
         {
             return false;
         }
-
-        this.cooldown = newMillis;
         return true;
     }
 
+    public void setCooldown(long newMillis)
+    {
+        this.cooldown = newMillis;
+    }
     @Override
     public boolean allowWiredResetState()
     {

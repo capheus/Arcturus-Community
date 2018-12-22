@@ -146,7 +146,7 @@ public class RoomChatMessage implements Runnable, ISerialize, Loggable
     }
 
     @Override
-    public synchronized void run()
+    public void run()
     {
         if(habbo == null)
             return;

@@ -1,9 +1,11 @@
 package com.eu.habbo.habbohotel.bots;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.generic.alerts.BotErrorComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
@@ -136,13 +138,18 @@ public class BotManager
                     return;
                 }
 
-                if (!room.tileWalkable(location.x, location.y))
+                if (!room.hasHabbosAt(location.x, location.y) && !location.isWalkable() && location.state != RoomTileState.SIT)
                     return;
 
                 RoomUnit roomUnit = new RoomUnit();
                 roomUnit.setRotation(RoomUserRotation.SOUTH);
                 roomUnit.setLocation(location);
-                roomUnit.setZ(room.getStackHeight(location.x, location.y, false));
+                HabboItem topItem = room.getTopItemAt(location.x, location.y);
+                if (topItem != null)
+                {
+                    roomUnit.setZ(topItem.getZ() + Item.getCurrentHeight(topItem));
+                }
+                roomUnit.setPreviousLocationZ(roomUnit.getZ());
                 roomUnit.setPathFinderRoom(room);
                 roomUnit.setRoomUnitType(RoomUnitType.BOT);
                 roomUnit.setCanWalk(room.isAllowBotsWalk());
@@ -155,11 +162,22 @@ public class BotManager
                 habbo.getInventory().getBotsComponent().removeBot(bot);
                 habbo.getClient().sendResponse(new RemoveBotComposer(bot));
                 bot.onPlace(habbo, room);
+
+                if (topItem != null)
+                {
+                    try
+                    {
+                        topItem.onWalkOn(bot.getRoomUnit(), room, null);
+                    } catch (Exception e)
+                    {
+                        Emulator.getLogging().logErrorLine(e);
+                    }
+                }
                 bot.cycle(false);
             }
             else
             {
-                habbo.getClient().sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "cant_set_not_owner"));
+                habbo.getClient().sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNITURE_PLACEMENT_ERROR.key, FurnitureMovementError.NO_RIGHTS.errorCode));
             }
         }
     }

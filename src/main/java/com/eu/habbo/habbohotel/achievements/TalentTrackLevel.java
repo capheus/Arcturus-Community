@@ -72,7 +72,14 @@ public class TalentTrackLevel
             }
         }
 
-        this.perks  = set.getString("reward_perks").split(",");
-        this.badges = set.getString("reward_badges").split(",");
+        if (!set.getString("reward_perks").isEmpty())
+        {
+            this.perks = set.getString("reward_perks").split(",");
+        }
+
+        if (!set.getString("reward_badges").isEmpty())
+        {
+            this.badges = set.getString("reward_badges").split(",");
+        }
     }
 }

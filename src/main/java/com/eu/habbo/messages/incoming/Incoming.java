@@ -312,7 +312,7 @@ public class Incoming
     public static final int JukeBoxRemoveSoundTrackEvent = 3050;
     public static final int ToggleMonsterplantBreedableEvent = 3379;
     public static final int CompostMonsterplantEvent = 3835;
-    public static final int BreedPetsEvent = 1638;
+    public static final int BreedMonsterplantsEvent = 1638;
     public static final int MovePetEvent = 3449;
     public static final int PetPackageNameEvent = 3698;
 
@@ -343,6 +343,8 @@ public class Incoming
     public static final int HotelViewRequestLTDAvailabilityEvent = 410;
     public static final int PurchaseTargetOfferEvent = 1826;
     public static final int TargetOfferStateEvent = 2041;
+    public static final int StopBreedingEvent = 2713;
+    public static final int ConfirmPetBreedingEvent = 3382;
 
     public static final int GuildForumDataEvent = 3149;
     public static final int UNKNOWN_GUILD_FORUMS_EVENT2 = 3900;

@@ -16,6 +16,7 @@ public class CrackableReward
     public int totalChance;
     public final String achievementTick;
     public final String achievementCracked;
+    public final int requiredEffect;
 
     public CrackableReward(ResultSet set) throws SQLException
     {
@@ -23,6 +24,7 @@ public class CrackableReward
         this.count = set.getInt("count");
         this.achievementTick = set.getString("achievement_tick");
         this.achievementCracked = set.getString("achievement_cracked");
+        this.requiredEffect = set.getInt("required_effect");
 
         String[] data = set.getString("prizes").split(";");
         this.prizes = new HashMap<>();

@@ -26,7 +26,7 @@ public enum BubbleAlertKeys
     FORUMS_THREAD_RESTORED("forums.thread.restored"),
     FORUMS_THREAD_UNLOCKED("forums.thread.unlocked"),
     FORUMS_THREAD_UNPINNED("forums.thread.unpinned"),
-    FURNI_PLACE_EMENT_ERROR("furni_placement_error"),
+    FURNITURE_PLACEMENT_ERROR("furni_placement_error"),
     GIFTING_VALENTINE("gifting.valentine"),
     NUX_POPUP("nux.popup"),
     PURCHASING_ROOM("purchasing.room"),

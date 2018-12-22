@@ -100,27 +100,24 @@ public class WiredEffectToggleRandom extends InteractionWiredEffect
     @Override
     public boolean saveData(ClientMessage packet, GameClient gameClient)
     {
-        synchronized (this.items)
-        {
-            packet.readInt();
-            packet.readString();
+		packet.readInt();
+		packet.readString();
 
-            this.items.clear();
+		this.items.clear();
 
-            int count = packet.readInt();
+		int count = packet.readInt();
 
-            for (int i = 0; i < count; i++)
-            {
-                HabboItem item = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(packet.readInt());
+		for (int i = 0; i < count; i++)
+		{
+			HabboItem item = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(packet.readInt());
 
-                if (item instanceof InteractionFreezeBlock || item instanceof InteractionGameTimer || item instanceof InteractionCrackable)
-                    continue;
+			if (item instanceof InteractionFreezeBlock || item instanceof InteractionGameTimer || item instanceof InteractionCrackable)
+				continue;
 
-                this.items.add(item);
-            }
+			this.items.add(item);
+		}
 
-            this.setDelay(packet.readInt());
-        }
+		this.setDelay(packet.readInt());
 
         return true;
     }

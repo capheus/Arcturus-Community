@@ -17,7 +17,7 @@ public class UnknownWiredComposer extends MessageComposer
     @Override
     public ServerMessage compose()
     {
-        this.response.init(Outgoing.UnknownWiredComposer);
+        this.response.init(Outgoing.WiredOpenComposer);
         this.response.appendInt(this.item.getId());
         return this.response;
     }

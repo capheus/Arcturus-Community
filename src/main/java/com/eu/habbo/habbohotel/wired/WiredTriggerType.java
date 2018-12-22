@@ -16,7 +16,9 @@ public enum WiredTriggerType
     PERIODICALLY_LONG(12),
     BOT_REACHED_STF(13),
     BOT_REACHED_AVTR(14),
-    SAY_COMMAND(0);
+    SAY_COMMAND(0),
+    IDLES(11),
+    UNIDLES(12);
 
     public final int code;
 

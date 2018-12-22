@@ -20,9 +20,9 @@ public class PollQuestionsComposer extends MessageComposer
     {
         this.response.init(Outgoing.PollQuestionsComposer);
 
-        this.response.appendInt(this.poll.getId());
-        this.response.appendString(this.poll.getTitle());
-        this.response.appendString(this.poll.getThanksMessage());
+        this.response.appendInt(this.poll.id);
+        this.response.appendString(this.poll.title);
+        this.response.appendString(this.poll.thanksMessage);
         this.response.appendInt(this.poll.getQuestions().size());
         for (PollQuestion question : this.poll.getQuestions())
         {

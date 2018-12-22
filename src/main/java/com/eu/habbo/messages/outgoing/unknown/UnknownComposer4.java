@@ -9,7 +9,7 @@ public class UnknownComposer4 extends MessageComposer
     @Override
     public ServerMessage compose()
     {
-        this.response.init(Outgoing.UnknownComposer4);
+        this.response.init(Outgoing.IsFirstLoginOfDayComposer);
         this.response.appendBoolean(false); //Think something related to promo. Not sure though.
         return this.response;
     }

@@ -19,15 +19,12 @@ public class RoomFilterWordsComposer extends MessageComposer
     {
         this.response.init(Outgoing.RoomFilterWordsComposer);
 
-        synchronized (this.room.getWordFilterWords())
-        {
-            this.response.appendInt(this.room.getWordFilterWords().size());
+		this.response.appendInt(this.room.getWordFilterWords().size());
 
-            for (String string : this.room.getWordFilterWords())
-            {
-                this.response.appendString(string);
-            }
-        }
+		for (String string : this.room.getWordFilterWords())
+		{
+			this.response.appendString(string);
+		}
 
         return this.response;
     }

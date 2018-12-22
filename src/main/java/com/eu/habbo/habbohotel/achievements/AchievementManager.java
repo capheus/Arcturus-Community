@@ -209,12 +209,12 @@ public class AchievementManager
 
         AchievementLevel oldLevel = achievement.getLevelForProgress(currentProgress);
 
-        if(oldLevel == null)
-        {
-            oldLevel = achievement.firstLevel();
-        }
 
-        if(oldLevel.level == achievement.levels.size() && currentProgress >= oldLevel.progress) //Maximum achievement gotten.
+
+
+
+
+        if(oldLevel != null && (oldLevel.level == achievement.levels.size() && currentProgress >= oldLevel.progress)) //Maximum achievement gotten.
             return;
 
         habbo.getHabboStats().setProgress(achievement, currentProgress + amount);
@@ -239,7 +239,8 @@ public class AchievementManager
             }
         }
 
-        if(newLevel == null || (oldLevel.level == newLevel.level && newLevel.level < achievement.levels.size()))
+        if(newLevel == null ||
+                (oldLevel != null &&(oldLevel.level == newLevel.level && newLevel.level < achievement.levels.size())))
         {
             habbo.getClient().sendResponse(new AchievementProgressComposer(habbo, achievement));
         }
@@ -261,13 +262,17 @@ public class AchievementManager
             //The achievement is then progressed but the user is already disposed so fetching
             //the badge would result in an nullpointer exception. This is normal behaviour.
             HabboBadge badge = null;
-            try
+
+            if (oldLevel != null)
             {
-                badge = habbo.getInventory().getBadgesComponent().getBadge(("ACH_" + achievement.name + oldLevel.level).toLowerCase());
-            }
-            catch (Exception e)
-            {
-                return;
+                try
+                {
+                    badge = habbo.getInventory().getBadgesComponent().getBadge(("ACH_" + achievement.name + oldLevel.level).toLowerCase());
+                } catch (Exception e)
+                {
+                    Emulator.getLogging().logErrorLine(e);
+                    return;
+                }
             }
 
             if (badge != null)
@@ -364,6 +369,28 @@ public class AchievementManager
         }
     }
 
+    public static int getAchievementProgressForHabbo(int userId, Achievement achievement)
+    {
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT progress FROM users_achievements WHERE user_id = ? AND achievement_name = ? LIMIT 1"))
+        {
+            statement.setInt(1, userId);
+            statement.setString(2, achievement.name);
+            try (ResultSet set = statement.executeQuery())
+            {
+                if (set.next())
+                {
+                    return set.getInt("progress");
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
+        return 0;
+    }
+
     public LinkedHashMap<Integer, TalentTrackLevel> getTalenTrackLevels(TalentTrackType type)
     {
         return this.talentTrackLevels.get(type);
@@ -420,30 +447,39 @@ public class AchievementManager
 
                     if (level != null)
                     {
-                        for (Item item : level.items)
+                        if (level.items != null && !level.items.isEmpty())
                         {
-                            HabboItem rewardItem = Emulator.getGameEnvironment().getItemManager().createItem(habbo.getHabboInfo().getId(), item, 0, 0, "");
-                            habbo.getInventory().getItemsComponent().addItem(rewardItem);
-                            habbo.getClient().sendResponse(new AddHabboItemComposer(rewardItem));
-                            habbo.getClient().sendResponse(new InventoryRefreshComposer());
-                        }
-
-                        for (String badge : level.badges)
-                        {
-                            if (!badge.isEmpty())
+                            for (Item item : level.items)
                             {
-                                HabboBadge b = new HabboBadge(0, badge, 0, habbo);
-                                Emulator.getThreading().run(b);
-                                habbo.getInventory().getBadgesComponent().addBadge(b);
-                                habbo.getClient().sendResponse(new AddUserBadgeComposer(b));
+                                HabboItem rewardItem = Emulator.getGameEnvironment().getItemManager().createItem(habbo.getHabboInfo().getId(), item, 0, 0, "");
+                                habbo.getInventory().getItemsComponent().addItem(rewardItem);
+                                habbo.getClient().sendResponse(new AddHabboItemComposer(rewardItem));
+                                habbo.getClient().sendResponse(new InventoryRefreshComposer());
                             }
                         }
 
-                        for (String perk : level.perks)
+                        if (level.badges != null && level.badges.length > 0 )
                         {
-                            if (perk.equalsIgnoreCase("TRADE"))
+                            for (String badge : level.badges)
                             {
-                                habbo.getHabboStats().perkTrade = true;
+                                if (!badge.isEmpty())
+                                {
+                                    HabboBadge b = new HabboBadge(0, badge, 0, habbo);
+                                    Emulator.getThreading().run(b);
+                                    habbo.getInventory().getBadgesComponent().addBadge(b);
+                                    habbo.getClient().sendResponse(new AddUserBadgeComposer(b));
+                                }
+                            }
+                        }
+
+                        if (level.perks != null && level.perks.length > 0 )
+                        {
+                            for (String perk : level.perks)
+                            {
+                                if (perk.equalsIgnoreCase("TRADE"))
+                                {
+                                    habbo.getHabboStats().perkTrade = true;
+                                }
                             }
                         }
                         habbo.getClient().sendResponse(new TalentLevelUpdateComposer(type, level));

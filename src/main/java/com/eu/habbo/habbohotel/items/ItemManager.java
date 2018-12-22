@@ -164,6 +164,13 @@ public class ItemManager
         this.interactionsList.add(new ItemInteraction("sticky_pole",            InteractionStickyPole.class));
         this.interactionsList.add(new ItemInteraction("trap",                   InteractionTrap.class));
         this.interactionsList.add(new ItemInteraction("tent",                   InteractionTent.class));
+        this.interactionsList.add(new ItemInteraction("gym_equipment",          InteractionGymEquipment.class));
+        this.interactionsList.add(new ItemInteraction("handitem",               InteractionHanditem.class));
+        this.interactionsList.add(new ItemInteraction("handitem_tile",          InteractionHanditemTile.class));
+        this.interactionsList.add(new ItemInteraction("effect_giver",           InteractionEffectGiver.class));
+        this.interactionsList.add(new ItemInteraction("effect_vendingmachine",  InteractionEffectVendingMachine.class));
+        this.interactionsList.add(new ItemInteraction("crackable_monster",      InteractionMonsterCrackable.class));
+        this.interactionsList.add(new ItemInteraction("snowboard_slope",        InteractionSnowboardSlope.class));
 
 
 
@@ -183,6 +190,8 @@ public class ItemManager
             this.interactionsList.add(new ItemInteraction("wf_trg_bot_reached_avtr",    WiredTriggerBotReachedHabbo.class));
             this.interactionsList.add(new ItemInteraction("wf_trg_says_command",        WiredTriggerHabboSaysCommand.class));
             this.interactionsList.add(new ItemInteraction("wf_trg_score_achieved",      WiredTriggerScoreAchieved.class));
+            this.interactionsList.add(new ItemInteraction("wf_trg_idles",               WiredTriggerHabboIdle.class));
+            this.interactionsList.add(new ItemInteraction("wf_trg_unidles",             WiredTriggerHabboUnidle.class));
 
 
             this.interactionsList.add(new ItemInteraction("wf_act_toggle_state",        WiredEffectToggleFurni.class));
@@ -422,14 +431,17 @@ public class ItemManager
         {
             while(set.next())
             {
+                CrackableReward reward = null;
                 try
                 {
-                    this.crackableRewards.put(set.getInt("item_id"), new CrackableReward(set));
+                    reward = new CrackableReward(set);
                 }
                 catch (Exception e)
                 {
                     Emulator.getLogging().logErrorLine("Failed to load items_crackable item_id = " + set.getInt("ïtem_id"));
+                    continue;
                 }
+                this.crackableRewards.put(set.getInt("item_id"), reward);
             }
         }
         catch (SQLException e)
@@ -913,4 +925,16 @@ public class ItemManager
         Emulator.getLogging().logShutdownLine("Item Manager -> Disposed!");
     }
 
+    public List<String> getInteractionList()
+    {
+        List<String> interactions = new ArrayList<>();
+
+        for (ItemInteraction interaction : this.interactionsList)
+        {
+            interactions.add(interaction.getName());
+        }
+
+        Collections.sort(interactions);
+        return interactions;
+    }
 }

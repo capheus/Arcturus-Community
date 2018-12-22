@@ -4,7 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
-import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
+import com.eu.habbo.messages.outgoing.modtool.ModToolIssueHandledComposer;
 
 public class RoomAlertCommand extends Command
 {
@@ -35,7 +35,7 @@ public class RoomAlertCommand extends Command
 
             if (room != null)
             {
-                room.sendComposer(new GenericAlertComposer(message).compose());
+                room.sendComposer(new ModToolIssueHandledComposer(message).compose());
                 return true;
             }
         }

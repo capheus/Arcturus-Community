@@ -25,12 +25,26 @@ public class SetStackHelperHeightEvent extends MessageHandler
 
             if(item instanceof InteractionStackHelper)
             {
-
-
                 Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
                 RoomTile itemTile = room.getLayout().getTile(item.getX(), item.getY());
-                int stackerHeight = Math.min(Math.max(this.packet.readInt(), itemTile.z * 100), 4000);
+                double stackerHeight = this.packet.readInt();
+
                 THashSet<RoomTile> tiles = room.getLayout().getTilesAt(itemTile, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
+                if (stackerHeight == -100)
+                {
+                    for (RoomTile tile : tiles)
+                    {
+                        double stackheight = room.getStackHeight(tile.x, tile.y, false, item) * 100;
+                        if (stackheight > stackerHeight)
+                        {
+                            stackerHeight = stackheight;
+                        }
+                    }
+                }
+                else
+                {
+                    stackerHeight = Math.min(Math.max(stackerHeight, itemTile.z * 100), 4000);
+                }
 
                 double height = 0;
                 if(stackerHeight >= 0)

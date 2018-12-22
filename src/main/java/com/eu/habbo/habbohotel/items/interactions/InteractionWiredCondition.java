@@ -4,6 +4,7 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.wired.WiredConditionOperator;
 import com.eu.habbo.habbohotel.wired.WiredConditionType;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.outgoing.wired.WiredConditionDataComposer;
@@ -69,5 +70,10 @@ public abstract class InteractionWiredCondition extends InteractionWired
     public abstract WiredConditionType getType();
 
     public abstract boolean saveData(ClientMessage packet);
+
+    public WiredConditionOperator operator()
+    {
+        return WiredConditionOperator.AND;
+    }
 
 }

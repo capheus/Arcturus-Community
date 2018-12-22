@@ -453,9 +453,9 @@ public class RoomManager
 
         for(Room room : roomsToDispose)
         {
+            room.dispose();
             if(room.getUserCount() == 0)
                 this.activeRooms.remove(room.getId());
-            room.dispose();
         }
     }
 
@@ -1464,7 +1464,7 @@ public class RoomManager
         {
             if (guild.getOwnerId() != habbo.getHabboInfo().getId())
             {
-                Room room = this.loadRoom(guild.getRoomId());
+                Room room = this.getRoom(guild.getRoomId());
 
                 if (room != null)
                 {

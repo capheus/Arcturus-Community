@@ -54,5 +54,5 @@ public class InteractionExternalImage extends HabboItem
     {
     }
 
-    //{"t":10000000, "u":"http://arcturus.wf/camera/", "m":"idk", "s":1, "w":"http://arcturus.wf/camera/image.png"}
+    //{"t":10000000, "u":"http://arcturus.pw/camera/", "m":"idk", "s":1, "w":"http://arcturus.pw/camera/image.png"}
 }

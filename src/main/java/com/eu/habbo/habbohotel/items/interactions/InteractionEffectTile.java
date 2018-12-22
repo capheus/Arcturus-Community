@@ -1,8 +1,10 @@
 package com.eu.habbo.habbohotel.items.interactions;
 
+import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.rooms.RoomUnitType;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboGender;
 
@@ -49,14 +51,35 @@ public class InteractionEffectTile extends InteractionPressurePlate
     public void onWalkOn(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
     {
         super.onWalkOn(roomUnit, room, objects);
-        Habbo habbo = room.getHabbo(roomUnit);
 
-        if (habbo.getHabboInfo().getGender().equals(HabboGender.M))
+        if (roomUnit.getRoomUnitType() == RoomUnitType.USER)
         {
-            room.giveEffect(habbo.getRoomUnit(), this.getBaseItem().getEffectM());
+            Habbo habbo = room.getHabbo(roomUnit);
+
+            if (habbo != null)
+            {
+                giveEffect(room, roomUnit, habbo.getHabboInfo().getGender());
+            }
+        }
+        else if (roomUnit.getRoomUnitType() == RoomUnitType.BOT)
+        {
+            Bot bot = room.getBot(roomUnit);
+
+            if (bot != null)
+            {
+                giveEffect(room, roomUnit, bot.getGender());
+            }
+        }
+    }
+
+    private void giveEffect(Room room, RoomUnit roomUnit, HabboGender gender)
+    {
+        if (gender.equals(HabboGender.M))
+        {
+            room.giveEffect(roomUnit, this.getBaseItem().getEffectM());
         } else
         {
-            room.giveEffect(habbo.getRoomUnit(), this.getBaseItem().getEffectF());
+            room.giveEffect(roomUnit, this.getBaseItem().getEffectF());
         }
     }
 

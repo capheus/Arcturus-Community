@@ -79,7 +79,7 @@ public class InteractionTeleport extends HabboItem
                     });
                 }
             }
-            else if (teleportPosition.equals(client.getHabbo().getRoomUnit().getCurrentLocation()))
+            else if (teleportPosition.equals(client.getHabbo().getRoomUnit().getCurrentLocation()) && tile != null && tile.isWalkable())
             {
                 startTeleport(room, client.getHabbo());
             }

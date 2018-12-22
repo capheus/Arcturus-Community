@@ -1,9 +1,11 @@
 package com.eu.habbo.habbohotel.items.interactions;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.rooms.RoomUnitType;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -119,6 +121,24 @@ public class InteractionDefault extends HabboItem
                         }
                     }
                 }
+                else if (roomUnit.getRoomUnitType().equals(RoomUnitType.BOT))
+                {
+                    Bot bot = room.getBot(roomUnit);
+
+                    if (bot != null)
+                    {
+                        if (bot.getGender().equals(HabboGender.M) && this.getBaseItem().getEffectM() > 0 && roomUnit.getEffectId() != this.getBaseItem().getEffectM())
+                        {
+                            room.giveEffect(bot.getRoomUnit(), this.getBaseItem().getEffectM());
+                            return;
+                        }
+                        if (bot.getGender().equals(HabboGender.F) && this.getBaseItem().getEffectF() > 0 && roomUnit.getEffectId() != this.getBaseItem().getEffectF())
+                        {
+                            room.giveEffect(bot.getRoomUnit(), this.getBaseItem().getEffectF());
+                            return;
+                        }
+                    }
+                }
             }
         }
     }
@@ -132,12 +152,27 @@ public class InteractionDefault extends HabboItem
         {
             if (this.getBaseItem().getEffectF() > 0 || this.getBaseItem().getEffectM() > 0)
             {
+                if (objects != null && objects.length == 2)
+                {
+                    if (objects[0] instanceof RoomTile && objects[1] instanceof RoomTile)
+                    {
+                        RoomTile goalTile = (RoomTile) objects[1];
+                        HabboItem topItem = room.getTopItemAt(goalTile.x, goalTile.y);
+
+                        if (topItem != null && (topItem.getBaseItem().getEffectM() == this.getBaseItem().getEffectM() || topItem.getBaseItem().getEffectF() == this.getBaseItem().getEffectF()))
+                        {
+                            return;
+                        }
+                    }
+                }
+
                 if (roomUnit.getRoomUnitType().equals(RoomUnitType.USER))
                 {
                     Habbo habbo = room.getHabbo(roomUnit);
 
                     if (habbo != null)
                     {
+
                         if (habbo.getHabboInfo().getGender().equals(HabboGender.M) && this.getBaseItem().getEffectM() > 0)
                         {
                             room.giveEffect(habbo, 0);
@@ -147,6 +182,25 @@ public class InteractionDefault extends HabboItem
                         if (habbo.getHabboInfo().getGender().equals(HabboGender.F) && this.getBaseItem().getEffectF() > 0)
                         {
                             room.giveEffect(habbo, 0);
+                            return;
+                        }
+                    }
+                }
+                else if (roomUnit.getRoomUnitType().equals(RoomUnitType.BOT))
+                {
+                    Bot bot = room.getBot(roomUnit);
+
+                    if (bot != null)
+                    {
+                        if (bot.getGender().equals(HabboGender.M) && this.getBaseItem().getEffectM() > 0)
+                        {
+                            room.giveEffect(roomUnit, 0);
+                            return;
+                        }
+
+                        if (bot.getGender().equals(HabboGender.F) && this.getBaseItem().getEffectF() > 0)
+                        {
+                            room.giveEffect(roomUnit, 0);
                             return;
                         }
                     }

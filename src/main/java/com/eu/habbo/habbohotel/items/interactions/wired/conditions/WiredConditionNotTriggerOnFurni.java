@@ -6,7 +6,6 @@ import com.eu.habbo.habbohotel.items.interactions.InteractionWiredCondition;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
-import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredConditionType;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
@@ -39,11 +38,6 @@ public class WiredConditionNotTriggerOnFurni extends InteractionWiredCondition
         this.refresh();
 
         if(this.items.isEmpty())
-            return true;
-
-        Habbo habbo = room.getHabbo(roomUnit);
-
-        if(habbo == null)
             return true;
 
         for(HabboItem item : this.items)

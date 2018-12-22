@@ -7,10 +7,18 @@ import java.util.Collections;
 
 public class Poll
 {
-    private int id;
-    private String title;
-    private String thanksMessage;
-    private String badgeReward;
+
+    public final int id;
+
+
+    public final String title;
+
+
+    public final String thanksMessage;
+
+
+    public final String badgeReward;
+
     public int lastQuestionId;
 
     private ArrayList<PollQuestion> questions;
@@ -24,26 +32,6 @@ public class Poll
         this.questions = new ArrayList<>();
     }
 
-    public int getId()
-    {
-        return this.id;
-    }
-
-    public String getTitle()
-    {
-        return this.title;
-    }
-
-    public String getThanksMessage()
-    {
-        return this.thanksMessage;
-    }
-
-    public String getBadgeReward()
-    {
-        return this.badgeReward;
-    }
-
     public ArrayList<PollQuestion> getQuestions()
     {
         return this.questions;
@@ -53,7 +41,7 @@ public class Poll
     {
         for (PollQuestion q : this.questions)
         {
-            if (q.getId() == id)
+            if (q.id == id)
             {
                 return q;
             }

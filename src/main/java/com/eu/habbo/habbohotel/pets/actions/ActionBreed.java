@@ -7,6 +7,7 @@ import com.eu.habbo.habbohotel.pets.PetTasks;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.pets.breeding.PetBreedingStartFailedComposer;
+import org.apache.commons.lang3.StringUtils;
 
 public class ActionBreed extends PetAction
 {
@@ -21,7 +22,7 @@ public class ActionBreed extends PetAction
         InteractionPetBreedingNest nest = null;
         for (HabboItem item : pet.getRoom().getRoomSpecialTypes().getItemsOfType(InteractionPetBreedingNest.class))
         {
-            if (item.getBaseItem().getName().contains(pet.getPetData().getName()))
+            if (StringUtils.containsIgnoreCase(item.getBaseItem().getName(), pet.getPetData().getName()))
             {
                 if (!((InteractionPetBreedingNest)item).boxFull())
                 {

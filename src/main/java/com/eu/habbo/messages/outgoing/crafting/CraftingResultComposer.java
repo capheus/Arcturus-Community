@@ -8,10 +8,18 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 public class CraftingResultComposer extends MessageComposer
 {
     private final CraftingRecipe recipe;
+    private final boolean succes;
 
     public CraftingResultComposer(CraftingRecipe recipe)
     {
         this.recipe = recipe;
+        this.succes = this.recipe != null;
+    }
+
+    public CraftingResultComposer(CraftingRecipe recipe, boolean success)
+    {
+        this.recipe = recipe;
+        this.succes = success;
     }
 
     @Override
@@ -19,7 +27,7 @@ public class CraftingResultComposer extends MessageComposer
     {
         this.response.init(Outgoing.CraftingResultComposer);
 
-        this.response.appendBoolean(this.recipe != null); //succes
+        this.response.appendBoolean(this.succes); //succes
 
         if(this.recipe != null)
         {

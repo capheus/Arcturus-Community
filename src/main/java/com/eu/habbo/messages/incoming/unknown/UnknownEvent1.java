@@ -1,13 +1,13 @@
 package com.eu.habbo.messages.incoming.unknown;
 
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.unknown.UnknownComposer6;
+import com.eu.habbo.messages.outgoing.unknown.IgnoredUsersComposer;
 
 public class UnknownEvent1 extends MessageHandler
 {
     @Override
     public void handle() throws Exception
     {
-        this.client.sendResponse(new UnknownComposer6());
+        this.client.sendResponse(new IgnoredUsersComposer());
     }
 }

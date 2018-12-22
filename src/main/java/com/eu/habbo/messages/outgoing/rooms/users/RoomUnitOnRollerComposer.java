@@ -1,6 +1,5 @@
 package com.eu.habbo.messages.outgoing.rooms.users;
 
-import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
@@ -50,24 +49,11 @@ public class RoomUnitOnRollerComposer extends MessageComposer
         this.response.appendString(this.roomUnit.getZ() + "");
         this.response.appendString(this.newLocation.getStackHeight() + "");
 
-        this.roomUnit.setLocation(room.getLayout().getTile(this.newLocation.x, this.newLocation.y));
+        this.roomUnit.setLocation(this.newLocation);
+        this.roomUnit.setPreviousLocationZ(this.newLocation.getStackHeight());
+        this.roomUnit.setZ(this.newLocation.getStackHeight());
 
-        try
-        {
-            if(roller != null)
-            {
-                this.roller.onWalkOff(this.roomUnit, this.room, new Object[]{this.roller});
 
-                HabboItem item = this.room.getTopItemAt(this.newLocation.x, this.newLocation.y);
-
-                if(item != null)
-                    item.onWalkOn(this.roomUnit, this.room, new Object[]{this.roller});
-            }
-        }
-        catch (Exception e)
-        {
-            Emulator.getLogging().logErrorLine(e);
-        }
         this.roomUnit.sitUpdate = true;
 
         return this.response;

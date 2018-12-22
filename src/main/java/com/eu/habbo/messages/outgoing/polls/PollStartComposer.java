@@ -18,10 +18,10 @@ public class PollStartComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.PollStartComposer);
-        this.response.appendInt(this.poll.getId());
-        this.response.appendString(this.poll.getTitle());
-        this.response.appendString(this.poll.getThanksMessage());
-        this.response.appendString(this.poll.getTitle());
+        this.response.appendInt(this.poll.id);
+        this.response.appendString(this.poll.title);
+        this.response.appendString(this.poll.thanksMessage);
+        this.response.appendString(this.poll.title);
         return this.response;
     }
 }

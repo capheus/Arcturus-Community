@@ -87,7 +87,7 @@ public class TalentTrackComposer extends MessageComposer
                                 response.appendInt(achievement.id);
 
                                 //TODO Move this to TalenTrackLevel class
-                                response.appendInt(1); //idk
+                                response.appendInt(b); //idk
                                 response.appendString("ACH_" + achievement.name + b);
 
                                 int progress = habbo.getHabboStats().getAchievementProgress(achievement);
@@ -128,7 +128,7 @@ public class TalentTrackComposer extends MessageComposer
                     });
 
 
-                    if (level.perks.length > 0)
+                    if (level.perks != null && level.perks.length > 0)
                     {
                         this.response.appendInt(level.perks.length);
                         for (String perk : level.perks)

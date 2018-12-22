@@ -24,10 +24,18 @@ public class TalentLevelUpdateComposer extends MessageComposer
         this.response.init(Outgoing.TalentLevelUpdateComposer);
         this.response.appendString(this.talentTrackType.name());
         this.response.appendInt(this.talentTrackLevel.level);
-        this.response.appendInt(this.talentTrackLevel.perks.length);
-        for (String s : this.talentTrackLevel.perks)
+
+        if (this.talentTrackLevel.perks != null)
         {
-            this.response.appendString(s);
+            this.response.appendInt(this.talentTrackLevel.perks.length);
+            for (String s : this.talentTrackLevel.perks)
+            {
+                this.response.appendString(s);
+            }
+        }
+        else
+        {
+            this.response.appendInt(0);
         }
 
         this.response.appendInt(this.talentTrackLevel.items.size());

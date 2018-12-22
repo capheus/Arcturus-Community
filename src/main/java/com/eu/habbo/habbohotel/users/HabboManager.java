@@ -99,7 +99,7 @@ public class HabboManager
         if (habbo != null)
         {
             habbo.getClient().sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("loggedin.elsewhere")));
-            Emulator.getGameServer().getGameClientManager().disposeClient(habbo.getClient().getChannel());
+            Emulator.getGameServer().getGameClientManager().disposeClient(habbo.getClient());
             habbo = null;
         }
 

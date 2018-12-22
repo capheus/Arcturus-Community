@@ -377,7 +377,7 @@ public class PluginManager
         HotelViewRequestLTDAvailabilityEvent.TIMESTAMP =  Emulator.getConfig().getInt("hotel.view.ltdcountdown.timestamp");
         HotelViewRequestLTDAvailabilityEvent.ITEM_ID = Emulator.getConfig().getInt("hotel.view.ltdcountdown.itemid");
         HotelViewRequestLTDAvailabilityEvent.PAGE_ID = Emulator.getConfig().getInt("hotel.view.ltdcountdown.pageid");
-        HotelViewRequestLTDAvailabilityEvent.ITEM_NAME = Emulator.getConfig().getValue("hotel.view.ltdcountdown.itename");
+        HotelViewRequestLTDAvailabilityEvent.ITEM_NAME = Emulator.getConfig().getValue("hotel.view.ltdcountdown.itemname");
         InteractionPostIt.STICKYPOLE_PREFIX_TEXT = Emulator.getConfig().getValue("hotel.room.stickypole.prefix");
         TargetOffer.ACTIVE_TARGET_OFFER_ID = Emulator.getConfig().getInt("hotel.targetoffer.id");
         WordFilter.DEFAULT_REPLACEMENT = Emulator.getConfig().getValue("hotel.wordfilter.replacement");

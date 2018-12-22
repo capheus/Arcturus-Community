@@ -9,7 +9,7 @@ public class ConsoleInfoCommand extends ConsoleCommand
 {
     public ConsoleInfoCommand()
     {
-        super("info", "");
+        super("info", "Show current statistics.");
     }
 
     @Override

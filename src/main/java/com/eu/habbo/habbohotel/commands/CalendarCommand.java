@@ -3,7 +3,7 @@ package com.eu.habbo.habbohotel.commands;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.messages.outgoing.events.calendar.AdventCalendarDataComposer;
-import com.eu.habbo.messages.outgoing.unknown.NuxAlertComposer;
+import com.eu.habbo.messages.outgoing.habboway.nux.NuxAlertComposer;
 
 public class CalendarCommand extends Command
 {

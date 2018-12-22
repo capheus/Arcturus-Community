@@ -9,12 +9,25 @@ import java.sql.SQLException;
 
 public class PetCommand implements Comparable<PetCommand>
 {
+
     public final int id;
+
+
     public final String key;
+
+
     public final int level;
+
+
     public final int xp;
+
+
     public final int energyCost;
+
+
     public final int happynessCost;
+
+
     public final PetAction action;
 
     public PetCommand(ResultSet set, PetAction action) throws SQLException
