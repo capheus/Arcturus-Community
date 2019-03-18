@@ -12,7 +12,7 @@ public class CustomNotificationComposer extends MessageComposer
     public static final int STARS_NOT_CANDIDATE = 4;
     public static final int STARS_NOT_ENOUGH_USERS = 5;
 
-    private int type;
+    private final int type;
 
     public CustomNotificationComposer(int type)
     {

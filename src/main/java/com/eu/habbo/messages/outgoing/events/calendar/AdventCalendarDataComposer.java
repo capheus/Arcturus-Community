@@ -8,11 +8,11 @@ import gnu.trove.procedure.TIntProcedure;
 
 public class AdventCalendarDataComposer extends MessageComposer
 {
-    public final String eventName;
-    public final int totalDays;
-    public final int currentDay;
-    public final TIntArrayList unlocked;
-    public final boolean lockExpired;
+    private final String eventName;
+    private final int totalDays;
+    private final int currentDay;
+    private final TIntArrayList unlocked;
+    private final boolean lockExpired;
 
     public AdventCalendarDataComposer(String eventName, int totalDays, int currentDay, TIntArrayList unlocked, boolean lockExpired)
     {
@@ -35,7 +35,7 @@ public class AdventCalendarDataComposer extends MessageComposer
         this.response.appendInt(this.unlocked.size());
 
         TIntArrayList expired = new TIntArrayList();
-        for (int i = 0; i < totalDays; i++)
+        for (int i = 0; i < this.totalDays; i++)
         {
             expired.add(i);
             expired.remove(this.currentDay);
@@ -46,7 +46,7 @@ public class AdventCalendarDataComposer extends MessageComposer
             @Override
             public boolean execute(int value)
             {
-                response.appendInt(value);
+                AdventCalendarDataComposer.this.response.appendInt(value);
                 expired.remove(value);
                 return true;
             }
@@ -61,7 +61,7 @@ public class AdventCalendarDataComposer extends MessageComposer
                 @Override
                 public boolean execute(int value)
                 {
-                    response.appendInt(value);
+                    AdventCalendarDataComposer.this.response.appendInt(value);
                     return true;
                 }
             });

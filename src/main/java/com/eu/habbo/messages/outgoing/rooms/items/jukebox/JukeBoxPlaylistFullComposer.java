@@ -10,7 +10,6 @@ public class JukeBoxPlaylistFullComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.JukeBoxPlaylistFullComposer);
-
         return this.response;
     }
 }

@@ -37,7 +37,7 @@ public class TalkUser extends RCONMessage<TalkUser.JSON>
         }
     }
 
-    public static class JSON
+    static class JSON
     {
 
         public String type;

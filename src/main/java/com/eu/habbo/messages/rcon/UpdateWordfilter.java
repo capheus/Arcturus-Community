@@ -17,7 +17,7 @@ public class UpdateWordfilter extends RCONMessage<UpdateWordfilter.WordFilterJSO
         Emulator.getGameEnvironment().getWordFilter().reload();
     }
 
-    public static class WordFilterJSON
+    static class WordFilterJSON
     {
     }
 }

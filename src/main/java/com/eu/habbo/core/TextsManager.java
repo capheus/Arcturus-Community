@@ -55,7 +55,7 @@ public class TextsManager
 
     public String getValue(String key)
     {
-        return getValue(key, "");
+        return this.getValue(key, "");
     }
 
 
@@ -70,7 +70,7 @@ public class TextsManager
 
     public boolean getBoolean(String key)
     {
-        return getBoolean(key, false);
+        return this.getBoolean(key, false);
     }
 
 
@@ -78,7 +78,7 @@ public class TextsManager
     {
         try
         {
-            return (getValue(key, "0").equals("1")) || (getValue(key, "false").equals("true"));
+            return (this.getValue(key, "0").equals("1")) || (this.getValue(key, "false").equals("true"));
         }
         catch (Exception e)
         {
@@ -90,7 +90,7 @@ public class TextsManager
 
     public int getInt(String key)
     {
-        return getInt(key, 0);
+        return this.getInt(key, 0);
     }
 
 
@@ -98,7 +98,7 @@ public class TextsManager
     {
         try
         {
-            return Integer.parseInt(getValue(key, defaultValue.toString()));
+            return Integer.parseInt(this.getValue(key, defaultValue.toString()));
         }
         catch (Exception e)
         {

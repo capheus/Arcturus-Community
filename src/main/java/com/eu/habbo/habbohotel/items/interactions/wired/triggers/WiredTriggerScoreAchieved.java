@@ -34,10 +34,7 @@ public class WiredTriggerScoreAchieved extends InteractionWiredTrigger
             int points = (Integer)stuff[0];
             int amountAdded = (Integer)stuff[1];
 
-            if (points - amountAdded < this.score && points >= this.score)
-            {
-                return true;
-            }
+            return points - amountAdded < this.score && points >= this.score;
         }
 
         return false;

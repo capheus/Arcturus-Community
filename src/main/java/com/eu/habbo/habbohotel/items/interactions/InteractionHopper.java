@@ -62,7 +62,7 @@ public class InteractionHopper extends HabboItem
             RoomTile loc = HabboItem.getSquareInFront(room.getLayout(), this);
             if (loc != null)
             {
-                if (canUseTeleport(client, loc, room))
+                if (this.canUseTeleport(client, loc, room))
                 {
                     client.getHabbo().getRoomUnit().isTeleporting = true;
                     this.setExtradata("1");
@@ -100,7 +100,7 @@ public class InteractionHopper extends HabboItem
         super.run();
     }
 
-    private boolean canUseTeleport(GameClient client, RoomTile front, Room room)
+    protected boolean canUseTeleport(GameClient client, RoomTile front, Room room)
     {
         if(client.getHabbo().getRoomUnit().getX() != front.x)
             return false;
@@ -114,9 +114,6 @@ public class InteractionHopper extends HabboItem
         if(!room.getHabbosAt(this.getX(), this.getY()).isEmpty())
             return false;
 
-        if(!this.getExtradata().equals("0"))
-            return false;
-
-        return true;
+        return this.getExtradata().equals("0");
     }
 }

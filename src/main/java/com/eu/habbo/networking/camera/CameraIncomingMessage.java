@@ -50,11 +50,10 @@ public abstract class CameraIncomingMessage extends CameraMessage
     {
         try
         {
-            int length = readInt();
+            int length = this.readInt();
             byte[] data = new byte[length];
             this.buffer.readBytes(data);
-            String s = new String(data);
-            return s;
+            return new String(data);
         }
         catch (Exception e)
         {

@@ -17,7 +17,6 @@ public class GuideToolsComposer extends MessageComposer
     @Override
     public ServerMessage compose()
     {
-        //:test 117 b:1 i:1 i:1 i:1
         this.response.init(Outgoing.GuideToolsComposer);
         this.response.appendBoolean(this.onDuty); //OnDuty
         this.response.appendInt(0); //Guides On Duty

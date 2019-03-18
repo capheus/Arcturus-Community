@@ -26,25 +26,25 @@ public class CrackableReward
         this.achievementCracked = set.getString("achievement_cracked");
         this.requiredEffect = set.getInt("required_effect");
 
-        String[] data = set.getString("prizes").split(";");
+        String[] prizes = set.getString("prizes").split(";");
         this.prizes = new HashMap<>();
 
         this.totalChance = 0;
-        for(int i = 0; i < data.length; i++)
+        for (String prize : prizes)
         {
             try
             {
                 int itemId = 0;
                 int chance = 100;
 
-                if (data[i].contains(":") && data[i].split(":").length == 2)
+                if (prize.contains(":") && prize.split(":").length == 2)
                 {
-                    itemId = Integer.valueOf(data[i].split(":")[0]);
-                    chance = Integer.valueOf(data[i].split(":")[1]);
+                    itemId = Integer.valueOf(prize.split(":")[0]);
+                    chance = Integer.valueOf(prize.split(":")[1]);
                 }
                 else
                 {
-                    itemId = Integer.valueOf(data[i].replace(":", ""));
+                    itemId = Integer.valueOf(prize.replace(":", ""));
                 }
 
                 this.prizes.put(itemId, new AbstractMap.SimpleEntry<>(this.totalChance, this.totalChance + chance));

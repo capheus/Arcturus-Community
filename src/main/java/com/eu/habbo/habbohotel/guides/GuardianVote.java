@@ -4,10 +4,10 @@ import com.eu.habbo.habbohotel.users.Habbo;
 
 public class GuardianVote implements Comparable<GuardianVote>
 {
-    public int id;
-    public Habbo guardian;
+    public final int id;
+    final Habbo guardian;
     public GuardianVoteType type;
-    public boolean ignore;
+    boolean ignore;
 
     public GuardianVote(int id, Habbo guardian)
     {

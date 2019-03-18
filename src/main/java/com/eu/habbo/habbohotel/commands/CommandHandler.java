@@ -24,7 +24,7 @@ public class CommandHandler
     public CommandHandler()
     {
         long millis = System.currentTimeMillis();
-        reloadCommands();
+        this.reloadCommands();
         Emulator.getLogging().logStart("Command Handler -> Loaded! (" + (System.currentTimeMillis() - millis) + " MS)");
     }
 
@@ -205,7 +205,7 @@ public class CommandHandler
                                     }
                                     catch (Exception e)
                                     {
-                                        e.printStackTrace();
+                                        Emulator.getLogging().logErrorLine(e);
                                     }
 
                                     if (gameClient.getHabbo().getHabboInfo().getRank().isLogCommands())
@@ -249,22 +249,22 @@ public class CommandHandler
 
                         Pet pet = petIterator.value();
 
-                        if (pet instanceof Pet)
+                        if (pet != null)
                         {
                             if (pet.getName().equalsIgnoreCase(args[0]))
                             {
-                                String s = "";
+                                StringBuilder s = new StringBuilder();
 
                                 for (int i = 1; i < args.length; i++)
                                 {
-                                    s += args[i] + " ";
+                                    s.append(args[i]).append(" ");
                                 }
 
-                                s = s.substring(0, s.length() - 1);
+                                s = new StringBuilder(s.substring(0, s.length() - 1));
 
                                 for (PetCommand command : pet.getPetData().getPetCommands())
                                 {
-                                    if (command.key.equalsIgnoreCase(s))
+                                    if (command.key.equalsIgnoreCase(s.toString()))
                                     {
                                         if (command.level <= pet.getLevel())
                                             pet.handleCommand(command, gameClient.getHabbo(), args);
@@ -303,7 +303,7 @@ public class CommandHandler
             }
         }
 
-        Collections.sort(allowedCommands, CommandHandler.ALPHABETICAL_ORDER);
+        allowedCommands.sort(CommandHandler.ALPHABETICAL_ORDER);
 
         return allowedCommands;
     }

@@ -11,6 +11,7 @@ public class JukeBoxPlayListComposer extends MessageComposer
 {
     private final List<InteractionMusicDisc> songs;
     private final int totalLength;
+
     public JukeBoxPlayListComposer(List<InteractionMusicDisc> songs, int totalLength)
     {
         this.songs = songs;
@@ -22,14 +23,12 @@ public class JukeBoxPlayListComposer extends MessageComposer
     {
         this.response.init(Outgoing.JukeBoxPlayListComposer);
         this.response.appendInt(this.totalLength); //Dunno //TODO Total play length?
-        this.response.appendInt(songs.size());
-
-        for (InteractionMusicDisc soundTrack : songs)
+        this.response.appendInt(this.songs.size());
+        for (InteractionMusicDisc soundTrack : this.songs)
         {
             this.response.appendInt(soundTrack.getId());
             this.response.appendInt(soundTrack.getSongId());
         }
-
         return this.response;
     }
 }

@@ -31,7 +31,7 @@ public class InteractionSnowboardSlope extends InteractionMultiHeight
     @Override
     public void onWalkOn(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
     {
-        room.giveEffect(roomUnit, 97);
+        room.giveEffect(roomUnit, 97, -1);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class InteractionSnowboardSlope extends InteractionMultiHeight
 
         if (roomUnit.getEffectId() == 97)
         {
-            room.giveEffect(roomUnit, 0);
+            room.giveEffect(roomUnit, 0, -1);
         }
     }
 
@@ -54,7 +54,7 @@ public class InteractionSnowboardSlope extends InteractionMultiHeight
         Achievement snowboardBuild = Emulator.getGameEnvironment().getAchievementManager().getAchievement("snowBoardBuild");
 
         if (snowboardBuild == null) return;
-        int progress = 0;
+        int progress;
         Habbo habbo = room.getHabbo(room.getOwnerId());
 
         if (habbo != null)
@@ -83,7 +83,7 @@ public class InteractionSnowboardSlope extends InteractionMultiHeight
         {
             if (habbo.getRoomUnit().getEffectId() == 97)
             {
-                room.giveEffect(habbo, 0);
+                room.giveEffect(habbo, 0, -1);
             }
         }
     }
@@ -97,7 +97,7 @@ public class InteractionSnowboardSlope extends InteractionMultiHeight
         {
             if (habbo.getRoomUnit().getEffectId() == 97 && !newRect.contains(habbo.getRoomUnit().getCurrentLocation().x, habbo.getRoomUnit().getCurrentLocation().y))
             {
-                room.giveEffect(habbo, 0);
+                room.giveEffect(habbo, 0, -1);
             }
         }
     }

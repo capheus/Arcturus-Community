@@ -10,7 +10,6 @@ public class TradeCloseWindowComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.TradeCloseWindowComposer);
-
         return this.response;
     }
 }

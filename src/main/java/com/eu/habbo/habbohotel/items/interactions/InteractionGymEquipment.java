@@ -65,7 +65,7 @@ public class InteractionGymEquipment extends InteractionEffectTile implements IC
     public void onWalkOff(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
     {
         super.onWalkOff(roomUnit, room, objects);
-        room.giveEffect(roomUnit, 0);
+        room.giveEffect(roomUnit, 0, -1);
 
         if (this.forceRotation())
         {
@@ -97,7 +97,7 @@ public class InteractionGymEquipment extends InteractionEffectTile implements IC
                 int timestamp = Emulator.getIntUnixTimestamp();
                 if (timestamp - this.startTime >= 120)
                 {
-                    String achievement = achievementName();
+                    String achievement = this.achievementName();
 
                     if (!achievement.isEmpty())
                     {
@@ -120,7 +120,7 @@ public class InteractionGymEquipment extends InteractionEffectTile implements IC
             Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
             if (room != null)
             {
-                RoomUnit roomUnit = getCurrentRoomUnit(room);
+                RoomUnit roomUnit = this.getCurrentRoomUnit(room);
 
                 if (roomUnit != null)
                 {
@@ -159,7 +159,7 @@ public class InteractionGymEquipment extends InteractionEffectTile implements IC
     {
         if (this.roomUnitId == -1) return;
 
-        room.giveEffect(getCurrentRoomUnit(room), effectId);
+        room.giveEffect(this.getCurrentRoomUnit(room), effectId, -1);
     }
 
     private void reset(Room room)

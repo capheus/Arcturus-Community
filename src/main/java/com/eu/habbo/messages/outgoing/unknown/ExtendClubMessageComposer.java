@@ -32,15 +32,15 @@ public class ExtendClubMessageComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.ExtendClubMessageComposer);
-        this.response.appendInt(item.getId());
-        this.response.appendString(item.getName());
+        this.response.appendInt(this.item.getId());
+        this.response.appendString(this.item.getName());
         this.response.appendBoolean(false); //unused
-        this.response.appendInt(item.getCredits());
-        this.response.appendInt(item.getPoints());
-        this.response.appendInt(item.getPointsType());
-        this.response.appendBoolean(item.getName().contains("_VIP_"));
+        this.response.appendInt(this.item.getCredits());
+        this.response.appendInt(this.item.getPoints());
+        this.response.appendInt(this.item.getPointsType());
+        this.response.appendBoolean(this.item.getName().contains("_VIP_"));
 
-        String[] data = item.getName().replace("_VIP_", "_").toLowerCase().split("_");
+        String[] data = this.item.getName().replace("_VIP_", "_").toLowerCase().split("_");
 
         long seconds = 0;
 
@@ -73,7 +73,7 @@ public class ExtendClubMessageComposer extends MessageComposer
         this.response.appendBoolean(false); //giftable
         this.response.appendInt((int) seconds);
 
-        int endTimestamp = habbo.getHabboStats().getClubExpireTimestamp();
+        int endTimestamp = this.habbo.getHabboStats().getClubExpireTimestamp();
 
         if (endTimestamp < Emulator.getIntUnixTimestamp())
         {
@@ -83,7 +83,7 @@ public class ExtendClubMessageComposer extends MessageComposer
         endTimestamp += secondsTotal;
 
         Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(endTimestamp * 1000l);
+        cal.setTimeInMillis(endTimestamp * 1000L);
         this.response.appendInt(cal.get(Calendar.YEAR));
         this.response.appendInt(cal.get(Calendar.MONTH) + 1);
         this.response.appendInt(cal.get(Calendar.DAY_OF_MONTH));

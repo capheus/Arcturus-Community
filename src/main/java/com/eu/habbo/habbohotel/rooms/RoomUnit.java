@@ -48,7 +48,7 @@ public class RoomUnit
     public boolean cmdLay = false;
     public boolean sitUpdate = false;
     public boolean isTeleporting = false;
-    public boolean isKicked = false;
+    public boolean isKicked;
     public int kickCount = 0;
     private boolean statusUpdate = false;
     private boolean invisible = false;
@@ -64,6 +64,7 @@ public class RoomUnit
     private long handItemTimestamp;
     private int walkTimeOut;
     private int effectId;
+    private int effectEndTimestamp;
 
     private int idleTimer;
     private Room room;
@@ -77,8 +78,6 @@ public class RoomUnit
         this.status = new ConcurrentHashMap<>();
         this.cacheable = new THashMap<>();
         this.roomUnitType = RoomUnitType.UNKNOWN;
-        this.bodyRotation = RoomUserRotation.NORTH;
-        this.bodyRotation = RoomUserRotation.NORTH;
         this.danceType = DanceType.NONE;
         this.handItem = 0;
         this.handItemTimestamp = 0;
@@ -111,8 +110,12 @@ public class RoomUnit
     {
         try
         {
+            if (this.isTeleporting)
+            {
+                return false;
+            }
 
-            if (!this.isWalking() && !isKicked)
+            if (!this.isWalking() && !this.isKicked)
             {
                 if (this.status.remove(RoomUnitStatus.MOVE) == null)
                 {
@@ -120,14 +123,15 @@ public class RoomUnit
                 }
             }
 
-            this.status.remove(RoomUnitStatus.SIT);
-            this.status.remove(RoomUnitStatus.MOVE);
-            this.status.remove(RoomUnitStatus.LAY);
-            for (Map.Entry<RoomUnitStatus, String> s : this.status.entrySet())
+            if (this.status.remove(RoomUnitStatus.SIT) != null) this.statusUpdate = true;
+            if (this.status.remove(RoomUnitStatus.MOVE) != null) this.statusUpdate = true;
+            if (this.status.remove(RoomUnitStatus.LAY) != null) this.statusUpdate = true;
+
+            for (Map.Entry<RoomUnitStatus, String> set : this.status.entrySet())
             {
-                if (s.getKey().removeWhenWalking)
+                if (set.getKey().removeWhenWalking)
                 {
-                    this.status.remove(s);
+                    this.status.remove(set.getKey());
                 }
             }
 
@@ -146,7 +150,7 @@ public class RoomUnit
             {
                 this.sitUpdate = true;
 
-                if ( room.hasHabbosAt(next.x, next.y))
+                if (next != null && room.hasHabbosAt(next.x, next.y))
                 {
                     return false;
                 }
@@ -155,7 +159,8 @@ public class RoomUnit
             Deque<RoomTile> peekPath = room.getLayout().findPath(this.currentLocation, this.path.peek(), this.goalLocation);
             if (peekPath.size() >= 3)
             {
-                peekPath.pop(); //Start
+                path.pop();
+                //peekPath.pop(); //Start
                 peekPath.removeLast(); //End
 
                 if (peekPath.peek() != next)
@@ -173,10 +178,7 @@ public class RoomUnit
 
             Habbo habbo = room.getHabbo(this);
 
-            if (this.status.containsKey(RoomUnitStatus.DEAD))
-            {
-                this.status.remove(RoomUnitStatus.DEAD);
-            }
+            this.status.remove(RoomUnitStatus.DEAD);
 
             if (habbo != null)
             {
@@ -358,7 +360,7 @@ public class RoomUnit
     }
     public int getId()
     {
-        return id;
+        return this.id;
     }
 
     public void setId(int id)
@@ -391,8 +393,9 @@ public class RoomUnit
         this.z = z;
     }
 
-    public boolean isInRoom() {
-        return inRoom;
+    public boolean isInRoom()
+    {
+        return this.inRoom;
     }
 
     public synchronized void setInRoom(boolean inRoom) {
@@ -400,7 +403,7 @@ public class RoomUnit
     }
 
     public RoomUnitType getRoomUnitType() {
-        return roomUnitType;
+        return this.roomUnitType;
     }
 
     public synchronized void setRoomUnitType(RoomUnitType roomUnitType) {
@@ -414,7 +417,7 @@ public class RoomUnit
     }
 
     public RoomUserRotation getBodyRotation() {
-        return bodyRotation;
+        return this.bodyRotation;
     }
 
     public void setBodyRotation(RoomUserRotation bodyRotation) {
@@ -422,7 +425,7 @@ public class RoomUnit
     }
 
     public RoomUserRotation getHeadRotation() {
-        return headRotation;
+        return this.headRotation;
     }
 
     public void setHeadRotation(RoomUserRotation headRotation)
@@ -430,8 +433,9 @@ public class RoomUnit
         this.headRotation = headRotation;
     }
 
-    public DanceType getDanceType() {
-        return danceType;
+    public DanceType getDanceType()
+    {
+        return this.danceType;
     }
 
     public synchronized void setDanceType(DanceType danceType) {
@@ -578,7 +582,7 @@ public class RoomUnit
 
     public boolean isWalking()
     {
-        return !isAtGoal() && this.canWalk;
+        return !this.isAtGoal() && this.canWalk;
     }
 
     public String getStatus(RoomUnitStatus key)
@@ -650,9 +654,15 @@ public class RoomUnit
         return this.effectId;
     }
 
-    public void setEffectId(int effectId)
+    public void setEffectId(int effectId, int endTimestamp)
     {
         this.effectId = effectId;
+        this.effectEndTimestamp = endTimestamp;
+    }
+
+    public int getEffectEndTimestamp()
+    {
+        return this.effectEndTimestamp;
     }
 
     public int getWalkTimeOut()
@@ -723,12 +733,12 @@ public class RoomUnit
 
     public Deque<RoomTile> getPath()
     {
-        return path;
+        return this.path;
     }
 
     public RoomRightLevels getRightsLevel()
     {
-        return rightsLevel;
+        return this.rightsLevel;
     }
 
     public void setRightsLevel(RoomRightLevels rightsLevel)

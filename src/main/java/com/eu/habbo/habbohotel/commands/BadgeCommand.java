@@ -68,7 +68,7 @@ public class BadgeCommand extends Command
             {
                 try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
                 {
-                    boolean found = false;
+                    boolean found;
 
                     try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(slot_id) FROM users_badges INNER JOIN users ON users.id = user_id WHERE users.username = ? AND badge_code = ? LIMIT 1"))
                     {

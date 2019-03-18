@@ -15,14 +15,14 @@ public class PluginsCommand extends Command
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
-        String message = "Plugins (" + Emulator.getPluginManager().getPlugins().size() + ")\r";
+        StringBuilder message = new StringBuilder("Plugins (" + Emulator.getPluginManager().getPlugins().size() + ")\r");
 
         for (HabboPlugin plugin : Emulator.getPluginManager().getPlugins())
         {
-            message += "\r" + plugin.configuration.name + " By " + plugin.configuration.author;
+            message.append("\r").append(plugin.configuration.name).append(" By ").append(plugin.configuration.author);
         }
 
-        gameClient.sendResponse(new GenericAlertComposer(message));
+        gameClient.getHabbo().alert(message.toString());
 
         return true;
     }

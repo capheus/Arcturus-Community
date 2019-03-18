@@ -29,7 +29,7 @@ public class UpdateFriendComposer extends MessageComposer
     {
 
         this.response.init(Outgoing.UpdateFriendComposer);
-        if(buddy != null)
+        if(this.buddy != null)
         {
             this.response.appendInt(0);
             this.response.appendInt(1);

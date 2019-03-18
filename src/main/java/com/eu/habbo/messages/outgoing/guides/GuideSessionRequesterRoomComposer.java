@@ -8,6 +8,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 public class GuideSessionRequesterRoomComposer extends MessageComposer
 {
     private final Room room;
+
     public GuideSessionRequesterRoomComposer(Room room)
     {
         this.room = room;

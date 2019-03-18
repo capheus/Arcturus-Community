@@ -6,9 +6,7 @@ import gnu.trove.set.hash.THashSet;
 import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
 
 public class RoomLayout
@@ -48,7 +46,7 @@ public class RoomLayout
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            Emulator.getLogging().logErrorLine(e);
         }
     }
 
@@ -125,7 +123,7 @@ public class RoomLayout
 
     public String getName()
     {
-        return name;
+        return this.name;
     }
 
     public short getDoorX()
@@ -228,7 +226,7 @@ public class RoomLayout
 
     public RoomTile getTile(short x, short y)
     {
-        if (tileExists(x, y))
+        if (this.tileExists(x, y))
         {
             return this.roomTiles[x][y];
         }
@@ -248,7 +246,7 @@ public class RoomLayout
 
     public boolean isVoidTile(short x, short y)
     {
-        if (!tileExists(x, y)) return true;
+        if (!this.tileExists(x, y)) return true;
         return this.roomTiles[x][y].state == RoomTileState.INVALID;
     }
 
@@ -258,18 +256,18 @@ public class RoomLayout
     }
     public String getRelativeMap()
     {
-        return this.heightmap.replace("\r\n", "\r").substring(0, this.heightmap.replace("\r\n", "\r").length());
+        return this.heightmap.replace("\r\n", "\r");
     }
 
     public final Deque<RoomTile> findPath(RoomTile oldTile, RoomTile newTile, RoomTile goalLocation)
     {
-        LinkedList<RoomTile> openList = new LinkedList();
+        LinkedList<RoomTile> openList = new LinkedList<>();
         try
         {
             if (this.room == null || !this.room.isLoaded() || oldTile == null || newTile == null || oldTile.equals(newTile) || newTile.state == RoomTileState.INVALID)
                 return openList;
 
-            List<RoomTile> closedList = new LinkedList();
+            List<RoomTile> closedList = new LinkedList<>();
 
             openList.add(oldTile.copy());
 
@@ -281,27 +279,26 @@ public class RoomLayout
                     return new LinkedList<>();
                 }
 
-                RoomTile current = lowestFInOpen(openList);
-                closedList.add(current);
+                RoomTile current = this.lowestFInOpen(openList);
                 openList.remove(current);
 
                 if ((current.x == newTile.x) && (current.y == newTile.y))
                 {
-                    return calcPath(findTile(openList, oldTile.x, oldTile.y), current);
+                    return this.calcPath(this.findTile(openList, oldTile.x, oldTile.y), current);
                 }
 
-                List<RoomTile> adjacentNodes = getAdjacent(openList, current, newTile);
+                List<RoomTile> adjacentNodes = this.getAdjacent(openList, current, newTile);
 
                 for (RoomTile currentAdj : adjacentNodes)
                 {
-                    //if (closedList.contains(currentAdj)) continue;
+                    if (closedList.contains(currentAdj)) continue;
 
                     //If the tile is sitable or layable and its not our goal tile, we cannot walk over it.
                     if (
                             (currentAdj.state == RoomTileState.BLOCKED) ||
                             ((currentAdj.state == RoomTileState.SIT || currentAdj.state == RoomTileState.LAY) && !currentAdj.equals(goalLocation)))
                     {
-                        closedList.add(currentAdj); openList.remove(currentAdj);
+                        closedList.add(currentAdj);openList.remove(currentAdj);
                         continue;
                     }
                     ////if (!room.getLayout().tileWalkable((short) currentAdj.x, (short) currentAdj.y)) continue;
@@ -316,14 +313,19 @@ public class RoomLayout
                     if (height > MAXIMUM_STEP_HEIGHT && currentAdj.state == RoomTileState.OPEN) continue;
 
                     //Check if the tile has habbos.
-                    if (!this.room.isAllowWalkthrough() && room.hasHabbosAt(currentAdj.x, currentAdj.y)) { closedList.add(currentAdj); openList.remove(currentAdj); continue;}
+                    if (!this.room.isAllowWalkthrough() && this.room.hasHabbosAt(currentAdj.x, currentAdj.y))
+                    {
+                        closedList.add(currentAdj);
+                        openList.remove(currentAdj);
+                        continue;
+                    }
 
                     //if (room.hasPetsAt(currentAdj.x, currentAdj.y)) continue;
 
                     if (!openList.contains(currentAdj))
                     {
                         currentAdj.setPrevious(current);
-                        currentAdj.sethCosts(findTile(openList, newTile.x, newTile.y));
+                        currentAdj.sethCosts(this.findTile(openList, newTile.x, newTile.y));
                         currentAdj.setgCosts(current);
                         openList.add(currentAdj);
                     }
@@ -335,7 +337,7 @@ public class RoomLayout
                 }
                 if (openList.isEmpty())
                 {
-                    return new LinkedList();
+                    return new LinkedList<>();
                 }
             }
         }
@@ -367,7 +369,7 @@ public class RoomLayout
 
     private Deque<RoomTile> calcPath(RoomTile start, RoomTile goal)
     {
-        LinkedList<RoomTile> path = new LinkedList();
+        LinkedList<RoomTile> path = new LinkedList<>();
         if (start == null)
             return path;
 
@@ -376,7 +378,7 @@ public class RoomLayout
         {
             path.addFirst(curr);
             curr = curr.getPrevious();
-            if ((curr != null) && (start != null) && (curr.equals(start))) {
+            if ((curr != null) && (curr.equals(start))) {
                 return path;
             }
         }
@@ -406,7 +408,7 @@ public class RoomLayout
         List<RoomTile> adj = new LinkedList<>();
         if (x > 0)
         {
-            RoomTile temp = findTile(openList, (short) (x - 1), y);
+            RoomTile temp = this.findTile(openList, (short) (x - 1), y);
             if (temp != null && temp.state != RoomTileState.BLOCKED && temp.state != RoomTileState.INVALID)
             {
                 if (temp.state != RoomTileState.SIT || nextTile.getStackHeight() - node.getStackHeight() <= 2.0)
@@ -419,7 +421,7 @@ public class RoomLayout
         }
         if (x < this.mapSizeX)
         {
-            RoomTile temp = findTile(openList, (short) (x + 1), y);
+            RoomTile temp = this.findTile(openList, (short) (x + 1), y);
             if (temp != null && temp.state != RoomTileState.BLOCKED && temp.state != RoomTileState.INVALID)
             {
                 if (temp.state != RoomTileState.SIT || nextTile.getStackHeight() - node.getStackHeight() <= 2.0)
@@ -432,7 +434,7 @@ public class RoomLayout
         }
         if (y > 0)
         {
-            RoomTile temp = findTile(openList, x, (short) (y - 1));
+            RoomTile temp = this.findTile(openList, x, (short) (y - 1));
             if (temp != null && temp.state != RoomTileState.BLOCKED && temp.state != RoomTileState.INVALID)
             {
                 if (temp.state != RoomTileState.SIT || nextTile.getStackHeight() - node.getStackHeight() <= 2.0)
@@ -445,7 +447,7 @@ public class RoomLayout
         }
         if (y < this.mapSizeY)
         {
-            RoomTile temp = findTile(openList, x, (short) (y + 1));
+            RoomTile temp = this.findTile(openList, x, (short) (y + 1));
             if (temp != null && temp.state != RoomTileState.BLOCKED && temp.state != RoomTileState.INVALID)
             {
                 if (temp.state != RoomTileState.SIT || nextTile.getStackHeight() - node.getStackHeight() <= 2.0)
@@ -456,15 +458,15 @@ public class RoomLayout
                 }
             }
         }
-        if (CANMOVEDIAGONALY)
+        if (this.CANMOVEDIAGONALY)
         {
             if ((x < this.mapSizeX) && (y < this.mapSizeY))
             {
-                RoomTile offX = findTile(openList, (short) (x + 1), y);
-                RoomTile offY = findTile(openList, x, (short) (y+1));
+                RoomTile offX = this.findTile(openList, (short) (x + 1), y);
+                RoomTile offY = this.findTile(openList, x, (short) (y+1));
                 if (offX != null && offY != null && (offX.isWalkable() || offY.isWalkable()))
                 {
-                    RoomTile temp = findTile(openList, (short) (x + 1), (short) (y + 1));
+                    RoomTile temp = this.findTile(openList, (short) (x + 1), (short) (y + 1));
                     if (temp != null && temp.state != RoomTileState.BLOCKED && temp.state != RoomTileState.INVALID)
                     {
                         if (temp.state != RoomTileState.SIT || nextTile.getStackHeight() - node.getStackHeight() <= 2.0)
@@ -478,11 +480,11 @@ public class RoomLayout
             }
             if ((x > 0) && (y > 0))
             {
-                RoomTile offX = findTile(openList, (short) (x - 1), y);
-                RoomTile offY = findTile(openList, x, (short) (y - 1));
+                RoomTile offX = this.findTile(openList, (short) (x - 1), y);
+                RoomTile offY = this.findTile(openList, x, (short) (y - 1));
                 if (offX != null && offY != null && (offX.isWalkable() || offY.isWalkable()))
                 {
-                    RoomTile temp = findTile(openList, (short) (x - 1), (short) (y - 1));
+                    RoomTile temp = this.findTile(openList, (short) (x - 1), (short) (y - 1));
                     if (temp != null && temp.state != RoomTileState.BLOCKED && temp.state != RoomTileState.INVALID)
                     {
                         if (temp.state != RoomTileState.SIT || nextTile.getStackHeight() - node.getStackHeight() <= 2.0)
@@ -496,11 +498,11 @@ public class RoomLayout
             }
             if ((x > 0) && (y < this.mapSizeY))
             {
-                RoomTile offX = findTile(openList, (short) (x - 1), y);
-                RoomTile offY = findTile(openList, x, (short) (y+1));
+                RoomTile offX = this.findTile(openList, (short) (x - 1), y);
+                RoomTile offY = this.findTile(openList, x, (short) (y+1));
                 if (offX != null && offY != null && (offX.isWalkable() || offY.isWalkable()))
                 {
-                    RoomTile temp = findTile(openList, (short) (x - 1), (short) (y + 1));
+                    RoomTile temp = this.findTile(openList, (short) (x - 1), (short) (y + 1));
                     if (temp != null && temp.state != RoomTileState.BLOCKED && temp.state != RoomTileState.INVALID)
                     {
                         if (temp.state != RoomTileState.SIT || nextTile.getStackHeight() - node.getStackHeight() <= 2.0)
@@ -514,11 +516,11 @@ public class RoomLayout
             }
             if ((x < this.mapSizeX) && (y > 0))
             {
-                RoomTile offX = findTile(openList, (short) (x + 1), y);
-                RoomTile offY = findTile(openList, x, (short) (y - 1));
+                RoomTile offX = this.findTile(openList, (short) (x + 1), y);
+                RoomTile offY = this.findTile(openList, x, (short) (y - 1));
                 if (offX != null && offY != null && (offX.isWalkable() || offY.isWalkable()))
                 {
-                    RoomTile temp = findTile(openList, (short) (x + 1), (short) (y - 1));
+                    RoomTile temp = this.findTile(openList, (short) (x + 1), (short) (y - 1));
                     if (temp != null && temp.state != RoomTileState.BLOCKED && temp.state != RoomTileState.INVALID)
                     {
                         if (temp.state != RoomTileState.SIT || nextTile.getStackHeight() - node.getStackHeight() <= 2.0)
@@ -630,13 +632,18 @@ public class RoomLayout
 
     public List<RoomTile> getTilesAround(RoomTile tile)
     {
+        return getTilesAround(tile, 0);
+    }
+
+    public List<RoomTile> getTilesAround(RoomTile tile, int directionOffset)
+    {
         List<RoomTile> tiles = new ArrayList<>(8);
 
         if (tile != null)
         {
             for (int i = 0; i < 8; i++)
             {
-                RoomTile t = this.getTileInFront(tile, i);
+                RoomTile t = this.getTileInFront(tile, (i + directionOffset) % 8);
                 if (t != null)
                 {
                     tiles.add(t);

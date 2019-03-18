@@ -6,7 +6,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
-public class CameraDecoder extends ByteToMessageDecoder
+class CameraDecoder extends ByteToMessageDecoder
 {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf byteBuf, List<Object> objects)

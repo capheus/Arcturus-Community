@@ -23,7 +23,7 @@ public class InteractionFootballScoreboard extends InteractionGameScoreboard
 
         try
         {
-            this.score = Integer.parseInt(getExtradata());
+            this.score = Integer.parseInt(this.getExtradata());
         }
         catch (Exception e)
         {

@@ -8,12 +8,10 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 public class WatchAndEarnRewardComposer extends MessageComposer
 {
     private final Item item;
-    private final String unknownString1;
 
-    public WatchAndEarnRewardComposer(Item item, String unknownString1)
+    public WatchAndEarnRewardComposer(Item item)
     {
         this.item = item;
-        this.unknownString1 = unknownString1;
     }
 
     @Override

@@ -43,10 +43,7 @@ public class WiredTriggerHabboWalkOffFurni extends InteractionWiredTrigger
         {
             if (stuff[0] instanceof HabboItem)
             {
-                if(items.contains(stuff[0]))
-                {
-                    return true;
-                }
+                return this.items.contains(stuff[0]);
             }
         }
         return false;
@@ -55,16 +52,16 @@ public class WiredTriggerHabboWalkOffFurni extends InteractionWiredTrigger
     @Override
     public String getWiredData()
     {
-        String wiredData = super.getDelay() + ":\t:";
+        StringBuilder wiredData = new StringBuilder(super.getDelay() + ":\t:");
 
-        if(!items.isEmpty())
+        if(!this.items.isEmpty())
         {
             List<HabboItem> toRemove = new ArrayList<>(0);
             for (HabboItem item : this.items)
             {
                 if (item.getRoomId() == this.getRoomId())
                 {
-                    wiredData += item.getId() + ";";
+                    wiredData.append(item.getId()).append(";");
                 }
                 else
                 {
@@ -75,9 +72,9 @@ public class WiredTriggerHabboWalkOffFurni extends InteractionWiredTrigger
             this.items.removeAll(toRemove);
         }
         else
-            wiredData += "\t";
+            wiredData.append("\t");
 
-        return wiredData;
+        return wiredData.toString();
     }
 
     @Override
@@ -106,7 +103,6 @@ public class WiredTriggerHabboWalkOffFurni extends InteractionWiredTrigger
                     }
                     catch (Exception e)
                     {
-                        continue;
                     }
                 }
             }

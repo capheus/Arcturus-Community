@@ -17,8 +17,8 @@ public class CrackableExplode implements Runnable
     private final InteractionCrackable habboItem;
     private final Habbo habbo;
     private final boolean toInventory;
-    private short x;
-    private short y;
+    private final short x;
+    private final short y;
 
     public CrackableExplode(Room room, InteractionCrackable item, Habbo habbo, boolean toInventory, short x, short y)
     {
@@ -34,7 +34,7 @@ public class CrackableExplode implements Runnable
     @Override
     public void run()
     {
-        if (habboItem.getRoomId() == 0)
+        if (this.habboItem.getRoomId() == 0)
         {
             return;
         }
@@ -54,20 +54,20 @@ public class CrackableExplode implements Runnable
 
         if (rewardItem != null)
         {
-            HabboItem newItem = Emulator.getGameEnvironment().getItemManager().createItem(this.habboItem.allowAnyone() ? habbo.getHabboInfo().getId() : this.habboItem.getUserId(), rewardItem, 0, 0, "");
+            HabboItem newItem = Emulator.getGameEnvironment().getItemManager().createItem(this.habboItem.allowAnyone() ? this.habbo.getHabboInfo().getId() : this.habboItem.getUserId(), rewardItem, 0, 0, "");
 
             if (newItem != null)
             {
                 if (this.toInventory)
                 {
-                    habbo.getInventory().getItemsComponent().addItem(newItem);
-                    habbo.getClient().sendResponse(new AddHabboItemComposer(newItem));
-                    habbo.getClient().sendResponse(new InventoryRefreshComposer());
+                    this.habbo.getInventory().getItemsComponent().addItem(newItem);
+                    this.habbo.getClient().sendResponse(new AddHabboItemComposer(newItem));
+                    this.habbo.getClient().sendResponse(new InventoryRefreshComposer());
                 } else
                 {
                     newItem.setX(this.x);
                     newItem.setY(this.y);
-                    newItem.setZ(room.getStackHeight(this.x, this.y, false));
+                    newItem.setZ(this.room.getStackHeight(this.x, this.y, false));
                     newItem.setRoomId(this.room.getId());
                     newItem.needsUpdate(true);
                     this.room.addHabboItem(newItem);
@@ -77,6 +77,6 @@ public class CrackableExplode implements Runnable
         }
 
 
-        this.room.updateTile(room.getLayout().getTile(this.x, this.y));
+        this.room.updateTile(this.room.getLayout().getTile(this.x, this.y));
     }
 }

@@ -13,7 +13,6 @@ public class GameServer extends Server
     private final PacketManager packetManager;
     private final GameClientManager gameClientManager;
 
-
     public GameServer(String host, int port) throws Exception
     {
         super("Game Server", host, port, Emulator.getConfig().getInt("io.bossgroup.threads"), Emulator.getConfig().getInt("io.workergroup.threads"));
@@ -40,11 +39,11 @@ public class GameServer extends Server
 
     public PacketManager getPacketManager()
     {
-        return packetManager;
+        return this.packetManager;
     }
 
     public GameClientManager getGameClientManager()
     {
-        return gameClientManager;
+        return this.gameClientManager;
     }
 }

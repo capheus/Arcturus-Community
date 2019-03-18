@@ -92,11 +92,11 @@ public class ReportEvent extends MessageHandler
                                     {
                                         if (cfhTopic.action == CfhActionType.AUTO_IGNORE)
                                         {
-                                            client.getHabbo().getHabboStats().ignoreUser(reported.getHabboInfo().getId());
-                                            client.sendResponse(new RoomUserIgnoredComposer(reported, RoomUserIgnoredComposer.IGNORED));
+                                            ReportEvent.this.client.getHabbo().getHabboStats().ignoreUser(reported.getHabboInfo().getId());
+                                            ReportEvent.this.client.sendResponse(new RoomUserIgnoredComposer(reported, RoomUserIgnoredComposer.IGNORED));
                                         }
 
-                                        client.sendResponse(new ModToolIssueHandledComposer(cfhTopic.reply).compose());
+                                        ReportEvent.this.client.sendResponse(new ModToolIssueHandledComposer(cfhTopic.reply).compose());
                                         Emulator.getGameEnvironment().getModToolManager().closeTicketAsHandled(issue, null);
                                     }
                                 }
@@ -129,15 +129,15 @@ public class ReportEvent extends MessageHandler
                             {
                                 if(cfhTopic.action == CfhActionType.AUTO_IGNORE)
                                 {
-                                    client.getHabbo().getHabboStats().ignoreUser(issue.reportedId);
+                                    ReportEvent.this.client.getHabbo().getHabboStats().ignoreUser(issue.reportedId);
                                     Habbo reported = Emulator.getGameEnvironment().getHabboManager().getHabbo(issue.reportedId);
                                     if (reported != null)
                                     {
-                                        client.sendResponse(new RoomUserIgnoredComposer(reported, RoomUserIgnoredComposer.IGNORED));
+                                        ReportEvent.this.client.sendResponse(new RoomUserIgnoredComposer(reported, RoomUserIgnoredComposer.IGNORED));
                                     }
                                 }
 
-                                client.sendResponse(new ModToolIssueHandledComposer(cfhTopic.reply).compose());
+                                ReportEvent.this.client.sendResponse(new ModToolIssueHandledComposer(cfhTopic.reply).compose());
                                 Emulator.getGameEnvironment().getModToolManager().closeTicketAsHandled(issue, null);
                             }
                         }

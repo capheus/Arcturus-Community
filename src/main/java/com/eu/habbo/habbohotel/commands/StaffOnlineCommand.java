@@ -58,7 +58,7 @@ public class StaffOnlineCommand extends Command
                 }
             }
 
-            Collections.sort(staffs, new Comparator<Habbo>()
+            staffs.sort(new Comparator<Habbo>()
             {
                 @Override
                 public int compare(Habbo o1, Habbo o2)
@@ -67,18 +67,18 @@ public class StaffOnlineCommand extends Command
                 }
             });
 
-            String message = Emulator.getTexts().getValue("commands.generic.cmd_staffonline.staffs");
-            message += "\r\n";
+            StringBuilder message = new StringBuilder(Emulator.getTexts().getValue("commands.generic.cmd_staffonline.staffs"));
+            message.append("\r\n");
 
             for(Habbo habbo : staffs)
             {
-                message += habbo.getHabboInfo().getUsername();
-                message += ": ";
-                message += habbo.getHabboInfo().getRank().getName();
-                message += "\r";
+                message.append(habbo.getHabboInfo().getUsername());
+                message.append(": ");
+                message.append(habbo.getHabboInfo().getRank().getName());
+                message.append("\r");
             }
 
-            gameClient.sendResponse(new GenericAlertComposer(message));
+            gameClient.getHabbo().alert(message.toString());
         }
 
         return true;

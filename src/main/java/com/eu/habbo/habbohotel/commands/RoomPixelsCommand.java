@@ -32,10 +32,9 @@ public class RoomPixelsCommand extends Command
             if(amount != 0)
             {
                 final String message = Emulator.getTexts().getValue("commands.generic.cmd_duckets.received").replace("%amount%", amount + "");
-                final int finalAmount = amount;
                 for (Habbo habbo : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getHabbos())
                 {
-                    habbo.givePixels(finalAmount);
+                    habbo.givePixels(amount);
                     habbo.whisper(message, RoomChatMessageBubbles.ALERT);
                 }
             }

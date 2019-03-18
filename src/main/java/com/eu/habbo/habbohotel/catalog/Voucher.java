@@ -6,7 +6,7 @@ import java.sql.SQLException;
 public class Voucher
 {
 
-    private final int id;
+    public final int id;
 
 
     public final String code;

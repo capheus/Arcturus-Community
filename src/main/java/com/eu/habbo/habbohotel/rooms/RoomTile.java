@@ -5,15 +5,14 @@ public class RoomTile
     public final short x;
     public final short y;
     public final short z;
-    public RoomTileState state = RoomTileState.OPEN;
+    public RoomTileState state;
 
-    private double stackHeight = 0;
+    private double stackHeight;
     private boolean allowStack = true;
 
 
     private RoomTile previous = null;
     private boolean diagonally;
-    private short movementPanelty;
     private short gCosts;
     private short hCosts;
 
@@ -89,12 +88,16 @@ public class RoomTile
 
     public short relativeHeight()
     {
-        if (this.state == RoomTileState.INVALID || !allowStack)
+        if (this.state == RoomTileState.INVALID)
         {
             return Short.MAX_VALUE;
         }
+        else if (!this.allowStack && (this.state == RoomTileState.BLOCKED || this.state == RoomTileState.SIT))
+        {
+            return 64 * 256;
+        }
 
-        return (short) (this.stackHeight * 256.0);
+        return this.allowStack ? (short) (this.getStackHeight() * 256.0) : 64 * 256;
     }
 
     @Override
@@ -117,11 +120,6 @@ public class RoomTile
         return Math.sqrt(x * x + y * y);
     }
 
-    public boolean isDiagonally()
-    {
-        return this.diagonally;
-    }
-
     public void isDiagonally(boolean isDiagonally)
     {
         this.diagonally = isDiagonally;
@@ -137,11 +135,6 @@ public class RoomTile
         this.previous = previous;
     }
 
-    public void setMovementPanelty(short movementPanelty)
-    {
-        this.movementPanelty = movementPanelty;
-    }
-
     public int getfCosts()
     {
         return this.gCosts + this.hCosts;
@@ -154,42 +147,27 @@ public class RoomTile
 
     private void setgCosts(short gCosts)
     {
-        this.gCosts = (short)(gCosts + this.movementPanelty);
+        this.gCosts = gCosts;
     }
 
     void setgCosts(RoomTile previousRoomTile, int basicCost)
     {
-        setgCosts((short)(previousRoomTile.getgCosts() + basicCost));
+        this.setgCosts((short)(previousRoomTile.getgCosts() + basicCost));
     }
 
     public void setgCosts(RoomTile previousRoomTile)
     {
-        setgCosts(previousRoomTile, this.diagonally ? RoomLayout.DIAGONALMOVEMENTCOST : RoomLayout.BASICMOVEMENTCOST);
+        this.setgCosts(previousRoomTile, this.diagonally ? RoomLayout.DIAGONALMOVEMENTCOST : RoomLayout.BASICMOVEMENTCOST);
     }
 
     public int calculategCosts(RoomTile previousRoomTile)
     {
         if (this.diagonally)
         {
-            return previousRoomTile.getgCosts() + 14 + this.movementPanelty;
+            return previousRoomTile.getgCosts() + 14;
         }
 
-        return previousRoomTile.getgCosts() + 10 + this.movementPanelty;
-    }
-
-    public int calculategCosts(RoomTile previousRoomTile, int movementCost)
-    {
-        return previousRoomTile.getgCosts() + movementCost + this.movementPanelty;
-    }
-
-    int gethCosts()
-    {
-        return this.hCosts;
-    }
-
-    void sethCosts(short hCosts)
-    {
-        this.hCosts = hCosts;
+        return previousRoomTile.getgCosts() + 10;
     }
 
     public void sethCosts(RoomTile parent)

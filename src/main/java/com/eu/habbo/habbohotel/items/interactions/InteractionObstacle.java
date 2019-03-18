@@ -45,23 +45,11 @@ public class InteractionObstacle extends HabboItem
     {
         Pet pet = room.getPet(roomUnit);
 
-        if (pet != null && pet instanceof HorsePet)
+        if (pet instanceof HorsePet)
         {
             HorsePet horsePet = (HorsePet)pet;
 
-            if (horsePet == null)
-            {
-                Habbo habbo = room.getHabbo(roomUnit);
-
-                if (habbo != null && habbo.getHabboInfo().getRiding() != null)
-                {
-                    return true;
-                }
-
-                return false;
-            }
-            else
-                return horsePet.getRider() != null;
+            return horsePet.getRider() != null;
         }
 
         return false;
@@ -84,11 +72,11 @@ public class InteractionObstacle extends HabboItem
     {
         Habbo habbo = room.getHabbo(roomUnit);
 
-        if(habbo == null)
+        if(habbo != null)
         {
             Pet pet = room.getPet(roomUnit);
 
-            if(pet != null && pet instanceof HorsePet && ((HorsePet) pet).getRider() != null)
+            if(pet instanceof HorsePet && ((HorsePet) pet).getRider() != null)
             {
                 if (pet.getTask() != null && pet.getTask().equals(PetTasks.RIDE))
                 {
@@ -131,7 +119,7 @@ public class InteractionObstacle extends HabboItem
         {
             Pet pet = room.getPet(roomUnit);
 
-            if(pet != null && pet instanceof HorsePet && ((HorsePet) pet).getRider() != null)
+            if(pet instanceof HorsePet && ((HorsePet) pet).getRider() != null)
             {
                 if (roomUnit.getBodyRotation().getValue() % 2 == 0)
                 {
@@ -173,7 +161,7 @@ public class InteractionObstacle extends HabboItem
         {
             Pet pet = room.getPet(roomUnit);
 
-            if(pet != null && pet instanceof HorsePet && ((HorsePet) pet).getRider() != null)
+            if(pet instanceof HorsePet && ((HorsePet) pet).getRider() != null)
             {
                 pet.getRoomUnit().removeStatus(RoomUnitStatus.JUMP);
             }

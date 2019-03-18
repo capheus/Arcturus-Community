@@ -28,17 +28,17 @@ public class AlertCommand extends Command {
         }
 
         String targetUsername = params[1];
-        String message = "";
+        StringBuilder message = new StringBuilder();
 
         for(int i = 2; i < params.length; i++)
         {
-            message += (params[i] + " ");
+            message.append(params[i]).append(" ");
         }
 
         Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(targetUsername);
 
         if (habbo != null) {
-            habbo.getClient().sendResponse(new GenericAlertComposer(message + "\r\n    -" + gameClient.getHabbo().getHabboInfo().getUsername()));
+            habbo.alert(message + "\r\n    -" + gameClient.getHabbo().getHabboInfo().getUsername());
             gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_alert.message_send").replace("%user%", targetUsername), RoomChatMessageBubbles.ALERT);
         } else {
             gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_alert.user_offline").replace("%user%", targetUsername), RoomChatMessageBubbles.ALERT);

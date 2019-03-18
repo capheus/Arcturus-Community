@@ -15,7 +15,6 @@ import java.util.NoSuchElementException;
 
 public class RoomWallItemsComposer extends MessageComposer
 {
-
     private final Room room;
 
     public RoomWallItemsComposer(Room room)

@@ -23,12 +23,12 @@ public class EventCommand extends Command
         {
             if (params.length >= 2)
             {
-                String message = "";
+                StringBuilder message = new StringBuilder();
 
                 for (int i = 1; i < params.length; i++)
                 {
-                    message += params[i];
-                    message += " ";
+                    message.append(params[i]);
+                    message.append(" ");
                 }
 
                 THashMap<String, String> codes = new THashMap<>();
@@ -37,7 +37,7 @@ public class EventCommand extends Command
                 codes.put("USERNAME", gameClient.getHabbo().getHabboInfo().getUsername());
                 codes.put("LOOK", gameClient.getHabbo().getHabboInfo().getLook());
                 codes.put("TIME", Emulator.getDate().toString());
-                codes.put("MESSAGE", message);
+                codes.put("MESSAGE", message.toString());
 
                 ServerMessage msg = new BubbleAlertComposer("hotel.event", codes).compose();
 

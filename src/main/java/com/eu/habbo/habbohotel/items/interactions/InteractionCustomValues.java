@@ -67,16 +67,16 @@ public abstract class InteractionCustomValues extends HabboItem
 
     public String toExtraData()
     {
-        String data = "";
+        StringBuilder data = new StringBuilder();
         synchronized (this.values)
         {
             for (Map.Entry<String, String> set : this.values.entrySet())
             {
-                data += set.getKey() + "=" + set.getValue() + ";";
+                data.append(set.getKey()).append("=").append(set.getValue()).append(";");
             }
         }
 
-        return data;
+        return data.toString();
     }
 
     @Override

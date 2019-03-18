@@ -10,10 +10,10 @@ public class GuildForumThreadsMessagesEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        int guildId = packet.readInt();
-        int threadId = packet.readInt();
-        int index = packet.readInt(); //40
-        int limit = packet.readInt(); //20
+        int guildId = this.packet.readInt();
+        int threadId = this.packet.readInt();
+        int index = this.packet.readInt(); //40
+        int limit = this.packet.readInt(); //20
 
         Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(guildId);
         if(guild == null)

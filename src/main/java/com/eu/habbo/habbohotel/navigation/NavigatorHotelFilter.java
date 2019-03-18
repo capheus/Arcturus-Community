@@ -71,7 +71,7 @@ public class NavigatorHotelFilter extends NavigatorFilter
         }
         else
         {
-            return getResult(habbo);
+            return this.getResult(habbo);
         }
     }
 }

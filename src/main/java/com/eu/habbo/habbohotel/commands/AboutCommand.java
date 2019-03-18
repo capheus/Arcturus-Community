@@ -47,7 +47,7 @@ public class AboutCommand extends Command
                 "<b>Thanks for using Arcturus. Report issues on the forums. http://arcturus.pw \r\r" +
                 "    - The General";
 
-        gameClient.sendResponse(new GenericAlertComposer(message));
+        gameClient.getHabbo().alert(message);
 
         return true;
     }

@@ -32,10 +32,7 @@ public class PetInfoCommand extends Command
                 {
                     if(pet.getName().equalsIgnoreCase(name))
                     {
-                        if(!(pet instanceof Pet))
-                            return true;
-
-                        gameClient.sendResponse(new GenericAlertComposer("" +
+                        gameClient.getHabbo().alert("" +
                                 Emulator.getTexts().getValue("commands.generic.cmd_pet_info.title") + ": " + pet.getName() + "\r\n" +
                                 Emulator.getTexts().getValue("generic.pet.id") + ": " + pet.getId() + "\r" +
                                 Emulator.getTexts().getValue("generic.pet.name") + ": " + pet.getName() + "\r" +
@@ -50,7 +47,7 @@ public class PetInfoCommand extends Command
                                 Emulator.getTexts().getValue("generic.pet.level.hunger") + ": " + pet.levelHunger + "\r" +
                                 Emulator.getTexts().getValue("generic.pet.current_action") + ": " + (pet.getTask() == null ? Emulator.getTexts().getValue("generic.nothing") :  pet.getTask().name()) + "\r" +
                                 Emulator.getTexts().getValue("generic.can.walk") + ": " + (pet.getRoomUnit().canWalk() ? Emulator.getTexts().getValue("generic.yes") : Emulator.getTexts().getValue("generic.no")) + ""
-                        ));
+                        );
                     }
 
                     return true;

@@ -56,13 +56,13 @@ public class RoomUserStatusComposer extends MessageComposer
                 this.response.appendInt(roomUnit.getHeadRotation().getValue());
                 this.response.appendInt(roomUnit.getBodyRotation().getValue());
 
-                String status = "/";
+                StringBuilder status = new StringBuilder("/");
                 for (Map.Entry<RoomUnitStatus, String> entry : roomUnit.getStatusMap().entrySet())
                 {
-                    status += entry.getKey() + " " + entry.getValue() + "/";
+                    status.append(entry.getKey()).append(" ").append(entry.getValue()).append("/");
                 }
 
-                this.response.appendString(status);
+                this.response.appendString(status.toString());
                 roomUnit.setPreviousLocation(roomUnit.getCurrentLocation());
             }
         }
@@ -87,13 +87,13 @@ public class RoomUserStatusComposer extends MessageComposer
                     this.response.appendInt(habbo.getRoomUnit().getHeadRotation().getValue());
                     this.response.appendInt(habbo.getRoomUnit().getBodyRotation().getValue());
 
-                    String status = "/";
+                    StringBuilder status = new StringBuilder("/");
 
                     for (Map.Entry<RoomUnitStatus, String> entry : habbo.getRoomUnit().getStatusMap().entrySet())
                     {
-                        status += entry.getKey() + " " + entry.getValue() + "/";
+                        status.append(entry.getKey()).append(" ").append(entry.getValue()).append("/");
                     }
-                    this.response.appendString(status);
+                    this.response.appendString(status.toString());
                     habbo.getRoomUnit().setPreviousLocation(habbo.getRoomUnit().getCurrentLocation());
                 }
             }

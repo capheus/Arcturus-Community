@@ -38,7 +38,10 @@ public class GuildForumManager
                 }
             }
 
-            forum.updateLastRequested();
+            if (forum != null)
+            {
+                forum.updateLastRequested();
+            }
             return forum;
         }
     }

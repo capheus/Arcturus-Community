@@ -20,7 +20,7 @@ public class CreateModToolTicket extends RCONMessage<CreateModToolTicket.JSON>
         Emulator.getGameEnvironment().getModToolManager().updateTicketToMods(issue);
     }
 
-    public static class JSON
+    static class JSON
     {
 
         public int sender_id;

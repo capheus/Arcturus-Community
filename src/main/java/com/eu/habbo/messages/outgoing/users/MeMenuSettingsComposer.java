@@ -7,7 +7,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class MeMenuSettingsComposer extends MessageComposer
 {
-    private Habbo habbo;
+    private final Habbo habbo;
 
     public MeMenuSettingsComposer(Habbo habbo)
     {
@@ -18,7 +18,6 @@ public class MeMenuSettingsComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.MeMenuSettingsComposer);
-
         this.response.appendInt(this.habbo.getHabboStats().volumeSystem);
         this.response.appendInt(this.habbo.getHabboStats().volumeFurni);
         this.response.appendInt(this.habbo.getHabboStats().volumeTrax);
@@ -27,7 +26,6 @@ public class MeMenuSettingsComposer extends MessageComposer
         this.response.appendBoolean(this.habbo.getHabboStats().blockCameraFollow);
         this.response.appendInt(1);
         this.response.appendInt(this.habbo.getHabboStats().chatColor.getType());
-
         return this.response;
     }
 }

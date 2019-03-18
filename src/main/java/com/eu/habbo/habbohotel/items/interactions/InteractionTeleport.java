@@ -5,11 +5,12 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
+import com.eu.habbo.habbohotel.rooms.RoomTileState;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.messages.outgoing.unknown.ItemStateComposer2;
+import com.eu.habbo.messages.outgoing.rooms.items.ItemIntStateComposer;
 import com.eu.habbo.threading.runnables.teleport.TeleportActionOne;
 
 import java.sql.ResultSet;
@@ -43,7 +44,7 @@ public class InteractionTeleport extends HabboItem
     @Override
     public boolean canWalkOn(RoomUnit roomUnit, Room room, Object[] objects)
     {
-        return this.getBaseItem().allowWalk() || roomUnit.getId() == roomUnitID;
+        return this.getBaseItem().allowWalk() || roomUnit.getId() == this.roomUnitID;
     }
 
     @Override
@@ -60,28 +61,24 @@ public class InteractionTeleport extends HabboItem
         if(room != null && client != null && objects.length <= 1)
         {
             RoomTile tile = room.getLayout().getTileInFront(room.getLayout().getTile(this.getX(), this.getY()), this.getRotation());
-            RoomTile teleportPosition = room.getLayout().getTile(getX(), getY());
+            RoomTile teleportPosition = room.getLayout().getTile(this.getX(), this.getY());
 
             if (tile != null && tile.equals(client.getHabbo().getRoomUnit().getCurrentLocation()))
             {
                 if (!room.hasHabbosAt(this.getX(), this.getY()) && this.roomUnitID == 0)
                 {
-                    room.sendComposer(new ItemStateComposer2(getId(), 1).compose());
-                    room.scheduledTasks.add(new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            roomUnitID = client.getHabbo().getRoomUnit().getId();
-                            room.updateTile(teleportPosition);
-                            client.getHabbo().getRoomUnit().setGoalLocation(room.getLayout().getTile(getX(), getY()));
-                        }
+                    room.sendComposer(new ItemIntStateComposer(this.getId(), 1).compose());
+                    room.scheduledTasks.add(() -> {
+                        if (client.getHabbo().getRoomUnit().isTeleporting) return;
+                        this.roomUnitID = client.getHabbo().getRoomUnit().getId();
+                        room.updateTile(teleportPosition);
+                        client.getHabbo().getRoomUnit().setGoalLocation(room.getLayout().getTile(this.getX(), this.getY()));
                     });
                 }
             }
-            else if (teleportPosition.equals(client.getHabbo().getRoomUnit().getCurrentLocation()) && tile != null && tile.isWalkable())
+            else if (teleportPosition.equals(client.getHabbo().getRoomUnit().getCurrentLocation()) && tile != null && tile.state != RoomTileState.BLOCKED && tile.state != RoomTileState.INVALID)
             {
-                startTeleport(room, client.getHabbo());
+                this.startTeleport(room, client.getHabbo());
             }
         }
     }
@@ -102,7 +99,7 @@ public class InteractionTeleport extends HabboItem
         {
             if (habbo.getRoomUnit().getGoal().equals(room.getLayout().getTile(this.getX(), this.getY())))
             {
-                startTeleport(room, habbo);
+                this.startTeleport(room, habbo);
             }
         }
     }

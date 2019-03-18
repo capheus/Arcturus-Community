@@ -216,7 +216,7 @@ public class Habbo implements Runnable
 
     public boolean hasPermission(String key)
     {
-        return hasPermission(key, false);
+        return this.hasPermission(key, false);
     }
 
 
@@ -285,7 +285,7 @@ public class Habbo implements Runnable
     {
         if (this.getRoomUnit().isInRoom())
         {
-            this.client.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(message, client.getHabbo().getRoomUnit(), bubble)));
+            this.client.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(message, this.client.getHabbo().getRoomUnit(), bubble)));
         }
     }
 
@@ -300,7 +300,7 @@ public class Habbo implements Runnable
     {
         if (this.getRoomUnit().isInRoom())
         {
-            this.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserTalkComposer(new RoomChatMessage(message, client.getHabbo().getRoomUnit(), bubble)).compose());
+            this.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserTalkComposer(new RoomChatMessage(message, this.client.getHabbo().getRoomUnit(), bubble)).compose());
         }
     }
 
@@ -315,14 +315,21 @@ public class Habbo implements Runnable
     {
         if (this.getRoomUnit().isInRoom())
         {
-            this.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserShoutComposer(new RoomChatMessage(message, client.getHabbo().getRoomUnit(), bubble)).compose());
+            this.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserShoutComposer(new RoomChatMessage(message, this.client.getHabbo().getRoomUnit(), bubble)).compose());
         }
     }
 
 
     public void alert(String message)
     {
-        this.client.sendResponse(new GenericAlertComposer(message));
+        if (Emulator.getConfig().getBoolean("hotel.alert.oldstyle"))
+        {
+            this.client.sendResponse(new MessagesForYouComposer(new String[]{message}));
+        }
+        else
+        {
+            this.client.sendResponse(new GenericAlertComposer(message));
+        }
     }
 
 
@@ -484,7 +491,7 @@ public class Habbo implements Runnable
                 {
                     if (!newLog.containsKey(ltdLog.getKey()))
                     {
-                        newLog.put(ltdLog.getKey(), new ArrayList<Integer>());
+                        newLog.put(ltdLog.getKey(), new ArrayList<>());
                     }
 
                     newLog.get(ltdLog.getKey()).add(time);

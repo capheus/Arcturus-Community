@@ -18,7 +18,7 @@ public class UserAchievementScoreComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.UserAchievementScoreComposer);
-        this.response.appendInt(habbo.getHabboStats().getAchievementScore());
+        this.response.appendInt(this.habbo.getHabboStats().getAchievementScore());
         return this.response;
     }
 }

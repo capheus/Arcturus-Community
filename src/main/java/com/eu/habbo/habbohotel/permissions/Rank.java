@@ -8,15 +8,34 @@ import java.sql.SQLException;
 
 public class Rank
 {
+
     private final int id;
+
+
     private final int level;
+
+
     private String name;
+
+
     private final THashMap<String, Permission> permissions;
+
+
     private final THashMap<String, String> variables;
+
+
     private int roomEffect;
+
+
     private boolean logCommands;
+
+
     private String prefix;
+
+
     private String prefixColor;
+
+
     private boolean hasPrefix;
 
     public Rank(ResultSet set) throws SQLException
@@ -65,15 +84,18 @@ public class Rank
         return false;
     }
 
+
     public int getId()
     {
         return this.id;
     }
 
+
     public int getLevel()
     {
         return this.level;
     }
+
 
     public String getName()
     {

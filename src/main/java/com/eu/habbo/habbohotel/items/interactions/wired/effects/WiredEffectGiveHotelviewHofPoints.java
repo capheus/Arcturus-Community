@@ -118,7 +118,7 @@ public class WiredEffectGiveHotelviewHofPoints extends InteractionWiredEffect
     }
 
     @Override
-    protected String getWiredData()
+    public String getWiredData()
     {
         return this.getDelay() + "\t" + this.amount;
     }
@@ -135,7 +135,7 @@ public class WiredEffectGiveHotelviewHofPoints extends InteractionWiredEffect
 
             try
             {
-                this.amount = Integer.valueOf(getWiredData().split("\t")[1]);
+                this.amount = Integer.valueOf(this.getWiredData().split("\t")[1]);
             }
             catch (Exception e)
             {}

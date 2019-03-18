@@ -23,9 +23,9 @@ public class GuildForumThread implements ISerialize, Runnable
     private boolean pinned = false;
     private boolean locked = false;
 
-    private int lastAuthorId = 0;
+    private int lastAuthorId;
     private String lastAuthorName;
-    private int lastCommentTimestamp = 0;
+    private int lastCommentTimestamp;
     private int adminId;
     private String adminName = "";
 
@@ -157,7 +157,7 @@ public class GuildForumThread implements ISerialize, Runnable
         if (commentId >= 0)
         {
             comment.setId(commentId);
-            addComment(comment);
+            this.addComment(comment);
 
             return comment;
         }

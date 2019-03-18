@@ -34,13 +34,7 @@ public class WiredConditionMottoContains extends InteractionWiredCondition
     {
         Habbo habbo = room.getHabbo(roomUnit);
 
-        if(habbo != null)
-        {
-            if(habbo.getHabboInfo().getMotto().contains(this.motto))
-                return true;
-        }
-
-        return false;
+        return habbo != null && habbo.getHabboInfo().getMotto().contains(this.motto);
     }
 
     @Override

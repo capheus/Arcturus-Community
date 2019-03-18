@@ -18,9 +18,9 @@ public class InfoDucketsLayout extends CatalogPage
     {
         message.appendString("info_duckets");
         message.appendInt(1);
-        message.appendString(getHeaderImage());
+        message.appendString(this.getHeaderImage());
         message.appendInt(1);
-        message.appendString(getTextOne());
+        message.appendString(this.getTextOne());
         message.appendInt(0);
     }
 }

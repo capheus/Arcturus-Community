@@ -29,23 +29,20 @@ public class UserSaveLookEvent extends MessageHandler
         }
 
         String look = this.packet.readString();
-        if(gender != null)
+        UserSavedLookEvent lookEvent = new UserSavedLookEvent(this.client.getHabbo(), gender, look);
+        Emulator.getPluginManager().fireEvent(lookEvent);
+        if(lookEvent.isCancelled())
+            return;
+
+        this.client.getHabbo().getHabboInfo().setLook(lookEvent.newLook);
+        this.client.getHabbo().getHabboInfo().setGender(lookEvent.gender);
+        Emulator.getThreading().run(this.client.getHabbo().getHabboInfo());
+        this.client.sendResponse(new UpdateUserLookComposer(this.client.getHabbo()));
+        if(this.client.getHabbo().getHabboInfo().getCurrentRoom() != null)
         {
-            UserSavedLookEvent lookEvent = new UserSavedLookEvent(this.client.getHabbo(), gender, look);
-            Emulator.getPluginManager().fireEvent(lookEvent);
-            if(lookEvent.isCancelled())
-                return;
-
-            this.client.getHabbo().getHabboInfo().setLook(lookEvent.newLook);
-            this.client.getHabbo().getHabboInfo().setGender(lookEvent.gender);
-            Emulator.getThreading().run(this.client.getHabbo().getHabboInfo());
-            this.client.sendResponse(new UpdateUserLookComposer(this.client.getHabbo()));
-            if(this.client.getHabbo().getHabboInfo().getCurrentRoom() != null)
-            {
-                this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserDataComposer(this.client.getHabbo()).compose());
-            }
-
-            AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("AvatarLooks"));
+            this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserDataComposer(this.client.getHabbo()).compose());
         }
+
+        AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("AvatarLooks"));
     }
 }

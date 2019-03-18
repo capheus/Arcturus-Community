@@ -6,7 +6,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class RemoveHabboItemComposer extends MessageComposer
 {
-    private int itemId;
+    private final int itemId;
 
     public RemoveHabboItemComposer(final int itemId)
     {

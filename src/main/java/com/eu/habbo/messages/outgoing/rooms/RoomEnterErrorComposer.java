@@ -6,7 +6,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class RoomEnterErrorComposer extends MessageComposer
 {
-
     public static final int ROOM_ERROR_GUESTROOM_FULL   = 1;
     public static final int ROOM_ERROR_CANT_ENTER       = 2;
     public static final int ROOM_ERROR_QUE              = 3;

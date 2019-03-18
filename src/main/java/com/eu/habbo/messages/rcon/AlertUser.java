@@ -20,18 +20,18 @@ public class AlertUser extends RCONMessage<AlertUser.JSONAlertUser>
 
         if(habbo != null)
         {
-            habbo.getClient().sendResponse(new GenericAlertComposer(object.message));
+            habbo.alert(object.message);
         }
 
         this.status = RCONMessage.HABBO_NOT_FOUND;
     }
 
-    public static class JSONAlertUser
+    static class JSONAlertUser
     {
 
-        public int user_id;
+        int user_id;
 
 
-        public String message;
+        String message;
     }
 }

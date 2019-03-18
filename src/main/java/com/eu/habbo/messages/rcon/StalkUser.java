@@ -25,24 +25,28 @@ public class StalkUser extends RCONMessage<StalkUser.StalkUserJSON>
             {
                 this.message = Emulator.getTexts().getValue("commands.error.cmd_stalk.not_found").replace("%user%", json.user_id + "");
                 this.status = STATUS_ERROR;
+                return;
             }
 
             if(target.getHabboInfo().getCurrentRoom() == null)
             {
                 this.message = Emulator.getTexts().getValue("commands.error.cmd_stalk.not_room").replace("%user%", json.user_id + "");
                 this.status = STATUS_ERROR;
+                return;
             }
 
             if(target.getHabboInfo().getUsername().equals(habbo.getHabboInfo().getUsername()))
             {
                 this.message = Emulator.getTexts().getValue("commands.generic.cmd_stalk.self").replace("%user%", json.user_id + "");
                 this.status = STATUS_ERROR;
+                return;
             }
 
             if(target.getHabboInfo().getCurrentRoom() == habbo.getHabboInfo().getCurrentRoom())
             {
                 this.message = Emulator.getTexts().getValue("commands.generic.cmd_stalk.same_room").replace("%user%", json.user_id + "");
                 this.status = STATUS_ERROR;
+                return;
             }
 
             if (this.status == 0)
@@ -52,7 +56,7 @@ public class StalkUser extends RCONMessage<StalkUser.StalkUserJSON>
         }
     }
 
-    public static class StalkUserJSON
+    static class StalkUserJSON
     {
 
         public int user_id;

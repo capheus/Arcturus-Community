@@ -46,7 +46,7 @@ class TeleportActionTwo implements Runnable
 
         if(((InteractionTeleport)this.currentTeleport).getTargetRoomId() > 0 && ((InteractionTeleport) this.currentTeleport).getTargetId() > 0)
         {
-            HabboItem item = room.getHabboItem(((InteractionTeleport) this.currentTeleport).getTargetId());
+            HabboItem item = this.room.getHabboItem(((InteractionTeleport) this.currentTeleport).getTargetId());
             if(item == null)
             {
                 ((InteractionTeleport) this.currentTeleport).setTargetRoomId(0);
@@ -67,10 +67,11 @@ class TeleportActionTwo implements Runnable
         }
         if(((InteractionTeleport)this.currentTeleport).getTargetId() == 0)
         {
-            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT items_teleports.*, A.room_id as a_room_id, A.id as a_id, B.room_id as b_room_id, B.id as b_id FROM items_teleports INNER JOIN items AS A ON items_teleports.teleport_one_id = A.id INNER JOIN items AS B ON items_teleports.teleport_two_id = B.id  WHERE (teleport_one_id = ? OR teleport_two_id = ?)"))
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT items_teleports.*, A.room_id as a_room_id, A.id as a_id, B.room_id as b_room_id, B.id as b_id FROM items_teleports INNER JOIN items AS A ON items_teleports.teleport_one_id = A.id INNER JOIN items AS B ON items_teleports.teleport_two_id = B.id  WHERE (teleport_one_id = ? OR teleport_two_id = ?) AND B.id != ? LIMIT 1"))
             {
                 statement.setInt(1, this.currentTeleport.getId());
                 statement.setInt(2, this.currentTeleport.getId());
+                statement.setInt(3, this.currentTeleport.getId());
 
                 try (ResultSet set = statement.executeQuery())
                 {
@@ -105,8 +106,8 @@ class TeleportActionTwo implements Runnable
             return;
         }
 
-        Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, room, "2"), delayOffset);
-        Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, room, "0"), delayOffset + 1000);
-        Emulator.getThreading().run(new TeleportActionThree(this.currentTeleport, this.room, this.client), delayOffset + 0);
+        Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, this.room, "2"), delayOffset);
+        Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, this.room, "0"), delayOffset + 1000);
+        Emulator.getThreading().run(new TeleportActionThree(this.currentTeleport, this.room, this.client), delayOffset);
     }
 }

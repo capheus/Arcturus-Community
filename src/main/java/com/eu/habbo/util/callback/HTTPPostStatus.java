@@ -23,7 +23,6 @@ public class HTTPPostStatus implements Runnable
         wr.close();
         int responseCode = con.getResponseCode();
         con.disconnect();
-        return;
     }
 
     @Override

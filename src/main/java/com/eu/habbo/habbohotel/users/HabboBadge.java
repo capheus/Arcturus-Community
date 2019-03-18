@@ -35,12 +35,12 @@ public class HabboBadge implements Runnable
 
     public int getId()
     {
-        return id;
+        return this.id;
     }
 
     public String getCode()
     {
-        return code;
+        return this.code;
     }
 
     public void setCode(String code)
@@ -55,7 +55,7 @@ public class HabboBadge implements Runnable
 
     public int getSlot()
     {
-        return slot;
+        return this.slot;
     }
 
     @Override

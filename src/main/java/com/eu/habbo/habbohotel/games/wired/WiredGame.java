@@ -51,7 +51,7 @@ public class WiredGame extends Game
             this.timeLeft--;
             for (Map.Entry<Integer, InteractionGameTimer> set : this.room.getRoomSpecialTypes().getGameTimers().entrySet())
             {
-                set.getValue().setExtradata(timeLeft + "");
+                set.getValue().setExtradata(this.timeLeft + "");
                 this.room.updateItemState(set.getValue());
             }
         }
@@ -64,7 +64,7 @@ public class WiredGame extends Game
     @Override
     public boolean addHabbo(Habbo habbo, GameTeamColors teamColor)
     {
-        this.room.giveEffect(habbo, FreezeGame.effectId + teamColor.type);
+        this.room.giveEffect(habbo, FreezeGame.effectId + teamColor.type, -1);
         return super.addHabbo(habbo, teamColor);
     }
 
@@ -72,6 +72,6 @@ public class WiredGame extends Game
     public void removeHabbo(Habbo habbo)
     {
         super.removeHabbo(habbo);
-        this.room.giveEffect(habbo, 0);
+        this.room.giveEffect(habbo, 0, -1);
     }
 }

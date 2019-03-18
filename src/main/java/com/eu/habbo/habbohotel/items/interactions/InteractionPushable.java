@@ -42,7 +42,7 @@ public abstract class InteractionPushable extends InteractionDefault {
     {
         super.onWalkOff(roomUnit, room, objects);
 
-        if(!(currentThread == null || currentThread.dead))
+        if(!(this.currentThread == null || this.currentThread.dead))
             return;
 
         int velocity = this.getWalkOffVelocity(roomUnit, room);
@@ -51,11 +51,11 @@ public abstract class InteractionPushable extends InteractionDefault {
 
         if(velocity > 0)
         {
-            if(currentThread != null)
-                currentThread.dead = true;
+            if(this.currentThread != null)
+                this.currentThread.dead = true;
 
-            currentThread = new KickBallAction(this, room, roomUnit, direction, velocity);
-            Emulator.getThreading().run(currentThread, 0);
+            this.currentThread = new KickBallAction(this, room, roomUnit, direction, velocity);
+            Emulator.getThreading().run(this.currentThread, 0);
         }
     }
 
@@ -72,11 +72,11 @@ public abstract class InteractionPushable extends InteractionDefault {
 
             if(velocity > 0)
             {
-                if(currentThread != null)
-                    currentThread.dead = true;
+                if(this.currentThread != null)
+                    this.currentThread.dead = true;
 
-                currentThread = new KickBallAction(this, room, client.getHabbo().getRoomUnit(), direction, velocity);
-                Emulator.getThreading().run(currentThread, 0);
+                this.currentThread = new KickBallAction(this, room, client.getHabbo().getRoomUnit(), direction, velocity);
+                Emulator.getThreading().run(this.currentThread, 0);
             }
         }
     }
@@ -104,11 +104,11 @@ public abstract class InteractionPushable extends InteractionDefault {
 
         if(velocity > 0)
         {
-            if(currentThread != null)
-                currentThread.dead = true;
+            if(this.currentThread != null)
+                this.currentThread.dead = true;
 
-            currentThread = new KickBallAction(this, room, roomUnit, direction, velocity);
-            Emulator.getThreading().run(currentThread, 0);
+            this.currentThread = new KickBallAction(this, room, roomUnit, direction, velocity);
+            Emulator.getThreading().run(this.currentThread, 0);
         }
     }
 

@@ -27,7 +27,7 @@ public class EmptyBotsInventoryCommand extends Command
             {
                 if(gameClient.getHabbo().getHabboInfo().getCurrentRoom().getUserCount() > 10)
                 {
-                    gameClient.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("commands.succes.cmd_empty_bots.verify").replace("%generic.yes%", Emulator.getTexts().getValue("generic.yes"))));
+                    gameClient.getHabbo().alert(Emulator.getTexts().getValue("commands.succes.cmd_empty_bots.verify").replace("%generic.yes%", Emulator.getTexts().getValue("generic.yes")));
                 }
                 else
                 {

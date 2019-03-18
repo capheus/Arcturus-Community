@@ -34,7 +34,7 @@ public class RemoveFriendEvent extends MessageHandler
             if(habbo != null)
             {
                 habbo.getMessenger().removeBuddy(this.client.getHabbo());
-                Emulator.getGameServer().getGameClientManager().getClient(habbo).sendResponse(new RemoveFriendComposer(this.client.getHabbo().getHabboInfo().getId()));
+                habbo.getClient().sendResponse(new RemoveFriendComposer(this.client.getHabbo().getHabboInfo().getId()));
             }
         }
 

@@ -148,7 +148,7 @@ public class ModToolManager
 
     public CfhTopic getCfhTopic(int topicId)
     {
-        for(CfhCategory category : getCfhCategories().valueCollection())
+        for(CfhCategory category : this.getCfhCategories().valueCollection())
         {
             for(CfhTopic topic : category.getTopics().valueCollection())
             {
@@ -215,7 +215,7 @@ public class ModToolManager
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            Emulator.getLogging().logErrorLine(e);
         }
     }
 
@@ -488,11 +488,14 @@ public class ModToolManager
 
     public void kick(Habbo moderator, Habbo target, String message)
     {
-        if(target.getHabboInfo().getCurrentRoom() != null)
+        if (moderator.hasPermission(Permission.ACC_SUPPORTTOOL) && !target.hasPermission(Permission.ACC_UNKICKABLE))
         {
-            Emulator.getGameEnvironment().getRoomManager().leaveRoom(target, target.getHabboInfo().getCurrentRoom());
+            if (target.getHabboInfo().getCurrentRoom() != null)
+            {
+                Emulator.getGameEnvironment().getRoomManager().leaveRoom(target, target.getHabboInfo().getCurrentRoom());
+            }
+            this.alert(moderator, target, message);
         }
-        this.alert(moderator, target, message);
     }
 
     public List<ModToolBan> ban(int targetUserId, Habbo moderator, String reason, int duration, ModToolBanType type, int cfhTopic)

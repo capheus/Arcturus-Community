@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class AchievementUpdater implements Runnable
 {
-    public static int INTERVAL = 5 * 60;
+    public static final int INTERVAL = 5 * 60;
     public int lastExecutionTimestamp = Emulator.getIntUnixTimestamp();
     @Override
     public void run()

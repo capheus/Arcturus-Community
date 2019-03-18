@@ -71,7 +71,7 @@ public class BadgesComponent
                 badgesList.add(badge);
             }
 
-            Collections.sort(badgesList, new Comparator<HabboBadge>()
+            badgesList.sort(new Comparator<HabboBadge>()
             {
                 @Override
                 public int compare(HabboBadge o1, HabboBadge o2)

@@ -29,7 +29,7 @@ public abstract class InteractionWired extends HabboItem
 
     public abstract boolean execute(RoomUnit roomUnit, Room room, Object[] stuff);
 
-    protected abstract String getWiredData();
+    public abstract String getWiredData();
 
     public abstract void serializeWiredData(ServerMessage message, Room room);
 
@@ -93,7 +93,7 @@ public abstract class InteractionWired extends HabboItem
     @Override
     public void onPickUp(Room room)
     {
-        onPickUp();
+        this.onPickUp();
     }
 
     public abstract void onPickUp();
@@ -107,24 +107,21 @@ public abstract class InteractionWired extends HabboItem
 
     protected long requiredCooldown()
     {
-        return 100;
+        return 0;
     }
 
 
 
     public boolean canExecute(long newMillis)
     {
-        if (newMillis - this.cooldown < this.requiredCooldown())
-        {
-            return false;
-        }
-        return true;
+        return newMillis - this.cooldown >= this.requiredCooldown();
     }
 
     public void setCooldown(long newMillis)
     {
         this.cooldown = newMillis;
     }
+
     @Override
     public boolean allowWiredResetState()
     {

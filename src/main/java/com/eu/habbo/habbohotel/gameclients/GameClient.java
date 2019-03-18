@@ -27,7 +27,7 @@ public class GameClient
 
     private String machineId = "";
 
-    public ConcurrentHashMap<Integer, Integer> incomingPacketCounter = new ConcurrentHashMap<>(25);
+    public final ConcurrentHashMap<Integer, Integer> incomingPacketCounter = new ConcurrentHashMap<>(25);
     public long lastPacketCounterCleared = Emulator.getIntUnixTimestamp();
 
     public GameClient(Channel channel)
@@ -43,7 +43,7 @@ public class GameClient
             try
             {
                 ServerMessage msg = composer.compose();
-                sendResponse(msg);
+                this.sendResponse(msg);
             } catch (Exception e)
             {
                 Emulator.getLogging().logPacketError(e);

@@ -9,13 +9,12 @@ import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.habbohotel.users.HabboItem;
-import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.threading.runnables.PetClearPosture;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class InteractionPetToy extends HabboItem
+public class InteractionPetToy extends InteractionDefault
 {
     public InteractionPetToy(ResultSet set, Item baseItem) throws SQLException
     {
@@ -28,40 +27,13 @@ public class InteractionPetToy extends HabboItem
     }
 
     @Override
-    public boolean canWalkOn(RoomUnit roomUnit, Room room, Object[] objects)
+    public void onWalkOn(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
     {
-        return true;
-    }
+        super.onWalkOn(roomUnit, room, objects);
 
-    @Override
-    public boolean isWalkable()
-    {
-        return false;
-    }
+        Pet pet = room.getPet(roomUnit);
 
-    @Override
-    public void onWalk(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
-    {
-
-    }
-
-    @Override
-    public void serializeExtradata(ServerMessage serverMessage)
-    {
-        serverMessage.appendInt((this.isLimited() ? 256 : 0));
-        serverMessage.appendString(this.getExtradata());
-
-        super.serializeExtradata(serverMessage);
-    }
-
-    @Override
-    public void onWalkOn(RoomUnit client, Room room, Object[] objects) throws Exception
-    {
-        super.onWalkOn(client, room, objects);
-
-        Pet pet = room.getPet(client);
-
-        if(pet != null && pet instanceof Pet)
+        if(pet != null)
         {
             if (pet.getEnergy() <= 35)
             {
@@ -84,7 +56,7 @@ public class InteractionPetToy extends HabboItem
                     pet.addHappyness(25);
                     item.setExtradata("0");
                     room.updateItem(item);
-                    new PetClearPosture(pet, RoomUnitStatus.PLAY, null, true).run();;
+                    new PetClearPosture(pet, RoomUnitStatus.PLAY, null, true).run();
                 }
             }, 2500 + (Emulator.getRandom().nextInt(20) * 500));
             this.setExtradata("1");
@@ -99,7 +71,7 @@ public class InteractionPetToy extends HabboItem
 
         Pet pet = room.getPet(roomUnit);
 
-        if (pet != null && pet instanceof Pet)
+        if (pet != null)
         {
             this.setExtradata("0");
             room.updateItemState(this);

@@ -1,15 +1,15 @@
-package com.eu.habbo.messages.outgoing.unknown;
+package com.eu.habbo.messages.outgoing.wired;
 
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-public class ItemExtraDataComposer extends MessageComposer
+public class WiredOpenComposer extends MessageComposer
 {
     private final HabboItem item;
 
-    public ItemExtraDataComposer(HabboItem item)
+    public WiredOpenComposer(HabboItem item)
     {
         this.item = item;
     }
@@ -17,9 +17,8 @@ public class ItemExtraDataComposer extends MessageComposer
     @Override
     public ServerMessage compose()
     {
-        this.response.init(Outgoing.ItemExtraDataComposer);
-        this.response.appendString(this.item.getId() + "");
-        this.item.serializeExtradata(this.response);
+        this.response.init(Outgoing.WiredOpenComposer);
+        this.response.appendInt(this.item.getId());
         return this.response;
     }
 }

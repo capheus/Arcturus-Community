@@ -101,8 +101,7 @@ public class InteractionRentableSpace extends HabboItem
 
         if(this.endTimestamp > Emulator.getIntUnixTimestamp())
         {
-            if (this.renterId > 0 && this.renterId == habbo.getHabboInfo().getId())
-                return true;
+            return this.renterId > 0 && this.renterId == habbo.getHabboInfo().getId();
         }
 
         return false;
@@ -153,7 +152,7 @@ public class InteractionRentableSpace extends HabboItem
         if(this.isRented())
             return;
 
-        if(!habbo.getHabboStats().canRentSpace())
+        if(habbo.getHabboStats().isRentingSpace())
             return;
 
         if(habbo.getHabboInfo().getCredits() < this.rentCost())
@@ -293,7 +292,7 @@ public class InteractionRentableSpace extends HabboItem
             return RentableSpaceInfoComposer.SPACE_ALREADY_RENTED;
         }
 
-        if(!habbo.getHabboStats().canRentSpace() && habbo.getHabboStats().getRentedItemId() != this.getId())
+        if(habbo.getHabboStats().isRentingSpace() && habbo.getHabboStats().getRentedItemId() != this.getId())
         {
             return RentableSpaceInfoComposer.CAN_RENT_ONLY_ONE_SPACE;
         }

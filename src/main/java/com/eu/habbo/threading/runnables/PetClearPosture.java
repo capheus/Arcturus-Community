@@ -28,14 +28,13 @@ public class PetClearPosture implements Runnable
             {
                 if(this.pet.getRoomUnit() != null)
                 {
-                    this.pet.getRoomUnit().removeStatus(key);
+                    this.pet.getRoomUnit().removeStatus(this.key);
 
-                    if(this.pet instanceof Pet)
-                        if(this.clearTask)
-                            pet.setTask(PetTasks.FREE);
-                        else
-                            if(this.newTask != null)
-                                this.pet.setTask(this.newTask);
+                    if(this.clearTask)
+                        this.pet.setTask(PetTasks.FREE);
+                    else
+                        if(this.newTask != null)
+                            this.pet.setTask(this.newTask);
                 }
             }
         }

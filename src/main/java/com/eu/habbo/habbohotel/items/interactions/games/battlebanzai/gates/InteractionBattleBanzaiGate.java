@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.gates;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.games.GameState;
 import com.eu.habbo.habbohotel.games.GameTeam;
 import com.eu.habbo.habbohotel.games.GameTeamColors;
 import com.eu.habbo.habbohotel.games.battlebanzai.BattleBanzaiGame;
@@ -27,7 +28,7 @@ public class InteractionBattleBanzaiGate extends InteractionGameGate
     @Override
     public boolean canWalkOn(RoomUnit roomUnit, Room room, Object[] objects)
     {
-        return room.getGame(BattleBanzaiGame.class) == null || !((BattleBanzaiGame)room.getGame(BattleBanzaiGame.class)).isRunning;
+        return room.getGame(BattleBanzaiGame.class) == null || ((BattleBanzaiGame)room.getGame(BattleBanzaiGame.class)).state.equals(GameState.IDLE);
     }
 
     @Override
@@ -37,7 +38,7 @@ public class InteractionBattleBanzaiGate extends InteractionGameGate
         if(room == null)
             return false;
 
-        return (this.getExtradata() == null || this.getExtradata().isEmpty() || Integer.valueOf(this.getExtradata()) < 5) && ((room.getGame(BattleBanzaiGame.class))) == null || !((BattleBanzaiGame)(room.getGame(BattleBanzaiGame.class))).isRunning;
+        return (this.getExtradata() == null || this.getExtradata().isEmpty() || Integer.valueOf(this.getExtradata()) < 5) && ((room.getGame(BattleBanzaiGame.class))) == null || ((BattleBanzaiGame)(room.getGame(BattleBanzaiGame.class))).state.equals(GameState.IDLE);
     }
 
     @Override

@@ -52,16 +52,15 @@ public class InventoryItemsComposer extends MessageComposer implements TIntObjec
         this.response.appendInt(habboItem.getId());
         this.response.appendInt(habboItem.getBaseItem().getSpriteId());
 
-        if(habboItem.getBaseItem().getName().equals("floor") || habboItem.getBaseItem().getName().equals("landscape") || habboItem.getBaseItem().getName().equals("wallpaper") || habboItem.getBaseItem().getName().equals("poster")) {
-            if (habboItem.getBaseItem().getName().equals("landscape"))
-                this.response.appendInt(4);
-            else if (habboItem.getBaseItem().getName().equals("floor"))
-                this.response.appendInt(3);
-            else if (habboItem.getBaseItem().getName().equals("wallpaper"))
-                this.response.appendInt(2);
-            else if (habboItem.getBaseItem().getName().equals("poster"))
-                this.response.appendInt(6);
-
+        if(habboItem.getBaseItem().getName().equals("floor") || habboItem.getBaseItem().getName().equals("landscape") || habboItem.getBaseItem().getName().equals("wallpaper") || habboItem.getBaseItem().getName().equals("poster"))
+        {
+            switch (habboItem.getBaseItem().getName())
+            {
+                case "landscape": this.response.appendInt(4); break;
+                case "floor":     this.response.appendInt(3); break;
+                case "wallpaper": this.response.appendInt(2); break;
+                case "poster":    this.response.appendInt(6); break;
+            }
 
             this.response.appendInt(0);
             this.response.appendString(habboItem.getExtradata());

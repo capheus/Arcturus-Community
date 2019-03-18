@@ -24,31 +24,31 @@ public class SoundTrack
 
     public int getId()
     {
-        return id;
+        return this.id;
     }
 
     public String getName()
     {
-        return name;
+        return this.name;
     }
 
     public String getAuthor()
     {
-        return author;
+        return this.author;
     }
 
     public String getCode()
     {
-        return code;
+        return this.code;
     }
 
     public String getData()
     {
-        return data;
+        return this.data;
     }
 
     public int getLength()
     {
-        return length;
+        return this.length;
     }
 }

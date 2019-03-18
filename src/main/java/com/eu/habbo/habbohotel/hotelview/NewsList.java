@@ -41,6 +41,6 @@ public class NewsList
 
     public ArrayList<NewsWidget> getNewsWidgets()
     {
-        return newsWidgets;
+        return this.newsWidgets;
     }
 }

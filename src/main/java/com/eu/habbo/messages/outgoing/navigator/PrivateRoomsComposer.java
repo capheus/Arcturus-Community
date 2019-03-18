@@ -1,5 +1,6 @@
 package com.eu.habbo.messages.outgoing.navigator;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public class PrivateRoomsComposer extends MessageComposer
 {
-    private List<Room> rooms;
+    private final List<Room> rooms;
 
     public PrivateRoomsComposer(List<Room> rooms)
     {
@@ -47,7 +48,7 @@ public class PrivateRoomsComposer extends MessageComposer
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+            Emulator.getLogging().logErrorLine(e);
         }
         return null;
     }

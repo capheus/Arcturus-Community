@@ -10,7 +10,6 @@ public class SomeConnectionComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.SomeConnectionComposer);
-
         return this.response;
     }
 }

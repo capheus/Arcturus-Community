@@ -23,7 +23,7 @@ public class SendRoomBundle extends RCONMessage<SendRoomBundle.JSON>
             Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(json.user_id);
             CatalogPage page = Emulator.getGameEnvironment().getCatalogManager().getCatalogPage(json.catalog_page);
 
-            if (page != null && (page instanceof RoomBundleLayout))
+            if ((page instanceof RoomBundleLayout))
             {
                 if (habbo != null)
                 {
@@ -42,7 +42,7 @@ public class SendRoomBundle extends RCONMessage<SendRoomBundle.JSON>
         }
     }
 
-    public static class JSON
+    static class JSON
     {
 
         public int user_id;

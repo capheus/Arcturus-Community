@@ -6,16 +6,18 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class DebugConsoleComposer extends MessageComposer
 {
+    private final boolean debugging;
 
-    private static final boolean debugging = true;
+    public DebugConsoleComposer(boolean debugging)
+    {
+        this.debugging = debugging;
+    }
 
     @Override
     public ServerMessage compose()
     {
         this.response.init(Outgoing.DebugConsoleComposer);
-
-        this.response.appendBoolean(true);
-
+        this.response.appendBoolean(this.debugging);
         return this.response;
     }
 }

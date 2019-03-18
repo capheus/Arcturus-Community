@@ -6,7 +6,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class StaffAlertAndOpenHabboWayComposer extends MessageComposer
 {
-    private String message;
+    private final String message;
 
     public StaffAlertAndOpenHabboWayComposer(String message)
     {

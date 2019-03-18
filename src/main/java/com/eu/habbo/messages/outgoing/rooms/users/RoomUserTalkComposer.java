@@ -7,8 +7,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class RoomUserTalkComposer extends MessageComposer
 {
-
-    private RoomChatMessage roomChatMessage;
+    private final RoomChatMessage roomChatMessage;
 
     public RoomUserTalkComposer(RoomChatMessage roomChatMessage)
     {

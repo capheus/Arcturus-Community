@@ -37,13 +37,13 @@ public class FigureUtil
         THashMap<String, String> figureBits1 = getFigureBits(figure1);
         THashMap<String, String> figureBits2 = getFigureBits(figure2);
 
-        String finalLook = "";
+        StringBuilder finalLook = new StringBuilder();
 
         for (Map.Entry<String, String> keys : figureBits1.entrySet()) 
         {
             if(limitFigure1 == null || ArrayUtils.contains(limitFigure1, keys.getKey())) 
             {
-                finalLook = finalLook + keys.getKey() + "-" + keys.getValue() + ".";
+                finalLook.append(keys.getKey()).append("-").append(keys.getValue()).append(".");
             }
         }
 
@@ -51,15 +51,15 @@ public class FigureUtil
         {
             if(limitFigure2 == null || ArrayUtils.contains(limitFigure2, keys.getKey())) 
             {
-                finalLook = finalLook + keys.getKey() + "-" + keys.getValue() + ".";
+                finalLook.append(keys.getKey()).append("-").append(keys.getValue()).append(".");
             }
         }
 
-        if(finalLook.endsWith(".")) 
+        if(finalLook.toString().endsWith("."))
         {
-            finalLook = finalLook.substring(0, finalLook.length() - 1);
+            finalLook = new StringBuilder(finalLook.substring(0, finalLook.length() - 1));
         }
         
-        return finalLook;
+        return finalLook.toString();
     }
 }

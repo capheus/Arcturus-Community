@@ -8,7 +8,7 @@ import gnu.trove.procedure.TObjectObjectProcedure;
 
 public class RoomUsersGuildBadgesComposer extends MessageComposer
 {
-    public final THashMap<Integer, String> guildBadges;
+    private final THashMap<Integer, String> guildBadges;
 
     public RoomUsersGuildBadgesComposer(THashMap<Integer, String> guildBadges)
     {
@@ -26,8 +26,8 @@ public class RoomUsersGuildBadgesComposer extends MessageComposer
             @Override
             public boolean execute(Integer guildId, String badge)
             {
-                response.appendInt(guildId);
-                response.appendString(badge);
+                RoomUsersGuildBadgesComposer.this.response.appendInt(guildId);
+                RoomUsersGuildBadgesComposer.this.response.appendString(badge);
                 return true;
             }
         });

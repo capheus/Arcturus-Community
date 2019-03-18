@@ -20,7 +20,8 @@ class FreezeResetExplosionTiles implements Runnable
     {
         for(HabboItem item : this.tiles)
         {
-            room.updateItem(item);
+            item.setExtradata("0");
+            this.room.updateItem(item);
         }
     }
 }

@@ -18,7 +18,10 @@ public enum WiredTriggerType
     BOT_REACHED_AVTR(14),
     SAY_COMMAND(0),
     IDLES(11),
-    UNIDLES(12);
+    UNIDLES(11),
+    CUSTOM(13),
+    STARTS_DANCING(11),
+    STOPS_DANCING(11);
 
     public final int code;
 

@@ -9,9 +9,10 @@ import java.sql.SQLException;
 
 public class InteractionInformationTerminal extends InteractionCustomValues
 {
-    public static THashMap<String, String> defaultValues = new THashMap<String, String>()
+    public static final THashMap<String, String> defaultValues = new THashMap<String, String>()
     {
-        {put("internalLink", "http://arcturus.pw");}
+        {
+            this.put("internalLink", "http://arcturus.pw");}
     };
 
     public InteractionInformationTerminal(ResultSet set, Item baseItem) throws SQLException
@@ -27,6 +28,6 @@ public class InteractionInformationTerminal extends InteractionCustomValues
     @Override
     public void onPickUp(Room room)
     {
-        values.clear();
+        this.values.clear();
     }
 }

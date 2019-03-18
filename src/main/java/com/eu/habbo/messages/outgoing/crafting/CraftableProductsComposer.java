@@ -26,14 +26,14 @@ public class CraftableProductsComposer extends MessageComposer
         this.response.init(Outgoing.CraftableProductsComposer);
 
         this.response.appendInt(this.recipes.size());
-        for (CraftingRecipe recipe : recipes)
+        for (CraftingRecipe recipe : this.recipes)
         {
             this.response.appendString(recipe.getName());
             this.response.appendString(recipe.getReward().getName());
         }
 
         this.response.appendInt(this.ingredients.size());
-        for (Item item : ingredients)
+        for (Item item : this.ingredients)
         {
             this.response.appendString(item.getName());
         }

@@ -11,8 +11,8 @@ import gnu.trove.set.hash.THashSet;
 
 public class ClearRentedSpace implements Runnable
 {
-    private InteractionRentableSpace item;
-    private Room room;
+    private final InteractionRentableSpace item;
+    private final Room room;
 
     public ClearRentedSpace(InteractionRentableSpace item, Room room)
     {

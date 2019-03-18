@@ -21,7 +21,7 @@ public class WiredConditionDataComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.WiredConditionDataComposer);
-        this.condition.serializeWiredData(this.response, room);
+        this.condition.serializeWiredData(this.response, this.room);
         this.condition.needsUpdate(true);
         return this.response;
     }

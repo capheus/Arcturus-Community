@@ -21,24 +21,24 @@ public class FriendChatMessageComposer extends MessageComposer
     {
         this.response.init(Outgoing.FriendChatMessageComposer);
 
-        if (message.getToId() == -1)
+        if (this.message.getToId() == -1)
         {
             this.response.appendInt(-1);
         }
         else
         {
-            this.response.appendInt(message.getFromId());
+            this.response.appendInt(this.message.getFromId());
         }
-        this.response.appendString(message.getMessage());
-        this.response.appendInt(Emulator.getIntUnixTimestamp() - message.getTimestamp());
+        this.response.appendString(this.message.getMessage());
+        this.response.appendInt(Emulator.getIntUnixTimestamp() - this.message.getTimestamp());
 
-        if (message.getToId() == -1) //TO Staff Chat
+        if (this.message.getToId() == -1) //TO Staff Chat
         {
             String name = "AUTO_MODERATOR";
             String look = "lg-5635282-1193.hd-3091-1.sh-3089-73.cc-156282-64.hr-831-34.ha-1012-1186.ch-3050-62-62";
-            if (message.getFromId() != -1)
+            if (this.message.getFromId() != -1)
             {
-                Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(message.getFromId());
+                Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(this.message.getFromId());
 
                 if (habbo != null)
                 {

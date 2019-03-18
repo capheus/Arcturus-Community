@@ -25,7 +25,7 @@ public class GuildFurniWidgetComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuildFurniWidgetComposer);
-        this.response.appendInt(item.getId());
+        this.response.appendInt(this.item.getId());
         this.response.appendInt(this.guild.getId());
         this.response.appendString(this.guild.getName());
         this.response.appendInt(this.guild.getRoomId());

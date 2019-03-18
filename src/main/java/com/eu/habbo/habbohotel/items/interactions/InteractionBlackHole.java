@@ -30,14 +30,13 @@ public class InteractionBlackHole extends InteractionGate
         int holesCountProgress = 0;
         Habbo owner = room.getHabbo(this.getUserId());
 
-        int furniCollecterProgress = 0;
         if (owner == null)
         {
-            furniCollecterProgress = AchievementManager.getAchievementProgressForHabbo(this.getUserId(), holeCountAchievement);
+            holesCountProgress = AchievementManager.getAchievementProgressForHabbo(this.getUserId(), holeCountAchievement);
         }
         else
         {
-            furniCollecterProgress = owner.getHabboStats().getAchievementProgress(holeCountAchievement);
+            holesCountProgress = owner.getHabboStats().getAchievementProgress(holeCountAchievement);
         }
         int holeDifference = room.getRoomSpecialTypes().getItemsOfType(InteractionBlackHole.class).size() - holesCountProgress;
 

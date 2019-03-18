@@ -94,6 +94,5 @@ public class PetPackageNameEvent extends MessageHandler
 
 
         this.client.sendResponse(new PetPackageNameValidationComposer(itemId, PetPackageNameValidationComposer.CLOSE_WIDGET, ""));
-        return;
     }
 }

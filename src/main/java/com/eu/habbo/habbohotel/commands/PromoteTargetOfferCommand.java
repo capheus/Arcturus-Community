@@ -5,7 +5,7 @@ import com.eu.habbo.habbohotel.catalog.TargetOffer;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.generic.alerts.MessagesForYouComposer;
-import com.eu.habbo.messages.outgoing.unknown.TargetedOfferComposer;
+import com.eu.habbo.messages.outgoing.catalog.TargetedOfferComposer;
 import gnu.trove.map.hash.THashMap;
 
 import java.util.ArrayList;
@@ -36,11 +36,11 @@ public class PromoteTargetOfferCommand extends Command
             String[] textConfig = Emulator.getTexts().getValue("commands.cmd_promote_offer.list").replace("%amount%", targetOffers.size() + "").split("<br>");
 
             String entryConfig = Emulator.getTexts().getValue("commands.cmd_promote_offer.list.entry");
-            List<String> message = new ArrayList<String>();
+            List<String> message = new ArrayList<>();
 
-            for (int i = 0; i < textConfig.length; i++)
+            for (String pair : textConfig)
             {
-                if (textConfig[i].contains("%list%"))
+                if (pair.contains("%list%"))
                 {
                     for (TargetOffer offer : targetOffers.values())
                     {
@@ -49,7 +49,7 @@ public class PromoteTargetOfferCommand extends Command
                 }
                 else
                 {
-                    message.add(textConfig[i]);
+                    message.add(pair);
                 }
             }
 

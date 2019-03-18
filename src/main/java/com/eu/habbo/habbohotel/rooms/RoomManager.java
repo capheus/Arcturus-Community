@@ -257,9 +257,8 @@ public class RoomManager
 
     public List<Room> getRoomsByScore()
     {
-        List<Room> rooms = new ArrayList<>();
-        rooms.addAll(this.activeRooms.values());
-        Collections.sort(rooms, Room.SORT_SCORE);
+        List<Room> rooms = new ArrayList<>(this.activeRooms.values());
+        rooms.sort(Room.SORT_SCORE);
 
         return rooms;
     }
@@ -285,7 +284,7 @@ public class RoomManager
             if(room.getOwnerId() == habbo.getHabboInfo().getId())
                 rooms.add(room);
         }
-        Collections.sort(rooms, Room.SORT_ID);
+        rooms.sort(Room.SORT_ID);
         return rooms;
     }
 
@@ -294,7 +293,7 @@ public class RoomManager
         Habbo h = Emulator.getGameEnvironment().getHabboManager().getHabbo(username);
         if(h != null)
         {
-            return getRoomsForHabbo(h);
+            return this.getRoomsForHabbo(h);
         }
 
         List<Room> rooms = new ArrayList<>();
@@ -424,7 +423,7 @@ public class RoomManager
         List<Room> roomsToDispose = new ArrayList<>();
         for(Room room : this.activeRooms.values())
         {
-            if(!room.isPublicRoom() && !room.isStaffPromotedRoom() && room.getOwnerId() == habbo.getHabboInfo().getId() && room.getUserCount() == 0)
+            if(!room.isPublicRoom() && !room.isStaffPromotedRoom() && room.getOwnerId() == habbo.getHabboInfo().getId() && room.getUserCount() == 0 && !this.roomCategories.get(room.getCategory()).isPublic())
             {
                 roomsToDispose.add(room);
             }
@@ -445,7 +444,7 @@ public class RoomManager
         THashSet<Room> roomsToDispose = new THashSet<>();
         for(Room room : this.activeRooms.values())
         {
-            if(!room.isPublicRoom() && !room.isStaffPromotedRoom() && !Emulator.getGameServer().getGameClientManager().containsHabbo(room.getOwnerId()) && room.isPreLoaded())
+            if(!room.isPublicRoom() && !room.isStaffPromotedRoom() && !Emulator.getGameServer().getGameClientManager().containsHabbo(room.getOwnerId()) && room.isPreLoaded() && !this.roomCategories.get(room.getCategory()).isPublic())
             {
                 roomsToDispose.add(room);
             }
@@ -565,7 +564,7 @@ public class RoomManager
 
     public void enterRoom(Habbo habbo, int roomId, String password, boolean overrideChecks, RoomTile doorLocation)
     {
-        Room room = loadRoom(roomId);
+        Room room = this.loadRoom(roomId);
 
         if(room == null)
             return;
@@ -835,19 +834,14 @@ public class RoomManager
                 }
             }
 
-            int effect = habbo.getInventory().getEffectsComponent().activatedEffect ;
+            int effect = habbo.getInventory().getEffectsComponent().activatedEffect;
 
             if (effect == 0)
             {
                 effect = habbo.getHabboInfo().getRank().getRoomEffect();
             }
 
-            if (effect > 0)
-            {
-                habbo.getRoomUnit().setEffectId(effect);
-            }
-
-            room.sendComposer(new RoomUserEffectComposer(habbo.getRoomUnit()).compose());
+            room.giveEffect(habbo.getRoomUnit(), effect, -1);
         }
 
 
@@ -1025,7 +1019,7 @@ public class RoomManager
 
             if (room.hasVotedInWordQuiz(habbo))
             {
-                habbo.getClient().sendResponse(new SimplePollAnswersComposer(habbo.getHabboInfo().getId(), room.noVotes, room.yesVotes));
+                habbo.getClient().sendResponse(new SimplePollAnswersComposer(room.noVotes, room.yesVotes));
             }
         }
 
@@ -1056,7 +1050,7 @@ public class RoomManager
 
     public void leaveRoom(Habbo habbo, Room room)
     {
-        leaveRoom(habbo, room, true);
+        this.leaveRoom(habbo, room, true);
     }
 
     public void leaveRoom(Habbo habbo, Room room, boolean redirectToHotelView)
@@ -1146,7 +1140,7 @@ public class RoomManager
 
         for(Room room : this.activeRooms.values())
         {
-            if(room.isPublicRoom() || room.isStaffPromotedRoom() || this.roomCategories.get(room.getCategory()).isPublic())
+            if(room.isPublicRoom())
             {
                 rooms.add(room);
             }
@@ -1245,7 +1239,7 @@ public class RoomManager
 
         if(rooms.size() < 25)
         {
-            rooms.addAll(getOfflineRoomsWithName(name));
+            rooms.addAll(this.getOfflineRoomsWithName(name));
         }
 
         Collections.sort(rooms);
@@ -1443,7 +1437,7 @@ public class RoomManager
             @Override
             public boolean execute(int value)
             {
-                Room room = loadRoom(value);
+                Room room = RoomManager.this.loadRoom(value);
 
                 if (room != null)
                 {
@@ -1664,7 +1658,6 @@ public class RoomManager
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
-            e.printStackTrace();
         }
 
         return this.loadCustomLayout(room);

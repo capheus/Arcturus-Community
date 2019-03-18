@@ -7,7 +7,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class RoomUserDanceComposer extends MessageComposer
 {
-
     private final RoomUnit roomUnit;
 
     public RoomUserDanceComposer(RoomUnit roomUnit)

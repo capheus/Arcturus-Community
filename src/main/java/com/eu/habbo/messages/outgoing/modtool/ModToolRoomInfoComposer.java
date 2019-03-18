@@ -7,7 +7,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class ModToolRoomInfoComposer extends MessageComposer
 {
-    private Room room;
+    private final Room room;
 
     public ModToolRoomInfoComposer(Room room)
     {

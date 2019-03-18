@@ -10,7 +10,6 @@ public class MarketplaceConfigComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.MarketplaceConfigComposer);
-
         this.response.appendBoolean(true);
         this.response.appendInt(1); //Commision Percentage.
         this.response.appendInt(10); //Credits
@@ -19,7 +18,6 @@ public class MarketplaceConfigComposer extends MessageComposer
         this.response.appendInt(1000000); //Max price
         this.response.appendInt(48); //Hours in marketplace
         this.response.appendInt(7); //Days to display
-
         return this.response;
     }
 }

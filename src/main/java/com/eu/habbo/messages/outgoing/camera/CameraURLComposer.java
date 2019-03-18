@@ -6,11 +6,11 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class CameraURLComposer extends MessageComposer
 {
-    public final String URL;
+    private final String URL;
 
     public CameraURLComposer(String url)
     {
-        URL = url;
+        this.URL = url;
     }
 
     @Override

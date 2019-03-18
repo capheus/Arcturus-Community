@@ -26,7 +26,7 @@ public class PostItPlaceEvent extends MessageHandler
             {
                 HabboItem item = this.client.getHabbo().getInventory().getItemsComponent().getHabboItem(itemId);
 
-                if (item != null && item instanceof InteractionPostIt)
+                if (item instanceof InteractionPostIt)
                 {
                     room.addHabboItem(item);
                     item.setExtradata("FFFF33");

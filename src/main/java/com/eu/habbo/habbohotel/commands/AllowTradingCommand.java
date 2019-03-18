@@ -46,7 +46,7 @@ public class AllowTradingCommand extends Command
             }
             else
             {
-                boolean found = false;
+                boolean found;
                 try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users_settings INNER JOIN users ON users.id = users_settings.id SET can_trade = ? WHERE users.username LIKE ?"))
                 {
                     statement.setString(1, enabled ? "1" : "0");

@@ -13,18 +13,18 @@ public class ModToolIssue implements ISerialize
 {
     public int id;
     public volatile ModToolTicketState state;
-    public volatile ModToolTicketType type = ModToolTicketType.NORMAL;
+    public volatile ModToolTicketType type;
     public int category;
     public int timestamp;
     public volatile int priority;
     public int reportedId;
-    public String reportedUsername = "Uknown Reported Habbo";
+    public String reportedUsername;
     public int roomId;
     public int senderId;
-    public String senderUsername = "Unknown Sender";
+    public String senderUsername;
     public volatile int modId = -1;
     public volatile String modName = "";
-    public String message = "Unknown Message";
+    public String message;
     public ArrayList<ModToolChatLog> chatLogs = null;
 
     public ModToolIssue(ResultSet set) throws SQLException

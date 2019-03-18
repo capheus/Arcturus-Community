@@ -1,5 +1,6 @@
 package com.eu.habbo.habbohotel.items.interactions.games.freeze.gates;
 
+import com.eu.habbo.habbohotel.games.GameState;
 import com.eu.habbo.habbohotel.games.GameTeam;
 import com.eu.habbo.habbohotel.games.GameTeamColors;
 import com.eu.habbo.habbohotel.games.freeze.FreezeGame;
@@ -26,7 +27,7 @@ public class InteractionFreezeGate extends InteractionGameGate
     @Override
     public boolean canWalkOn(RoomUnit roomUnit, Room room, Object[] objects)
     {
-        return room.getGame(FreezeGame.class) == null || !((FreezeGame)room.getGame(FreezeGame.class)).isRunning;
+        return room.getGame(FreezeGame.class) == null || ((FreezeGame)room.getGame(FreezeGame.class)).state.equals(GameState.IDLE);
     }
 
     @Override

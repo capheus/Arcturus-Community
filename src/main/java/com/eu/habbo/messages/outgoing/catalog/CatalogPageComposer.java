@@ -50,8 +50,7 @@ public class CatalogPageComposer extends MessageComposer
         else
         {
             this.response.appendInt(this.page.getCatalogItems().size());
-            List<CatalogItem> items = new ArrayList<>();
-            items.addAll(this.page.getCatalogItems().valueCollection());
+            List<CatalogItem> items = new ArrayList<>(this.page.getCatalogItems().valueCollection());
             Collections.sort(items);
             for (CatalogItem item : items)
             {
@@ -63,7 +62,7 @@ public class CatalogPageComposer extends MessageComposer
 
         if (this.page instanceof FrontPageFeaturedLayout || this.page instanceof FrontpageLayout)
         {
-            serializeExtra(this.response);
+            this.serializeExtra(this.response);
         }
 
         return this.response;

@@ -74,7 +74,6 @@ public class FreezeGamePlayer extends GamePlayer
             {
                 game.playerDies(this);
             }
-            return;
         }
         else
         {
@@ -114,13 +113,7 @@ public class FreezeGamePlayer extends GamePlayer
 
     public boolean canThrowSnowball()
     {
-        if(this.snowBalls > 0)
-        {
-            if(!this.isFrozen())
-                return true;
-        }
-
-        return false;
+        return this.snowBalls > 0 && !this.isFrozen();
     }
 
     public void freeze()
@@ -220,7 +213,7 @@ public class FreezeGamePlayer extends GamePlayer
         {
             this.frozenTime--;
 
-            if(frozenTime <= 0)
+            if(this.frozenTime <= 0)
             {
                 super.getHabbo().getRoomUnit().setCanWalk(true);
                 needsEffectUpdate = true;
@@ -260,6 +253,6 @@ public class FreezeGamePlayer extends GamePlayer
         if(this.dead)
             return;
 
-        super.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(super.getHabbo(), this.correctEffectId());
+        super.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(super.getHabbo(), this.correctEffectId(), -1);
     }
 }

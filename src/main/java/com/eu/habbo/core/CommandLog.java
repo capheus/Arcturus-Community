@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class CommandLog implements Loggable
 {
-    public static String insertQuery = "INSERT INTO commandlogs (`user_id`, `timestamp`, `command`, `params`, `succes`) VALUES (?, ?, ?, ?, ?)";
+    public static final String insertQuery = "INSERT INTO commandlogs (`user_id`, `timestamp`, `command`, `params`, `succes`) VALUES (?, ?, ?, ?, ?)";
 
     private final int userId;
     private final int timestamp = Emulator.getIntUnixTimestamp();

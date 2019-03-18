@@ -22,8 +22,8 @@ import java.sql.SQLException;
 public class InteractionFootballGate extends HabboItem
 {
     private static final String CACHE_KEY = "fball_gate_look";
-    private String figureM = "";
-    private String figureF = "";
+    private String figureM;
+    private String figureF;
 
     public InteractionFootballGate(ResultSet set, Item baseItem) throws SQLException
     {

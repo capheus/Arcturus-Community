@@ -28,11 +28,8 @@ public class FindNewFriendsEvent extends MessageHandler
 
                 if (room.getUserCount() > 0)
                 {
-                    if (room != null)
-                    {
-                        this.client.sendResponse(new ForwardToRoomComposer(room.getId()));
-                        return;
-                    }
+                    this.client.sendResponse(new ForwardToRoomComposer(room.getId()));
+                    return;
                 }
             }
         }

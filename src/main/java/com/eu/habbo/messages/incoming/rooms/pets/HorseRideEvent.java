@@ -21,7 +21,7 @@ public class HorseRideEvent extends MessageHandler
 
         Pet pet = this.client.getHabbo().getHabboInfo().getCurrentRoom().getPet(petId);
 
-        if(pet == null || !(pet instanceof HorsePet))
+        if(!(pet instanceof HorsePet))
             return;
 
         if(this.client.getHabbo().getHabboInfo().getRiding() == null)
@@ -32,7 +32,7 @@ public class HorseRideEvent extends MessageHandler
                 {
                     if (this.client.getHabbo().getHabboInfo().getId() == pet.getUserId())
                     {
-                        this.client.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(((HorsePet) pet).getRider(), 0);
+                        this.client.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(((HorsePet) pet).getRider(), 0, -1);
                         ((HorsePet) pet).getRider().getHabboInfo().setRiding(null);
                         ((HorsePet) pet).setRider(null);
                         pet.setTask(PetTasks.FREE);
@@ -49,7 +49,7 @@ public class HorseRideEvent extends MessageHandler
                 {
                     if (goalTile.equals(this.client.getHabbo().getRoomUnit().getCurrentLocation()))
                     {
-                        this.client.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(this.client.getHabbo(), 77);
+                        this.client.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(this.client.getHabbo(), 77, -1);
                         this.client.getHabbo().getHabboInfo().setRiding((HorsePet) pet);
                         ((HorsePet) pet).setRider(this.client.getHabbo());
                         this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserEffectComposer(this.client.getHabbo().getRoomUnit()).compose());
@@ -65,7 +65,7 @@ public class HorseRideEvent extends MessageHandler
         }
         else
         {
-            this.client.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(this.client.getHabbo(), 0);
+            this.client.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(this.client.getHabbo(), 0, -1);
             ((HorsePet) pet).setRider(null);
             pet.setTask(PetTasks.FREE);
             this.client.getHabbo().getHabboInfo().setRiding(null);

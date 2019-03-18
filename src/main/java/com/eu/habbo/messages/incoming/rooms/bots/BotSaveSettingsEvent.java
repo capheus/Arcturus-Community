@@ -53,7 +53,7 @@ public class BotSaveSettingsEvent extends MessageHandler
 
                     bot.setFigure(lookEvent.newLook);
                     bot.setGender(lookEvent.gender);
-                    bot.setEffect(lookEvent.effect);
+                    bot.setEffect(lookEvent.effect, -1);
                     bot.needsUpdate(true);
                     break;
 

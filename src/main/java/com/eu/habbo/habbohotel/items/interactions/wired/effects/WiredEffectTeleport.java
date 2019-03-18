@@ -6,6 +6,8 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
+import com.eu.habbo.habbohotel.rooms.RoomTileState;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredEffectType;
@@ -19,24 +21,25 @@ import gnu.trove.set.hash.THashSet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class WiredEffectTeleport extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.TELEPORT;
 
-    protected THashSet<HabboItem> items;
+    protected List<HabboItem> items;
 
     public WiredEffectTeleport(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
-        this.items = new THashSet<>();
+        this.items = new ArrayList<>();
     }
 
     public WiredEffectTeleport(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
     {
         super(id, userId, item, extradata, limitedStack, limitedSells);
-        this.items = new THashSet<>();
+        this.items = new ArrayList<>();
     }
 
     @Override
@@ -135,33 +138,56 @@ public class WiredEffectTeleport extends InteractionWiredEffect
             int i = Emulator.getRandom().nextInt(this.items.size()) + 1;
             int j = 1;
 
-            for (HabboItem item : this.items)
+            int tryCount = 0;
+            while (tryCount < this.items.size())
             {
-                if (i == j)
-                {
-                    int currentEffect = roomUnit.getEffectId();
+                tryCount++;
+                HabboItem item = this.items.get((tryCount - 1 + i) % this.items.size());
 
-                    room.giveEffect(roomUnit, 4);
-                    final WiredEffectTeleport teleportWired = this;
-                    Emulator.getThreading().run(new RoomUnitTeleport(roomUnit, room, item.getX(), item.getY(), item.getZ() + item.getBaseItem().getHeight() + (item.getBaseItem().allowSit() ?  - 0.50 : 0D), currentEffect), WiredHandler.TELEPORT_DELAY);
-                    Emulator.getThreading().run(new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            try
-                            {
-                                item.onWalkOn(roomUnit, room, new Object[]{teleportWired});
-                            }
-                            catch (Exception e)
-                            {}
-                        }
-                    }, WiredHandler.TELEPORT_DELAY);
-                    break;
-                } else
+                int currentEffect = roomUnit.getEffectId();
+
+                room.giveEffect(roomUnit, 4, 2);
+                final WiredEffectTeleport teleportWired = this;
+                RoomTile targetTile = room.getLayout().getTile(item.getX(), item.getY());
+                boolean foundTile = false;
+                if (targetTile.state == RoomTileState.INVALID || targetTile.state == RoomTileState.BLOCKED)
                 {
-                    j++;
+                    List<RoomTile> optionalTiles = room.getLayout().getTilesAround(targetTile, item.getRotation() + 3);
+
+                    Collections.reverse(optionalTiles);
+                    for (RoomTile tile : optionalTiles)
+                    {
+                        if (tile.state != RoomTileState.INVALID && tile.state != RoomTileState.BLOCKED)
+                        {
+                            targetTile = tile;
+                            foundTile = true;
+                        }
+                    }
                 }
+                else
+                {
+                    foundTile = true;
+                }
+                if (!foundTile)
+                {
+                    continue;
+                }
+                Emulator.getThreading().run(new RoomUnitTeleport(roomUnit, room, targetTile.x, targetTile.y, targetTile.getStackHeight() + (targetTile.state == RoomTileState.SIT ? -0.5 : 0) , currentEffect), WiredHandler.TELEPORT_DELAY);
+                Emulator.getThreading().run(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        try
+                        {
+                            item.onWalkOn(roomUnit, room, new Object[]{teleportWired});
+                        }
+                        catch (Exception e)
+                        {}
+                    }
+                }, WiredHandler.TELEPORT_DELAY);
+                break;
+
             }
             return true;
         }
@@ -172,23 +198,23 @@ public class WiredEffectTeleport extends InteractionWiredEffect
     @Override
     public String getWiredData()
     {
-        String wiredData = this.getDelay() + "\t";
+        StringBuilder wiredData = new StringBuilder(this.getDelay() + "\t");
 
-        if(items != null && !items.isEmpty())
+        if(this.items != null && !this.items.isEmpty())
         {
             for (HabboItem item : this.items)
             {
-                wiredData += item.getId() + ";";
+                wiredData.append(item.getId()).append(";");
             }
         }
 
-        return wiredData;
+        return wiredData.toString();
     }
 
     @Override
     public void loadWiredData(ResultSet set, Room room) throws SQLException
     {
-        this.items = new THashSet<>();
+        this.items = new ArrayList<>();
         String[] wiredData = set.getString("wired_data").split("\t");
 
         if (wiredData.length >= 1)

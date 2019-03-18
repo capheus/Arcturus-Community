@@ -101,7 +101,7 @@ public class Messenger
             {
                 while(set.next())
                 {
-                    friendRequests.add(new FriendRequest(set));
+                    this.friendRequests.add(new FriendRequest(set));
                 }
             }
         }
@@ -154,7 +154,7 @@ public class Messenger
     public static THashSet<MessengerBuddy> searchUsers(String username)
     {
         THashSet<MessengerBuddy> users = new THashSet<>();
-        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE username LIKE ? ORDER BY username DESC LIMIT 50"))
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE username LIKE ? ORDER BY username ASC LIMIT " + Emulator.getConfig().getInt("hotel.messenger.search.maxresults")))
         {
             statement.setString(1, username + "%");
             try (ResultSet set = statement.executeQuery())
@@ -196,7 +196,7 @@ public class Messenger
                             buddy.setLook(owner.getHabboInfo().getLook());
                             buddy.setGender(owner.getHabboInfo().getGender());
                             buddy.setUsername(owner.getHabboInfo().getUsername());
-                            Emulator.getGameServer().getGameClientManager().getClient(habbo).sendResponse(new UpdateFriendComposer(buddy));
+                            habbo.getClient().sendResponse(new UpdateFriendComposer(buddy));
                         }
                     }
                 }
@@ -237,7 +237,7 @@ public class Messenger
     //TODO Needs redesign. userFrom is redundant.
     public void acceptFriendRequest(int userFrom, int userTo)
     {
-        int count = deleteFriendRequests(userFrom, userTo);
+        int count = this.deleteFriendRequests(userFrom, userTo);
 
         if(count > 0)
         {
@@ -276,16 +276,16 @@ public class Messenger
                     return;
                 }
 
-                Emulator.getGameServer().getGameClientManager().getClient(habboTo).sendResponse(new UpdateFriendComposer(to));
-                Emulator.getGameServer().getGameClientManager().getClient(habboFrom).sendResponse(new UpdateFriendComposer(from));
+                habboTo.getClient().sendResponse(new UpdateFriendComposer(to));
+                habboFrom.getClient().sendResponse(new UpdateFriendComposer(from));
             }
             else if (habboTo != null)
             {
-                habboTo.getClient().sendResponse(new UpdateFriendComposer(loadFriend(habboTo, userFrom)));
+                habboTo.getClient().sendResponse(new UpdateFriendComposer(this.loadFriend(habboTo, userFrom)));
             }
             else if (habboFrom != null)
             {
-                habboFrom.getClient().sendResponse(new UpdateFriendComposer(loadFriend(habboFrom, userTo)));
+                habboFrom.getClient().sendResponse(new UpdateFriendComposer(this.loadFriend(habboFrom, userTo)));
             }
         }
     }

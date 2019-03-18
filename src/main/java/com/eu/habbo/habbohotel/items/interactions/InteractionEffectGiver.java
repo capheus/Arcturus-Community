@@ -42,7 +42,7 @@ public class InteractionEffectGiver extends InteractionDefault
         if (!this.getExtradata().equals("0")) return;
 
         HabboItem instance = this;
-        room.giveEffect(roomUnit, this.getBaseItem().getRandomVendingItem());
+        room.giveEffect(roomUnit, this.getBaseItem().getRandomVendingItem(), -1);
 
         if (this.getBaseItem().getStateCount() > 1)
         {
@@ -54,7 +54,7 @@ public class InteractionEffectGiver extends InteractionDefault
                 @Override
                 public void run()
                 {
-                    setExtradata("0");
+                    InteractionEffectGiver.this.setExtradata("0");
                     room.updateItem(instance);
                 }
             }, 500);

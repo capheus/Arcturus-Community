@@ -69,11 +69,11 @@ public class InteractionPetBreedingNest extends HabboItem
 
         if (pet != null)
         {
-            if (!boxFull())
+            if (!this.boxFull())
             {
                 this.addPet(pet);
 
-                if (boxFull())
+                if (this.boxFull())
                 {
                     Habbo ownerPetOne = room.getHabbo(this.petOne.getUserId());
                     Habbo ownerPetTwo = room.getHabbo(this.petTwo.getUserId());
@@ -188,7 +188,7 @@ public class InteractionPetBreedingNest extends HabboItem
                 habbo.getHabboInfo().getCurrentRoom().placePet(offspring, box.getX(), box.getY(), box.getZ(), box.getRotation());
                 offspring.needsUpdate = true;
                 offspring.run();
-                freePets();
+                InteractionPetBreedingNest.this.freePets();
                 habbo.getHabboInfo().getCurrentRoom().removeHabboItem(box);
                 habbo.getClient().sendResponse(new PetBreedingCompleted(offspring.getId(), Emulator.getGameEnvironment().getPetManager().getRarityForOffspring(offspring)));
 

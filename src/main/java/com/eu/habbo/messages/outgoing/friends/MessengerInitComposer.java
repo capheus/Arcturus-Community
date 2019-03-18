@@ -7,7 +7,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class MessengerInitComposer extends MessageComposer
 {
-    private Habbo habbo;
+    private final Habbo habbo;
 
     public MessengerInitComposer(Habbo habbo)
     {

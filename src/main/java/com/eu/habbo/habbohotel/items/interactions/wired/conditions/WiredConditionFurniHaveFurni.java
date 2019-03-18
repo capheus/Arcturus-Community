@@ -85,12 +85,12 @@ public class WiredConditionFurniHaveFurni extends InteractionWiredCondition
     {
         this.refresh();
 
-        String data = (all ? "1" : "0") + ":";
+        StringBuilder data = new StringBuilder((this.all ? "1" : "0") + ":");
 
         for(HabboItem item : this.items)
-            data += item.getId() + ";";
+            data.append(item.getId()).append(";");
 
-        return data;
+        return data.toString();
     }
 
     @Override

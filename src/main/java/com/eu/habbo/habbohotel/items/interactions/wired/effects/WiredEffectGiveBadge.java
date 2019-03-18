@@ -11,7 +11,7 @@ import com.eu.habbo.habbohotel.users.inventory.BadgesComponent;
 import com.eu.habbo.habbohotel.wired.WiredEffectType;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.messages.outgoing.generic.alerts.WiredRewardAlertComposer;
+import com.eu.habbo.messages.outgoing.wired.WiredRewardAlertComposer;
 import gnu.trove.procedure.TObjectProcedure;
 
 import java.sql.ResultSet;
@@ -120,7 +120,7 @@ public class WiredEffectGiveBadge extends InteractionWiredEffect
     }
 
     @Override
-    protected String getWiredData()
+    public String getWiredData()
     {
         return this.getDelay() + "\t" + this.badge;
     }

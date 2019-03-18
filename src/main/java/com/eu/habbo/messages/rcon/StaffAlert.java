@@ -16,7 +16,7 @@ public class StaffAlert extends RCONMessage<StaffAlert.JSON>
         Emulator.getGameEnvironment().getHabboManager().staffAlert(json.message);
     }
 
-    public static class JSON
+    static class JSON
     {
 
         public String message;

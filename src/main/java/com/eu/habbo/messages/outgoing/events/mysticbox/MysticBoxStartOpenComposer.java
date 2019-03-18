@@ -10,7 +10,6 @@ public class MysticBoxStartOpenComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.MysticBoxStartOpenComposer);
-
         return this.response;
     }
 }

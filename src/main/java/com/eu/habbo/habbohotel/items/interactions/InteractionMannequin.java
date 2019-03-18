@@ -72,7 +72,7 @@ public class InteractionMannequin extends HabboItem
     {
         String[] lookCode = this.getExtradata().split(":")[1].split("\\.");
 
-        String look = "";
+        StringBuilder look = new StringBuilder();
         for (String part : client.getHabbo().getHabboInfo().getLook().split("\\."))
         {
             String type = part.split("-")[0];
@@ -83,13 +83,13 @@ public class InteractionMannequin extends HabboItem
                 if (s.contains(type))
                 {
                     found = true;
-                    look += s + ".";
+                    look.append(s).append(".");
                 }
             }
 
             if (!found)
             {
-                look += part + ".";
+                look.append(part).append(".");
             }
         }
 

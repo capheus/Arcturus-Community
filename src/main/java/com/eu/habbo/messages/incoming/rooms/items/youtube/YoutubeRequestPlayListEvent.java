@@ -17,7 +17,7 @@ public class YoutubeRequestPlayListEvent extends MessageHandler
         {
             HabboItem item = this.client.getHabbo().getHabboInfo().getCurrentRoom().getHabboItem(itemId);
 
-            if (item != null && item instanceof InteractionYoutubeTV)
+            if (item instanceof InteractionYoutubeTV)
             {
                 this.client.sendResponse(new YoutubeDisplayListComposer(itemId, Emulator.getGameEnvironment().getItemManager().getYoutubeManager().getPlaylist(item.getBaseItem())));
             }

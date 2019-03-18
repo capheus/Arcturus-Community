@@ -7,7 +7,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class UserCreditsComposer extends MessageComposer
 {
-
     private final Habbo habbo;
 
     public UserCreditsComposer(Habbo habbo) {
@@ -18,9 +17,7 @@ public class UserCreditsComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.UserCreditsComposer);
-
         this.response.appendString(this.habbo.getHabboInfo().getCredits() + ".0");
-
         return this.response;
     }
 }

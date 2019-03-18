@@ -44,7 +44,7 @@ public class SetMotto extends RCONMessage<SetMotto.SetMottoJSON>
         }
     }
 
-    public class SetMottoJSON
+    static class SetMottoJSON
     {
 
         public int user_id;

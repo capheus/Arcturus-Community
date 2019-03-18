@@ -36,6 +36,8 @@ public class WiredConditionTriggerOnFurni extends InteractionWiredCondition
     @Override
     public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
     {
+        if (roomUnit == null) return false;
+
         this.refresh();
 
         if(this.items.isEmpty())
@@ -55,14 +57,14 @@ public class WiredConditionTriggerOnFurni extends InteractionWiredCondition
     {
         this.refresh();
 
-        String data = "";
+        StringBuilder data = new StringBuilder();
 
         for(HabboItem item : this.items)
         {
-            data += item.getId() + ";";
+            data.append(item.getId()).append(";");
         }
 
-        return data;
+        return data.toString();
     }
 
     @Override

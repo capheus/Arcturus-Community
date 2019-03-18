@@ -102,7 +102,7 @@ public class WiredEffectLowerFurni extends InteractionWiredEffect
 
             if(item.getZ() > 0)
             {
-                double z = (0.1) * (double)offset;
+                double z = (0.1) * (double) this.offset;
                 double minZ = room.getLayout().getHeightAtSquare(item.getX(), item.getY());
                 if(z < minZ)
                 {
@@ -119,19 +119,19 @@ public class WiredEffectLowerFurni extends InteractionWiredEffect
     }
 
     @Override
-    protected String getWiredData()
+    public String getWiredData()
     {
-        String wiredData = offset + "\t";
+        StringBuilder wiredData = new StringBuilder(this.offset + "\t");
 
-        if(items != null && !items.isEmpty())
+        if(this.items != null && !this.items.isEmpty())
         {
             for (HabboItem item : this.items)
             {
-                wiredData += item.getId() + ";";
+                wiredData.append(item.getId()).append(";");
             }
         }
 
-        return wiredData;
+        return wiredData.toString();
     }
 
     @Override

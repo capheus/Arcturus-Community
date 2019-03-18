@@ -28,7 +28,7 @@ public class UserSearchResultComposer extends MessageComposer
 
         for(MessengerBuddy buddy : this.users)
         {
-            if(!buddy.getUsername().equals(this.habbo.getHabboInfo().getUsername()) && !inFriendList(buddy))
+            if(!buddy.getUsername().equals(this.habbo.getHabboInfo().getUsername()) && !this.inFriendList(buddy))
             {
                 u.add(buddy);
             }

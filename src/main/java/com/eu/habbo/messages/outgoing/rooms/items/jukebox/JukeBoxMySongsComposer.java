@@ -24,7 +24,7 @@ public class JukeBoxMySongsComposer extends MessageComposer
 
         this.response.appendInt(this.items.size());
 
-        for(HabboItem item : items)
+        for(HabboItem item : this.items)
         {
             this.response.appendInt(item.getId());
             this.response.appendInt(((InteractionMusicDisc) item).getSongId());

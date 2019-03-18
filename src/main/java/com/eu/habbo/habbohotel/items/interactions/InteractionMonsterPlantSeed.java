@@ -1,5 +1,6 @@
 package com.eu.habbo.habbohotel.items.interactions;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
@@ -15,17 +16,28 @@ public class InteractionMonsterPlantSeed extends HabboItem
     public InteractionMonsterPlantSeed(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
+
+        if (this.getExtradata().isEmpty())
+        {
+            this.setExtradata("" + randomRarityLevel());
+            this.needsUpdate(true);
+        }
     }
 
     public InteractionMonsterPlantSeed(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
     {
         super(id, userId, item, extradata, limitedStack, limitedSells);
+
+        if (this.getExtradata().isEmpty())
+        {
+            this.setExtradata("" + randomRarityLevel());
+            this.needsUpdate(true);
+        }
     }
 
     @Override
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
-        //client.sendResponse(new GenericAlertComposer("We're in the progress of implementing monster plants.\r\n Stay tuned!\r-Arcturus Emulator"));
     }
 
     @Override
@@ -49,9 +61,26 @@ public class InteractionMonsterPlantSeed extends HabboItem
     @Override
     public void serializeExtradata(ServerMessage serverMessage)
     {
-        serverMessage.appendInt((this.isLimited() ? 256 : 0));
+        serverMessage.appendInt(1 + (this.isLimited() ? 256 : 0));
+        serverMessage.appendInt(1);
+        serverMessage.appendString("rarity");
         serverMessage.appendString(this.getExtradata());
 
         super.serializeExtradata(serverMessage);
+    }
+
+    public static int randomRarityLevel()
+    {
+        int number = Emulator.getRandom().nextInt(66);
+        int count = 0;
+        for (int i = 1; i <= 11; i++)
+        {
+            count += 11 - i;
+            if (number <= count)
+            {
+                return i;
+            }
+        }
+        return 10;
     }
 }

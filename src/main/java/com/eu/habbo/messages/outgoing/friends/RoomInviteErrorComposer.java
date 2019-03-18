@@ -29,7 +29,7 @@ public class RoomInviteErrorComposer extends MessageComposer
             @Override
             public boolean execute(MessengerBuddy object)
             {
-                response.appendInt(object.getId());
+                RoomInviteErrorComposer.this.response.appendInt(object.getId());
                 return true;
             }
         });

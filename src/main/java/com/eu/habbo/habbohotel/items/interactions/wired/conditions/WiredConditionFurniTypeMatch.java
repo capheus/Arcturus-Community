@@ -68,12 +68,12 @@ public class WiredConditionFurniTypeMatch extends InteractionWiredCondition
     {
         this.refresh();
 
-        String data = "";
+        StringBuilder data = new StringBuilder();
 
         for(HabboItem item : this.items)
-            data += item.getId() + ";";
+            data.append(item.getId()).append(";");
 
-        return data;
+        return data.toString();
     }
 
     @Override

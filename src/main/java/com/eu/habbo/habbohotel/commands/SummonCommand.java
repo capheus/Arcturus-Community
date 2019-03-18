@@ -61,7 +61,7 @@ public class SummonCommand extends Command
                 habbo.getRoomUnit().setGoalLocation(t);
             }
 
-            habbo.getClient().sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("commands.generic.cmd_summon.been_summoned").replace("%user%", gameClient.getHabbo().getHabboInfo().getUsername())));
+            habbo.alert(Emulator.getTexts().getValue("commands.generic.cmd_summon.been_summoned").replace("%user%", gameClient.getHabbo().getHabboInfo().getUsername()));
 
             return true;
         }

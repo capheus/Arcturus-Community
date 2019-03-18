@@ -20,7 +20,7 @@ public class RoomUnitGiveHanditem implements Runnable
     @Override
     public void run()
     {
-        if(room != null && this.roomUnit.isInRoom())
+        if(this.room != null && this.roomUnit.isInRoom())
         {
             this.roomUnit.setHandItem(this.itemId);
             this.room.sendComposer(new RoomUserHandItemComposer(this.roomUnit).compose());

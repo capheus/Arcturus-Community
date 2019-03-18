@@ -29,4 +29,10 @@ public class NavigatorPublicCategory
         room.preventUncaching = true;
         this.rooms.add(room);
     }
+
+    public void removeRoom(Room room)
+    {
+        this.rooms.remove(room);
+        room.preventUncaching = room.isPublicRoom();
+    }
 }

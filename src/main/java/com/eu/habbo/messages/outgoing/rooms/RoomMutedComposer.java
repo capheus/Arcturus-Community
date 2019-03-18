@@ -7,7 +7,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class RoomMutedComposer extends MessageComposer
 {
-    private Room room;
+    private final Room room;
 
     public RoomMutedComposer(Room room)
     {

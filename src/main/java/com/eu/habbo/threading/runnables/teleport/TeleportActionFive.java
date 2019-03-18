@@ -30,18 +30,18 @@ class TeleportActionFive implements Runnable
             return;
 
         //if (!(this.currentTeleport instanceof InteractionTeleportTile))
-        {
-            RoomTile tile = this.room.getLayout().getTileInFront(this.room.getLayout().getTile(this.currentTeleport.getX(), this.currentTeleport.getY()), this.currentTeleport.getRotation());
 
-            if (tile != null)
-            {
-                this.client.getHabbo().getRoomUnit().setGoalLocation(tile);
-            }
+        RoomTile tile = this.room.getLayout().getTileInFront(this.room.getLayout().getTile(this.currentTeleport.getX(), this.currentTeleport.getY()), this.currentTeleport.getRotation());
+
+        if (tile != null)
+        {
+            this.client.getHabbo().getRoomUnit().setGoalLocation(tile);
         }
 
-        this.currentTeleport.setExtradata("1");
-        room.updateItem(this.currentTeleport);
 
-        Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, room, "0"), 1000);
+        this.currentTeleport.setExtradata("1");
+        this.room.updateItem(this.currentTeleport);
+
+        Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, this.room, "0"), 1000);
     }
 }

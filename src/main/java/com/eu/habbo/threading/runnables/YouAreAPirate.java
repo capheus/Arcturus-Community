@@ -82,7 +82,7 @@ public class YouAreAPirate implements Runnable
         this.habbo = habbo;
         this.room = room;
         this.oldEffect = this.habbo.getRoomUnit().getEffectId();
-        this.room.giveEffect(this.habbo, 161);
+        this.room.giveEffect(this.habbo, 161, -1);
     }
 
     @Override
@@ -90,19 +90,19 @@ public class YouAreAPirate implements Runnable
     {
         if(this.room == this.habbo.getHabboInfo().getCurrentRoom())
         {
-            if(!iamapirate[index].isEmpty())
+            if(!iamapirate[this.index].isEmpty())
             {
-                this.room.talk(this.habbo, new RoomChatMessage(iamapirate[index], this.habbo, RoomChatMessageBubbles.PIRATE), RoomChatType.SHOUT);
+                this.room.talk(this.habbo, new RoomChatMessage(iamapirate[this.index], this.habbo, RoomChatMessageBubbles.PIRATE), RoomChatType.SHOUT);
             }
             this.index++;
 
             if(this.index == iamapirate.length)
             {
-                this.room.giveEffect(this.habbo, this.oldEffect);
+                this.room.giveEffect(this.habbo, this.oldEffect, -1);
                 return;
             }
 
-            Emulator.getThreading().run(this, iamapirate[index-1].length() * 100);
+            Emulator.getThreading().run(this, iamapirate[this.index -1].length() * 100);
         }
     }
 }

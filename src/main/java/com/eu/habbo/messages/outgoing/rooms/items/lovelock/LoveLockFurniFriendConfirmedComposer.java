@@ -7,7 +7,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class LoveLockFurniFriendConfirmedComposer extends MessageComposer
 {
-    private InteractionLoveLock loveLock;
+    private final InteractionLoveLock loveLock;
 
     public LoveLockFurniFriendConfirmedComposer(InteractionLoveLock loveLock)
     {

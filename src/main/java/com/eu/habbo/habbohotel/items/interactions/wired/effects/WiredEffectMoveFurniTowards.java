@@ -30,13 +30,13 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
     public WiredEffectMoveFurniTowards(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
-        items = new THashSet<>();
+        this.items = new THashSet<>();
     }
 
     public WiredEffectMoveFurniTowards(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
     {
         super(id, userId, item, extradata, limitedStack, limitedSells);
-        items = new THashSet<>();
+        this.items = new THashSet<>();
     }
 
     @Override
@@ -161,17 +161,17 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
     @Override
     public String getWiredData()
     {
-        String wiredData = getDelay() + "\t";
+        StringBuilder wiredData = new StringBuilder(this.getDelay() + "\t");
 
-        if(items != null && !items.isEmpty())
+        if(this.items != null && !this.items.isEmpty())
         {
             for (HabboItem item : this.items)
             {
-                wiredData += item.getId() + ";";
+                wiredData.append(item.getId()).append(";");
             }
         }
 
-        return wiredData;
+        return wiredData.toString();
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.items.interactions.games.freeze;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
+import com.eu.habbo.habbohotel.games.GameState;
 import com.eu.habbo.habbohotel.games.freeze.FreezeGame;
 import com.eu.habbo.habbohotel.games.freeze.FreezeGamePlayer;
 import com.eu.habbo.habbohotel.items.Item;
@@ -99,7 +100,7 @@ public class InteractionFreezeBlock extends HabboItem
             return;
 
         FreezeGame game = (FreezeGame) room.getGame(FreezeGame.class);
-        if(game == null || !game.isRunning)
+        if(game == null || !game.state.equals(GameState.RUNNING))
             return;
 
         Habbo habbo = room.getHabbo(roomUnit);

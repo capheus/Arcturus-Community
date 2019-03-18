@@ -53,7 +53,7 @@ public class KickBallAction implements Runnable {
                 {
                     this.currentStep = this.totalSteps; //End the move sequence, the ball can't bounce anywhere
                 }
-                run();
+                this.run();
             }
             else
             {
@@ -72,16 +72,16 @@ public class KickBallAction implements Runnable {
                 }
                 else
                 {
-                    currentStep = totalSteps; //End the move sequence, the ball can't bounce anywhere
-                    run();
+                    this.currentStep = this.totalSteps; //End the move sequence, the ball can't bounce anywhere
+                    this.run();
                 }
             }
         }
         else
         {
             //We're done with the move sequence. Stop it the sequence & end the thread.
-            this.ball.onStop(room, this.kicker, this.currentStep, this.totalSteps);
-            dead = true;
+            this.ball.onStop(this.room, this.kicker, this.currentStep, this.totalSteps);
+            this.dead = true;
         }
     }
 

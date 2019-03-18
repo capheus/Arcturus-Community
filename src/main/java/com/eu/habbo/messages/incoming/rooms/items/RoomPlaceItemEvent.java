@@ -20,8 +20,10 @@ public class RoomPlaceItemEvent extends MessageHandler
     {
         String[] values = this.packet.readString().split(" ");
 
-        int itemId = Integer.valueOf(values[0]);
-        if(values.length < 1 || itemId < 0)
+        int itemId = -1;
+
+        if (values.length != 0) itemId = Integer.valueOf(values[0]);
+        if(itemId < 0)
         {
             this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNITURE_PLACEMENT_ERROR.key, FurnitureMovementError.INVALID_MOVE.errorCode));
             return;
@@ -40,36 +42,10 @@ public class RoomPlaceItemEvent extends MessageHandler
         }
 
         HabboItem rentSpace = null;
-        if(!this.client.getHabbo().getHabboStats().canRentSpace())
+        if(this.client.getHabbo().getHabboStats().isRentingSpace())
         {
             rentSpace = room.getHabboItem(this.client.getHabbo().getHabboStats().rentedItemId);
-
-
-
-
-
-//
-
-
-
-
-
-
-
-
-
-
-//
-
-
-
-
         }
-        else
-        {
-
-        }
-
 
         HabboItem item = this.client.getHabbo().getInventory().getItemsComponent().getHabboItem(itemId);
 
@@ -90,8 +66,6 @@ public class RoomPlaceItemEvent extends MessageHandler
             this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNITURE_PLACEMENT_ERROR.key, FurnitureMovementError.MAX_SOUNDFURNI.errorCode));
             return;
         }
-
-        THashSet<RoomTile> updatedTiles = new THashSet<>();
 
         if (item.getBaseItem().getType() == FurnitureType.FLOOR)
         {
@@ -150,18 +124,5 @@ public class RoomPlaceItemEvent extends MessageHandler
 
         this.client.sendResponse(new RemoveHabboItemComposer(item.getId()));
         this.client.getHabbo().getInventory().getItemsComponent().removeHabboItem(item.getId());
-
-
-
-
-
-
-
-
-
-
-
-//
-
     }
 }

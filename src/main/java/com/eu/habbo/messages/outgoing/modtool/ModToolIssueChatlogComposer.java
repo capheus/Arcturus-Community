@@ -15,9 +15,9 @@ import java.util.Collections;
 public class ModToolIssueChatlogComposer extends MessageComposer
 {
     public static SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-    private ModToolIssue issue;
-    private ArrayList<ModToolChatLog> chatlog;
-    private String roomName;
+    private final ModToolIssue issue;
+    private final ArrayList<ModToolChatLog> chatlog;
+    private final String roomName;
 
     public ModToolIssueChatlogComposer(ModToolIssue issue, ArrayList<ModToolChatLog> chatlog, String roomName)
     {
@@ -35,9 +35,9 @@ public class ModToolIssueChatlogComposer extends MessageComposer
         this.response.appendInt(this.issue.reportedId);
         this.response.appendInt(this.issue.roomId);
 
-        Collections.sort(chatlog);
+        Collections.sort(this.chatlog);
 
-        if(chatlog.isEmpty())
+        if(this.chatlog.isEmpty())
             return null;
 
         //ChatRecordData
@@ -69,7 +69,7 @@ public class ModToolIssueChatlogComposer extends MessageComposer
             this.response.appendShort(this.chatlog.size());
             for(ModToolChatLog chatLog : this.chatlog)
             {
-                this.response.appendString(format.format(chatLog.timestamp * 1000l));
+                this.response.appendString(format.format(chatLog.timestamp * 1000L));
                 this.response.appendInt(chatLog.habboId);
                 this.response.appendString(chatLog.username);
                 this.response.appendString(chatLog.message);

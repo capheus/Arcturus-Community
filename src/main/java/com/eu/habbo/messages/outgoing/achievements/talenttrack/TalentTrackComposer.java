@@ -1,7 +1,6 @@
 package com.eu.habbo.messages.outgoing.achievements.talenttrack;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.achievements.Achievement;
 import com.eu.habbo.habbohotel.achievements.AchievementLevel;
 import com.eu.habbo.habbohotel.achievements.TalentTrackLevel;
 import com.eu.habbo.habbohotel.achievements.TalentTrackType;
@@ -10,7 +9,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
-import gnu.trove.procedure.TObjectIntProcedure;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -51,7 +49,6 @@ public class TalentTrackComposer extends MessageComposer
         if (talentTrackLevels != null)
         {
             this.response.appendInt(talentTrackLevels.size()); //Count
-            final boolean[] allCompleted = {true};
             for (Map.Entry<Integer, TalentTrackLevel> set : talentTrackLevels.entrySet())
             {
                 try
@@ -62,7 +59,7 @@ public class TalentTrackComposer extends MessageComposer
 
                     TalentTrackState state = TalentTrackState.LOCKED;
 
-                    int currentLevel = habbo.getHabboStats().talentTrackLevel(this.type);
+                    int currentLevel = this.habbo.getHabboStats().talentTrackLevel(this.type);
 
                     if (currentLevel + 1 == level.level)
                     {
@@ -77,54 +74,51 @@ public class TalentTrackComposer extends MessageComposer
                     this.response.appendInt(level.achievements.size());
 
                     final TalentTrackState finalState = state;
-                    level.achievements.forEachEntry(new TObjectIntProcedure<Achievement>()
-                    {
-                        @Override
-                        public boolean execute(Achievement achievement, int b)
+                    level.achievements.forEachEntry((achievement, index) -> {
+                        if (achievement != null)
                         {
-                            if (achievement != null)
+                            this.response.appendInt(achievement.id);
+
+                            //TODO Move this to TalenTrackLevel class
+                            this.response.appendInt(index); //idk
+                            this.response.appendString("ACH_" + achievement.name + index);
+
+                            int progress = Math.max(0, this.habbo.getHabboStats().getAchievementProgress(achievement));
+                            AchievementLevel achievementLevel = achievement.getLevelForProgress(progress);
+
+                            if (achievementLevel == null)
                             {
-                                response.appendInt(achievement.id);
-
-                                //TODO Move this to TalenTrackLevel class
-                                response.appendInt(b); //idk
-                                response.appendString("ACH_" + achievement.name + b);
-
-                                int progress = habbo.getHabboStats().getAchievementProgress(achievement);
-                                AchievementLevel achievementLevel = achievement.getLevelForProgress(progress);
-
-                                if (finalState != TalentTrackState.LOCKED)
+                                achievementLevel = achievement.firstLevel();
+                            }
+                            if (finalState != TalentTrackState.LOCKED)
+                            {
+                                if (achievementLevel != null && achievementLevel.progress <= progress)
                                 {
-                                    if (achievementLevel != null && achievementLevel.progress <= progress)
-                                    {
-                                        response.appendInt(2);
-                                    }
-                                    else
-                                    {
-                                        response.appendInt(1);
-                                        allCompleted[0] = false;
-                                    }
+                                    this.response.appendInt(2);
                                 }
                                 else
                                 {
-                                    response.appendInt(0);
-                                    allCompleted[0] = false;
+                                    this.response.appendInt(1);
                                 }
-                                response.appendInt(progress);
-                                response.appendInt(achievementLevel != null ? achievementLevel.progress : 0);
                             }
                             else
                             {
-                                response.appendInt(0);
-                                response.appendInt(0);
-                                response.appendString("");
-                                response.appendString("");
-                                response.appendInt(0);
-                                response.appendInt(0);
-                                response.appendInt(0);
+                                this.response.appendInt(0);
                             }
-                            return true;
+                            this.response.appendInt(progress);
+                            this.response.appendInt(achievementLevel != null ? achievementLevel.progress : 0);
                         }
+                        else
+                        {
+                            this.response.appendInt(0);
+                            this.response.appendInt(0);
+                            this.response.appendString("");
+                            this.response.appendString("");
+                            this.response.appendInt(0);
+                            this.response.appendInt(0);
+                            this.response.appendInt(0);
+                        }
+                        return true;
                     });
 
 

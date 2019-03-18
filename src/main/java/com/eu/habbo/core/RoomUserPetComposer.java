@@ -29,11 +29,11 @@ public class RoomUserPetComposer extends MessageComposer
         this.response.appendString(this.habbo.getHabboInfo().getUsername());
         this.response.appendString("");
         this.response.appendString(this.petType + " " + this.race + " " + this.color + " 2 2 -1 0 3 -1 0");
-        this.response.appendInt(habbo.getRoomUnit().getId());
-        this.response.appendInt(habbo.getRoomUnit().getX());
-        this.response.appendInt(habbo.getRoomUnit().getY());
-        this.response.appendString(habbo.getRoomUnit().getZ() + "");
-        this.response.appendInt(habbo.getRoomUnit().getBodyRotation().getValue());
+        this.response.appendInt(this.habbo.getRoomUnit().getId());
+        this.response.appendInt(this.habbo.getRoomUnit().getX());
+        this.response.appendInt(this.habbo.getRoomUnit().getY());
+        this.response.appendString(this.habbo.getRoomUnit().getZ() + "");
+        this.response.appendInt(this.habbo.getRoomUnit().getBodyRotation().getValue());
         this.response.appendInt(2);
         this.response.appendInt(this.petType);
         this.response.appendInt(this.habbo.getHabboInfo().getId());

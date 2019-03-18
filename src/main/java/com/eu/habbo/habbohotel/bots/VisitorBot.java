@@ -13,9 +13,9 @@ import java.util.Date;
 
 public class VisitorBot extends Bot
 {
-    private static SimpleDateFormat formatDate;
+    private static SimpleDateFormat DATE_FORMAT;
     private boolean showedLog = false;
-    private THashSet<ModToolRoomVisit> visits = new THashSet<>();
+    private THashSet<ModToolRoomVisit> visits = new THashSet<>(3);
 
     public VisitorBot(ResultSet set) throws SQLException
     {
@@ -38,16 +38,16 @@ public class VisitorBot extends Bot
 
                 String visitMessage = Emulator.getTexts().getValue("bots.visitor.list").replace("%count%", this.visits.size() + "");
 
-                String list = "";
+                StringBuilder list = new StringBuilder();
                 for(ModToolRoomVisit visit : this.visits)
                 {
-                    list += "\r";
-                    list += visit.roomName + " ";
-                    list += Emulator.getTexts().getValue("generic.time.at") + " ";
-                    list += formatDate.format(new Date((visit.timestamp * 1000L)));
+                    list.append("\r");
+                    list.append(visit.roomName).append(" ");
+                    list.append(Emulator.getTexts().getValue("generic.time.at")).append(" ");
+                    list.append(DATE_FORMAT.format(new Date((visit.timestamp * 1000L))));
                 }
 
-                visitMessage = visitMessage.replace("%list%", list);
+                visitMessage = visitMessage.replace("%list%", list.toString());
 
                 this.talk(visitMessage);
 
@@ -78,7 +78,7 @@ public class VisitorBot extends Bot
 
     public static void initialise()
     {
-        formatDate = new SimpleDateFormat(Emulator.getConfig().getValue("bots.visitor.dateformat"));
+        DATE_FORMAT = new SimpleDateFormat(Emulator.getConfig().getValue("bots.visitor.dateformat"));
     }
 
 }

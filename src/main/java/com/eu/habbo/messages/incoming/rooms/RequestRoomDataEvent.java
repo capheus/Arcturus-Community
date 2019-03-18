@@ -12,8 +12,8 @@ public class RequestRoomDataEvent extends MessageHandler
     {
         Room room = Emulator.getGameEnvironment().getRoomManager().loadRoom(this.packet.readInt());
 
-        int something = packet.readInt();
-        int something2 = packet.readInt();
+        int something = this.packet.readInt();
+        int something2 = this.packet.readInt();
         if(room != null)
         {
             boolean unknown = true;

@@ -6,7 +6,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class BannerTokenComposer extends MessageComposer
 {
-
     private final String token;
     private final boolean unknown;
 

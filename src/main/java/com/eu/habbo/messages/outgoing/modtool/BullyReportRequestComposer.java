@@ -14,7 +14,6 @@ public class BullyReportRequestComposer extends MessageComposer
     private final int errorCode;
     private final int errorCodeType;
 
-
     public BullyReportRequestComposer(int errorCode, int errorCodeType)
     {
         this.errorCode = errorCode;

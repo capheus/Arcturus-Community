@@ -60,21 +60,21 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
     @Override
     public String getWiredData()
     {
-        String data = limit + ":" + given + ":"+ rewardTime + ":" + (uniqueRewards ? 1 : 0) + ":" + this.limitationInterval +":" + getDelay() + ":";
+        StringBuilder data = new StringBuilder(this.limit + ":" + this.given + ":" + this.rewardTime + ":" + (this.uniqueRewards ? 1 : 0) + ":" + this.limitationInterval + ":" + this.getDelay() + ":");
 
         if(this.rewardItems.isEmpty())
         {
-            data += "\t";
+            data.append("\t");
         }
         else
         {
             for (WiredGiveRewardItem item : this.rewardItems)
             {
-                data += item.toString() + ";";
+                data.append(item.toString()).append(";");
             }
         }
 
-        return data;
+        return data.toString();
     }
 
     @Override
@@ -90,7 +90,7 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
             this.limitationInterval = Integer.valueOf(data[4]);
             this.setDelay(Integer.valueOf(data[5]));
 
-            if(data.length > 5)
+            if(data.length > 6)
             {
                 if(!data[6].equalsIgnoreCase("\t"))
                 {
@@ -149,13 +149,13 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
         message.appendInt(0);
         message.appendInt(this.getBaseItem().getSpriteId());
         message.appendInt(this.getId());
-        String s = "";
+        StringBuilder s = new StringBuilder();
 
         for(WiredGiveRewardItem item : this.rewardItems)
         {
-            s += item.wiredString() + ";";
+            s.append(item.wiredString()).append(";");
         }
-        message.appendString(s);
+        message.appendString(s.toString());
         message.appendInt(4);
             message.appendInt(this.rewardTime);
             message.appendInt(this.uniqueRewards);

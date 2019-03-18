@@ -7,7 +7,6 @@ import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.sql.*;
-import java.util.Collection;
 
 public class PermissionsManager
 {
@@ -75,15 +74,18 @@ public class PermissionsManager
         }
     }
 
+
     public boolean rankExists(int rankId)
     {
         return this.ranks.containsKey(rankId);
     }
 
+
     public Rank getRank(int rankId)
     {
         return this.ranks.get(rankId);
     }
+
 
     public Rank getRank(String rankName)
     {
@@ -96,27 +98,22 @@ public class PermissionsManager
         return null;
     }
 
-    @Deprecated
-    public Collection<String> getPermissionsForRank(int rankId)
-    {
-        throw new RuntimeException("Please use getRank()");
-    }
 
     public boolean isEffectBlocked(int effectId, int rank)
     {
         return this.enables.contains(effectId) && this.enables.get(effectId) > rank;
     }
 
+
     public boolean hasPermission(Habbo habbo, String permission)
     {
         return this.hasPermission(habbo, permission, false);
     }
 
+
     public boolean hasPermission(Habbo habbo, String permission, boolean withRoomRights)
     {
-        boolean result = this.hasPermission(habbo.getHabboInfo().getRank(), permission, withRoomRights);
-
-        if (!result)
+        if (!this.hasPermission(habbo.getHabboInfo().getRank(), permission, withRoomRights))
         {
             for (HabboPlugin plugin : Emulator.getPluginManager().getPlugins())
             {
@@ -129,8 +126,9 @@ public class PermissionsManager
             return false;
         }
 
-        return result;
+        return true;
     }
+
 
     public boolean hasPermission(Rank rank, String permission, boolean withRoomRights)
     {

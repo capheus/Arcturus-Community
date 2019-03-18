@@ -64,11 +64,12 @@ public class WiredConditionHabboHasHandItem extends InteractionWiredCondition
     @Override
     public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
     {
+        if (roomUnit == null) return false;
         return roomUnit.getHandItem() == this.handItem;
     }
 
     @Override
-    protected String getWiredData()
+    public String getWiredData()
     {
         return this.handItem + "";
     }

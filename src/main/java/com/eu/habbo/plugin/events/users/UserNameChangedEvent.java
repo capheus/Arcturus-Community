@@ -4,7 +4,8 @@ import com.eu.habbo.habbohotel.users.Habbo;
 
 public class UserNameChangedEvent extends UserEvent
 {
-    private final String oldName;
+    public final String oldName;
+
 
     public UserNameChangedEvent(Habbo habbo, String oldName)
     {

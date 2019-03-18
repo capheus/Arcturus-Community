@@ -183,7 +183,7 @@ public class Pet implements ISerialize, Runnable
 
     public int getRespect()
     {
-        return respect;
+        return this.respect;
     }
 
     public void addRespect()
@@ -296,7 +296,7 @@ public class Pet implements ISerialize, Runnable
 
                 if (this.freeCommandTicks == 0)
                 {
-                    freeCommand();
+                    this.freeCommand();
                 }
             }
 
@@ -373,7 +373,7 @@ public class Pet implements ISerialize, Runnable
 
             if(time - this.gestureTickTimeout > 15)
             {
-                updateGesture(time);
+                this.updateGesture(time);
             }
             else if(time - this.randomActionTickTimeout > 30)
             {
@@ -765,7 +765,7 @@ public class Pet implements ISerialize, Runnable
 
     public int getHappyness()
     {
-        return happyness;
+        return this.happyness;
     }
 
     public void setHappyness(int happyness)
@@ -775,7 +775,7 @@ public class Pet implements ISerialize, Runnable
 
     public int getExperience()
     {
-        return experience;
+        return this.experience;
     }
 
     public void setExperience(int experience)
@@ -840,7 +840,7 @@ public class Pet implements ISerialize, Runnable
 
     public boolean isMuted()
     {
-        return muted;
+        return this.muted;
     }
 
     public void setMuted(boolean muted)
@@ -850,7 +850,7 @@ public class Pet implements ISerialize, Runnable
 
     public int getLevelThirst()
     {
-        return levelThirst;
+        return this.levelThirst;
     }
 
     public void setLevelThirst(int levelThirst)
@@ -860,7 +860,7 @@ public class Pet implements ISerialize, Runnable
 
     public int getLevelHunger()
     {
-        return levelHunger;
+        return this.levelHunger;
     }
 
     public void setLevelHunger(int levelHunger)

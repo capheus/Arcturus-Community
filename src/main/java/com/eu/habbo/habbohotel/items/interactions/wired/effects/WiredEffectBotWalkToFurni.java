@@ -143,22 +143,22 @@ public class WiredEffectBotWalkToFurni extends InteractionWiredEffect
     }
 
     @Override
-    protected String getWiredData()
+    public String getWiredData()
     {
-        String wiredData = this.getDelay() + "\t" + this.botName + ";";
+        StringBuilder wiredData = new StringBuilder(this.getDelay() + "\t" + this.botName + ";");
 
-        if(this.items != null && !items.isEmpty())
+        if(this.items != null && !this.items.isEmpty())
         {
             for (HabboItem item : this.items)
             {
                 if(item.getRoomId() != 0)
                 {
-                    wiredData += item.getId() + ";";
+                    wiredData.append(item.getId()).append(";");
                 }
             }
         }
 
-        return wiredData;
+        return wiredData.toString();
     }
 
     @Override

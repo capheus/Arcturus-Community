@@ -9,8 +9,8 @@ import java.util.List;
 
 public class NewNavigatorSearchResultsComposer extends MessageComposer
 {
-    private String searchCode;
-    private String searchQuery;
+    private final String searchCode;
+    private final String searchQuery;
     private final List<SearchResultList> resultList;
 
     public NewNavigatorSearchResultsComposer(String searchCode, String searchQuery, List<SearchResultList> resultList)
@@ -29,7 +29,7 @@ public class NewNavigatorSearchResultsComposer extends MessageComposer
 
         this.response.appendInt(this.resultList.size()); //Count
 
-        for (SearchResultList item : resultList)
+        for (SearchResultList item : this.resultList)
         {
             item.serialize(this.response);
         }

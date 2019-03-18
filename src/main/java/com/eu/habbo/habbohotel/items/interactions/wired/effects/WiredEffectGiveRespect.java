@@ -117,7 +117,7 @@ public class WiredEffectGiveRespect  extends InteractionWiredEffect
     }
 
     @Override
-    protected String getWiredData()
+    public String getWiredData()
     {
         return this.getDelay() + "\t" + this.respects;
     }
@@ -139,7 +139,6 @@ public class WiredEffectGiveRespect  extends InteractionWiredEffect
             }
             catch (Exception e)
             {
-                e.printStackTrace();
             }
         }
     }

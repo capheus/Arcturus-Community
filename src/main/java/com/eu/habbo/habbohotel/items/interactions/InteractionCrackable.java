@@ -71,9 +71,6 @@ public class InteractionCrackable extends HabboItem
         super.onClick(client, room, objects);
         synchronized (this.lock)
         {
-            if (client == null)
-                return;
-
             if (this.getRoomId() == 0)
                 return;
 
@@ -109,15 +106,16 @@ public class InteractionCrackable extends HabboItem
         {
             CrackableReward rewardData = Emulator.getGameEnvironment().getItemManager().getCrackableData(this.getBaseItem().getId());
 
-            if (rewardData.requiredEffect > 0 && habbo.getRoomUnit().getEffectId() != rewardData.requiredEffect) return;
-
-            this.ticks++;
-            this.setExtradata("" + (this.ticks));
-            this.needsUpdate(true);
-            room.updateItem(this);
-
             if (rewardData != null)
             {
+                if (rewardData.requiredEffect > 0 && habbo.getRoomUnit().getEffectId() != rewardData.requiredEffect)
+                    return;
+
+                this.ticks++;
+                this.setExtradata("" + (this.ticks));
+                this.needsUpdate(true);
+                room.updateItem(this);
+
                 if (!rewardData.achievementTick.isEmpty())
                 {
                     AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement(rewardData.achievementTick));

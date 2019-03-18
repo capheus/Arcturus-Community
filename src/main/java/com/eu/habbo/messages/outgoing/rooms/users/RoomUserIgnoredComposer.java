@@ -25,7 +25,7 @@ public class RoomUserIgnoredComposer extends MessageComposer
     {
         this.response.init(Outgoing.RoomUserIgnoredComposer);
         this.response.appendInt(this.state);
-        this.response.appendString(habbo.getHabboInfo().getUsername());
+        this.response.appendString(this.habbo.getHabboInfo().getUsername());
         return this.response;
     }
 }

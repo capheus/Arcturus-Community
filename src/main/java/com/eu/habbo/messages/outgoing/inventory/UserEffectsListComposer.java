@@ -30,12 +30,12 @@ public class UserEffectsListComposer extends MessageComposer
                 @Override
                 public boolean execute(EffectsComponent.HabboEffect effect)
                 {
-                    response.appendInt(effect.effect);
-                    response.appendInt(0);
-                    response.appendInt(effect.duration);
-                    response.appendInt(effect.total);
-                    response.appendInt(effect.activationTimestamp >= 0 ? Emulator.getIntUnixTimestamp() - effect.activationTimestamp : -1);
-                    response.appendBoolean(effect.isActivated());
+                    UserEffectsListComposer.this.response.appendInt(effect.effect);
+                    UserEffectsListComposer.this.response.appendInt(0);
+                    UserEffectsListComposer.this.response.appendInt(effect.duration);
+                    UserEffectsListComposer.this.response.appendInt(effect.total);
+                    UserEffectsListComposer.this.response.appendInt(effect.activationTimestamp >= 0 ? Emulator.getIntUnixTimestamp() - effect.activationTimestamp : -1);
+                    UserEffectsListComposer.this.response.appendBoolean(effect.isActivated());
                     return true;
                 }
             });

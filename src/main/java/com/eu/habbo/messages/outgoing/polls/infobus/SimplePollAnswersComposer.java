@@ -6,13 +6,11 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class SimplePollAnswersComposer extends MessageComposer
 {
-    private final int unknownInt;
     private final int no;
     private final int yes;
 
-    public SimplePollAnswersComposer(int unknownInt, int no, int yes)
+    public SimplePollAnswersComposer(int no, int yes)
     {
-        this.unknownInt = unknownInt;
         this.no = no;
         this.yes = yes;
     }

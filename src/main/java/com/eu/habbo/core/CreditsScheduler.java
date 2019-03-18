@@ -65,7 +65,7 @@ public class CreditsScheduler extends Scheduler
 
     public boolean isDisposed()
     {
-        return disposed;
+        return this.disposed;
     }
 
     public void setDisposed(boolean disposed)

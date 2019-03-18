@@ -6,7 +6,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class UserCitizinShipComposer extends MessageComposer
 {
-
     private final String name;
 
     public UserCitizinShipComposer(String name)
@@ -21,7 +20,6 @@ public class UserCitizinShipComposer extends MessageComposer
         this.response.appendString(this.name);
         this.response.appendInt(4);
         this.response.appendInt(4);
-
         return this.response;
     }
 }

@@ -68,7 +68,7 @@ public class InteractionMusicDisc extends HabboItem
 
     public int getSongId()
     {
-        return songId;
+        return this.songId;
     }
 
     @Override

@@ -20,7 +20,7 @@ public class FriendRequestEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        String username = packet.readString();
+        String username = this.packet.readString();
         Habbo habbo = Emulator.getGameServer().getGameClientManager().getHabbo(username);
 
         if(Emulator.getPluginManager().fireEvent(new UserRequestFriendshipEvent(this.client.getHabbo(), username, habbo)).isCancelled())

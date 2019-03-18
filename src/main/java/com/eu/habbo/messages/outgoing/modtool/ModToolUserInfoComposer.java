@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class ModToolUserInfoComposer extends MessageComposer
 {
-    private ResultSet set;
+    private final ResultSet set;
 
     public ModToolUserInfoComposer(ResultSet set)
     {
@@ -52,7 +52,6 @@ public class ModToolUserInfoComposer extends MessageComposer
         {
 			Emulator.getLogging().logSQLException(e);
         }
-
         return null;
     }
 }

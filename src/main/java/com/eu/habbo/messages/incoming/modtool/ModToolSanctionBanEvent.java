@@ -7,12 +7,12 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 
 public class ModToolSanctionBanEvent extends MessageHandler
 {
-    public final int BAN_18_HOURS = 3;
-    public final int BAN_7_DAYS = 4;
-    public final int BAN_30_DAYS_STEP_1 = 5;
-    public final int BAN_30_DAYS_STEP_2 = 7;
-    public final int BAN_100_YEARS = 6;
-    public final int BAN_AVATAR_ONLY_100_YEARS = 106;
+    public static final int BAN_18_HOURS = 3;
+    public static final int BAN_7_DAYS = 4;
+    public static final int BAN_30_DAYS_STEP_1 = 5;
+    public static final int BAN_30_DAYS_STEP_2 = 7;
+    public static final int BAN_100_YEARS = 6;
+    public static final int BAN_AVATAR_ONLY_100_YEARS = 106;
 
     public final int DAY_IN_SECONDS = 24 * 60 * 60;
 
@@ -30,10 +30,10 @@ public class ModToolSanctionBanEvent extends MessageHandler
         switch (banType)
         {
             case BAN_18_HOURS: duration = 18 * 60 * 60; break;
-            case BAN_7_DAYS: duration = 7 * DAY_IN_SECONDS; break;
+            case BAN_7_DAYS: duration = 7 * this.DAY_IN_SECONDS; break;
             case BAN_30_DAYS_STEP_1:
             case BAN_30_DAYS_STEP_2:
-                duration = 30 * DAY_IN_SECONDS; break;
+                duration = 30 * this.DAY_IN_SECONDS; break;
             case BAN_100_YEARS:
             case BAN_AVATAR_ONLY_100_YEARS:
                 duration = Emulator.getIntUnixTimestamp();

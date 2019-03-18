@@ -74,7 +74,7 @@ public class CraftingCraftItemEvent extends MessageHandler
                     @Override
                     public boolean execute(HabboItem object)
                     {
-                        client.sendResponse(new RemoveHabboItemComposer(object.getId()));
+                        CraftingCraftItemEvent.this.client.sendResponse(new RemoveHabboItemComposer(object.getId()));
                         return true;
                     }
                 });

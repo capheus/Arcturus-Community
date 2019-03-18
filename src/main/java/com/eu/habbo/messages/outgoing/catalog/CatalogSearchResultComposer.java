@@ -7,7 +7,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class CatalogSearchResultComposer extends MessageComposer
 {
-    private CatalogItem item;
+    private final CatalogItem item;
 
     public CatalogSearchResultComposer(CatalogItem item)
     {

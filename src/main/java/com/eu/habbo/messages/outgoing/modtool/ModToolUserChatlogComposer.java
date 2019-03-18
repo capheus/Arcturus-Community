@@ -12,9 +12,9 @@ import java.util.ArrayList;
 public class ModToolUserChatlogComposer extends MessageComposer
 {
     public static SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-    private ArrayList<ModToolRoomVisit> set;
-    private int userId;
-    private String username;
+    private final ArrayList<ModToolRoomVisit> set;
+    private final int userId;
+    private final String username;
 
     public ModToolUserChatlogComposer(ArrayList<ModToolRoomVisit> set, int userId, String username)
     {
@@ -27,12 +27,11 @@ public class ModToolUserChatlogComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.ModToolUserChatlogComposer);
-
         this.response.appendInt(this.userId);
         this.response.appendString(this.username);
         this.response.appendInt(this.set.size());
 
-        for(ModToolRoomVisit visit : set)
+        for(ModToolRoomVisit visit : this.set)
         {
             this.response.appendByte(1);
             this.response.appendShort(2);
@@ -46,7 +45,7 @@ public class ModToolUserChatlogComposer extends MessageComposer
             this.response.appendShort(visit.chat.size());
             for(ModToolChatLog chatLog : visit.chat)
             {
-                this.response.appendString(format.format(chatLog.timestamp * 1000l));
+                this.response.appendString(format.format(chatLog.timestamp * 1000L));
                 this.response.appendInt(chatLog.habboId);
                 this.response.appendString(chatLog.username);
                 this.response.appendString(chatLog.message);

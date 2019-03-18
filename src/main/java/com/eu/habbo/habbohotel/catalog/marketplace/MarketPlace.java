@@ -191,16 +191,6 @@ public class MarketPlace
                 query += " ORDER BY minPrice DESC";
                 break;
         }
-        if (sort == 3)
-        {
-
-        }
-        if (sort == 2)
-        {
-        }
-        else
-        {
-        }
 
         query += ")";
 
@@ -444,18 +434,13 @@ public class MarketPlace
         try
         {
             MarketPlaceOffer offer = new MarketPlaceOffer(event.item, event.price, client.getHabbo());
-
-            if(offer != null)
-            {
-                client.getHabbo().getInventory().addMarketplaceOffer(offer);
-
-                client.getHabbo().getInventory().getItemsComponent().removeHabboItem(event.item);
-                client.sendResponse(new RemoveHabboItemComposer(event.item.getId()));
-                client.sendResponse(new InventoryRefreshComposer());
-                item.setUserId(-1);
-                item.needsUpdate(true);
-                Emulator.getThreading().run(item);
-            }
+            client.getHabbo().getInventory().addMarketplaceOffer(offer);
+            client.getHabbo().getInventory().getItemsComponent().removeHabboItem(event.item);
+            client.sendResponse(new RemoveHabboItemComposer(event.item.getId()));
+            client.sendResponse(new InventoryRefreshComposer());
+            item.setUserId(-1);
+            item.needsUpdate(true);
+            Emulator.getThreading().run(item);
         }
         catch (SQLException e)
         {

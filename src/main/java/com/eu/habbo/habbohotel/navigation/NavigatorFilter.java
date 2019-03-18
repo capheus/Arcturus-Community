@@ -40,7 +40,7 @@ public abstract class NavigatorFilter
                 continue;
             }
 
-            filterRooms(method, value, result.rooms);
+            this.filterRooms(method, value, result.rooms);
         }
     }
 
@@ -75,7 +75,7 @@ public abstract class NavigatorFilter
 
                         if (comparator != null)
                         {
-                            if (!applies(comparator, (String) o, (String) value))
+                            if (!this.applies(comparator, (String) o, (String) value))
                             {
                                 toRemove.add(room);
                             }
@@ -93,7 +93,7 @@ public abstract class NavigatorFilter
 
                             if (comparator != null)
                             {
-                                if (!applies(comparator, s, (String) value))
+                                if (!this.applies(comparator, s, (String) value))
                                 {
                                     toRemove.add(room);
                                 }
@@ -122,7 +122,7 @@ public abstract class NavigatorFilter
 
     public List<SearchResultList> getResult(Habbo habbo, NavigatorFilterField filterField, String value, int roomCategory)
     {
-        return getResult(habbo);
+        return this.getResult(habbo);
     }
 
     private boolean applies(NavigatorFilterComparator comparator, String o, String value)

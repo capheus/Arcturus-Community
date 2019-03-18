@@ -19,7 +19,7 @@ public class TriggerColorWheelEvent extends MessageHandler
 
         HabboItem item = room.getHabboItem(itemId);
 
-        if(item != null && item instanceof InteractionColorWheel)
+        if(item instanceof InteractionColorWheel)
         {
             item.onClick(this.client, room, null);
         }

@@ -9,11 +9,6 @@ public class RemovePetComposer extends MessageComposer
 {
     private final int petId;
 
-    public RemovePetComposer(int petId)
-    {
-        this.petId = petId;
-    }
-
     public RemovePetComposer(Pet pet)
     {
         this.petId = pet.getId();

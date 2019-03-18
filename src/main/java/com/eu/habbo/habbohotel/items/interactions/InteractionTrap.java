@@ -51,13 +51,13 @@ public class InteractionTrap extends InteractionDefault
                     {
                         if (habbo.getHabboInfo().getGender().equals(HabboGender.M) && this.getBaseItem().getEffectM() > 0 && habbo.getRoomUnit().getEffectId() != this.getBaseItem().getEffectM())
                         {
-                            room.giveEffect(habbo, this.getBaseItem().getEffectM());
+                            room.giveEffect(habbo, this.getBaseItem().getEffectM(), -1);
                             return;
                         }
 
                         if (habbo.getHabboInfo().getGender().equals(HabboGender.F) && this.getBaseItem().getEffectF() > 0 && habbo.getRoomUnit().getEffectId() != this.getBaseItem().getEffectF())
                         {
-                            room.giveEffect(habbo, this.getBaseItem().getEffectF());
+                            room.giveEffect(habbo, this.getBaseItem().getEffectF(), -1);
                             return;
                         }
 
@@ -68,7 +68,7 @@ public class InteractionTrap extends InteractionDefault
                             @Override
                             public void run()
                             {
-                                room.giveEffect(roomUnit, 0);
+                                room.giveEffect(roomUnit, 0, -1);
                                 roomUnit.setCanWalk(true);
                             }
                         }, delay);

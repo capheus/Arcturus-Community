@@ -4,12 +4,16 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.games.freeze.FreezeGame;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
+import gnu.trove.set.hash.THashSet;
+import org.apache.commons.math3.util.Pair;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class InteractionFreezeTile extends HabboItem
 {
@@ -26,13 +30,13 @@ public class InteractionFreezeTile extends HabboItem
     @Override
     public boolean canWalkOn(RoomUnit roomUnit, Room room, Object[] objects)
     {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isWalkable()
     {
-        return false;
+        return true;
     }
 
     @Override
@@ -69,5 +73,23 @@ public class InteractionFreezeTile extends HabboItem
     public void onPickUp(Room room)
     {
         this.setExtradata("0");
+    }
+
+    @Override
+    public boolean allowWiredResetState()
+    {
+        return false;
+    }
+
+
+    @Override
+    public boolean canStackAt(Room room, List<Pair<RoomTile, THashSet<HabboItem>>> itemsAtLocation)
+    {
+        for (Pair<RoomTile, THashSet<HabboItem>> set : itemsAtLocation)
+        {
+            if (!set.getValue().isEmpty()) return false;
+        }
+
+        return super.canStackAt(room, itemsAtLocation);
     }
 }

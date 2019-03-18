@@ -28,12 +28,10 @@ public class HabboInfo implements Runnable
 
     private int id;
     private int accountCreated;
-    private int achievementScore;
     private Rank rank;
 
     private int credits;
     private int lastOnline;
-    private int lastLogin;
 
     private int homeRoom;
 
@@ -80,7 +78,6 @@ public class HabboInfo implements Runnable
             this.homeRoom = set.getInt("home_room");
             this.lastOnline = set.getInt("last_online");
             this.machineID = set.getString("machine_id");
-            this.lastLogin = Emulator.getIntUnixTimestamp();
             this.online = false;
             this.currentRoom = null;
         }
@@ -124,7 +121,7 @@ public class HabboInfo implements Runnable
                 {
                     try
                     {
-                        statement.setInt(1, getId());
+                        statement.setInt(1, HabboInfo.this.getId());
                         statement.setInt(2, a);
                         statement.setInt(3, b);
                         statement.setInt(4, b);
@@ -219,7 +216,7 @@ public class HabboInfo implements Runnable
     }
 
     public String getMail() {
-        return mail;
+        return this.mail;
     }
 
     public void setMail(String mail) {
@@ -227,7 +224,7 @@ public class HabboInfo implements Runnable
     }
 
     public String getSso() {
-        return sso;
+        return this.sso;
     }
 
     public void setSso(String sso) {
@@ -235,7 +232,7 @@ public class HabboInfo implements Runnable
     }
 
     public String getIpRegister() {
-        return ipRegister;
+        return this.ipRegister;
     }
 
     public void setIpRegister(String ipRegister) {
@@ -268,7 +265,7 @@ public class HabboInfo implements Runnable
 
     public int getCredits()
     {
-        return credits;
+        return this.credits;
     }
 
     public void setCredits(int credits)
@@ -362,7 +359,7 @@ public class HabboInfo implements Runnable
 
     public HorsePet getRiding()
     {
-        return riding;
+        return this.riding;
     }
 
     public void setRiding(HorsePet riding)

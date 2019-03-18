@@ -11,12 +11,13 @@ public class MarketplaceItemPostedComposer extends MessageComposer
     public static final int MARKETPLACE_DISABLED = 3;
     public static final int ITEM_JUST_ADDED_TO_SHOP = 4;
 
-    private int code;
+    private final int code;
 
     public MarketplaceItemPostedComposer(int code)
     {
         this.code = code;
     }
+
     @Override
     public ServerMessage compose()
     {

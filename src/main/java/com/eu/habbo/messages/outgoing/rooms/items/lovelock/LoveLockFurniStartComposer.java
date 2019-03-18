@@ -7,7 +7,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class LoveLockFurniStartComposer extends MessageComposer
 {
-    private InteractionLoveLock loveLock;
+    private final InteractionLoveLock loveLock;
 
     public LoveLockFurniStartComposer(InteractionLoveLock loveLock)
     {

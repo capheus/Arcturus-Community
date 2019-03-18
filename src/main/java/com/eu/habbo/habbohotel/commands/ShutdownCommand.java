@@ -18,14 +18,14 @@ public class ShutdownCommand extends Command
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
-        String reason = "-";
+        StringBuilder reason = new StringBuilder("-");
         int minutes = 0;
         if(params.length > 2)
         {
-            reason = "";
+            reason = new StringBuilder();
             for(int i = 1; i < params.length; i++)
             {
-                reason += params[i] + " ";
+                reason.append(params[i]).append(" ");
             }
         }
         else
@@ -38,13 +38,13 @@ public class ShutdownCommand extends Command
                 }
                 catch (Exception e)
                 {
-                    reason = params[1];
+                    reason = new StringBuilder(params[1]);
                 }
             }
         }
 
-        ServerMessage message = null;
-        if (!reason.equals("-"))
+        ServerMessage message;
+        if (!reason.toString().equals("-"))
         {
             message = new GenericAlertComposer("<b>" + Emulator.getTexts().getValue("generic.warning") + "</b> \r\n" +
                     Emulator.getTexts().getValue("generic.shutdown").replace("%minutes%", minutes + "") + "\r\n" +

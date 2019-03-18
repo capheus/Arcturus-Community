@@ -36,7 +36,7 @@ public final class Emulator
     public final static int MINOR = 15;
 
 
-    public final static int BUILD = 0;
+    public final static int BUILD = 2;
 
 
     public static final String version = "Version: " + MAJOR + "." + MINOR + "." + BUILD;

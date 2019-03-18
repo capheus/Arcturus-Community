@@ -32,9 +32,9 @@ class HopperActionThree implements Runnable
     public void run()
     {
         HabboItem targetTeleport;
-        Room targetRoom = room;
+        Room targetRoom = this.room;
 
-        if(this.teleportOne.getRoomId() != targetRoomId)
+        if(this.teleportOne.getRoomId() != this.targetRoomId)
         {
             Emulator.getGameEnvironment().getRoomManager().leaveRoom(this.client.getHabbo(), this.room, false);
             targetRoom = Emulator.getGameEnvironment().getRoomManager().loadRoom(this.targetRoomId);
@@ -59,7 +59,7 @@ class HopperActionThree implements Runnable
         this.client.getHabbo().getRoomUnit().removeStatus(RoomUnitStatus.MOVE);
         targetRoom.sendComposer(new RoomUserStatusComposer(this.client.getHabbo().getRoomUnit()).compose());
 
-        Emulator.getThreading().run(new HabboItemNewState(this.teleportOne, room, "0"), 500);
+        Emulator.getThreading().run(new HabboItemNewState(this.teleportOne, this.room, "0"), 500);
         Emulator.getThreading().run(new HopperActionFour(targetTeleport, targetRoom, this.client), 500);
 
         if(targetTeleport instanceof InteractionCostumeHopper)

@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class CameraPacketHandler
 {
-    private HashMap<Short, Class<? extends CameraIncomingMessage>> packetDefinitions;
+    private final HashMap<Short, Class<? extends CameraIncomingMessage>> packetDefinitions;
 
     private static CameraPacketHandler INSTANCE;
     public static CameraPacketHandler instance()

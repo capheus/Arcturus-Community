@@ -19,7 +19,7 @@ public class MassPointsCommand extends Command
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
         int type = Emulator.getConfig().getInt("seasonal.primary.type");
-        String amountString = "";
+        String amountString;
         if(params.length == 3)
         {
             amountString = params[1];
@@ -83,7 +83,7 @@ public class MassPointsCommand extends Command
                 if(habbo.getHabboInfo().getCurrentRoom() != null)
                     habbo.whisper(message, RoomChatMessageBubbles.ALERT);
                 else
-                    habbo.getClient().sendResponse(new GenericAlertComposer(message));
+                    habbo.alert(message);
             }
         }
         return true;

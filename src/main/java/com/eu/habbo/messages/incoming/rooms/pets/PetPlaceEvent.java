@@ -42,7 +42,7 @@ public class PetPlaceEvent extends MessageHandler
         int x = this.packet.readInt();
         int y = this.packet.readInt();
 
-        RoomTile tile = null;
+        RoomTile tile;
         RoomTile playerTile = this.client.getHabbo().getRoomUnit().getCurrentLocation();
 
         if ((x == 0 && y == 0) || !room.isOwner(this.client.getHabbo()))

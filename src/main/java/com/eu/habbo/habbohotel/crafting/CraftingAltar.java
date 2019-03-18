@@ -20,8 +20,8 @@ public class CraftingAltar
     {
         this.baseItem    = baseItem;
 
-        this.ingredients = new THashSet<>();
-        this.recipes     = new THashMap<>();
+        this.ingredients = new THashSet<>(1);
+        this.recipes     = new THashMap<>(1);
     }
 
     public void addIngredient(Item item)
@@ -36,12 +36,12 @@ public class CraftingAltar
 
     public Map<CraftingRecipe, Boolean> matchRecipes(Map<Item, Integer> amountMap)
     {
-        THashMap<CraftingRecipe, Boolean> foundRecepies = new THashMap<>();
+        THashMap<CraftingRecipe, Boolean> foundRecepies = new THashMap<>(Math.max(1, this.recipes.size() / 3));
 
         for (Map.Entry<Integer, CraftingRecipe> set : this.recipes.entrySet())
         {
             boolean contains = true;
-            boolean equals = true;
+            boolean equals;
 
             if (set.getValue().isLimited() && !set.getValue().canBeCrafted())
             {
@@ -72,38 +72,6 @@ public class CraftingAltar
                     contains = false;
                 }
             }
-
-
-
-
-
-
-
-
-
-
-//
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
-
-
-
-
-
-
-
 
             if (contains)
             {

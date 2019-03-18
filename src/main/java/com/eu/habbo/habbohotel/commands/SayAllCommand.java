@@ -21,18 +21,15 @@ public class SayAllCommand extends Command
             return true;
         }
 
-        String message = "";
-        if(params.length > 1)
+        StringBuilder message = new StringBuilder();
+        for(int i = 1; i < params.length; i++)
         {
-            for(int i = 1; i < params.length; i++)
-            {
-                message += params[i] + " ";
-            }
+            message.append(params[i]).append(" ");
         }
 
         for (Habbo habbo : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getHabbos())
         {
-            habbo.talk(message);
+            habbo.talk(message.toString());
         }
 
         return true;

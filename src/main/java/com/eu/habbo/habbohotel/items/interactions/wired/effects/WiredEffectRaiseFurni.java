@@ -100,7 +100,7 @@ public class WiredEffectRaiseFurni extends InteractionWiredEffect
             if(item.getRoomId() == 0)
                 continue;
 
-            double offsetZ = (((0.1) * offset))  % 127;
+            double offsetZ = (((0.1) * this.offset))  % 127;
             room.sendComposer(new FloorItemOnRollerComposer(item, null, room.getLayout().getTile(item.getX(), item.getY()), offsetZ, room).compose());
             room.updateHabbosAt(item.getX(), item.getY());
         }
@@ -109,19 +109,19 @@ public class WiredEffectRaiseFurni extends InteractionWiredEffect
     }
 
     @Override
-    protected String getWiredData()
+    public String getWiredData()
     {
-        String wiredData = offset + "\t";
+        StringBuilder wiredData = new StringBuilder(this.offset + "\t");
 
-        if(items != null && !items.isEmpty())
+        if(this.items != null && !this.items.isEmpty())
         {
             for (HabboItem item : this.items)
             {
-                wiredData += item.getId() + ";";
+                wiredData.append(item.getId()).append(";");
             }
         }
 
-        return wiredData;
+        return wiredData.toString();
     }
 
     @Override

@@ -19,7 +19,7 @@ public class MachineBanCommand extends Command
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
         HabboInfo habbo = null;
-        String reason = "";
+        StringBuilder reason = new StringBuilder();
         if (params.length >= 2)
         {
             Habbo h = Emulator.getGameEnvironment().getHabboManager().getHabbo(params[1]);
@@ -38,12 +38,12 @@ public class MachineBanCommand extends Command
         {
             for (int i = 2; i < params.length; i++)
             {
-                reason += params[i];
-                reason += " ";
+                reason.append(params[i]);
+                reason.append(" ");
             }
         }
 
-        int count = 0;
+        int count;
         if (habbo != null)
         {
             if (habbo == gameClient.getHabbo().getHabboInfo())
@@ -58,7 +58,7 @@ public class MachineBanCommand extends Command
                 return true;
             }
 
-            count = Emulator.getGameEnvironment().getModToolManager().ban(habbo.getId(), gameClient.getHabbo(), reason, IPBanCommand.TEN_YEARS, ModToolBanType.MACHINE, -1).size();
+            count = Emulator.getGameEnvironment().getModToolManager().ban(habbo.getId(), gameClient.getHabbo(), reason.toString(), IPBanCommand.TEN_YEARS, ModToolBanType.MACHINE, -1).size();
 
 
 

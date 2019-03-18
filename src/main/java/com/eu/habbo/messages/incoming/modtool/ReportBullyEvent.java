@@ -58,12 +58,6 @@ public class ReportBullyEvent extends MessageHandler
 
                 this.client.sendResponse(new BullyReportedMessageComposer(BullyReportedMessageComposer.RECEIVED));
             }
-            else
-            {
-            }
-        }
-        else
-        {
         }
     }
 }

@@ -6,7 +6,10 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboGender;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
-import com.eu.habbo.messages.outgoing.rooms.users.*;
+import com.eu.habbo.messages.outgoing.rooms.users.RoomUserShoutComposer;
+import com.eu.habbo.messages.outgoing.rooms.users.RoomUserTalkComposer;
+import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
+import com.eu.habbo.messages.outgoing.rooms.users.RoomUsersComposer;
 import com.eu.habbo.plugin.events.bots.BotChatEvent;
 import com.eu.habbo.plugin.events.bots.BotShoutEvent;
 import com.eu.habbo.plugin.events.bots.BotTalkEvent;
@@ -24,7 +27,7 @@ public class Bot implements Runnable
 {
     public static final String NO_CHAT_SET = "${bot.skill.chatter.configuration.text.placeholder}";
 
-    private int id;
+    private transient int id;
 
 
     private String name;
@@ -63,6 +66,9 @@ public class Bot implements Runnable
     private int chatTimeOut;
 
 
+    private int chatTimestamp;
+
+
     private final ArrayList<String> chatLines;
 
 
@@ -74,13 +80,13 @@ public class Bot implements Runnable
 
     private int effect;
 
-    private boolean canWalk = true;
+    private transient boolean canWalk = true;
 
 
     private boolean needsUpdate;
 
 
-    private int followingHabboId;
+    private transient int followingHabboId;
 
     public Bot(int id, String name, String motto, String figure, HabboGender gender, int ownerId, String ownerName)
     {
@@ -119,7 +125,6 @@ public class Bot implements Runnable
         this.roomUnit       = null;
         this.chatTimeOut    = Emulator.getIntUnixTimestamp() + this.chatDelay;
         this.needsUpdate    = false;
-        this.lastChatIndex  = 0;
     }
 
     public Bot(Bot bot)
@@ -134,12 +139,9 @@ public class Bot implements Runnable
         this.chatRandom     = false;
         this.chatDelay      = 10;
         this.chatTimeOut    = Emulator.getIntUnixTimestamp() + this.chatDelay;
-        this.chatLines      = new ArrayList<>(Arrays.asList(new String[] {"Default Message :D"}));
+        this.chatLines      = new ArrayList<>(Arrays.asList("Default Message :D"));
         this.type           = bot.getType();
         this.effect         = bot.getEffect();
-        this.room           = null;
-        this.roomUnit       = null;
-        this.lastChatIndex  = 0;
 
         this.needsUpdate = false;
     }
@@ -175,12 +177,12 @@ public class Bot implements Runnable
                 statement.setInt(10, this.roomUnit == null ? 0 : this.roomUnit.getBodyRotation().getValue());
                 statement.setInt(11, this.roomUnit == null ? 0 : this.roomUnit.getDanceType().getType());
                 statement.setString(12, this.canWalk ? "1" : "0");
-                String text = "";
+                StringBuilder text = new StringBuilder();
                 for(String s : this.chatLines)
                 {
-                    text += s + "\r";
+                    text.append(s).append("\r");
                 }
-                statement.setString(13, text);
+                statement.setString(13, text.toString());
                 statement.setString(14, this.chatAuto ? "1" : "0");
                 statement.setString(15, this.chatRandom ? "1" : "0");
                 statement.setInt(16, this.chatDelay);
@@ -214,7 +216,7 @@ public class Bot implements Runnable
                 {
                     for (RoomTile t : this.room.getLayout().getTilesAround(this.room.getLayout().getTile(this.getRoomUnit().getX(), this.getRoomUnit().getY())))
                     {
-                        WiredHandler.handle(WiredTriggerType.BOT_REACHED_STF, this.roomUnit, this.room, room.getItemsAt(t).toArray());
+                        WiredHandler.handle(WiredTriggerType.BOT_REACHED_STF, this.roomUnit, this.room, this.room.getItemsAt(t).toArray());
                     }
                 }
             }
@@ -252,6 +254,7 @@ public class Bot implements Runnable
             if(Emulator.getPluginManager().fireEvent(event).isCancelled())
                 return;
 
+            this.chatTimestamp = Emulator.getIntUnixTimestamp();
             this.room.botChat(new RoomUserTalkComposer(new RoomChatMessage(event.message, this.roomUnit, RoomChatMessageBubbles.BOT_RENTABLE)).compose());
         }
     }
@@ -265,6 +268,7 @@ public class Bot implements Runnable
             if(Emulator.getPluginManager().fireEvent(event).isCancelled())
                 return;
 
+            this.chatTimestamp = Emulator.getIntUnixTimestamp();
             this.room.botChat(new RoomUserShoutComposer(new RoomChatMessage(event.message, this.roomUnit, RoomChatMessageBubbles.BOT_RENTABLE)).compose());
         }
     }
@@ -278,6 +282,7 @@ public class Bot implements Runnable
             if(Emulator.getPluginManager().fireEvent(event).isCancelled())
                 return;
 
+            this.chatTimestamp = Emulator.getIntUnixTimestamp();
             event.target.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(event.message, this.roomUnit, RoomChatMessageBubbles.BOT_RENTABLE)));
         }
     }
@@ -476,6 +481,11 @@ public class Bot implements Runnable
     }
 
 
+    public int getChatTimestamp()
+    {
+        return this.chatTimestamp;
+    }
+
     public void clearChat()
     {
         synchronized (this.chatLines)
@@ -498,18 +508,16 @@ public class Bot implements Runnable
     }
 
 
-    public void setEffect(int effect)
+    public void setEffect(int effect, int duration)
     {
         this.effect      = effect;
         this.needsUpdate = true;
 
         if (this.roomUnit != null)
         {
-            this.roomUnit.setEffectId(this.effect);
-
             if (this.room != null)
             {
-                this.room.sendComposer(new RoomUserEffectComposer(this.roomUnit).compose());
+                this.room.giveEffect(this.roomUnit, this.effect, duration);
             }
         }
     }

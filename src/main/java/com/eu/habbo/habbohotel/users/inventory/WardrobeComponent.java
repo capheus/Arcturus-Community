@@ -44,12 +44,9 @@ public class WardrobeComponent
                 {
                     while (set.next())
                     {
-                        Integer value = set.getInt("clothing_id");
+                        int value = set.getInt("clothing_id");
 
-                        if (value != null)
-                        {
-                            this.clothing.add(value);
-                        }
+                        this.clothing.add(value);
                     }
                 }
             }

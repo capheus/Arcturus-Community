@@ -13,10 +13,9 @@ public class SellItemEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-
         if(!MarketPlace.MARKETPLACE_ENABLED)
         {
-            this.client.sendResponse(new MarketplaceSellItemComposer(3, 0, 0));
+            this.client.sendResponse(new MarketplaceItemPostedComposer(MarketplaceItemPostedComposer.MARKETPLACE_DISABLED));
             return;
         }
 
@@ -30,7 +29,7 @@ public class SellItemEvent extends MessageHandler
         {
             if (!item.getBaseItem().allowMarketplace())
             {
-                String message = Emulator.getTexts().getValue("scripter.warning.marketplace.forbidden").replace("%username%", client.getHabbo().getHabboInfo().getUsername()).replace("%itemname%", item.getBaseItem().getName()).replace("%credits%", credits + "");
+                String message = Emulator.getTexts().getValue("scripter.warning.marketplace.forbidden").replace("%username%", this.client.getHabbo().getHabboInfo().getUsername()).replace("%itemname%", item.getBaseItem().getName()).replace("%credits%", credits + "");
                 Emulator.getGameEnvironment().getModToolManager().quickTicket(this.client.getHabbo(), "Scripter", message);
                 Emulator.getLogging().logUserLine(message);
                 this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR));
@@ -39,7 +38,7 @@ public class SellItemEvent extends MessageHandler
 
             if(credits < 0)
             {
-                String message = Emulator.getTexts().getValue("scripter.warning.marketplace.negative").replace("%username%", client.getHabbo().getHabboInfo().getUsername()).replace("%itemname%", item.getBaseItem().getName()).replace("%credits%", credits + "");
+                String message = Emulator.getTexts().getValue("scripter.warning.marketplace.negative").replace("%username%", this.client.getHabbo().getHabboInfo().getUsername()).replace("%itemname%", item.getBaseItem().getName()).replace("%credits%", credits + "");
                 Emulator.getGameEnvironment().getModToolManager().quickTicket(this.client.getHabbo(), "Scripter", message);
                 Emulator.getLogging().logUserLine(message);
                 this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR));

@@ -49,7 +49,7 @@ public class RoomUnitOnRollerComposer extends MessageComposer
         this.response.appendString(this.roomUnit.getZ() + "");
         this.response.appendString(this.newLocation.getStackHeight() + "");
 
-        this.roomUnit.setLocation(this.newLocation);
+        this.roomUnit.setLocation(room.getLayout().getTile(newLocation.x, newLocation.y));
         this.roomUnit.setPreviousLocationZ(this.newLocation.getStackHeight());
         this.roomUnit.setZ(this.newLocation.getStackHeight());
 

@@ -110,7 +110,7 @@ public class WiredEffectMoveFurniTo extends InteractionWiredEffect
 						}
 						else
 						{
-							indexOffset = this.indexOffset.get(targetItem.getId()) + spacing;
+							indexOffset = this.indexOffset.get(targetItem.getId()) + this.spacing;
 						}
 
 						RoomTile objectTile = room.getLayout().getTile(targetItem.getX(), targetItem.getY());
@@ -155,14 +155,14 @@ public class WiredEffectMoveFurniTo extends InteractionWiredEffect
             this.items.remove(item);
         }
 
-        String data = this.direction + "\t" + this.spacing + "\t" + this.getDelay() + "\t";
+        StringBuilder data = new StringBuilder(this.direction + "\t" + this.spacing + "\t" + this.getDelay() + "\t");
 
         for(HabboItem item : this.items)
         {
-            data += item.getId() + "\r";
+            data.append(item.getId()).append("\r");
         }
 
-        return data;
+        return data.toString();
     }
 
     @Override

@@ -14,7 +14,7 @@ public class CameraRoomPictureEvent extends MessageHandler
     {
         if (!this.client.getHabbo().hasPermission("acc_camera"))
         {
-            this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("camera.permission")));
+            this.client.getHabbo().alert(Emulator.getTexts().getValue("camera.permission"));
             return;
         }
 
@@ -38,7 +38,7 @@ public class CameraRoomPictureEvent extends MessageHandler
         }
         else
         {
-            this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("camera.disabled")));
+            this.client.getHabbo().alert(Emulator.getTexts().getValue("camera.disabled"));
         }
 
     }

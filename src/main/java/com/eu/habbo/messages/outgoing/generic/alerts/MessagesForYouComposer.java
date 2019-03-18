@@ -9,8 +9,8 @@ import java.util.List;
 
 public class MessagesForYouComposer extends MessageComposer
 {
-    private String[] messages;
-    private List<String> newMessages;
+    private final String[] messages;
+    private final List<String> newMessages;
 
     public MessagesForYouComposer(String[] messages)
     {

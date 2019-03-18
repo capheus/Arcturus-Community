@@ -78,15 +78,14 @@ public class ModToolBan implements Runnable
 
     public String listInfo()
     {
-        return new StringBuilder()
-                .append("Banned User Id: ") .append(this.userId)        .append("\r")
-                .append("Type: ")           .append(this.type.getType()).append("\r")
-                .append("Reason: ")         .append("<i>").append(this.reason).append("</i>").append("\r")
-                .append("Moderator Id: ")   .append(this.staffId)       .append("\r")
-                .append("Date: ")           .append(dateFormat.format(this.timestamp * 1000l))     .append("\r")
-                .append("Expire Date: ")    .append(dateFormat.format(this.expireDate * 1000l))    .append("\r")
-                .append("IP: ")             .append(this.ip)            .append("\r")
-                .append("MachineID: ")      .append(this.machineId)     .append("\r")
-                .append("Topic: ")          .append(this.cfhTopic).toString();
+        return "Banned User Id: " + this.userId + "\r" +
+                "Type: " + this.type.getType() + "\r" +
+                "Reason: " + "<i>" + this.reason + "</i>" + "\r" +
+                "Moderator Id: " + this.staffId + "\r" +
+                "Date: " + dateFormat.format(this.timestamp * 1000L) + "\r" +
+                "Expire Date: " + dateFormat.format(this.expireDate * 1000L) + "\r" +
+                "IP: " + this.ip + "\r" +
+                "MachineID: " + this.machineId + "\r" +
+                "Topic: " + this.cfhTopic;
     }
 }

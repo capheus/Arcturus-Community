@@ -12,11 +12,16 @@ public class InteractionRoomAds extends InteractionCustomValues
 {
     public final static THashMap<String, String> defaultValues = new THashMap<String, String>()
     {
-        {put("imageUrl", "http://arcturus.pw/ads_background.png");}
-        {put("clickUrl", "http://arcturus.pw");}
-        {put("offsetX", "0");}
-        {put("offsetY", "0");}
-        {put("offsetZ", "0");}
+        {
+            this.put("imageUrl", "http://arcturus.pw/ads_background.png");}
+        {
+            this.put("clickUrl", "http://arcturus.pw");}
+        {
+            this.put("offsetX", "0");}
+        {
+            this.put("offsetY", "0");}
+        {
+            this.put("offsetZ", "0");}
     };
 
     public InteractionRoomAds(ResultSet set, Item baseItem) throws SQLException

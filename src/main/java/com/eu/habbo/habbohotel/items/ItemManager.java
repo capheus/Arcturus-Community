@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.items;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.*;
+import com.eu.habbo.habbohotel.items.interactions.games.InteractionGameTimer;
 import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.*;
 import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.gates.InteractionBattleBanzaiGateBlue;
 import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.gates.InteractionBattleBanzaiGateGreen;
@@ -171,6 +172,7 @@ public class ItemManager
         this.interactionsList.add(new ItemInteraction("effect_vendingmachine",  InteractionEffectVendingMachine.class));
         this.interactionsList.add(new ItemInteraction("crackable_monster",      InteractionMonsterCrackable.class));
         this.interactionsList.add(new ItemInteraction("snowboard_slope",        InteractionSnowboardSlope.class));
+        this.interactionsList.add(new ItemInteraction("timer",                  InteractionGameTimer.class));
 
 
 
@@ -192,6 +194,8 @@ public class ItemManager
             this.interactionsList.add(new ItemInteraction("wf_trg_score_achieved",      WiredTriggerScoreAchieved.class));
             this.interactionsList.add(new ItemInteraction("wf_trg_idles",               WiredTriggerHabboIdle.class));
             this.interactionsList.add(new ItemInteraction("wf_trg_unidles",             WiredTriggerHabboUnidle.class));
+            this.interactionsList.add(new ItemInteraction("wf_trg_starts_dancing",      WiredTriggerHabboStartsDancing.class));
+            this.interactionsList.add(new ItemInteraction("wf_trg_stops_dancing",       WiredTriggerHabboStopsDancing.class));
 
 
             this.interactionsList.add(new ItemInteraction("wf_act_toggle_state",        WiredEffectToggleFurni.class));
@@ -232,6 +236,7 @@ public class ItemManager
             this.interactionsList.add(new ItemInteraction("wf_act_alert",               WiredEffectAlert.class));
             this.interactionsList.add(new ItemInteraction("wf_act_give_handitem",       WiredEffectGiveHandItem.class));
             this.interactionsList.add(new ItemInteraction("wf_act_match_to_sshot2",     WiredEffectMatchFurniStaff.class));
+            this.interactionsList.add(new ItemInteraction("wf_act_give_effect",         WiredEffectGiveEffect.class));
 
 
             this.interactionsList.add(new ItemInteraction("wf_cnd_has_furni_on",     WiredConditionFurniHaveFurni.class));
@@ -265,14 +270,16 @@ public class ItemManager
             this.interactionsList.add(new ItemInteraction("wf_cnd_not_freeze",       WiredConditionNotFreezeGameActive.class));
             this.interactionsList.add(new ItemInteraction("wf_cnd_habbo_has_rank",   WiredConditionHabboHasRank.class));
             this.interactionsList.add(new ItemInteraction("wf_cnd_habbo_not_rank",   WiredConditionHabboNotRank.class));
-        this.interactionsList.add(new ItemInteraction("wf_cnd_habbo_has_diamonds",   WiredConditionHabboHasDiamonds.class));
-        this.interactionsList.add(new ItemInteraction("wf_cnd_habbo_has_credits",    WiredConditionHabboHasCredits.class));
-        this.interactionsList.add(new ItemInteraction("wf_cnd_habbo_has_duckets",    WiredConditionHabboHasDuckets.class));
-        this.interactionsList.add(new ItemInteraction("wf_cnd_not_habbo_has_diamonds",   WiredConditionNotHabboHasDiamonds.class));
-        this.interactionsList.add(new ItemInteraction("wf_cnd_not_habbo_has_credits",    WiredConditionNotHabboHasCredits.class));
-        this.interactionsList.add(new ItemInteraction("wf_cnd_not_habbo_has_duckets",    WiredConditionNotHabboHasDuckets.class));
-        this.interactionsList.add(new ItemInteraction("wf_cnd_habbo_owns_badge",        WiredConditionHabboOwnsBadge.class));
-        this.interactionsList.add(new ItemInteraction("wf_cnd_not_habbo_owns_badge",        WiredConditionNotHabboOwnsBadge.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_habbo_has_diamonds",   WiredConditionHabboHasDiamonds.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_habbo_has_credits",    WiredConditionHabboHasCredits.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_habbo_has_duckets",    WiredConditionHabboHasDuckets.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_not_habbo_has_diamonds",   WiredConditionNotHabboHasDiamonds.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_not_habbo_has_credits",    WiredConditionNotHabboHasCredits.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_not_habbo_has_duckets",    WiredConditionNotHabboHasDuckets.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_habbo_owns_badge",        WiredConditionHabboOwnsBadge.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_not_habbo_owns_badge",        WiredConditionNotHabboOwnsBadge.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_habbo_is_dancing",        WiredConditionHabboIsDancing.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_not_habbo_is_dancing",        WiredConditionNotHabboIsDancing.class));
 
 
             this.interactionsList.add(new ItemInteraction("wf_xtra_random", WiredExtraRandom.class));
@@ -375,7 +382,7 @@ public class ItemManager
         }
 
         Emulator.getLogging().logDebugLine("Can't find interaction class:" + type.getName());
-        return getItemInteraction(InteractionDefault.class);
+        return this.getItemInteraction(InteractionDefault.class);
     }
 
 
@@ -431,7 +438,7 @@ public class ItemManager
         {
             while(set.next())
             {
-                CrackableReward reward = null;
+                CrackableReward reward;
                 try
                 {
                     reward = new CrackableReward(set);
@@ -450,7 +457,7 @@ public class ItemManager
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            Emulator.getLogging().logErrorLine(e);
         }
     }
 
@@ -678,7 +685,7 @@ public class ItemManager
                                                 deleteStatement.setInt(1, box.getId());
                                                 deleteStatement.execute();
 
-                                                item = loadHabboItem(resultSet);
+                                                item = this.loadHabboItem(resultSet);
                                             }
                                         }
                                     }

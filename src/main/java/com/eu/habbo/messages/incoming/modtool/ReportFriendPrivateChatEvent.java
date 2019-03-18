@@ -30,7 +30,7 @@ public class ReportFriendPrivateChatEvent extends MessageHandler
         int count = this.packet.readInt();
         ArrayList<ModToolChatLog> chatLogs = new ArrayList<>();
 
-        HabboInfo info = null;
+        HabboInfo info;
         Habbo target = Emulator.getGameEnvironment().getHabboManager().getHabbo(userId);
         if (target != null)
         {
@@ -48,7 +48,7 @@ public class ReportFriendPrivateChatEvent extends MessageHandler
                 int chatUserId = this.packet.readInt();
                 String username = this.packet.readInt() == info.getId() ? info.getUsername() : this.client.getHabbo().getHabboInfo().getUsername();
 
-                chatLogs.add(new ModToolChatLog(0, chatUserId, username, packet.readString()));
+                chatLogs.add(new ModToolChatLog(0, chatUserId, username, this.packet.readString()));
             }
         }
 

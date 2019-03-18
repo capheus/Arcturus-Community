@@ -15,7 +15,7 @@ public class FreezeClearEffects implements Runnable
     @Override
     public void run()
     {
-        this.habbo.getRoomUnit().setEffectId(0);
+        this.habbo.getRoomUnit().setEffectId(0, 0);
         this.habbo.getRoomUnit().setCanWalk(true);
         if(this.habbo.getHabboInfo().getCurrentRoom() != null)
         {

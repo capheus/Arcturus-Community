@@ -90,21 +90,21 @@ public class WiredConditionNotMatchStatePosition extends InteractionWiredConditi
     @Override
     public String getWiredData()
     {
-        String data = this.settings.size() + ":";
+        StringBuilder data = new StringBuilder(this.settings.size() + ":");
 
         if(this.settings.isEmpty())
         {
-            data += "\t;";
+            data.append("\t;");
         }
         else
         {
             for (WiredMatchFurniSetting item : this.settings)
-                data += item.toString() + ";";
+                data.append(item.toString()).append(";");
         }
 
-        data += ":" + (this.state ? 1 : 0) + ":" + (this.direction ? 1 : 0) + ":" + (this.position ? 1 : 0);
+        data.append(":").append(this.state ? 1 : 0).append(":").append(this.direction ? 1 : 0).append(":").append(this.position ? 1 : 0);
 
-        return data;
+        return data.toString();
     }
 
     @Override

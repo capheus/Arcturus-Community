@@ -2,26 +2,24 @@ package com.eu.habbo.habbohotel.games.freeze;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
-import com.eu.habbo.habbohotel.games.Game;
-import com.eu.habbo.habbohotel.games.GamePlayer;
-import com.eu.habbo.habbohotel.games.GameTeam;
-import com.eu.habbo.habbohotel.games.GameTeamColors;
+import com.eu.habbo.habbohotel.games.*;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeBlock;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeExitTile;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeTile;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeTimer;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.gates.InteractionFreezeGate;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.scoreboards.InteractionFreezeScoreboard;
-import com.eu.habbo.habbohotel.rooms.*;
+import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomLayout;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
+import com.eu.habbo.habbohotel.rooms.RoomUserAction;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserActionComposer;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.plugin.EventHandler;
 import com.eu.habbo.plugin.events.emulator.EmulatorConfigUpdatedEvent;
-import com.eu.habbo.plugin.events.users.UserTakeStepEvent;
 import com.eu.habbo.threading.runnables.freeze.FreezeClearEffects;
 import com.eu.habbo.threading.runnables.freeze.FreezeThrowSnowball;
 import gnu.trove.map.hash.THashMap;
@@ -34,6 +32,7 @@ import java.util.Map;
 public class FreezeGame extends Game
 {
     public static final int effectId = 40;
+
     public static int POWER_UP_POINTS;
     public static int POWER_UP_CHANCE;
     public static int POWER_UP_PROTECT_TIME;
@@ -57,7 +56,7 @@ public class FreezeGame extends Game
     @Override
     public synchronized void initialise()
     {
-        if(this.isRunning)
+        if(this.state == GameState.RUNNING)
             return;
 
         int highestTime = 0;
@@ -86,7 +85,7 @@ public class FreezeGame extends Game
             {
                 if (this.getTeamForHabbo(habbo) == null)
                 {
-                    for (HabboItem item : room.getItemsAt(habbo.getRoomUnit().getCurrentLocation()))
+                    for (HabboItem item : this.room.getItemsAt(habbo.getRoomUnit().getCurrentLocation()))
                     {
                         if (item instanceof InteractionFreezeTile)
                         {
@@ -136,13 +135,13 @@ public class FreezeGame extends Game
 
     public void throwBall(Habbo habbo, InteractionFreezeTile item)
     {
-        if (!this.isRunning || !habbo.getHabboInfo().isInGame() || habbo.getHabboInfo().getCurrentGame() != this.getClass())
+        if (!this.state.equals(GameState.RUNNING) || !habbo.getHabboInfo().isInGame() || habbo.getHabboInfo().getCurrentGame() != this.getClass())
             return;
 
         if (!item.getExtradata().equalsIgnoreCase("0") && !item.getExtradata().isEmpty())
             return;
 
-        if (RoomLayout.tilesAdjecent(habbo.getRoomUnit().getCurrentLocation(), room.getLayout().getTile(item.getX(), item.getY())))
+        if (RoomLayout.tilesAdjecent(habbo.getRoomUnit().getCurrentLocation(), this.room.getLayout().getTile(item.getX(), item.getY())))
         {
             if(((FreezeGamePlayer)habbo.getHabboInfo().getGamePlayer()).canThrowSnowball())
             {
@@ -158,14 +157,15 @@ public class FreezeGame extends Game
         RoomTile t = this.room.getLayout().getTile(x, y);
 
         tiles.add(t);
-        for(int i = 0; i < 4; i++)
+        for(int rotatation = 0; rotatation < 8; rotatation += 2)
         {
             for(int j = 0; j < radius; j++)
             {
-                t = this.room.getLayout().getTileInFront(this.room.getLayout().getTile(x, y), i * 2, (short) radius);
+                t = this.room.getLayout().getTileInFront(this.room.getLayout().getTile(x, y), rotatation, j);
 
                 if(t == null || t.x < 0 || t.y < 0 || t.x >= this.room.getLayout().getMapSizeX() || t.y >= this.room.getLayout().getMapSizeY())
                     continue;
+
                 tiles.add(t);
             }
         }
@@ -177,13 +177,13 @@ public class FreezeGame extends Game
     {
         THashSet<RoomTile> tiles = new THashSet<>();
 
-        for(int i = 0; i < 4; i++)
+        for(int rotation = 1; rotation < 9; rotation += 2)
         {
-            RoomTile t = room.getLayout().getTile(x, y);
+            RoomTile t = this.room.getLayout().getTile(x, y);
 
             for(int j = 0; j < radius; j++)
             {
-                t = this.room.getLayout().getTileInFront(this.room.getLayout().getTile(x, y), (i * 2) + 1, (short) radius);
+                t = this.room.getLayout().getTileInFront(this.room.getLayout().getTile(x, y), rotation, j);
 
                 if (t != null)
                 {
@@ -198,7 +198,7 @@ public class FreezeGame extends Game
         return tiles;
     }
 
-    public synchronized void explodeBox(InteractionFreezeBlock block)
+    public synchronized void explodeBox(InteractionFreezeBlock block, int delay)
     {
         int powerUp = 0;
         if(Emulator.getRandom().nextInt(100) + 1 <= FreezeGame.POWER_UP_CHANCE)
@@ -206,7 +206,7 @@ public class FreezeGame extends Game
             powerUp += Emulator.getRandom().nextInt(6) + 1;
         }
 
-        block.setExtradata((powerUp + 1) * 1000 + "");
+        block.setExtradata((powerUp + 1) + String.format("%3d", delay));
 
         this.room.updateItemState(block);
     }
@@ -273,7 +273,7 @@ public class FreezeGame extends Game
     @Override
     public void start()
     {
-        if (this.isRunning)
+        if (this.state != GameState.IDLE)
         {
             return;
         }
@@ -292,12 +292,14 @@ public class FreezeGame extends Game
     {
         try
         {
-            if (!this.isRunning)
+            if (this.state.equals(GameState.IDLE))
                 return;
 
-            if (timeLeft > 0)
+            if (this.timeLeft > 0)
             {
                 Emulator.getThreading().run(this, 1000);
+
+                if (this.state.equals(GameState.PAUSED)) return;
 
                 this.timeLeft--;
 
@@ -331,7 +333,7 @@ public class FreezeGame extends Game
 
                 for (Map.Entry<Integer, InteractionFreezeTimer> set : this.room.getRoomSpecialTypes().getFreezeTimers().entrySet())
                 {
-                    set.getValue().setExtradata(timeLeft + "");
+                    set.getValue().setExtradata(this.timeLeft + "");
                     this.room.updateItemState(set.getValue());
                 }
             } else
@@ -341,7 +343,7 @@ public class FreezeGame extends Game
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            Emulator.getLogging().logErrorLine(e);
         }
     }
 
@@ -391,7 +393,7 @@ public class FreezeGame extends Game
 
         for (Map.Entry<Integer, InteractionFreezeGate> set : this.room.getRoomSpecialTypes().getFreezeGates().entrySet())
         {
-            if (teamMemberCount.containsKey(set.getValue()))
+            if (teamMemberCount.containsKey(set.getValue().teamColor))
             {
                 int amount = Math.min(teamMemberCount.get(set.getValue().teamColor), 5);
                 set.getValue().setExtradata(amount + "");
@@ -413,30 +415,11 @@ public class FreezeGame extends Game
             public boolean execute(InteractionFreezeExitTile object)
             {
                 object.setExtradata(state);
-                room.updateItemState(object);
+                FreezeGame.this.room.updateItemState(object);
                 return true;
             }
         });
 
-    }
-
-    @EventHandler
-    public static void onUserWalkEvent(UserTakeStepEvent event)
-    {
-        if(event.habbo.getHabboInfo().getCurrentGame() == FreezeGame.class)
-        {
-            FreezeGame game = (FreezeGame) event.habbo.getHabboInfo().getCurrentRoom().getGame(FreezeGame.class);
-            if (game != null && game.isRunning)
-            {
-                if (!game.room.hasObjectTypeAt(InteractionFreezeTile.class, event.toLocation.x, event.toLocation.y))
-                {
-                    event.setCancelled(true);
-                    event.habbo.getRoomUnit().setGoalLocation(event.habbo.getRoomUnit().getCurrentLocation());
-                    event.habbo.getRoomUnit().removeStatus(RoomUnitStatus.MOVE);
-                    game.room.sendComposer(new RoomUserStatusComposer(event.habbo.getRoomUnit()).compose());
-                }
-            }
-        }
     }
 
     @EventHandler

@@ -19,7 +19,6 @@ public class UserPerksComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.UserPerksComposer);
-
         this.response.appendInt(15);
 
         this.response.appendString("USE_GUIDE_TOOL");

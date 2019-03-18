@@ -25,7 +25,7 @@ public class CreditsCommand extends Command
             {
                 Habbo habbo = Emulator.getGameServer().getGameClientManager().getHabbo(params[1]);
 
-                int credits = 0;
+                int credits;
                 try
                 {
                     credits = Integer.parseInt(params[2]);
@@ -42,7 +42,7 @@ public class CreditsCommand extends Command
                             if (habbo.getHabboInfo().getCurrentRoom() != null)
                                 habbo.whisper(Emulator.getTexts().getValue("commands.generic.cmd_credits.received").replace("%amount%", Integer.parseInt(params[2]) + ""), RoomChatMessageBubbles.ALERT);
                             else
-                                habbo.getClient().sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("commands.generic.cmd_credits.received").replace("%amount%", Integer.parseInt(params[2]) + "")));
+                                habbo.alert(Emulator.getTexts().getValue("commands.generic.cmd_credits.received").replace("%amount%", Integer.parseInt(params[2]) + ""));
 
                             gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_credits.send").replace("%amount%", Integer.parseInt(params[2]) + "").replace("%user%", params[1]), RoomChatMessageBubbles.ALERT);
 

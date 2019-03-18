@@ -118,7 +118,7 @@ public class WiredEffectBotFollowHabbo extends InteractionWiredEffect
     }
 
     @Override
-    protected String getWiredData()
+    public String getWiredData()
     {
         return this.getDelay() + "" + ((char) 9) + "" + this.mode + "" +  ((char) 9) + this.botName;
     }

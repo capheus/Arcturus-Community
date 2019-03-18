@@ -116,7 +116,7 @@ public class WiredEffectGiveDuckets extends InteractionWiredEffect
     }
 
     @Override
-    protected String getWiredData()
+    public String getWiredData()
     {
         return this.getDelay() + "\t" + this.pixels;
     }
@@ -138,7 +138,6 @@ public class WiredEffectGiveDuckets extends InteractionWiredEffect
             }
             catch (Exception e)
             {
-                e.printStackTrace();
             }
         }
     }

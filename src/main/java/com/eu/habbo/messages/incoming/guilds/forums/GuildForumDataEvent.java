@@ -9,7 +9,7 @@ public class GuildForumDataEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        int guildId = packet.readInt();
+        int guildId = this.packet.readInt();
 
         this.client.sendResponse(new GuildForumDataComposer(Emulator.getGameEnvironment().getGuildForumManager().getGuildForum(guildId), this.client.getHabbo()));
     }

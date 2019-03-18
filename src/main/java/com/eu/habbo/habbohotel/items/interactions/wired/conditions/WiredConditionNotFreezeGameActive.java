@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.conditions;
 
 import com.eu.habbo.habbohotel.games.Game;
+import com.eu.habbo.habbohotel.games.GameState;
 import com.eu.habbo.habbohotel.games.freeze.FreezeGame;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredCondition;
@@ -60,11 +61,11 @@ public class WiredConditionNotFreezeGameActive extends InteractionWiredCondition
     {
         Game game = room.getGame(FreezeGame.class);
 
-        return game == null || !game.isRunning;
+        return game == null || !game.state.equals(GameState.RUNNING);
     }
 
     @Override
-    protected String getWiredData()
+    public String getWiredData()
     {
         return "";
     }

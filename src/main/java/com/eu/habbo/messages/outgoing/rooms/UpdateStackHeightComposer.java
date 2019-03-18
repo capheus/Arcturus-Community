@@ -8,7 +8,6 @@ import gnu.trove.set.hash.THashSet;
 
 public class UpdateStackHeightComposer extends MessageComposer
 {
-
     private int x;
     private int y;
     private double height;
@@ -38,7 +37,7 @@ public class UpdateStackHeightComposer extends MessageComposer
             {
                 this.response.appendByte((int) t.x);
                 this.response.appendByte((int) t.y);
-                this.response.appendShort((int)(t.relativeHeight()));
+                this.response.appendShort(t.relativeHeight());
             }
         }
         else

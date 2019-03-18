@@ -341,7 +341,7 @@ public class PetData implements Comparable<PetData>
         if(PetData.generalPetVocals.get(type) != null)
             vocals.addAll(PetData.generalPetVocals.get(type));
 
-        if(vocals.isEmpty() || vocals.size() == 0)
+        if(vocals.isEmpty())
             return null;
 
         return vocals.get(Emulator.getRandom().nextInt(vocals.size()));

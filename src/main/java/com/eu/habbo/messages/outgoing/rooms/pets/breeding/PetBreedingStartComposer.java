@@ -6,9 +6,9 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class PetBreedingStartComposer extends MessageComposer
 {
-    public final int state;
-    public final int anInt1;
-    public final int anInt2;
+    private final int state;
+    private final int anInt1;
+    private final int anInt2;
 
 
     public PetBreedingStartComposer(int state, int anInt1, int anInt2)

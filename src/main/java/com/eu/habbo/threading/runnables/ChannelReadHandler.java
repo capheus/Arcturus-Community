@@ -21,28 +21,32 @@ public class ChannelReadHandler implements Runnable
 
     public void run()
     {
-        ByteBuf m = (ByteBuf) msg;
+        ByteBuf m = (ByteBuf) this.msg;
         int length = m.readInt();
         short header = m.readShort();
-        GameClient client = ctx.attr(GameClientManager.CLIENT).get();
+        GameClient client = this.ctx.channel().attr(GameClientManager.CLIENT).get();
 
-        int count = 0;
         if (client != null)
         {
-            if (Emulator.getIntUnixTimestamp() - client.lastPacketCounterCleared > 1)
+            int count = 0;
+            int timestamp = Emulator.getIntUnixTimestamp();
+            if (timestamp - client.lastPacketCounterCleared > 1)
             {
                 client.incomingPacketCounter.clear();
+                client.lastPacketCounterCleared = timestamp;
             } else
             {
                 count = client.incomingPacketCounter.getOrDefault(header, 0);
             }
-        }
-        if (count <= 10)
-        {
-            client.incomingPacketCounter.put((int) header, count++);
-            ByteBuf body = Unpooled.wrappedBuffer(m.readBytes(m.readableBytes()));
-            Emulator.getGameServer().getPacketManager().handlePacket(client, new ClientMessage(header, body));
-            body.release();
+
+            if (count <= 10)
+            {
+                count++;
+                client.incomingPacketCounter.put((int) header, count);
+                ByteBuf body = Unpooled.wrappedBuffer(m.readBytes(m.readableBytes()));
+                Emulator.getGameServer().getPacketManager().handlePacket(client, new ClientMessage(header, body));
+                body.release();
+            }
         }
         m.release();
     }

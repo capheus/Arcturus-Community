@@ -138,18 +138,18 @@ public class InteractionGift extends HabboItem
 
     public int getColorId()
     {
-        return colorId;
+        return this.colorId;
     }
 
     public int getRibbonId()
     {
-        return ribbonId;
+        return this.ribbonId;
     }
 
     public THashSet<HabboItem> loadItems()
     {
         THashSet<HabboItem> items = new THashSet<>();
-        for (int anItemId : itemId)
+        for (int anItemId : this.itemId)
         {
             if (anItemId == 0)
                 continue;

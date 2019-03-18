@@ -33,7 +33,7 @@ public class InteractionColorPlate extends InteractionDefault
     {
         super.onWalkOff(roomUnit, room, objects);
 
-        change(room, -1);
+        this.change(room, -1);
     }
 
     private void change(Room room, int amount)

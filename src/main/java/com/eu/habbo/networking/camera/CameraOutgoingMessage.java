@@ -76,7 +76,7 @@ public abstract class CameraOutgoingMessage extends CameraMessage
     {
         try
         {
-            this.stream.writeInt(obj.intValue());
+            this.stream.writeInt(obj);
         }
         catch(IOException e)
         {
@@ -120,7 +120,7 @@ public abstract class CameraOutgoingMessage extends CameraMessage
     {
         try
         {
-            this.stream.writeByte(b.intValue());
+            this.stream.writeByte(b);
         }
         catch(IOException e)
         {
@@ -131,7 +131,7 @@ public abstract class CameraOutgoingMessage extends CameraMessage
     {
         try
         {
-            this.stream.writeBoolean(obj.booleanValue());
+            this.stream.writeBoolean(obj);
         }
         catch(IOException e)
         {

@@ -16,16 +16,16 @@ public class RoomAlertCommand extends Command
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
-        String message = "";
+        StringBuilder message = new StringBuilder();
 
         if (params.length >= 2)
         {
             for (int i = 1; i < params.length; i++)
             {
-                message += params[i] + " ";
+                message.append(params[i]).append(" ");
             }
 
-            if (message.isEmpty())
+            if (message.length() == 0)
             {
                 gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_roomalert.empty"), RoomChatMessageBubbles.ALERT);
                 return true;
@@ -35,7 +35,7 @@ public class RoomAlertCommand extends Command
 
             if (room != null)
             {
-                room.sendComposer(new ModToolIssueHandledComposer(message).compose());
+                room.sendComposer(new ModToolIssueHandledComposer(message.toString()).compose());
                 return true;
             }
         }

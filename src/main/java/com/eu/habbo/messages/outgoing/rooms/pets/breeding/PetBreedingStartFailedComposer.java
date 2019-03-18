@@ -13,7 +13,8 @@ public class PetBreedingStartFailedComposer extends MessageComposer
     public final static int ALREADY_IN_NEST = 4;
     public final static int NO_PATH_TO_NEST = 5;
     public final static int TOO_TIRED = 6;
-    public final int reason;
+
+    private final int reason;
 
     public PetBreedingStartFailedComposer(int reason)
     {

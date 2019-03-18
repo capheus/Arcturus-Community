@@ -12,11 +12,13 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class RCONServer extends Server
 {
-    public List<String> allowedAdresses = new ArrayList<String>();
+    public List<String> allowedAdresses = new ArrayList<>();
 
     private final THashMap<String, Class<? extends RCONMessage>> messages;
 
@@ -61,10 +63,7 @@ public class RCONServer extends Server
         this.addRCONMessage("ignoreuser",           IgnoreUser.class);
         this.addRCONMessage("setmotto",             SetMotto.class);
 
-        for (String ip : Emulator.getConfig().getValue("rcon.allowed", "127.0.0.1").split(";"))
-        {
-            this.allowedAdresses.add(ip);
-        }
+        Collections.addAll(this.allowedAdresses, Emulator.getConfig().getValue("rcon.allowed", "127.0.0.1").split(";"));
     }
 
     @Override
@@ -92,7 +91,7 @@ public class RCONServer extends Server
     {
         Class<? extends RCONMessage> message = this.messages.get(key.replace("_", "").toLowerCase());
 
-        String result = "";
+        String result;
         if(message != null)
         {
             try
@@ -113,7 +112,7 @@ public class RCONServer extends Server
             }
             catch (Exception ex)
             {
-                ex.printStackTrace();
+                Emulator.getLogging().logErrorLine(ex);
                 Emulator.getLogging().logPacketError("[RCON] Failed to handle RCONMessage: " + message.getName() + ex.getMessage() + " by: " + ctx.channel().remoteAddress());
             }
         }
@@ -123,5 +122,10 @@ public class RCONServer extends Server
         }
 
         throw new ArrayIndexOutOfBoundsException("Unhandled RCON Message");
+    }
+
+    public List<String> getCommands()
+    {
+        return new ArrayList<>(this.messages.keySet());
     }
 }

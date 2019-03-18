@@ -15,6 +15,6 @@ public class GuardianTicketFindMoreSlaves implements Runnable
     @Override
     public void run()
     {
-        Emulator.getGameEnvironment().getGuideManager().findGuardians(ticket);
+        Emulator.getGameEnvironment().getGuideManager().findGuardians(this.ticket);
     }
 }

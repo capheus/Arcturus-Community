@@ -55,7 +55,7 @@ public class HotelViewCommunityGoalComposer extends MessageComposer
         this.response.appendString(this.competitionName);
         this.response.appendInt(this.timeLeft); //Timer
         this.response.appendInt(this.rankData.length); //Rank Count
-        for (int i : rankData)
+        for (int i : this.rankData)
         {
             this.response.appendInt(i);
         }

@@ -134,14 +134,13 @@ public class InteractionMultiHeight extends HabboItem
                     {
                         if (habbo.getHabboInfo().getGender().equals(HabboGender.M) && this.getBaseItem().getEffectM() > 0 && habbo.getRoomUnit().getEffectId() != this.getBaseItem().getEffectM())
                         {
-                            room.giveEffect(habbo, this.getBaseItem().getEffectM());
+                            room.giveEffect(habbo, this.getBaseItem().getEffectM(), -1);
                             return;
                         }
 
                         if (habbo.getHabboInfo().getGender().equals(HabboGender.F) && this.getBaseItem().getEffectF() > 0 && habbo.getRoomUnit().getEffectId() != this.getBaseItem().getEffectF())
                         {
-                            room.giveEffect(habbo, this.getBaseItem().getEffectF());
-                            return;
+                            room.giveEffect(habbo, this.getBaseItem().getEffectF(), -1);
                         }
                     }
                 }
@@ -166,14 +165,13 @@ public class InteractionMultiHeight extends HabboItem
                     {
                         if (habbo.getHabboInfo().getGender().equals(HabboGender.M) && this.getBaseItem().getEffectM() > 0)
                         {
-                            room.giveEffect(habbo, 0);
+                            room.giveEffect(habbo, 0, -1);
                             return;
                         }
 
                         if (habbo.getHabboInfo().getGender().equals(HabboGender.F) && this.getBaseItem().getEffectF() > 0)
                         {
-                            room.giveEffect(habbo, 0);
-                            return;
+                            room.giveEffect(habbo, 0, -1);
                         }
                     }
                 }

@@ -15,16 +15,16 @@ public class CommandsCommand extends Command
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
-        String message = "Your Commands";
+        StringBuilder message = new StringBuilder("Your Commands");
         List<Command> commands = Emulator.getGameEnvironment().getCommandHandler().getCommandsForRank(gameClient.getHabbo().getHabboInfo().getRank().getId());
-        message += "(" + commands.size() + "):\r\n";
+        message.append("(").append(commands.size()).append("):\r\n");
 
         for(Command c : commands)
         {
-            message += Emulator.getTexts().getValue("commands.description." + c.permission, "commands.description." + c.permission) + "\r";
+            message.append(Emulator.getTexts().getValue("commands.description." + c.permission, "commands.description." + c.permission)).append("\r");
         }
 
-        gameClient.getHabbo().alert(new String[]{message});
+        gameClient.getHabbo().alert(new String[]{message.toString()});
 
         return true;
     }

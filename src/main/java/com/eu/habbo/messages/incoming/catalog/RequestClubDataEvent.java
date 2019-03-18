@@ -1,7 +1,7 @@
 package com.eu.habbo.messages.incoming.catalog;
 
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.unknown.ClubDataComposer;
+import com.eu.habbo.messages.outgoing.catalog.ClubDataComposer;
 
 public class RequestClubDataEvent extends MessageHandler
 {

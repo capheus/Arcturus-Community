@@ -18,7 +18,7 @@ public class SummonRankCommand extends Command
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
-        int minRank = 1;
+        int minRank;
 
         if(params.length >= 2)
         {

@@ -78,17 +78,17 @@ public abstract class Server
 
     public ServerBootstrap getServerBootstrap()
     {
-        return serverBootstrap;
+        return this.serverBootstrap;
     }
 
     public EventLoopGroup getBossGroup()
     {
-        return bossGroup;
+        return this.bossGroup;
     }
 
     public EventLoopGroup getWorkerGroup()
     {
-        return workerGroup;
+        return this.workerGroup;
     }
 
     public String getHost()

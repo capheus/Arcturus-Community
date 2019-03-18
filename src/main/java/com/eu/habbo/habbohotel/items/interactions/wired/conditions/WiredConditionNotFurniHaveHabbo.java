@@ -32,13 +32,13 @@ public class WiredConditionNotFurniHaveHabbo extends InteractionWiredCondition
     public WiredConditionNotFurniHaveHabbo(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
-        items = new THashSet<>();
+        this.items = new THashSet<>();
     }
 
     public WiredConditionNotFurniHaveHabbo(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
     {
         super(id, userId, item, extradata, limitedStack, limitedSells);
-        items = new THashSet<>();
+        this.items = new THashSet<>();
     }
 
     @Override
@@ -111,14 +111,14 @@ public class WiredConditionNotFurniHaveHabbo extends InteractionWiredCondition
     {
         this.refresh();
 
-        String data = (this.all ? "1" : "0") + ":";
+        StringBuilder data = new StringBuilder((this.all ? "1" : "0") + ":");
 
         for(HabboItem item : this.items)
         {
-            data += item.getId() + ";";
+            data.append(item.getId()).append(";");
         }
 
-        return data;
+        return data.toString();
     }
 
     @Override

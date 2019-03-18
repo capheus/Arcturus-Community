@@ -8,9 +8,9 @@ import com.eu.habbo.habbohotel.users.Habbo;
 
 public class BotFollowHabbo implements Runnable
 {
-    private Bot bot;
-    private Habbo habbo;
-    private Room room;
+    private final Bot bot;
+    private final Habbo habbo;
+    private final Room room;
 
     public BotFollowHabbo(Bot bot, Habbo habbo, Room room)
     {

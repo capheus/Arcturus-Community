@@ -61,7 +61,7 @@ public class InteractionEffectVendingMachine extends InteractionDefault
                             @Override
                             public void run()
                             {
-                                room.giveEffect(client.getHabbo().getRoomUnit(), instance.getBaseItem().getRandomVendingItem());
+                                room.giveEffect(client.getHabbo().getRoomUnit(), instance.getBaseItem().getRandomVendingItem(), 30);
                             }
                         });
                     }

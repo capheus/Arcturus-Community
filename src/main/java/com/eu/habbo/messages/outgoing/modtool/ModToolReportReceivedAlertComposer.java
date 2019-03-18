@@ -10,7 +10,7 @@ public class ModToolReportReceivedAlertComposer extends MessageComposer
     public static final int REPORT_WINDOW = 1;
     public static final int REPORT_ABUSIVE = 2;
 
-    private int errorCode;
+    private final int errorCode;
 
     public ModToolReportReceivedAlertComposer(int errorCode)
     {

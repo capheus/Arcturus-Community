@@ -33,7 +33,7 @@ public class PetFollowHabbo implements Runnable
                 {
                     if (this.pet.getRoomUnit() != null)
                     {
-                        RoomTile target = this.habbo.getHabboInfo().getCurrentRoom().getLayout().getTileInFront(this.habbo.getRoomUnit().getCurrentLocation(), Math.abs((this.habbo.getRoomUnit().getBodyRotation().getValue() + directionOffset + 4) % 8));
+                        RoomTile target = this.habbo.getHabboInfo().getCurrentRoom().getLayout().getTileInFront(this.habbo.getRoomUnit().getCurrentLocation(), Math.abs((this.habbo.getRoomUnit().getBodyRotation().getValue() + this.directionOffset + 4) % 8));
 
                         if (target != null)
                         {
@@ -46,10 +46,7 @@ public class PetFollowHabbo implements Runnable
                                 {
                                     this.pet.getRoomUnit().setGoalLocation(target);
                                     this.pet.getRoomUnit().setCanWalk(true);
-                                    if (this.pet instanceof Pet)
-                                    {
-                                        this.pet.setTask(PetTasks.FOLLOW);
-                                    }
+                                    this.pet.setTask(PetTasks.FOLLOW);
                                 }
                             }
                             Emulator.getThreading().run(this, 500);

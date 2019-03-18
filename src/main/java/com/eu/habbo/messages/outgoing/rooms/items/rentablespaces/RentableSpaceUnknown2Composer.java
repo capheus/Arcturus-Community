@@ -6,7 +6,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class RentableSpaceUnknown2Composer extends MessageComposer
 {
-    private int itemId;
+    private final int itemId;
 
     public RentableSpaceUnknown2Composer(int itemId)
     {

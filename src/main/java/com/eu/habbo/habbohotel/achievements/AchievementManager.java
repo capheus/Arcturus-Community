@@ -189,13 +189,11 @@ public class AchievementManager
 
         int currentProgress = habbo.getHabboStats().getAchievementProgress(achievement);
 
-        boolean created = false;
         if(currentProgress == -1)
         {
             currentProgress = 0;
             createUserEntry(habbo, achievement);
             habbo.getHabboStats().setProgress(achievement, 0);
-            created = true;
         }
 
         if(Emulator.getPluginManager().isRegistered(UserAchievementProgressEvent.class, true))
@@ -208,11 +206,6 @@ public class AchievementManager
         }
 
         AchievementLevel oldLevel = achievement.getLevelForProgress(currentProgress);
-
-
-
-
-
 
         if(oldLevel != null && (oldLevel.level == achievement.levels.size() && currentProgress >= oldLevel.progress)) //Maximum achievement gotten.
             return;
@@ -325,12 +318,7 @@ public class AchievementManager
 
         AchievementLevel nextLevel = achievement.levels.get(level.level + 1);
 
-        if (nextLevel == null && currentProgress >= level.progress)
-        {
-            return true;
-        }
-
-        return false;
+        return nextLevel == null && currentProgress >= level.progress;
     }
 
 

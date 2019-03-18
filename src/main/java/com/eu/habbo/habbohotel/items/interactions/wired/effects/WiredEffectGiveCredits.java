@@ -114,7 +114,7 @@ public class WiredEffectGiveCredits extends InteractionWiredEffect
     }
 
     @Override
-    protected String getWiredData()
+    public String getWiredData()
     {
         return this.getDelay() + "\t" + this.credits;
     }
@@ -136,7 +136,6 @@ public class WiredEffectGiveCredits extends InteractionWiredEffect
             }
             catch (Exception e)
             {
-                e.printStackTrace();
             }
         }
     }

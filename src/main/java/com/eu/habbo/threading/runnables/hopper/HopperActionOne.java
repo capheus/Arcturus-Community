@@ -37,8 +37,8 @@ public class HopperActionOne implements Runnable
             @Override
             public void run()
             {
-                client.getHabbo().getRoomUnit().removeStatus(RoomUnitStatus.MOVE);
-                room.sendComposer(new RoomUserStatusComposer(client.getHabbo().getRoomUnit()).compose());
+                HopperActionOne.this.client.getHabbo().getRoomUnit().removeStatus(RoomUnitStatus.MOVE);
+                HopperActionOne.this.room.sendComposer(new RoomUserStatusComposer(HopperActionOne.this.client.getHabbo().getRoomUnit()).compose());
             }
         }, 750);
 

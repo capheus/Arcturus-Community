@@ -59,7 +59,7 @@ public class ImageAlertUser extends RCONMessage<ImageAlertUser.JSON>
         habbo.getClient().sendResponse(new BubbleAlertComposer(json.bubble_key, keys));
     }
 
-    public static class JSON
+    static class JSON
     {
 
         public int user_id;

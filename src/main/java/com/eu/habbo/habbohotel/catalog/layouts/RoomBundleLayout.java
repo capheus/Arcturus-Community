@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class RoomBundleLayout extends SingleBundle
 {
-    public int roomId = 0;
+    public int roomId;
     public Room room;
     private int lastUpdate = 0;
     private boolean loaded = false;
@@ -106,14 +106,14 @@ public class RoomBundleLayout extends SingleBundle
                 items.put(Emulator.getGameEnvironment().getItemManager().getItem(Integer.valueOf(item[0].getExtradata())), 1);
             }
 
-            String data = "";
+            StringBuilder data = new StringBuilder();
 
             for(Map.Entry<Item, Integer> set : items.entrySet())
             {
-                data += set.getKey().getId() + ":" + set.getValue() + ";";
+                data.append(set.getKey().getId()).append(":").append(set.getValue()).append(";");
             }
 
-            item[0].setItemId(data);
+            item[0].setItemId(data.toString());
             item[0].loadBundle();
         }
 
@@ -237,12 +237,12 @@ public class RoomBundleLayout extends SingleBundle
                             statement.setInt(7, bot.getRoomUnit().getX());
                             statement.setInt(8, bot.getRoomUnit().getY());
                             statement.setDouble(9, bot.getRoomUnit().getZ());
-                            String text = "";
+                            StringBuilder text = new StringBuilder();
                             for (String s : bot.getChatLines())
                             {
-                                text += s + "\r";
+                                text.append(s).append("\r");
                             }
-                            statement.setString(10, text);
+                            statement.setString(10, text.toString());
                             statement.setString(11, bot.isChatAuto() ? "1" : "0");
                             statement.setString(12, bot.isChatRandom() ? "1" : "0");
                             statement.setInt(13, bot.getChatDelay());

@@ -55,7 +55,7 @@ public class RequestCreateRoomEvent extends MessageHandler {
         {
             if (this.client.getHabbo().getHabboInfo().getCurrentRoom() != null)
             {
-                Emulator.getGameEnvironment().getRoomManager().leaveRoom(this.client.getHabbo(), this.client.getHabbo().getHabboInfo().getCurrentRoom());
+                //Emulator.getGameEnvironment().getRoomManager().leaveRoom(this.client.getHabbo(), this.client.getHabbo().getHabboInfo().getCurrentRoom());
             }
 
             this.client.sendResponse(new RoomCreatedComposer(room));

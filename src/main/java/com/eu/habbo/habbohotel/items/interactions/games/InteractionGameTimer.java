@@ -3,10 +3,12 @@ package com.eu.habbo.habbohotel.items.interactions.games;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.games.Game;
+import com.eu.habbo.habbohotel.games.GameState;
 import com.eu.habbo.habbohotel.games.wired.WiredGame;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredEffectType;
 import com.eu.habbo.messages.ServerMessage;
@@ -14,9 +16,10 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class InteractionGameTimer extends HabboItem
+public class InteractionGameTimer extends HabboItem
 {
     private int baseTime = 0;
+    private int lastToggle = 0;
 
     protected InteractionGameTimer(ResultSet set, Item baseItem) throws SQLException
     {
@@ -64,6 +67,18 @@ public abstract class InteractionGameTimer extends HabboItem
     }
 
     @Override
+    public boolean canWalkOn(RoomUnit roomUnit, Room room, Object[] objects)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isWalkable()
+    {
+        return false;
+    }
+
+    @Override
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
         if (client != null)
@@ -72,21 +87,23 @@ public abstract class InteractionGameTimer extends HabboItem
                 return;
         }
 
+        if (client == null)
+        {
+            int now = Emulator.getIntUnixTimestamp();
+            if (now - this.lastToggle < 3) return;
+            this.lastToggle = now;
+        }
+
         if(this.getExtradata().isEmpty())
         {
             this.setExtradata("0");
         }
 
-        Game game = room.getGame(WiredGame.class);
-
-        if (game == null)
-        {
-            game = (this.getGameType().cast(room.getGame(this.getGameType())));
-        }
+        Game game = this.getOrCreateGame(room);
 
         if ((objects.length >= 2 && objects[1] instanceof WiredEffectType))
         {
-            if (game.isRunning)
+            if (game.state.equals(GameState.RUNNING))
                 return;
         }
 
@@ -98,19 +115,19 @@ public abstract class InteractionGameTimer extends HabboItem
             {
                 case 1:
                 {
-                    startGame(room);
+                    this.startGame(room);
                     break;
                 }
 
                 case 2:
                 {
-                    increaseTimer(room);
+                    this.increaseTimer(room);
                 }
                 break;
 
                 case 3:
                 {
-                    stopGame(room);
+                    this.stopGame(room);
                 }
                 break;
             }
@@ -118,7 +135,7 @@ public abstract class InteractionGameTimer extends HabboItem
         else
         {
 
-            if (game != null && !game.isRunning)
+            if (game != null && game.state.equals(GameState.IDLE))
             {
                 this.startGame(room);
             }
@@ -127,31 +144,57 @@ public abstract class InteractionGameTimer extends HabboItem
         super.onClick(client, room, objects);
     }
 
+    @Override
+    public void onWalk(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
+    {
+
+    }
+
+    private Game getOrCreateGame(Room room)
+    {
+        Game game = (this.getGameType().cast(room.getGame(this.getGameType())));
+
+        if (game == null)
+        {
+            try
+            {
+                game = this.getGameType().getDeclaredConstructor(Room.class).newInstance(room);
+                room.addGame(game);
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        return game;
+    }
+
     private void startGame(Room room)
     {
         this.needsUpdate(true);
         try
         {
-            this.setExtradata(this.baseTime + "");
 
             room.updateItem(this);
 
-            Game game = (this.getGameType().cast(room.getGame(this.getGameType())));
+            Game game = this.getOrCreateGame(room);
 
-            if (game == null)
+            if (game.state.equals(GameState.IDLE))
             {
-                game = this.getGameType().getDeclaredConstructor(Room.class).newInstance(room);
-                room.addGame(game);
-            }
-
-            if (!game.isRunning)
-            {
+                this.setExtradata(this.baseTime + "");
                 game.initialise();
             }
-            else
+            else if (game.state.equals(GameState.PAUSED))
             {
-                game.stop();
+                game.unpause();
             }
+            else if (game.state.equals(GameState.RUNNING))
+            {
+                game.pause();
+            }
+
+            //}
         }
         catch (Exception e)
         {
@@ -161,10 +204,11 @@ public abstract class InteractionGameTimer extends HabboItem
 
     private void stopGame(Room room)
     {
+        this.setExtradata(this.baseTime + "");
         this.needsUpdate(true);
-        Game game = (this.getGameType().cast(room.getGame(this.getGameType())));
+        Game game = this.getOrCreateGame(room);
 
-        if(game != null && game.isRunning)
+        if(game != null && game.state != GameState.IDLE)
         {
             game.stop();
         }
@@ -174,12 +218,15 @@ public abstract class InteractionGameTimer extends HabboItem
 
     private void increaseTimer(Room room)
     {
-        Game game = (this.getGameType().cast(room.getGame(this.getGameType())));
+        Game game = this.getOrCreateGame(room);
 
-        if(game != null && game.isRunning)
+        if (game == null) return;
+        if (game.state.equals(GameState.PAUSED))
         {
+            stopGame(room);
             return;
         }
+        if (game.state.equals(GameState.RUNNING)) return;
 
         this.needsUpdate(true);
         switch(this.baseTime)
@@ -207,7 +254,10 @@ public abstract class InteractionGameTimer extends HabboItem
         return this.getExtradata() + "\t" + this.baseTime;
     }
 
-    public abstract Class<? extends Game> getGameType();
+    public Class<? extends Game> getGameType()
+    {
+        return WiredGame.class;
+    }
 
     @Override
     public boolean allowWiredResetState()

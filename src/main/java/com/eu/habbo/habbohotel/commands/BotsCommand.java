@@ -18,18 +18,18 @@ public class BotsCommand extends Command
         if(gameClient.getHabbo().getHabboInfo().getCurrentRoom() == null || !gameClient.getHabbo().getHabboInfo().getCurrentRoom().hasRights(gameClient.getHabbo()))
             return false;
 
-        String data = Emulator.getTexts().getValue("total") + ": " + gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentBots().values().length;
+        StringBuilder data = new StringBuilder(Emulator.getTexts().getValue("total") + ": " + gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentBots().values().length);
 
         for(Object bot : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentBots().values())
         {
             if(bot instanceof Bot)
             {
-                data += "\r";
-                data += "<b>" + Emulator.getTexts().getValue("generic.bot.name") + "</b>: " + ((Bot) bot).getName() + " <b>" + Emulator.getTexts().getValue("generic.bot.id") + "</b>: " + ((Bot) bot).getId();
+                data.append("\r");
+                data.append("<b>").append(Emulator.getTexts().getValue("generic.bot.name")).append("</b>: ").append(((Bot) bot).getName()).append(" <b>").append(Emulator.getTexts().getValue("generic.bot.id")).append("</b>: ").append(((Bot) bot).getId());
             }
         }
 
-        gameClient.sendResponse(new GenericAlertComposer(data));
+        gameClient.getHabbo().alert(data.toString());
 
         return true;
     }

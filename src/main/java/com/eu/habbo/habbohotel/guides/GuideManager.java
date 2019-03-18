@@ -76,7 +76,7 @@ public class GuideManager
     {
         synchronized (this.activeHelpers)
         {
-            for(Map.Entry<Habbo, Boolean> set : activeHelpers.entrySet())
+            for(Map.Entry<Habbo, Boolean> set : this.activeHelpers.entrySet())
             {
                 if(!set.getValue())
                 {
@@ -375,8 +375,6 @@ public class GuideManager
 
     public GuardianTicket getOpenReportedHabboTicket(Habbo reported)
     {
-        GuardianTicket ticket = null;
-
         synchronized (this.activeTickets)
         {
             for(GuardianTicket t : this.activeTickets)
@@ -388,7 +386,7 @@ public class GuideManager
             }
         }
 
-        return ticket;
+        return null;
     }
 
 

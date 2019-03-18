@@ -23,7 +23,6 @@ public class ModToolSanctionInfoComposer extends MessageComposer
         this.response.appendInt(-1); //Unused
         this.response.appendBoolean(false); //Trade Locked
         this.response.appendString("1/1/1970 00:00"); //Trade Locked Untill
-
         return this.response;
     }
 }

@@ -1,5 +1,6 @@
 package com.eu.habbo.habbohotel.items.interactions;
 
+import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
@@ -31,5 +32,11 @@ public class InteractionHabboClubTeleportTile extends InteractionTeleportTile
         }
 
         return false;
+    }
+
+    @Override
+    protected boolean canUseTeleport(GameClient client, Room room)
+    {
+        return client.getHabbo().getHabboStats().hasActiveClub();
     }
 }

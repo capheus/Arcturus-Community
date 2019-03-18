@@ -54,7 +54,7 @@ public class InteractionHanditem extends InteractionDefault
                 @Override
                 public void run()
                 {
-                    setExtradata("0");
+                    InteractionHanditem.this.setExtradata("0");
                     room.updateItem(instance);
                 }
             }, 500);

@@ -10,7 +10,6 @@ public class TradeCompleteComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.UnknownTradeComposer);
-
         return this.response;
     }
 }

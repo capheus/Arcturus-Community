@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class BadgeImager
 {
-    THashMap<String, BufferedImage> cachedImages = new THashMap<>();
+    final THashMap<String, BufferedImage> cachedImages = new THashMap<>();
 
     public BadgeImager()
     {
@@ -97,7 +97,7 @@ public class BadgeImager
         {
             outputFile = new File(Emulator.getConfig().getValue("imager.location.output.badges"), badge + ".png");
 
-            if (outputFile == null || outputFile.exists())
+            if (outputFile.exists())
                 return;
         }
         catch (Exception e)

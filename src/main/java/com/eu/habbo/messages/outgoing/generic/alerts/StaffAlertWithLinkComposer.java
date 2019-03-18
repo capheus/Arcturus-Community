@@ -6,8 +6,8 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class StaffAlertWithLinkComposer extends MessageComposer
 {
-    private String message;
-    private String link;
+    private final String message;
+    private final String link;
 
     public StaffAlertWithLinkComposer(String message, String link)
     {

@@ -22,7 +22,7 @@ public class RoomUnitKick implements Runnable
     {
         if(this.removeEffect)
         {
-            this.habbo.getRoomUnit().setEffectId(0);
+            this.habbo.getRoomUnit().setEffectId(0, 0);
         }
 
         Emulator.getGameEnvironment().getRoomManager().leaveRoom(this.habbo, this.room);

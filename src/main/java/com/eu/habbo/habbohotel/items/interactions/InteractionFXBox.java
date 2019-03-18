@@ -35,7 +35,7 @@ public class InteractionFXBox extends InteractionDefault
             {
                 if (this.getBaseItem().getEffectM() > 0)
                 {
-                    room.giveEffect(client.getHabbo(), this.getBaseItem().getEffectM());
+                    room.giveEffect(client.getHabbo(), this.getBaseItem().getEffectM(), -1);
                 }
             }
 
@@ -43,7 +43,7 @@ public class InteractionFXBox extends InteractionDefault
             {
                 if (this.getBaseItem().getEffectF() > 0)
                 {
-                    room.giveEffect(client.getHabbo(), this.getBaseItem().getEffectF());
+                    room.giveEffect(client.getHabbo(), this.getBaseItem().getEffectF(), -1);
                 }
             }
 

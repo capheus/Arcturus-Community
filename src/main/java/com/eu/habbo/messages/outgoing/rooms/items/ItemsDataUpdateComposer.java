@@ -1,4 +1,4 @@
-package com.eu.habbo.messages.outgoing.unknown;
+package com.eu.habbo.messages.outgoing.rooms.items;
 
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;

@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.items.interactions.InteractionWiredCondition;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
+import com.eu.habbo.habbohotel.wired.WiredConditionOperator;
 import com.eu.habbo.habbohotel.wired.WiredConditionType;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.messages.ClientMessage;
@@ -44,7 +45,8 @@ public class WiredConditionNotFurniHaveFurni extends InteractionWiredCondition
 
         for(HabboItem item : this.items)
         {
-            THashSet<HabboItem> things = room.getItemsAt(item.getX(), item.getY(), item.getZ());
+            THashSet<HabboItem> things = room.getItemsAt(item.getX(), item.getY(), item.getZ() + Item.getCurrentHeight(item));
+            things.removeAll(this.items);
             if (!things.isEmpty())
             {
                 if (this.all)
@@ -63,12 +65,12 @@ public class WiredConditionNotFurniHaveFurni extends InteractionWiredCondition
     {
         this.refresh();
 
-        String data = (all ? "1" : "0") + ":";
+        StringBuilder data = new StringBuilder((this.all ? "1" : "0") + ":");
 
         for(HabboItem item : this.items)
-            data += item.getId() + ";";
+            data.append(item.getId()).append(";");
 
-        return data;
+        return data.toString();
     }
 
     @Override
@@ -186,5 +188,11 @@ public class WiredConditionNotFurniHaveFurni extends InteractionWiredCondition
         {
             this.items.remove(item);
         }
+    }
+
+    @Override
+    public WiredConditionOperator operator()
+    {
+        return this.all ? WiredConditionOperator.AND : WiredConditionOperator.OR;
     }
 }

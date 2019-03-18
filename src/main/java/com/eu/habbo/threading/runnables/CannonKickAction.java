@@ -29,7 +29,10 @@ public class CannonKickAction implements Runnable
     @Override
     public void run()
     {
-        client.getHabbo().getRoomUnit().setCanWalk(true);
+        if (this.client != null)
+        {
+            this.client.getHabbo().getRoomUnit().setCanWalk(true);
+        }
         THashMap<String, String> dater = new THashMap<>();
         dater.put("title", "${notification.room.kick.cannonball.title}");
         dater.put("message", "${notification.room.kick.cannonball.message}");

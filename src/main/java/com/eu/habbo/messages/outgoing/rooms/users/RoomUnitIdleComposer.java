@@ -7,7 +7,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class RoomUnitIdleComposer extends MessageComposer
 {
-    private RoomUnit roomUnit;
+    private final RoomUnit roomUnit;
 
     public RoomUnitIdleComposer(RoomUnit roomUnit)
     {

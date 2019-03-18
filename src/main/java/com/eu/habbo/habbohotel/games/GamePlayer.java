@@ -7,7 +7,7 @@ import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 public class GamePlayer
 {
 
-    private Habbo habbo;
+    private final Habbo habbo;
 
 
     private GameTeamColors teamColor;

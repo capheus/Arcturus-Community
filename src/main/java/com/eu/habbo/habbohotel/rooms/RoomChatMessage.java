@@ -36,11 +36,11 @@ public class RoomChatMessage implements Runnable, ISerialize, Loggable
 
     public RoomChatMessage(MessageHandler message)
     {
-        if(message.packet.getMessageId() == Incoming.RoomUserWhisperEvent)
+        if (message.packet.getMessageId() == Incoming.RoomUserWhisperEvent)
         {
             String data = message.packet.readString();
             this.targetHabbo = message.client.getHabbo().getHabboInfo().getCurrentRoom().getHabbo(data.split(" ")[0]);
-            this.message = data.substring(data.split(" ")[0].length() + 1, data.length());
+            this.message = data.substring(data.split(" ")[0].length() + 1);
         }
         else
         {
@@ -54,21 +54,21 @@ public class RoomChatMessage implements Runnable, ISerialize, Loggable
         {
             this.bubble = RoomChatMessageBubbles.NORMAL;
         }
-        
-        if(message.client != null && message.client.getHabbo() != null && !message.client.getHabbo().hasPermission("acc_anychatcolor"))
+
+        if (!message.client.getHabbo().hasPermission("acc_anychatcolor"))
         {
-            for(Integer i : RoomChatMessage.BANNED_BUBBLES)
+            for (Integer i : RoomChatMessage.BANNED_BUBBLES)
             {
-                if(i == this.bubble.getType())
+                if (i == this.bubble.getType())
                 {
                     this.bubble = RoomChatMessageBubbles.NORMAL;
                 }
             }
         }
 
-        this.unfilteredMessage = this.message;
         this.habbo = message.client.getHabbo();
-        this.roomUnitId = habbo.getRoomUnit().getId();
+        this.roomUnitId = this.habbo.getRoomUnit().getId();
+        this.unfilteredMessage = this.message;
         this.timestamp = Emulator.getIntUnixTimestamp();
 
         this.checkEmotion();
@@ -148,7 +148,7 @@ public class RoomChatMessage implements Runnable, ISerialize, Loggable
     @Override
     public void run()
     {
-        if(habbo == null)
+        if(this.habbo == null)
             return;
 
         if(this.message.length() > RoomChatMessage.MAXIMUM_LENGTH)
@@ -236,22 +236,22 @@ public class RoomChatMessage implements Runnable, ISerialize, Loggable
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+            Emulator.getLogging().logErrorLine(e);
         }
     }
 
     public void filter()
     {
-        if(!habbo.getHabboStats().hasActiveClub())
+        if(!this.habbo.getHabboStats().hasActiveClub())
         {
             for (String chatColor : chatColors) {
-                message = message.replace(chatColor, "");
+                this.message = this.message.replace(chatColor, "");
             }
         }
         
         if(Emulator.getConfig().getBoolean("hotel.wordfilter.enabled") && Emulator.getConfig().getBoolean("hotel.wordfilter.rooms"))
         {
-            if(!habbo.hasPermission("acc_chat_no_filter"))
+            if(!this.habbo.hasPermission("acc_chat_no_filter"))
             {
                 if (!Emulator.getGameEnvironment().getWordFilter().autoReportCheck(this))
                 {
@@ -263,7 +263,7 @@ public class RoomChatMessage implements Runnable, ISerialize, Loggable
                 }
                 else
                 {
-                    habbo.mute(Emulator.getConfig().getInt("hotel.wordfilter.automute"));
+                    this.habbo.mute(Emulator.getConfig().getInt("hotel.wordfilter.automute"));
                 }
 
                 this.message = "";

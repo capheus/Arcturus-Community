@@ -16,12 +16,12 @@ public class FreezeGameTeam extends GameTeam
     public void removeMember(GamePlayer gamePlayer)
     {
         Game game = gamePlayer.getHabbo().getHabboInfo().getCurrentRoom().getGame(FreezeGame.class);
-        if(game != null && game instanceof FreezeGame)
+        if(game instanceof FreezeGame)
         {
             ((FreezeGame) game).placebackHelmet(gamePlayer.getTeamColor());
         }
 
-        gamePlayer.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(gamePlayer.getHabbo(), 0);
+        gamePlayer.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(gamePlayer.getHabbo(), 0, -1);
         gamePlayer.getHabbo().getRoomUnit().setCanWalk(true);
 
         super.removeMember(gamePlayer);
@@ -32,6 +32,6 @@ public class FreezeGameTeam extends GameTeam
     {
         super.addMember(gamePlayer);
 
-        gamePlayer.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(gamePlayer.getHabbo(), FreezeGame.effectId + this.teamColor.type);
+        gamePlayer.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(gamePlayer.getHabbo(), FreezeGame.effectId + this.teamColor.type, -1);
     }
 }

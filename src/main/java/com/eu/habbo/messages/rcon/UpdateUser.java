@@ -132,7 +132,7 @@ public class UpdateUser extends RCONMessage<UpdateUser.JSON>
         }
     }
 
-    public static class JSON
+    static class JSON
     {
 
         public int user_id;

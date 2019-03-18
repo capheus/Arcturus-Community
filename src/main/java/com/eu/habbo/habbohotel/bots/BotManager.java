@@ -22,8 +22,6 @@ import java.util.Map;
 
 public class BotManager
 {
-    //Configuration. Loaded from database & updated accordingly.
-
 
     public static int MINIMUM_CHAT_SPEED = 7;
 
@@ -33,18 +31,19 @@ public class BotManager
 
     public static int MAXIMUM_CHAT_LENGTH = 120;
 
+
     public static int MAXIMUM_NAME_LENGTH = 15;
 
     final private static THashMap<String, Class<? extends Bot>> botDefenitions = new THashMap<>();
 
 
-    public BotManager()
+    public BotManager() throws Exception
     {
         long millis = System.currentTimeMillis();
 
-        botDefenitions.put("generic", Bot.class);
-        botDefenitions.put("bartender", ButlerBot.class);
-        botDefenitions.put("visitor_log", VisitorBot.class);
+        addBotDefinition("generic", Bot.class);
+        addBotDefinition("bartender", ButlerBot.class);
+        addBotDefinition("visitor_log", VisitorBot.class);
 
         this.reload();
 

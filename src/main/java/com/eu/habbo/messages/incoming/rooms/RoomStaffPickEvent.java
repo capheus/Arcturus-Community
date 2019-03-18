@@ -2,6 +2,7 @@ package com.eu.habbo.messages.incoming.rooms;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
+import com.eu.habbo.habbohotel.navigation.NavigatorPublicCategory;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
@@ -23,6 +24,7 @@ public class RoomStaffPickEvent extends MessageHandler
                 room.setStaffPromotedRoom(!room.isStaffPromotedRoom());
                 room.setNeedsUpdate(true);
 
+                NavigatorPublicCategory publicCategory = Emulator.getGameEnvironment().getNavigatorManager().publicCategories.get(Emulator.getConfig().getInt("hotel.navigator.staffpicks.categoryid"));
                 if(room.isStaffPromotedRoom())
                 {
                     Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(room.getOwnerId());
@@ -31,9 +33,21 @@ public class RoomStaffPickEvent extends MessageHandler
                     {
                         AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("Spr"));
                     }
+
+                    if (publicCategory != null)
+                    {
+                        publicCategory.addRoom(room);
+                    }
+                }
+                else
+                {
+                    if (publicCategory != null)
+                    {
+                        publicCategory.removeRoom(room);
+                    }
                 }
 
-                this.client.sendResponse(new RoomDataComposer(room, this.client.getHabbo(), false, false));
+                this.client.sendResponse(new RoomDataComposer(room, this.client.getHabbo(), true, false));
             }
         }
     }

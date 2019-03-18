@@ -27,9 +27,9 @@ public class InteractionMonsterCrackable extends InteractionCrackable implements
     @Override
     public void cycle(Room room)
     {
-        if (this.ticks > 0 && Emulator.getIntUnixTimestamp() - lastHealthChange > 30)
+        if (this.ticks > 0 && Emulator.getIntUnixTimestamp() - this.lastHealthChange > 30)
         {
-            lastHealthChange = Emulator.getIntUnixTimestamp();
+            this.lastHealthChange = Emulator.getIntUnixTimestamp();
             this.ticks--;
             room.updateItem(this);
         }
@@ -38,7 +38,7 @@ public class InteractionMonsterCrackable extends InteractionCrackable implements
     @Override
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
-        if (room.isPublicRoom()) respawn = true;
+        if (room.isPublicRoom()) this.respawn = true;
 
         super.onClick(client, room, objects);
     }

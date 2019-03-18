@@ -1,4 +1,4 @@
-package com.eu.habbo.messages.outgoing.unknown;
+package com.eu.habbo.messages.outgoing.quests;
 
 import com.eu.habbo.messages.ISerialize;
 import com.eu.habbo.messages.ServerMessage;

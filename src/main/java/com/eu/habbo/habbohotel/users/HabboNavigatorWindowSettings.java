@@ -80,7 +80,7 @@ public class HabboNavigatorWindowSettings
         }
         else
         {
-            insertDisplayMode(category, ListMode.LIST, displayMode);
+            this.insertDisplayMode(category, ListMode.LIST, displayMode);
         }
     }
 
@@ -94,7 +94,7 @@ public class HabboNavigatorWindowSettings
         }
         else
         {
-            insertDisplayMode(category, listMode, DisplayMode.VISIBLE);
+            this.insertDisplayMode(category, listMode, DisplayMode.VISIBLE);
         }
     }
 

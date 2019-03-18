@@ -41,7 +41,7 @@ public class CatalogPagesListComposer extends MessageComposer
 
             for (CatalogPage category : pages)
             {
-                append(category);
+                this.append(category);
             }
 
             this.response.appendBoolean(false);
@@ -51,7 +51,7 @@ public class CatalogPagesListComposer extends MessageComposer
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+            Emulator.getLogging().logErrorLine(e);
         }
 
         return null;
@@ -65,7 +65,7 @@ public class CatalogPagesListComposer extends MessageComposer
         this.response.appendInt(category.getIconImage());
         this.response.appendInt(category.isEnabled() ? category.getId() : -1);
         this.response.appendString(category.getPageName());
-        this.response.appendString(category.getCaption() + (hasPermission ? " (" + category.getId() + ")" : ""));
+        this.response.appendString(category.getCaption() + (this.hasPermission ? " (" + category.getId() + ")" : ""));
         this.response.appendInt(category.getOfferIds().size());
 
         for(int i : category.getOfferIds().toArray())
@@ -77,7 +77,7 @@ public class CatalogPagesListComposer extends MessageComposer
 
         for (CatalogPage page : pagesList)
         {
-            append(page);
+            this.append(page);
         }
     }
 }

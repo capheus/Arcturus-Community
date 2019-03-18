@@ -15,17 +15,15 @@ public class GuildMembersComposer extends MessageComposer
 {
     private final ArrayList<GuildMember> members;
     private final Guild guild;
-    private final Habbo session;
     private final int pageId;
     private final int level;
     private final String searchValue;
     private final boolean isAdmin;
 
-    public GuildMembersComposer(Guild guild, ArrayList<GuildMember> members, Habbo session, int pageId, int level, String searchValue, boolean isAdmin)
+    public GuildMembersComposer(Guild guild, ArrayList<GuildMember> members, int pageId, int level, String searchValue, boolean isAdmin)
     {
         this.guild = guild;
         this.members = members;
-        this.session = session;
         this.pageId = pageId;
         this.level = level;
         this.searchValue = searchValue;

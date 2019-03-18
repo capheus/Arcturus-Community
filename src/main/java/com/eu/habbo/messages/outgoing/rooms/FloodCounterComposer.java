@@ -17,7 +17,7 @@ public class FloodCounterComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.FloodCounterComposer);
-        this.response.appendInt(time);
+        this.response.appendInt(this.time);
         return this.response;
     }
 }

@@ -58,7 +58,7 @@ public class InteractionEffectTile extends InteractionPressurePlate
 
             if (habbo != null)
             {
-                giveEffect(room, roomUnit, habbo.getHabboInfo().getGender());
+                this.giveEffect(room, roomUnit, habbo.getHabboInfo().getGender());
             }
         }
         else if (roomUnit.getRoomUnitType() == RoomUnitType.BOT)
@@ -67,7 +67,7 @@ public class InteractionEffectTile extends InteractionPressurePlate
 
             if (bot != null)
             {
-                giveEffect(room, roomUnit, bot.getGender());
+                this.giveEffect(room, roomUnit, bot.getGender());
             }
         }
     }
@@ -76,10 +76,10 @@ public class InteractionEffectTile extends InteractionPressurePlate
     {
         if (gender.equals(HabboGender.M))
         {
-            room.giveEffect(roomUnit, this.getBaseItem().getEffectM());
+            room.giveEffect(roomUnit, this.getBaseItem().getEffectM(), -1);
         } else
         {
-            room.giveEffect(roomUnit, this.getBaseItem().getEffectF());
+            room.giveEffect(roomUnit, this.getBaseItem().getEffectF(), -1);
         }
     }
 

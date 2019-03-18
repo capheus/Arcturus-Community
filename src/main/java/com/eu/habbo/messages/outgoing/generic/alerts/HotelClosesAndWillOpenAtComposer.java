@@ -6,9 +6,9 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class HotelClosesAndWillOpenAtComposer extends MessageComposer
 {
-    private int hour;
-    private int minute;
-    private boolean disconnected;
+    private final int hour;
+    private final int minute;
+    private final boolean disconnected;
 
     public HotelClosesAndWillOpenAtComposer(int hour, int minute, boolean disconnected)
     {

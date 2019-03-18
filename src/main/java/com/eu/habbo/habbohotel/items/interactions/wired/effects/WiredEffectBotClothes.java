@@ -85,7 +85,7 @@ public class WiredEffectBotClothes extends InteractionWiredEffect
     }
 
     @Override
-    protected String getWiredData()
+    public String getWiredData()
     {
         return this.getDelay() + "" + ((char) 9) + "" +
                 this.botName   + ((char) 9) +
@@ -115,7 +115,7 @@ public class WiredEffectBotClothes extends InteractionWiredEffect
 
     public String getBotName()
     {
-        return botName;
+        return this.botName;
     }
 
     public void setBotName(String botName)
@@ -125,7 +125,7 @@ public class WiredEffectBotClothes extends InteractionWiredEffect
 
     public String getBotLook()
     {
-        return botLook;
+        return this.botLook;
     }
 
     public void setBotLook(String botLook)

@@ -22,19 +22,19 @@ public class MannequinSaveLookEvent extends MessageHandler
         String[] data = item.getExtradata().split(":");
         //TODO: Only clothing not whole body part.
 
-        String look = "";
+        StringBuilder look = new StringBuilder();
 
         for (String s : this.client.getHabbo().getHabboInfo().getLook().split("\\."))
         {
             if (!s.contains("hr") && !s.contains("hd") && !s.contains("he") && !s.contains("ea") && !s.contains("ha") && !s.contains("fa"))
             {
-                look += s + ".";
+                look.append(s).append(".");
             }
         }
 
-        if (!look.isEmpty())
+        if (look.length() > 0)
         {
-            look = look.substring(0, look.length() - 1);
+            look = new StringBuilder(look.substring(0, look.length() - 1));
         }
 
         if(data.length == 3)

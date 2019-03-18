@@ -7,7 +7,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class UserDataComposer extends MessageComposer
 {
-
     private final Habbo habbo;
     
     public UserDataComposer(Habbo habbo)

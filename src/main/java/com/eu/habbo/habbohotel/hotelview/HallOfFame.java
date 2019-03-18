@@ -18,9 +18,9 @@ public class HallOfFame
 
     public HallOfFame()
     {
-        setCompetitionName("xmasRoomComp");
+        this.setCompetitionName("xmasRoomComp");
 
-        reload();
+        this.reload();
     }
 
 

@@ -22,10 +22,10 @@ public class RoomKickCommand extends Command
         {
             if(params.length > 1)
             {
-                String message = "";
+                StringBuilder message = new StringBuilder();
                 for (int i = 1; i < params.length; i++)
                 {
-                    message += params[i] + " ";
+                    message.append(params[i]).append(" ");
                 }
                 room.sendComposer(new GenericAlertComposer(message  + "\r\n-" + gameClient.getHabbo().getHabboInfo().getUsername()).compose());
             }

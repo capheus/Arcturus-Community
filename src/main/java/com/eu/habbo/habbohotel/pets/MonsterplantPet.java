@@ -12,7 +12,7 @@ import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.PetStatusUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetRespectComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
-import javafx.util.Pair;
+import org.apache.commons.math3.util.Pair;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,35 +30,35 @@ public class MonsterplantPet extends Pet implements IPetLook
     public static final Map<Integer, Pair<String, Integer>> bodyRarity = new LinkedHashMap<Integer, Pair<String, Integer>>()
     {
         {
-            put(1, new Pair<>("Blungon", 0));
-            put(5, new Pair<>("Squarg", 0));
-            put(2, new Pair<>("Wailzor", 1));
-            put(3, new Pair<>("Stumpy", 1));
-            put(4, new Pair<>("Sunspike", 2));
-            put(9, new Pair<>("Weggylum", 2));
-            put(6, new Pair<>("Shroomer", 3));
-            put(7, new Pair<>("Zuchinu", 3));
-            put(10, new Pair<>("Wystique", 4));
-            put(11, new Pair<>("Hairbullis", 4));
-            put(8, new Pair<>("Abysswirl", 5));
-            put(12, new Pair<>("Snozzle", 5)); //Rarity???
+            this.put(1, new Pair<>("Blungon", 0));
+            this.put(5, new Pair<>("Squarg", 0));
+            this.put(2, new Pair<>("Wailzor", 1));
+            this.put(3, new Pair<>("Stumpy", 1));
+            this.put(4, new Pair<>("Sunspike", 2));
+            this.put(9, new Pair<>("Weggylum", 2));
+            this.put(6, new Pair<>("Shroomer", 3));
+            this.put(7, new Pair<>("Zuchinu", 3));
+            this.put(10, new Pair<>("Wystique", 4));
+            this.put(11, new Pair<>("Hairbullis", 4));
+            this.put(8, new Pair<>("Abysswirl", 5));
+            this.put(12, new Pair<>("Snozzle", 5)); //Rarity???
         }
     };
 
     public static final Map<Integer, Pair<String, Integer>> colorRarity = new LinkedHashMap<Integer, Pair<String, Integer>>()
     {
         {
-            put(0, new Pair<>("Aenueus", 0));
-            put(9, new Pair<>("Fulvus", 0));
-            put(1, new Pair<>("Griseus", 1));
-            put(3, new Pair<>("Viridulus", 1));
-            put(2, new Pair<>("Phoenicus", 2));
-            put(5, new Pair<>("Incarnatus", 2));
-            put(8, new Pair<>("Amethyst", 3));
-            put(10, new Pair<>("Cinereus", 3));
-            put(6, new Pair<>("Azureus", 4));
-            put(7, new Pair<>("Atamasc", 4));
-            put(4, new Pair<>("Cyaneus", 5));
+            this.put(0, new Pair<>("Aenueus", 0));
+            this.put(9, new Pair<>("Fulvus", 0));
+            this.put(1, new Pair<>("Griseus", 1));
+            this.put(3, new Pair<>("Viridulus", 1));
+            this.put(2, new Pair<>("Phoenicus", 2));
+            this.put(5, new Pair<>("Incarnatus", 2));
+            this.put(8, new Pair<>("Amethyst", 3));
+            this.put(10, new Pair<>("Cinereus", 3));
+            this.put(6, new Pair<>("Azureus", 4));
+            this.put(7, new Pair<>("Atamasc", 4));
+            this.put(4, new Pair<>("Cyaneus", 5));
         }
     };
 
@@ -165,7 +165,7 @@ public class MonsterplantPet extends Pet implements IPetLook
     {
         if (this.room != null && this.roomUnit != null)
         {
-            if (isDead())
+            if (this.isDead())
             {
                 this.roomUnit.removeStatus(RoomUnitStatus.GESTURE);
 
@@ -185,7 +185,7 @@ public class MonsterplantPet extends Pet implements IPetLook
                 {
                     this.growthStage = 7;
                     boolean clear = false;
-                    for (RoomUnitStatus s : roomUnit.getStatusMap().keySet())
+                    for (RoomUnitStatus s : this.roomUnit.getStatusMap().keySet())
                     {
                         if (s.equals(RoomUnitStatus.GROW))
                         {
@@ -195,8 +195,8 @@ public class MonsterplantPet extends Pet implements IPetLook
 
                     if (clear)
                     {
-                        roomUnit.clearStatus();
-                        packetUpdate = true;
+                        this.roomUnit.clearStatus();
+                        this.packetUpdate = true;
                     }
                 }
                 else
@@ -206,9 +206,9 @@ public class MonsterplantPet extends Pet implements IPetLook
                     if (g > this.growthStage)
                     {
                         this.growthStage = g;
-                        roomUnit.clearStatus();
-                        roomUnit.setStatus(RoomUnitStatus.fromString("grw" + this.growthStage), "");
-                        packetUpdate = true;
+                        this.roomUnit.clearStatus();
+                        this.roomUnit.setStatus(RoomUnitStatus.fromString("grw" + this.growthStage), "");
+                        this.packetUpdate = true;
                     }
                 }
 
@@ -240,15 +240,13 @@ public class MonsterplantPet extends Pet implements IPetLook
     @Override
     public String getLook()
     {
-        String look = "16 0 FFFFFF " +
+        return "16 0 FFFFFF " +
                 "5 " +
                 "0 -1 10 " +
                 "1 " + this.type  + " " + this.hue        + " " +
                 "2 " + this.mouth + " " + this.mouthColor + " " +
                 "3 " + this.nose  + " " + this.noseColor  + " " +
                 "4 " + this.eyes  + " " + this.eyesColor;
-
-        return look;
     }
 
 
@@ -259,7 +257,7 @@ public class MonsterplantPet extends Pet implements IPetLook
         message.appendString(this.getName());
         message.appendInt(this.petData.getType());
         message.appendInt(this.race);
-        message.appendString(this.getLook().substring(5, this.getLook().length()));
+        message.appendString(this.getLook().substring(5));
         message.appendInt(this.getRarity());
         message.appendInt(5);
             message.appendInt(0);
@@ -298,12 +296,12 @@ public class MonsterplantPet extends Pet implements IPetLook
 
     public int getGrowthStage()
     {
-        return growthStage;
+        return this.growthStage;
     }
 
     public int remainingGrowTime()
     {
-        if (growthStage == 7)
+        if (this.growthStage == 7)
         {
             return 0;
         }
@@ -370,7 +368,7 @@ public class MonsterplantPet extends Pet implements IPetLook
                 ownerTwo = this.room.getHabbo(pet.getUserId());
             }
 
-            Item seedBase = null;
+            Item seedBase;
 
             if (this.getRarity() < 8 || pet.getRarity() < 8 || Emulator.getRandom().nextInt(100) > this.getRarity() + pet.getRarity())
             {
@@ -383,7 +381,7 @@ public class MonsterplantPet extends Pet implements IPetLook
 
             if (seedBase != null)
             {
-                HabboItem seed = null;
+                HabboItem seed;
                 if (ownerOne != null)
                 {
                     AchievementManager.progressAchievement(ownerOne, Emulator.getGameEnvironment().getAchievementManager().getAchievement("MonsterPlantBreeder"), 5);

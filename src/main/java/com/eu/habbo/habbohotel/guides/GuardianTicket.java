@@ -29,7 +29,7 @@ public class GuardianTicket
     private final Habbo reported;
     private final Date date;
 
-    private int guardianCount = 0;
+    private int guardianCount = 0; //TODO: Figure out what this was supposed to do.
 
     public GuardianTicket(Habbo reporter, Habbo reported, ArrayList<ModToolChatLog> chatLogs)
     {
@@ -45,9 +45,9 @@ public class GuardianTicket
 
     public void requestToVote(Habbo guardian)
     {
-        guardian.getClient().sendResponse(new GuardianNewReportReceivedComposer(this));
+        guardian.getClient().sendResponse(new GuardianNewReportReceivedComposer());
 
-        this.votes.put(guardian, new GuardianVote(guardianCount, guardian));
+        this.votes.put(guardian, new GuardianVote(this.guardianCount, guardian));
 
         Emulator.getThreading().run(new GuardianNotAccepted(this, guardian), Emulator.getConfig().getInt("guardians.accept.timer") * 1000);
     }
@@ -148,7 +148,7 @@ public class GuardianTicket
         }
         else
         {
-            this.verdict = calculateVerdict();
+            this.verdict = this.calculateVerdict();
 
             for(Map.Entry<Habbo, GuardianVote> set : this.votes.entrySet())
             {
@@ -170,9 +170,9 @@ public class GuardianTicket
     }
 
 
-    public boolean isFinished()
+    public boolean inProgress()
     {
-        return !(this.verdict == null);
+        return this.verdict == null;
     }
 
 
@@ -206,7 +206,6 @@ public class GuardianTicket
 
         total += countAcceptably;
         total += countBadly;
-        total += countAwfully;
 
 
 

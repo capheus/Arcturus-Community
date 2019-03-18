@@ -6,7 +6,7 @@ import com.eu.habbo.habbohotel.catalog.TargetOffer;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.events.calendar.AdventCalendarDataComposer;
 import com.eu.habbo.messages.outgoing.habboway.nux.NuxAlertComposer;
-import com.eu.habbo.messages.outgoing.unknown.TargetedOfferComposer;
+import com.eu.habbo.messages.outgoing.catalog.TargetedOfferComposer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,7 +29,7 @@ public class UsernameEvent extends MessageHandler
         else
         {
 
-            long daysBetween = ChronoUnit.DAYS.between(new Date((long)this.client.getHabbo().getHabboInfo().getLastOnline() * 1000l).toInstant(), new Date().toInstant());
+            long daysBetween = ChronoUnit.DAYS.between(new Date((long)this.client.getHabbo().getHabboInfo().getLastOnline() * 1000L).toInstant(), new Date().toInstant());
 
 
             Date lastLogin = new Date(this.client.getHabbo().getHabboInfo().getLastOnline());

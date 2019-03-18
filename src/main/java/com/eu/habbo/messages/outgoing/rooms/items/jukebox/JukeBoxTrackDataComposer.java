@@ -9,7 +9,7 @@ import java.util.List;
 
 public class JukeBoxTrackDataComposer extends MessageComposer
 {
-    private List<SoundTrack> tracks;
+    private final List<SoundTrack> tracks;
 
     public JukeBoxTrackDataComposer(List<SoundTrack> tracks)
     {

@@ -1,3 +1,5 @@
+#DATABASE UPDATE: 1.14.0 -> 1.15.0
+
 ALTER TABLE `pet_commands_data` ADD PRIMARY KEY(`command_id`);
 
 INSERT INTO `pet_breeding_races` (`pet_type`, `rarity_level`, `breed`) VALUES ('28', '1', '1');
@@ -68,3 +70,5 @@ INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('generic.tile.not.exists',
 ALTER TABLE `items` CHANGE `z` `z` DOUBLE(10,6) NOT NULL DEFAULT '0.000000';
 
 ALTER TABLE `items_base` ADD `customparams` VARCHAR(256) NOT NULL DEFAULT '' AFTER `multiheight`;
+
+#END DATABASE UPDATE: 1.14.0 -> 1.15.0

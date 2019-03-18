@@ -187,7 +187,7 @@ public class InteractionFootball extends InteractionPushable
         if (game == null) {
             try
             {
-                game = FootballGame.class.getDeclaredConstructor(new Class[] { Room.class }).newInstance(new Object[] { room });
+                game = FootballGame.class.getDeclaredConstructor(new Class[] { Room.class }).newInstance(room);
                 room.addGame(game);
             }
             catch (Exception e)
@@ -197,7 +197,7 @@ public class InteractionFootball extends InteractionPushable
         }
         HabboItem currentTopItem = room.getTopItemAt(from.x, from.y, this);
         HabboItem topItem = room.getTopItemAt(to.x, to.y, this);
-        if ((game != null) && (topItem != null) && ((currentTopItem == null) || (currentTopItem.getId() != topItem.getId())) && ((topItem instanceof InteractionFootballGoal)))
+        if ((topItem != null) && ((currentTopItem == null) || (currentTopItem.getId() != topItem.getId())) && ((topItem instanceof InteractionFootballGoal)))
         {
             GameTeamColors color = ((InteractionGameTeamItem)topItem).teamColor;
             game.onScore(kicker, color);

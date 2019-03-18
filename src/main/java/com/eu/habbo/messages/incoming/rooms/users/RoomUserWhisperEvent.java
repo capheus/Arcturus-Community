@@ -35,8 +35,8 @@ public class RoomUserWhisperEvent extends MessageHandler
         }
         else
         {
-            String reportMessage = Emulator.getTexts().getValue("scripter.warning.chat.length").replace("%username%", client.getHabbo().getHabboInfo().getUsername()).replace("%length%", chatMessage.getMessage().length() + "");
-            Emulator.getGameEnvironment().getModToolManager().quickTicket(client.getHabbo(), "Scripter", reportMessage);
+            String reportMessage = Emulator.getTexts().getValue("scripter.warning.chat.length").replace("%username%", this.client.getHabbo().getHabboInfo().getUsername()).replace("%length%", chatMessage.getMessage().length() + "");
+            Emulator.getGameEnvironment().getModToolManager().quickTicket(this.client.getHabbo(), "Scripter", reportMessage);
             Emulator.getLogging().logUserLine(reportMessage);
         }
     }

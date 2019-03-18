@@ -26,7 +26,7 @@ public class AddHabboItemComposer extends MessageComposer
     {
         this.response.init(Outgoing.AddHabboItemComposer);
 
-        if(item == null)
+        if(this.item == null)
         {
             this.response.appendInt(1);
             this.response.appendInt(1);

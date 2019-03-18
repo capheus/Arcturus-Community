@@ -7,7 +7,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class RoomUsersAddGuildBadgeComposer extends MessageComposer
 {
-    public final Guild guild;
+    private final Guild guild;
 
     public RoomUsersAddGuildBadgeComposer(Guild guild)
     {

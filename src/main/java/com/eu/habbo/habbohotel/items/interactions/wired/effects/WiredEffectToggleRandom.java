@@ -151,17 +151,17 @@ public class WiredEffectToggleRandom extends InteractionWiredEffect
     @Override
     public String getWiredData()
     {
-        String wiredData = getDelay() + "\t";
+        StringBuilder wiredData = new StringBuilder(this.getDelay() + "\t");
 
-        if(!items.isEmpty())
+        if(!this.items.isEmpty())
         {
             for (HabboItem item : this.items)
             {
-                wiredData += item.getId() + ";";
+                wiredData.append(item.getId()).append(";");
             }
         }
 
-        return wiredData;
+        return wiredData.toString();
     }
 
     @Override

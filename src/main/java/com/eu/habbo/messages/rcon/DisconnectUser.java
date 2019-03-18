@@ -15,7 +15,7 @@ public class DisconnectUser extends RCONMessage<DisconnectUser.DisconnectUserJSO
     @Override
     public void handle(Gson gson, DisconnectUserJSON json)
     {
-        Habbo target = null;
+        Habbo target;
 
         if (json.user_id >= 0)
         {
@@ -42,7 +42,7 @@ public class DisconnectUser extends RCONMessage<DisconnectUser.DisconnectUserJSO
         this.message = Emulator.getTexts().getValue("commands.succes.cmd_disconnect.disconnected").replace("%user%", target.getHabboInfo().getUsername());
     }
 
-    public static class DisconnectUserJSON
+    static class DisconnectUserJSON
     {
 
         public int user_id = -1;

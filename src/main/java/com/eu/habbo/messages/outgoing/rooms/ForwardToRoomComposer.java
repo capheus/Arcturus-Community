@@ -6,7 +6,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class ForwardToRoomComposer extends MessageComposer
 {
-    private int roomId;
+    private final int roomId;
 
     public ForwardToRoomComposer(int roomId)
     {

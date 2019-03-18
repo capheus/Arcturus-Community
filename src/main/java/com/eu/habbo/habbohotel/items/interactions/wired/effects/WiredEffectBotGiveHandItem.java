@@ -123,7 +123,7 @@ public class WiredEffectBotGiveHandItem extends InteractionWiredEffect
     }
 
     @Override
-    protected String getWiredData()
+    public String getWiredData()
     {
         return this.getDelay() + "" + ((char)9) + "" + this.itemId + "" + ((char) 9) + "" + this.botName;
     }

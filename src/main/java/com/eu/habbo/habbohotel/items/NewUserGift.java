@@ -23,7 +23,7 @@ public class NewUserGift implements ISerialize
         this.id = set.getInt("id");
         this.type = Type.valueOf(set.getString("type").toUpperCase());
         this.imageUrl = set.getString("image");
-        this.items.put(type == Type.ROOM ? "" : set.getString("value"), type == Type.ROOM ? set.getString("value") : "");
+        this.items.put(this.type == Type.ROOM ? "" : set.getString("value"), this.type == Type.ROOM ? set.getString("value") : "");
     }
     public NewUserGift(int id, Type type, String imageUrl, Map<String, String> items)
     {
@@ -66,7 +66,7 @@ public class NewUserGift implements ISerialize
         }
         else if (this.type == Type.ROOM)
         {
-
+            //TODO Give room
         }
     }
 
@@ -90,7 +90,7 @@ public class NewUserGift implements ISerialize
         return this.items;
     }
 
-    public static enum Type
+    public enum Type
     {
         ITEM,
         ROOM

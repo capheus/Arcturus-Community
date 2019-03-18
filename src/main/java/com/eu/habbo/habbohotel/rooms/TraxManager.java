@@ -41,7 +41,7 @@ public class TraxManager implements Disposable
                 while (set.next())
                 {
                     HabboItem musicDisc = this.room.getHabboItem(set.getInt("item_id"));
-                    if (musicDisc != null && musicDisc instanceof InteractionMusicDisc)
+                    if (musicDisc instanceof InteractionMusicDisc)
                     {
                         SoundTrack track = Emulator.getGameEnvironment().getItemManager().getSoundTrack(((InteractionMusicDisc) musicDisc).getSongId());
 
@@ -64,7 +64,7 @@ public class TraxManager implements Disposable
     {
         if (this.isPlaying())
         {
-            if (timePlaying() >= this.totalLength)
+            if (this.timePlaying() >= this.totalLength)
             {
                 this.play(0);
                 //restart
@@ -138,7 +138,7 @@ public class TraxManager implements Disposable
     {
         HabboItem musicDisc = this.room.getHabboItem(itemId);
 
-        if (musicDisc != null && musicDisc instanceof InteractionMusicDisc)
+        if (musicDisc instanceof InteractionMusicDisc)
         {
             SoundTrack track = Emulator.getGameEnvironment().getItemManager().getSoundTrack(((InteractionMusicDisc) musicDisc).getSongId());
 
@@ -203,12 +203,12 @@ public class TraxManager implements Disposable
 
     public int totalLength()
     {
-        return totalLength;
+        return this.totalLength;
     }
 
     public List<InteractionMusicDisc> getSongs()
     {
-        return songs;
+        return this.songs;
     }
 
     public boolean isPlaying()

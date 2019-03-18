@@ -129,7 +129,6 @@ public class WiredEffectRollerSpeed extends InteractionWiredEffect
             }
             catch (Exception e)
             {
-                e.printStackTrace();
             }
         }
     }

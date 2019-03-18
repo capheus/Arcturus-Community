@@ -7,13 +7,13 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class RoomModelComposer extends MessageComposer
 {
-
     private final Room room;
 
     public RoomModelComposer(Room room)
     {
         this.room = room;
     }
+
     @Override
     public ServerMessage compose()
     {

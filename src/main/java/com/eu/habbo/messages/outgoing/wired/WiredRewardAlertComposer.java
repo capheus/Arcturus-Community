@@ -1,4 +1,4 @@
-package com.eu.habbo.messages.outgoing.generic.alerts;
+package com.eu.habbo.messages.outgoing.wired;
 
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;

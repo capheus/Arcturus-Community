@@ -16,10 +16,12 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemOnRollerComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import gnu.trove.set.hash.THashSet;
+import org.apache.commons.math3.util.Pair;
 
 import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
 {
@@ -27,7 +29,7 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
 
     private int direction;
     private int rotation;
-    private final THashSet<HabboItem> items = new THashSet<>();
+    private final THashSet<HabboItem> items = new THashSet<>(WiredHandler.MAXIMUM_FURNI_SELECTION / 2);
 
     public WiredEffectMoveRotateFurni(ResultSet set, Item baseItem) throws SQLException
     {
@@ -42,8 +44,8 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
     @Override
     public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
     {
-        THashSet<HabboItem> items = new THashSet<>();
-        THashSet<RoomTile> tilesToUpdate = new THashSet<>();
+        THashSet<HabboItem> items = new THashSet<>(this.items.size());
+        THashSet<RoomTile> tilesToUpdate = new THashSet<>(Math.min(this.items.size(), 10));
         
 		for (HabboItem item : this.items)
 		{
@@ -89,115 +91,148 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
 			}
 
 			if (this.direction > 0)
-			{
-				RoomUserRotation moveDirection = RoomUserRotation.NORTH;
+            {
+                int nextDirectionOffset = 0;
+                RoomUserRotation startMoveDirection = RoomUserRotation.NORTH;
+                RoomUserRotation moveDirection = null;
+                if (this.direction == 1)
+                {
+                    startMoveDirection = RoomUserRotation.values()[Emulator.getRandom().nextInt(RoomUserRotation.values().length / 2) * 2];
+                    nextDirectionOffset = 2;
+                } else if (this.direction == 2)
+                {
+                    if (Emulator.getRandom().nextInt(2) == 1)
+                    {
+                        startMoveDirection = RoomUserRotation.EAST;
+                        nextDirectionOffset = 4;
+                    } else
+                    {
+                        startMoveDirection = RoomUserRotation.WEST;
+                        nextDirectionOffset = 4;
+                    }
+                } else if (this.direction == 3)
+                {
+                    if (Emulator.getRandom().nextInt(2) == 1)
+                    {
+                        startMoveDirection = RoomUserRotation.NORTH;
+                        nextDirectionOffset = 4;
+                    } else
+                    {
+                        startMoveDirection = RoomUserRotation.SOUTH;
+                        nextDirectionOffset = 4;
+                    }
+                } else if (this.direction == 4)
+                {
+                    startMoveDirection = RoomUserRotation.SOUTH;
+                    nextDirectionOffset = 8;
+                } else if (this.direction == 5)
+                {
+                    startMoveDirection = RoomUserRotation.EAST;
+                    nextDirectionOffset = 8;
+                } else if (this.direction == 6)
+                {
+                    startMoveDirection = RoomUserRotation.NORTH;
+                    nextDirectionOffset = 8;
+                } else if (this.direction == 7)
+                {
+                    startMoveDirection = RoomUserRotation.WEST;
+                    nextDirectionOffset = 8;
+                }
 
-				if (this.direction == 1)
-				{
-					moveDirection = RoomUserRotation.values()[Emulator.getRandom().nextInt(RoomUserRotation.values().length)];
-				}
-				else if (this.direction == 2)
-				{
-					if (Emulator.getRandom().nextInt(2) == 1)
-					{
-						moveDirection = RoomUserRotation.EAST;
-					}
-					else
-					{
-						moveDirection = RoomUserRotation.WEST;
-					}
-				}
-				else if (this.direction == 3)
-				{
-					if (Emulator.getRandom().nextInt(2) == 1)
-					{
-						moveDirection = RoomUserRotation.NORTH;
-					}
-					else
-					{
-						moveDirection = RoomUserRotation.SOUTH;
-					}
-				}
-				else if (this.direction == 4)
-				{
-					moveDirection = RoomUserRotation.SOUTH;
-				}
-				else if (this.direction == 5)
-				{
-					moveDirection = RoomUserRotation.EAST;
-				}
-				else if (this.direction == 6)
-				{
-					moveDirection = RoomUserRotation.NORTH;
-				}
-				else if (this.direction == 7)
-				{
-					moveDirection = RoomUserRotation.WEST;
-				}
+                boolean validMove = false;
 
-				RoomTile newTile = room.getLayout().getTile(
-						(short) (item.getX() + ((moveDirection == RoomUserRotation.WEST || moveDirection == RoomUserRotation.NORTH_WEST || moveDirection == RoomUserRotation.SOUTH_WEST) ? -1 : (((moveDirection == RoomUserRotation.EAST || moveDirection == RoomUserRotation.SOUTH_EAST || moveDirection == RoomUserRotation.NORTH_EAST) ? 1 : 0)))),
-						(short) (item.getY() + ((moveDirection == RoomUserRotation.NORTH || moveDirection == RoomUserRotation.NORTH_EAST || moveDirection == RoomUserRotation.NORTH_WEST) ? 1 : ((moveDirection == RoomUserRotation.SOUTH || moveDirection == RoomUserRotation.SOUTH_EAST || moveDirection == RoomUserRotation.SOUTH_WEST) ? -1 : 0)))
-				);
+                int count = 0;
+                int maxCount = 8 / nextDirectionOffset;
+                while (moveDirection != startMoveDirection && !validMove && count < maxCount)
+                {
+                    count++;
+                    if (moveDirection == null)
+                    {
+                        moveDirection = startMoveDirection;
+                    }
+                    RoomLayout layout = room.getLayout();
+                    if (layout == null) return false;
 
-				if (newTile != null)
-				{
-					boolean hasHabbos = false;
-					for (Habbo habbo : room.getHabbosAt(newTile))
-					{
-						hasHabbos = true;
-						WiredHandler.handle(WiredTriggerType.COLLISION, habbo.getRoomUnit(), room, new Object[]{item});
-					}
+                    RoomTile newTile = layout.getTile(
+                            (short) (item.getX() + ((moveDirection == RoomUserRotation.WEST || moveDirection == RoomUserRotation.NORTH_WEST || moveDirection == RoomUserRotation.SOUTH_WEST) ? -1 : (((moveDirection == RoomUserRotation.EAST || moveDirection == RoomUserRotation.SOUTH_EAST || moveDirection == RoomUserRotation.NORTH_EAST) ? 1 : 0)))),
+                            (short) (item.getY() + ((moveDirection == RoomUserRotation.NORTH || moveDirection == RoomUserRotation.NORTH_EAST || moveDirection == RoomUserRotation.NORTH_WEST) ? 1 : ((moveDirection == RoomUserRotation.SOUTH || moveDirection == RoomUserRotation.SOUTH_EAST || moveDirection == RoomUserRotation.SOUTH_WEST) ? -1 : 0)))
+                    );
 
-					if (!hasHabbos && room.getStackHeight(newTile.x, newTile.y, true, item) != Short.MAX_VALUE)
-					{
-						Rectangle rectangle = new Rectangle(newTile.x,
-								newTile.y,
-								item.getBaseItem().getWidth(),
-								item.getBaseItem().getLength());
+                    if (newTile != null)
+                    {
+                        boolean hasHabbos = false;
+                        for (Habbo habbo : room.getHabbosAt(newTile))
+                        {
+                            hasHabbos = true;
+                            WiredHandler.handle(WiredTriggerType.COLLISION, habbo.getRoomUnit(), room, new Object[]{item});
+                        }
 
-						double offset = -Short.MAX_VALUE;
-						boolean validMove = true;
-						for (short x = (short)rectangle.x; x < rectangle.x + rectangle.getWidth(); x++)
-						{
-							for (short y = (short)rectangle.y; y < rectangle.y + rectangle.getHeight(); y++)
-							{
-								RoomTile tile = room.getLayout().getTile(x, y);
+                        if (!hasHabbos && room.getStackHeight(newTile.x, newTile.y, true, item) != Short.MAX_VALUE)
+                        {
+                            java.awt.Rectangle rectangle = new Rectangle(newTile.x,
+                                    newTile.y,
+                                    item.getBaseItem().getWidth(),
+                                    item.getBaseItem().getLength());
 
-								if (tile.state == RoomTileState.INVALID || !tile.getAllowStack())
-								{
-									validMove = false;
-									break;
-								}
+                            double offset = -Short.MAX_VALUE;
+                            validMove = true;
+                            for (short x = (short) rectangle.x; x < rectangle.x + rectangle.getWidth(); x++)
+                            {
+                                if (!validMove)
+                                {
+                                    break;
+                                }
 
-								if (item instanceof InteractionRoller && room.hasItemsAt(tile.x, tile.y))
-								{
-									validMove = false;
-									break;
-								}
+                                for (short y = (short) rectangle.y; y < rectangle.y + rectangle.getHeight(); y++)
+                                {
+                                    RoomTile tile = layout.getTile(x, y);
 
-								HabboItem i = room.getTopItemAt(x, y, item);
+                                    if (tile == null || tile.state == RoomTileState.INVALID || !tile.getAllowStack())
+                                    {
+                                        validMove = false;
+                                        break;
+                                    }
 
-								if (i == null || i == item || i.getBaseItem().allowStack())
-								{
-									offset = Math.max(room.getStackHeight(newTile.x, newTile.y, false, item) - item.getZ(), offset);
-								}
+                                    THashSet<HabboItem> itemsAtNewTile = room.getItemsAt(tile);
+                                    if (item instanceof InteractionRoller && !itemsAtNewTile.isEmpty())
+                                    {
+                                        validMove = false;
+                                        break;
+                                    }
 
-								tilesToUpdate.add(tile);
-							}
-						}
-						if (item.getZ() + offset > 40)
-						{
-							offset = 40 - item.getZ();
-						}
-						
-						if (validMove)
-						{
-							room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, offset, room).compose());
-						}
-					}
-				}
-			}
+                                    java.util.List tileItems = new ArrayList<Pair<RoomTile, THashSet<HabboItem>>>(rectangle.width * rectangle.height);
+                                    tileItems.add(Pair.create(tile, itemsAtNewTile));
+                                    if (!item.canStackAt(room, tileItems))
+                                    {
+                                        validMove = false;
+                                        break;
+                                    }
+
+                                    HabboItem i = room.getTopItemAt(x, y, item);
+                                    if (i == null || i == item || i.getBaseItem().allowStack())
+                                    {
+                                        offset = Math.max(room.getStackHeight(newTile.x, newTile.y, false, item) - item.getZ(), offset);
+                                    }
+                                    tilesToUpdate.add(tile);
+                                }
+                            }
+                            if (item.getZ() + offset > 40)
+                            {
+                                offset = 40 - item.getZ();
+                            }
+
+                            if (validMove)
+                            {
+                                room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, offset, room).compose());
+                            }
+                        }
+                    }
+                    if (!validMove)
+                    {
+                        moveDirection = RoomUserRotation.fromValue(moveDirection.getValue() + nextDirectionOffset);
+                    }
+                }
+            }
 		}
 
         if (!tilesToUpdate.isEmpty())
@@ -211,7 +246,7 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
     @Override
     public String getWiredData()
     {
-        THashSet<HabboItem> items = new THashSet<>();
+        THashSet<HabboItem> items = new THashSet<>(this.items.size() / 2);
 
         Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
 
@@ -226,16 +261,16 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
             this.items.remove(item);
         }
 
-        String data = this.direction + "\t" +
+        StringBuilder data = new StringBuilder(this.direction + "\t" +
                 this.rotation + "\t" +
-                this.getDelay() + "\t";
+                this.getDelay() + "\t");
 
         for(HabboItem item : this.items)
         {
-            data += item.getId() + "\r";
+            data.append(item.getId()).append("\r");
         }
 
-        return data;
+        return data.toString();
     }
 
     @Override
@@ -285,7 +320,7 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
     @Override
     public void serializeWiredData(ServerMessage message, Room room)
     {
-        THashSet<HabboItem> items = new THashSet<>();
+        THashSet<HabboItem> items = new THashSet<>(this.items.size() / 2);
 
 		for (HabboItem item : this.items)
 		{
@@ -346,6 +381,6 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
     @Override
     protected long requiredCooldown()
     {
-        return 0;
+        return -100;
     }
 }

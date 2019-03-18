@@ -10,7 +10,6 @@ public class GuardianVotingTimeEnded extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuardianVotingTimeEnded);
-        //Empty Body
         return this.response;
     }
 }

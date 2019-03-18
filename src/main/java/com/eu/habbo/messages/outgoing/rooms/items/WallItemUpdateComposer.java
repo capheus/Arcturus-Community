@@ -13,6 +13,7 @@ public class WallItemUpdateComposer extends MessageComposer
     {
         this.item = item;
     }
+
     @Override
     public ServerMessage compose()
     {

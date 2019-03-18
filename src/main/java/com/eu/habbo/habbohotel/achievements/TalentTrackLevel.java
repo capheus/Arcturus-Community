@@ -64,7 +64,7 @@ public class TalentTrackLevel
 
             if (item != null)
             {
-                items.add(item);
+                this.items.add(item);
             }
             else
             {

@@ -1,11 +1,12 @@
 package com.eu.habbo.core.consolecommands;
 
+import com.eu.habbo.Emulator;
 import gnu.trove.map.hash.THashMap;
 
 public abstract class ConsoleCommand
 {
 
-    private static THashMap<String, ConsoleCommand> commands = new THashMap<>();
+    private static final THashMap<String, ConsoleCommand> commands = new THashMap<>();
 
 
     public final String key;
@@ -28,6 +29,7 @@ public abstract class ConsoleCommand
         addCommand(new ConsoleTestCommand());
         addCommand(new ConsoleReconnectCameraCommand());
         addCommand(new ShowInteractionsCommand());
+        addCommand(new ShowRCONCommands());
     }
 
 
@@ -63,7 +65,7 @@ public abstract class ConsoleCommand
                 }
                 catch (Exception e)
                 {
-                    e.printStackTrace();
+                    Emulator.getLogging().logErrorLine(e);
                 }
             }
             else

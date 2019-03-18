@@ -8,13 +8,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class GuardianNewReportReceivedComposer extends MessageComposer
 {
-    private final GuardianTicket ticket;
-
-    public GuardianNewReportReceivedComposer(GuardianTicket ticket)
-    {
-        this.ticket = ticket;
-    }
-
     @Override
     public ServerMessage compose()
     {

@@ -7,7 +7,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class RemoveWallItemComposer extends MessageComposer
 {
-
     private final HabboItem item;
 
     public RemoveWallItemComposer(HabboItem item)

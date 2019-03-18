@@ -27,13 +27,13 @@ public class GuardianVotingRequestedComposer extends MessageComposer
         Calendar c = Calendar.getInstance();
         c.setTime(this.ticket.getDate());
 
-        String fullMessage = c.get(Calendar.YEAR) + " ";
-        fullMessage += c.get(Calendar.MONTH) + " ";
-        fullMessage += c.get(Calendar.DAY_OF_MONTH) + " ";
-        fullMessage += c.get(Calendar.MINUTE) + " ";
-        fullMessage += c.get(Calendar.SECOND) + ";";
+        StringBuilder fullMessage = new StringBuilder(c.get(Calendar.YEAR) + " ");
+        fullMessage.append(c.get(Calendar.MONTH)).append(" ");
+        fullMessage.append(c.get(Calendar.DAY_OF_MONTH)).append(" ");
+        fullMessage.append(c.get(Calendar.MINUTE)).append(" ");
+        fullMessage.append(c.get(Calendar.SECOND)).append(";");
 
-        fullMessage += "\r";
+        fullMessage.append("\r");
 
         for(ModToolChatLog chatLog : this.ticket.getChatLogs())
         {
@@ -42,12 +42,12 @@ public class GuardianVotingRequestedComposer extends MessageComposer
                 mappedUsers.put(chatLog.habboId, mappedUsers.size());
             }
 
-            fullMessage += "unused;" + mappedUsers.get(chatLog.habboId) + ";" + chatLog.message + "\r";
+            fullMessage.append("unused;").append(mappedUsers.get(chatLog.habboId)).append(";").append(chatLog.message).append("\r");
         }
 
         this.response.init(Outgoing.GuardianVotingRequestedComposer);
         this.response.appendInt(this.ticket.getTimeLeft());
-        this.response.appendString(fullMessage);
+        this.response.appendString(fullMessage.toString());
 
         //2015 10 17 14 24 30
         return this.response;

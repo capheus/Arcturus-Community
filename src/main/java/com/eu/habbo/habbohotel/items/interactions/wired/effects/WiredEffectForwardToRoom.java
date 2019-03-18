@@ -29,7 +29,7 @@ public class WiredEffectForwardToRoom extends WiredEffectWhisper
         if (habbo == null)
             return false;
 
-        int roomId = 0;
+        int roomId;
 
         try
         {

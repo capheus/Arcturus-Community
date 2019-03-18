@@ -39,17 +39,17 @@ public class SayCommand extends Command
             }
         }
 
-        String message = "";
+        StringBuilder message = new StringBuilder();
         if(params.length > 2)
         {
             for(int i = 2; i < params.length; i++)
             {
-                message += params[i] + " ";
+                message.append(params[i]).append(" ");
             }
         }
 
-        target.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserTalkComposer(new RoomChatMessage(message, target, RoomChatMessageBubbles.NORMAL)).compose());
-        gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_say").replace("%user%", params[1]).replace("%message%", message), RoomChatMessageBubbles.ALERT);
+        target.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserTalkComposer(new RoomChatMessage(message.toString(), target, RoomChatMessageBubbles.NORMAL)).compose());
+        gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_say").replace("%user%", params[1]).replace("%message%", message.toString()), RoomChatMessageBubbles.ALERT);
         return true;
     }
 }

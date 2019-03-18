@@ -10,12 +10,7 @@ import java.util.List;
 
 public class ReportRoomFormComposer extends MessageComposer
 {
-    private List<ModToolIssue> pendingIssues = new ArrayList<>();
-
-    public ReportRoomFormComposer()
-    {
-
-    }
+    private final List<ModToolIssue> pendingIssues;
 
     public ReportRoomFormComposer(List<ModToolIssue> issues)
     {

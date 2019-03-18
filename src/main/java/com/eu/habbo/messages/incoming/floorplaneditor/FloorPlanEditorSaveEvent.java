@@ -42,7 +42,7 @@ public class FloorPlanEditorSaveEvent extends MessageHandler
             String map = this.packet.readString();
             map = map.replace("X", "x");
 
-            if(map.isEmpty() || map.length() == 0 || map.replace("x", "").replace(((char) 13) + "", "").length() == 0)
+            if(map.isEmpty() || map.replace("x", "").replace(((char) 13) + "", "").length() == 0)
             {
                 errors.add("${notification.floorplan_editor.error.message.effective_height_is_0}");
             }
@@ -124,12 +124,12 @@ public class FloorPlanEditorSaveEvent extends MessageHandler
 
             if (!errors.isEmpty())
             {
-                String errorMessage = "";
+                StringBuilder errorMessage = new StringBuilder();
                 for (String s : errors)
                 {
-                    errorMessage += s + "<br />";
+                    errorMessage.append(s).append("<br />");
                 }
-                this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FLOORPLAN_EDITOR_ERROR.key, errorMessage));
+                this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FLOORPLAN_EDITOR_ERROR.key, errorMessage.toString()));
                 return;
             }
 
@@ -145,7 +145,7 @@ public class FloorPlanEditorSaveEvent extends MessageHandler
 
                 if (layout.getDoorTile() == null)
                 {
-                    this.client.sendResponse(new GenericAlertComposer("Error"));
+                    this.client.getHabbo().alert("Error");
                     ((CustomRoomLayout)layout).needsUpdate(false);
                     Emulator.getGameEnvironment().getRoomManager().unloadRoom(room);
                     return;

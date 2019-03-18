@@ -13,7 +13,7 @@ public class StopBreedingEvent extends MessageHandler
 
         HabboItem item = this.client.getHabbo().getHabboInfo().getCurrentRoom().getHabboItem(itemId);
 
-        if (item != null && item instanceof InteractionPetBreedingNest)
+        if (item instanceof InteractionPetBreedingNest)
         {
             ((InteractionPetBreedingNest) item).stopBreeding(this.client.getHabbo());
         }

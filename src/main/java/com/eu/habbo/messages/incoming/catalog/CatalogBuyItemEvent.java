@@ -50,7 +50,7 @@ public class CatalogBuyItemEvent extends MessageHandler
                 if (this.client.getHabbo().getInventory().getItemsComponent().itemCount() > HabboInventory.MAXIMUM_ITEMS)
                 {
                     this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR).compose());
-                    this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("inventory.full")));
+                    this.client.getHabbo().alert(Emulator.getTexts().getValue("inventory.full"));
                     return;
                 }
             } catch (Exception e)
@@ -206,6 +206,7 @@ public class CatalogBuyItemEvent extends MessageHandler
 
                     this.client.sendResponse(new PurchaseOKComposer(null));
                     this.client.sendResponse(new InventoryRefreshComposer());
+                    this.client.getHabbo().getHabboStats().run();
                 }
                 return;
             }

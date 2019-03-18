@@ -34,12 +34,12 @@ public class WiredExecuteTask implements Runnable
             {
                 if (this.task instanceof WiredTriggerAtSetTime)
                 {
-                    if (((WiredTriggerAtSetTime) this.task).taskId != taskId)
+                    if (((WiredTriggerAtSetTime) this.task).taskId != this.taskId)
                         return;
                 }
                 if (this.task instanceof WiredTriggerAtTimeLong)
                 {
-                    if (((WiredTriggerAtTimeLong) this.task).taskId != taskId)
+                    if (((WiredTriggerAtTimeLong) this.task).taskId != this.taskId)
                         return;
                 }
                 WiredHandler.handle(this.task, null, this.room, null);

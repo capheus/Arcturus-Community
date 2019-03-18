@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ChangeNameCheckUsernameEvent extends MessageHandler
 {
-    public static String VALID_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_-=!?@:,.";
+    public static final String VALID_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_-=!?@:,.";
 
     @Override
     public void handle() throws Exception
@@ -33,7 +33,6 @@ public class ChangeNameCheckUsernameEvent extends MessageHandler
         List<String> suggestions = new ArrayList<>(4);
         if (false)
         {
-            errorCode = ChangeNameCheckResultComposer.DISABLED;
         }
         else if (name.length() < 3)
         {

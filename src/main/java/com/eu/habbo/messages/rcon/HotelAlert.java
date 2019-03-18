@@ -20,7 +20,7 @@ public class HotelAlert extends RCONMessage<HotelAlert.JSONHotelAlert>
     @Override
     public void handle(Gson gson, JSONHotelAlert object)
     {
-        ServerMessage serverMessage = null;
+        ServerMessage serverMessage;
         if (object.url.isEmpty())
         {
             serverMessage = new GenericAlertComposer(object.message).compose();
@@ -43,7 +43,7 @@ public class HotelAlert extends RCONMessage<HotelAlert.JSONHotelAlert>
         }
     }
 
-    public static class JSONHotelAlert
+    static class JSONHotelAlert
     {
 
         public String message;

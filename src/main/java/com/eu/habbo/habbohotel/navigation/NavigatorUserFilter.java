@@ -54,7 +54,6 @@ public class NavigatorUserFilter extends NavigatorFilter
         if (!rightRooms.isEmpty())
         {
             resultLists.add(new SearchResultList(i, "with_rights", "", SearchAction.NONE, habbo.getHabboStats().navigatorWindowSettings.getListModeForCategory("with_rights"), habbo.getHabboStats().navigatorWindowSettings.getDisplayModeForCategory("with_rights"), rightRooms, true, true, DisplayOrder.ORDER_NUM, i));
-            i++;
         }
 
         return resultLists;

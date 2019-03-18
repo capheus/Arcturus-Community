@@ -10,7 +10,6 @@ public class OpenRoomCreationWindowComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.OpenRoomCreationWindowComposer);
-        //Empty Body
         return this.response;
     }
 }

@@ -18,7 +18,7 @@ public class MarketplaceItemInfoComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.MarketplaceItemInfoComposer);
-        MarketPlace.serializeItemInfo(itemId, this.response);
+        MarketPlace.serializeItemInfo(this.itemId, this.response);
         return this.response;
     }
 }

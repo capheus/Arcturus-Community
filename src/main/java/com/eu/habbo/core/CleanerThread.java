@@ -72,7 +72,7 @@ public class CleanerThread implements Runnable {
 
     public CleanerThread()
     {
-        databaseCleanup();
+        this.databaseCleanup();
         Emulator.getThreading().run(this, DELAY);
 
         Emulator.getThreading().run(new AchievementUpdater());
@@ -132,13 +132,13 @@ public class CleanerThread implements Runnable {
 
         if (time - LAST_DAILY_REFILL > Emulator.getConfig().getInt("hotel.refill.daily"))
         {
-            refillDailyRespects();
+            this.refillDailyRespects();
             LAST_DAILY_REFILL = time;
         }
 
         if (time - LAST_HABBO_CACHE_CLEARED > CLEAR_CACHED_VALUES)
         {
-            clearCachedValues();
+            this.clearCachedValues();
             LAST_HABBO_CACHE_CLEARED = time;
         }
 
@@ -149,7 +149,7 @@ public class CleanerThread implements Runnable {
 
     void databaseCleanup()
     {
-        refillDailyRespects();
+        this.refillDailyRespects();
 
         int time = Emulator.getIntUnixTimestamp();
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
@@ -206,7 +206,7 @@ public class CleanerThread implements Runnable {
 
     private void clearCachedValues()
     {
-        Habbo habbo = null;
+        Habbo habbo;
         for(Map.Entry<Integer, Habbo> map : Emulator.getGameEnvironment().getHabboManager().getOnlineHabbos().entrySet())
         {
             habbo = map.getValue();

@@ -81,7 +81,7 @@ public class ItemsComponent
 			return;
         }
 
-        InventoryItemAddedEvent event = new InventoryItemAddedEvent(inventory, item);
+        InventoryItemAddedEvent event = new InventoryItemAddedEvent(this.inventory, item);
         if (Emulator.getPluginManager().fireEvent(event).isCancelled())
         {
             return;
@@ -95,7 +95,7 @@ public class ItemsComponent
 
     public void addItems(THashSet<HabboItem> items)
     {
-        InventoryItemsAddedEvent event = new InventoryItemsAddedEvent(inventory, items);
+        InventoryItemsAddedEvent event = new InventoryItemsAddedEvent(this.inventory, items);
         if (Emulator.getPluginManager().fireEvent(event).isCancelled())
         {
             return;
@@ -151,7 +151,7 @@ public class ItemsComponent
 
     public void removeHabboItem(HabboItem item)
     {
-        InventoryItemRemovedEvent event = new InventoryItemRemovedEvent(inventory, item);
+        InventoryItemRemovedEvent event = new InventoryItemRemovedEvent(this.inventory, item);
         if (Emulator.getPluginManager().fireEvent(event).isCancelled())
         {
             return;

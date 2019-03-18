@@ -42,7 +42,7 @@ public class IgnoreUser extends RCONMessage<IgnoreUser.JSONIgnoreUser>
         }
     }
 
-    public static class JSONIgnoreUser
+    static class JSONIgnoreUser
     {
 
         public int user_id;

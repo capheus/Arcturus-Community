@@ -24,9 +24,6 @@ public class PostItDeleteEvent extends MessageHandler
 
         if (item instanceof InteractionPostIt)
         {
-            if (item == null)
-                return;
-
             if (item.getUserId() == this.client.getHabbo().getHabboInfo().getId() || room.isOwner(this.client.getHabbo()))
             {
                 item.setRoomId(0);

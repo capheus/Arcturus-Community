@@ -42,7 +42,7 @@ public class ForwardUser extends RCONMessage<ForwardUser.ForwardUserJSON>
         this.status = RCONMessage.HABBO_NOT_FOUND;
     }
 
-    public static class ForwardUserJSON
+    static class ForwardUserJSON
     {
 
         public int user_id;

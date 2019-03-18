@@ -16,7 +16,7 @@ public class SnowWarsUserEnteredArenaComposer extends MessageComposer
     {
         this.response.init(3425);
 
-        if(type == 1)
+        if(this.type == 1)
         {
             this.response.appendInt(1); //userId
             this.response.appendString("Admin");

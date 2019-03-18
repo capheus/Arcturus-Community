@@ -15,10 +15,10 @@ import java.util.ArrayList;
 
 public class PetBreedingResultComposer extends MessageComposer
 {
-    public final int boxId;
-    public final int petType;
-    public final PetBreedingPet petOne;
-    public final PetBreedingPet petTwo;
+    private final int boxId;
+    private final int petType;
+    private final PetBreedingPet petOne;
+    private final PetBreedingPet petTwo;
 
     public PetBreedingResultComposer(int boxId, int petType, Pet petOne, String ownerPetOne, Pet petTwo, String ownerPetTwo)
     {
@@ -36,7 +36,7 @@ public class PetBreedingResultComposer extends MessageComposer
         this.petOne.serialize(this.response);
         this.petTwo.serialize(this.response);
 
-        double avgLevel = (this.petOne.pet.getLevel() + this.petTwo.pet.getLevel()) / 2;
+        double avgLevel = ((float)this.petOne.pet.getLevel() + this.petTwo.pet.getLevel()) / 2;
         NormalDistribution normalDistribution = PetManager.getNormalDistributionForBreeding(avgLevel);
 
 

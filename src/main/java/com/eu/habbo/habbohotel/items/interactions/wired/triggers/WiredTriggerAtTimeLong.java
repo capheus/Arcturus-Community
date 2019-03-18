@@ -60,7 +60,7 @@ public class WiredTriggerAtTimeLong extends InteractionWiredTrigger implements W
             this.executeTime = 20 * 500;
         }
         this.taskId = 1;
-        Emulator.getThreading().run(new WiredExecuteTask(this, Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId())), executeTime);
+        Emulator.getThreading().run(new WiredExecuteTask(this, Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId())), this.executeTime);
     }
 
     @Override
@@ -132,6 +132,6 @@ public class WiredTriggerAtTimeLong extends InteractionWiredTrigger implements W
     {
         this.taskId++;
 
-        Emulator.getThreading().run(new WiredExecuteTask(this, Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId())), executeTime);
+        Emulator.getThreading().run(new WiredExecuteTask(this, Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId())), this.executeTime);
     }
 }

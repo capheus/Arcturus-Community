@@ -18,7 +18,7 @@ public class AddPetComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.AddPetComposer);
-        pet.serialize(this.response);
+        this.pet.serialize(this.response);
         this.response.appendBoolean(false);
         return this.response;
     }

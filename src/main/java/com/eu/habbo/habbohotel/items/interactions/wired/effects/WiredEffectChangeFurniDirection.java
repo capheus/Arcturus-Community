@@ -61,6 +61,7 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
             this.items.remove(item);
         }
 
+        if (this.items.isEmpty()) return false;
         for (Map.Entry<HabboItem, RoomUserRotation> entry : this.items.entrySet())
         {
             RoomUserRotation currentRotation = entry.getValue();
@@ -69,7 +70,7 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
             int count = 1;
             while ((targetTile == null || !targetTile.getAllowStack() || targetTile.state == RoomTileState.INVALID) && count < 8)
             {
-                entry.setValue(nextRotation(entry.getValue()));
+                entry.setValue(this.nextRotation(entry.getValue()));
                 targetTile = room.getLayout().getTileInFront(room.getLayout().getTile(entry.getKey().getX(), entry.getKey().getY()), entry.getValue().getValue());
                 count++;
             }
@@ -106,14 +107,14 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
     @Override
     public String getWiredData()
     {
-        String data = this.startRotation.getValue() + "\t" + this.rotateAction + "\t" + this.items.size();
+        StringBuilder data = new StringBuilder(this.startRotation.getValue() + "\t" + this.rotateAction + "\t" + this.items.size());
 
         for (Map.Entry<HabboItem, RoomUserRotation> entry : this.items.entrySet())
         {
-            data += "\t" + entry.getKey().getId() + ":" + entry.getValue().getValue();
+            data.append("\t").append(entry.getKey().getId()).append(":").append(entry.getValue().getValue());
         }
 
-        return data;
+        return data.toString();
     }
 
     @Override

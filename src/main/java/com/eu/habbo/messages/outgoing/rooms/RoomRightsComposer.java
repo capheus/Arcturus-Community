@@ -7,7 +7,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class RoomRightsComposer extends MessageComposer
 {
-
     private final RoomRightLevels type;
 
     public RoomRightsComposer(RoomRightLevels type)

@@ -8,7 +8,7 @@ import gnu.trove.map.TIntObjectMap;
 
 public class MoodLightDataComposer extends MessageComposer
 {
-    private TIntObjectMap<RoomMoodlightData> moodLightData;
+    private final TIntObjectMap<RoomMoodlightData> moodLightData;
 
     public MoodLightDataComposer(TIntObjectMap<RoomMoodlightData> moodLightData)
     {
@@ -22,7 +22,7 @@ public class MoodLightDataComposer extends MessageComposer
         this.response.appendInt(3); //PresetCount
 
         int index = 1;
-        for(RoomMoodlightData data : moodLightData.valueCollection())
+        for(RoomMoodlightData data : this.moodLightData.valueCollection())
         {
             if(data.isEnabled())
             {
@@ -39,7 +39,7 @@ public class MoodLightDataComposer extends MessageComposer
         }
 
         int i = 1;
-        for(RoomMoodlightData data : moodLightData.valueCollection())
+        for(RoomMoodlightData data : this.moodLightData.valueCollection())
         {
             this.response.appendInt(data.getId()); //Preset ID
             this.response.appendInt(data.isBackgroundOnly() ? 2 : 1); //Background only ? 2 : 1

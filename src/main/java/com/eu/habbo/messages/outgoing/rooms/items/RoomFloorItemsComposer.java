@@ -14,7 +14,6 @@ import java.util.NoSuchElementException;
 
 public class RoomFloorItemsComposer extends MessageComposer
 {
-
     private final TIntObjectMap<String> furniOwnerNames;
     private final THashSet<? extends HabboItem> items;
 
@@ -29,10 +28,10 @@ public class RoomFloorItemsComposer extends MessageComposer
     {
         this.response.init(Outgoing.RoomFloorItemsComposer);
 
-        TIntObjectIterator<String> iterator = furniOwnerNames.iterator();
+        TIntObjectIterator<String> iterator = this.furniOwnerNames.iterator();
 
-        this.response.appendInt(furniOwnerNames.size());
-        for(int i = furniOwnerNames.size(); i-- > 0;)
+        this.response.appendInt(this.furniOwnerNames.size());
+        for(int i = this.furniOwnerNames.size(); i-- > 0;)
         {
             try
             {
@@ -46,9 +45,9 @@ public class RoomFloorItemsComposer extends MessageComposer
             }
         }
 
-        this.response.appendInt(items.size());
+        this.response.appendInt(this.items.size());
 
-        for(HabboItem item : items)
+        for(HabboItem item : this.items)
         {
             item.serializeFloorData(this.response);
             this.response.appendInt(item instanceof InteractionGift ? ((((InteractionGift) item).getColorId() * 1000) + ((InteractionGift) item).getRibbonId()) : (item instanceof InteractionMusicDisc ? ((InteractionMusicDisc) item).getSongId() : 1));

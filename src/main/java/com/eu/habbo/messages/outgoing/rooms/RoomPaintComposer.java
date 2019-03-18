@@ -6,7 +6,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class RoomPaintComposer extends MessageComposer
 {
-
     private final String type;
     private final String value;
 

@@ -9,6 +9,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 public class BaseJumpLoadGameComposer extends MessageComposer
 {
     public static String FASTFOOD_KEY = "";
+
     private final GameClient client;
     private final int game;
 

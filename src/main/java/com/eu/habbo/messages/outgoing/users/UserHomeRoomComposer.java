@@ -6,9 +6,8 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class UserHomeRoomComposer extends MessageComposer
 {
-
-    private int homeRoom;
-    private int newRoom;
+    private final int homeRoom;
+    private final int newRoom;
 
     public UserHomeRoomComposer(int homeRoom, int newRoom)
     {
@@ -20,10 +19,8 @@ public class UserHomeRoomComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.UserHomeRoomComposer);
-
         this.response.appendInt(this.homeRoom);
         this.response.appendInt(this.newRoom);
-
         return this.response;
     }
 }

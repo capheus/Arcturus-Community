@@ -1,5 +1,6 @@
 package com.eu.habbo.messages.outgoing.friends;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboGender;
@@ -49,7 +50,7 @@ public class FriendsComposer extends MessageComposer
                 this.response.appendShort(row.getValue().getRelation());
             }
 
-            if(habbo.hasPermission("acc_staff_chat"))
+            if(this.habbo.hasPermission("acc_staff_chat"))
             {
                 this.response.appendInt(-1);
                 this.response.appendString("Staff Chat");
@@ -70,7 +71,7 @@ public class FriendsComposer extends MessageComposer
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+            Emulator.getLogging().logErrorLine(e);
         }
         return null;
     }

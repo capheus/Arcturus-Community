@@ -40,7 +40,7 @@ public class PointsCommand extends Command
                         }
                     }
 
-                    int amount = 0;
+                    int amount;
 
                     try
                     {
@@ -59,7 +59,7 @@ public class PointsCommand extends Command
                         if(habbo.getHabboInfo().getCurrentRoom() != null)
                             habbo.whisper(Emulator.getTexts().getValue("commands.generic.cmd_points.received").replace("%amount%", amount + "").replace("%type%", Emulator.getTexts().getValue("seasonal.name." + type)), RoomChatMessageBubbles.ALERT);
                         else
-                            habbo.getClient().sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("commands.generic.cmd_points.received").replace("%amount%", amount + "").replace("%type%", Emulator.getTexts().getValue("seasonal.name." + type))));
+                            habbo.alert(Emulator.getTexts().getValue("commands.generic.cmd_points.received").replace("%amount%", amount + "").replace("%type%", Emulator.getTexts().getValue("seasonal.name." + type)));
 
                         habbo.getClient().sendResponse(new UserPointsComposer(habbo.getHabboInfo().getCurrencyAmount(type), amount, type));
 

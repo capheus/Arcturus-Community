@@ -6,7 +6,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class SessionRightsComposer extends MessageComposer
 {
-
     private static final boolean unknownBooleanOne = true; //true
     private static final boolean unknownBooleanTwo = false;
 

@@ -77,9 +77,6 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
                     return;
                 }
 
-                Emulator.getGameEnvironment();
-                Emulator.getGameEnvironment().getItemManager();
-
                 Integer iItemId = Emulator.getGameEnvironment().getCatalogManager().giftWrappers.get(spriteId);
 
                 if (iItemId == null)
@@ -186,7 +183,7 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
                     int totalCredits = 0;
                     int totalPoints = 0;
 
-                    CatalogLimitedConfiguration limitedConfiguration = null;
+                    CatalogLimitedConfiguration limitedConfiguration;
                     int limitedStack = 0;
                     int limitedNumber = 0;
                     if (item.isLimited())
@@ -373,16 +370,16 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
                         }
                     }
 
-                    String giftData = itemsList.size() + "\t";
+                    StringBuilder giftData = new StringBuilder(itemsList.size() + "\t");
 
                     for (HabboItem i : itemsList)
                     {
-                        giftData += i.getId() + "\t";
+                        giftData.append(i.getId()).append("\t");
                     }
 
-                    giftData += color + "\t" + ribbonId + "\t" + (showName ? "1" : "0") + "\t" + (message.replace("\t", "")) + "\t" + this.client.getHabbo().getHabboInfo().getUsername() + "\t" + this.client.getHabbo().getHabboInfo().getLook();
+                    giftData.append(color).append("\t").append(ribbonId).append("\t").append(showName ? "1" : "0").append("\t").append(message.replace("\t", "")).append("\t").append(this.client.getHabbo().getHabboInfo().getUsername()).append("\t").append(this.client.getHabbo().getHabboInfo().getLook());
 
-                    HabboItem gift = Emulator.getGameEnvironment().getItemManager().createGift(username, giftItem, giftData, 0, 0);
+                    HabboItem gift = Emulator.getGameEnvironment().getItemManager().createGift(username, giftItem, giftData.toString(), 0, 0);
 
                     if (gift == null)
                     {
@@ -429,13 +426,14 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
                     }
 
                     this.client.sendResponse(new PurchaseOKComposer(item));
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     Emulator.getLogging().logPacketError(e);
                     this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR));
-                    return;
                 }
-            } finally
+            }
+            finally
             {
                 this.client.getHabbo().getHabboStats().isPurchasingFurniture = false;
             }

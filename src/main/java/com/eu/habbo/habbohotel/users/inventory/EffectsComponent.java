@@ -42,7 +42,7 @@ public class EffectsComponent
 
     public HabboEffect createEffect(int effectId)
     {
-        HabboEffect effect = null;
+        HabboEffect effect;
         synchronized (this.effects)
         {
             if (this.effects.containsKey(effectId))
@@ -150,7 +150,7 @@ public class EffectsComponent
 
             if (this.habbo.getHabboInfo().getCurrentRoom() != null)
             {
-                this.habbo.getHabboInfo().getCurrentRoom().giveEffect(this.habbo, effectId);
+                this.habbo.getHabboInfo().getCurrentRoom().giveEffect(this.habbo, effectId, effect.remainingTime());
             }
 
             this.habbo.getClient().sendResponse(new EffectsListEffectEnableComposer(effect));
@@ -213,6 +213,11 @@ public class EffectsComponent
             }
 
             return this.total > 0;
+        }
+
+        public int remainingTime()
+        {
+            return Emulator.getIntUnixTimestamp() - this.activationTimestamp + this.duration;
         }
 
         public void insert()

@@ -9,7 +9,7 @@ import java.util.List;
 
 public class RoomCategoriesComposer extends MessageComposer
 {
-    private List<RoomCategory> categories;
+    private final List<RoomCategory> categories;
 
     public RoomCategoriesComposer(List<RoomCategory> categories)
     {

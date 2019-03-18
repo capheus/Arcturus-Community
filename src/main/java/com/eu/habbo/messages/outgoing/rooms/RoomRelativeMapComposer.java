@@ -8,7 +8,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class RoomRelativeMapComposer extends MessageComposer
 {
-
     private final Room room;
 
     public RoomRelativeMapComposer(Room room)

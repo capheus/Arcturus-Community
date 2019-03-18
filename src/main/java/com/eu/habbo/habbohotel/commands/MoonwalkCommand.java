@@ -2,7 +2,6 @@ package com.eu.habbo.habbohotel.commands;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserEffectComposer;
 
 public class MoonwalkCommand extends Command
 {
@@ -16,16 +15,11 @@ public class MoonwalkCommand extends Command
     {
         if(gameClient.getHabbo().getHabboInfo().getCurrentRoom() != null && gameClient.getHabbo().getHabboStats().hasActiveClub())
         {
-            if (gameClient.getHabbo().getRoomUnit().getEffectId() != 136)
-            {
-                gameClient.getHabbo().getRoomUnit().setEffectId(136);
-                gameClient.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserEffectComposer(gameClient.getHabbo().getRoomUnit()).compose());
-            }
-            else
-            {
-                gameClient.getHabbo().getRoomUnit().setEffectId(0);
-                gameClient.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserEffectComposer(gameClient.getHabbo().getRoomUnit()).compose());
-            }
+            int effect = 136;
+            if (gameClient.getHabbo().getRoomUnit().getEffectId() == 136)
+                effect = 0;
+
+            gameClient.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(gameClient.getHabbo(), effect, -1);
 
             return true;
         }

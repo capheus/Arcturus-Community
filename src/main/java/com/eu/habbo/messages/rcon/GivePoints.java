@@ -45,7 +45,7 @@ public class GivePoints extends RCONMessage<GivePoints.JSONGivePoints>
         }
     }
 
-    public static class JSONGivePoints
+    static class JSONGivePoints
     {
 
         public int user_id;

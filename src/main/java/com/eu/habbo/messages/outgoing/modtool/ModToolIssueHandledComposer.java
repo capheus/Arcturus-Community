@@ -10,16 +10,18 @@ public class ModToolIssueHandledComposer extends MessageComposer
     public static final int USELESS = 1;
     public static final int ABUSIVE = 2;
 
-    private int code = 0;
-    private String message = "";
+    private final int code;
+    private final String message;
 
     public ModToolIssueHandledComposer(int code)
     {
         this.code = code;
+        this.message = "";
     }
 
     public ModToolIssueHandledComposer(String message)
     {
+        this.code = 0;
         this.message = message;
     }
 

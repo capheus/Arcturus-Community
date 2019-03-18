@@ -17,7 +17,7 @@ public class EnableCommand extends Command
     {
         if(params.length >= 2)
         {
-            int effectId = 0;
+            int effectId;
             try
             {
                 effectId = Integer.parseInt(params[1]);
@@ -48,13 +48,13 @@ public class EnableCommand extends Command
                                     return true;
                                 }
 
-                                target.getHabboInfo().getCurrentRoom().giveEffect(target, effectId);
+                                target.getHabboInfo().getCurrentRoom().giveEffect(target, effectId, -1);
                             }
                         }
                     }
                     catch (Exception e)
                     {
-                        e.printStackTrace();
+                        Emulator.getLogging().logErrorLine(e);
                     }
                 }
             }

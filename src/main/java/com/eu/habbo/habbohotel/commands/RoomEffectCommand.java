@@ -2,9 +2,9 @@ package com.eu.habbo.habbohotel.commands;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
+import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserEffectComposer;
 
 public class RoomEffectCommand extends Command
 {
@@ -28,10 +28,10 @@ public class RoomEffectCommand extends Command
 
             if(effectId >= 0)
             {
-                for (Habbo habbo : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getHabbos())
+                Room room = gameClient.getHabbo().getHabboInfo().getCurrentRoom();
+                for (Habbo habbo : room.getHabbos())
                 {
-                    habbo.getRoomUnit().setEffectId(effectId);
-                    habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserEffectComposer(habbo.getRoomUnit()).compose());
+                    room.giveEffect(habbo, effectId, -1);
                 }
 
                 return true;

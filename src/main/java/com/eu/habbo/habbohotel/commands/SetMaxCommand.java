@@ -16,7 +16,7 @@ public class SetMaxCommand extends Command
     {
         if (params.length >= 2)
         {
-            int max = 0;
+            int max;
             try
             {
                 max = Integer.valueOf(params[1]);

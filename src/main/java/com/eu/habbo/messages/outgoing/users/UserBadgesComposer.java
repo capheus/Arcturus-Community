@@ -23,7 +23,6 @@ public class UserBadgesComposer extends MessageComposer
     {
         this.response.init(Outgoing.UserBadgesComposer);
         this.response.appendInt(this.habbo);
-
         synchronized (this.badges)
         {
             this.response.appendInt(this.badges.size());
@@ -33,7 +32,6 @@ public class UserBadgesComposer extends MessageComposer
                 this.response.appendString(badge.getCode());
             }
         }
-
         return this.response;
     }
 }

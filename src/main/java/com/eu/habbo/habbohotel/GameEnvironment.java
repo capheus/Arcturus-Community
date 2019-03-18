@@ -48,7 +48,7 @@ public class GameEnvironment
     public PixelScheduler pixelScheduler;
     public PointsScheduler pointsScheduler;
 
-    public void load()
+    public void load() throws Exception
     {
         Emulator.getLogging().logStart("GameEnvironment -> Loading...");
 

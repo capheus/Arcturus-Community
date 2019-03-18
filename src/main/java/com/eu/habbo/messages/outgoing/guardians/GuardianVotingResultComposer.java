@@ -31,7 +31,7 @@ public class GuardianVotingResultComposer extends MessageComposer
 
         for(Map.Entry<Habbo, GuardianVote> set : this.ticket.getVotes().entrySet())
         {
-            if(set.getValue().equals(vote))
+            if(set.getValue().equals(this.vote))
                 continue;
 
             this.response.appendInt(set.getValue().type.getType());

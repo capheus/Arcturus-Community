@@ -21,7 +21,7 @@ public class WiredEffectDataComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.WiredEffectDataComposer);
-        this.effect.serializeWiredData(this.response, room);
+        this.effect.serializeWiredData(this.response, this.room);
         this.effect.needsUpdate(true);
         return this.response;
     }

@@ -36,36 +36,36 @@ public class PetManager
     public final THashMap<Integer, PetAction> petActions = new THashMap<Integer, PetAction>()
     {
         {
-            put(0, new ActionFree());
-            put(1, new ActionSit());
-            put(2, new ActionDown());
-            put(3, new ActionHere());
-            put(4, new ActionBeg());
-            put(5, new ActionPlayDead());
-            put(6, new ActionStay());
-            put(7, new ActionFollow());
-            put(8, new ActionStand());
-            put(9, new ActionJump());
-            put(10, new ActionSpeak());
-            put(11, new ActionPlay());
-            put(12, new ActionSilent());
-            put(13, new ActionNest());
-            put(14, new ActionDrink());
-            put(15, new ActionFollowLeft());
-            put(16, new ActionFollowRight());
-            put(17, new ActionPlayFootball());
-            put(24, new ActionMoveForward());
-            put(25, new ActionTurnLeft());
-            put(26, new ActionTurnRight());
-            put(27, new ActionRelax());
-            put(28, new ActionCroak());
-            put(29, new ActionDip());
-            put(30, new ActionWave());
-            put(35, new ActionWings());
-            put(36, new ActionBreatheFire());
-            put(38, new ActionTorch());
-            put(43, new ActionEat());
-            put(46, new ActionBreed());
+            this.put(0, new ActionFree());
+            this.put(1, new ActionSit());
+            this.put(2, new ActionDown());
+            this.put(3, new ActionHere());
+            this.put(4, new ActionBeg());
+            this.put(5, new ActionPlayDead());
+            this.put(6, new ActionStay());
+            this.put(7, new ActionFollow());
+            this.put(8, new ActionStand());
+            this.put(9, new ActionJump());
+            this.put(10, new ActionSpeak());
+            this.put(11, new ActionPlay());
+            this.put(12, new ActionSilent());
+            this.put(13, new ActionNest());
+            this.put(14, new ActionDrink());
+            this.put(15, new ActionFollowLeft());
+            this.put(16, new ActionFollowRight());
+            this.put(17, new ActionPlayFootball());
+            this.put(24, new ActionMoveForward());
+            this.put(25, new ActionTurnLeft());
+            this.put(26, new ActionTurnRight());
+            this.put(27, new ActionRelax());
+            this.put(28, new ActionCroak());
+            this.put(29, new ActionDip());
+            this.put(30, new ActionWave());
+            this.put(35, new ActionWings());
+            this.put(36, new ActionBreatheFire());
+            this.put(38, new ActionTorch());
+            this.put(43, new ActionEat());
+            this.put(46, new ActionBreed());
 
         }
     };
@@ -318,7 +318,7 @@ public class PetManager
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            Emulator.getLogging().logErrorLine(e);
         }
 
         return null;
@@ -340,10 +340,13 @@ public class PetManager
             @Override
             public boolean execute(int i, ArrayList<PetBreedingReward> petBreedingRewards)
             {
-                if (petBreedingRewards.contains(pet.getRace()))
+                for (PetBreedingReward reward : petBreedingRewards)
                 {
-                    rarityLevel[0] = i;
-                    return false;
+                    if (reward.breed == pet.getRace())
+                    {
+                        rarityLevel[0] = i;
+                        return false;
+                    }
                 }
 
                 return true;
@@ -450,7 +453,7 @@ public class PetManager
             if (type == 15)
                 pet = new HorsePet(type, Integer.valueOf(race), color, name, client.getHabbo().getHabboInfo().getId());
             else if (type == 16)
-                pet = createMonsterplant(null, client.getHabbo(), false, null);
+                pet = this.createMonsterplant(null, client.getHabbo(), false, null, 0);
             else
                 pet = new Pet(type,
                         Integer.valueOf(race),
@@ -483,12 +486,12 @@ public class PetManager
         return null;
     }
 
-    public MonsterplantPet createMonsterplant(Room room, Habbo habbo, boolean rare, RoomTile t)
+    public MonsterplantPet createMonsterplant(Room room, Habbo habbo, boolean rare, RoomTile t, int minimumRarity)
     {
         MonsterplantPet pet = new MonsterplantPet(
                 habbo.getHabboInfo().getId(),   //Owner ID
-                randomBody(rare ? 4 : 0),
-                randomColor(rare ? 4 : 0),
+                randomBody(rare ? 4 : minimumRarity),
+                randomColor(rare ? 4 : minimumRarity),
                 Emulator.getRandom().nextInt(12) + 1,
                 Emulator.getRandom().nextInt(11),
                 Emulator.getRandom().nextInt(12) + 1,
@@ -510,11 +513,11 @@ public class PetManager
     {
         Pet pet = new GnomePet(26, 0, "FFFFFF", name, habbo.getHabboInfo().getId(),
                 "5 " +
-                "0 -1 " + randomGnomeSkinColor() + " " +
-                "1 10" + (1 + Emulator.getRandom().nextInt(2)) + " " + randomGnomeColor() + " " +
-                "2 201 " + randomGnomeColor() + " " +
-                "3 30" + (1 + Emulator.getRandom().nextInt(2)) + " " + randomGnomeColor() + " " +
-                "4 40" + Emulator.getRandom().nextInt(2) + " " + randomGnomeColor()
+                "0 -1 " + this.randomGnomeSkinColor() + " " +
+                "1 10" + (1 + Emulator.getRandom().nextInt(2)) + " " + this.randomGnomeColor() + " " +
+                "2 201 " + this.randomGnomeColor() + " " +
+                "3 30" + (1 + Emulator.getRandom().nextInt(2)) + " " + this.randomGnomeColor() + " " +
+                "4 40" + Emulator.getRandom().nextInt(2) + " " + this.randomGnomeColor()
                 );
 
         pet.setUserId(habbo.getHabboInfo().getId());
@@ -573,30 +576,14 @@ public class PetManager
 
     public static int randomBody(int minimumRarity)
     {
-        //int rarity = MonsterplantPet.indexedBody.get(random(0, MonsterplantPet.bodyRarity.size(), 2.0)).getValue();
-
-        int rarity = -1;
-        Integer bodyType = 0;
-        while (rarity < minimumRarity)
-        {
-            bodyType = (Integer) MonsterplantPet.bodyRarity.keySet().toArray()[random(0, MonsterplantPet.bodyRarity.size(), 2.0)];
-            rarity = MonsterplantPet.bodyRarity.get(bodyType).getValue();
-        }
-
-        return bodyType;
+        int randomRarity = random(Math.max(minimumRarity - 1, 0), MonsterplantPet.bodyRarity.size(), 2.0);
+        return MonsterplantPet.bodyRarity.get(MonsterplantPet.bodyRarity.keySet().toArray()[randomRarity]).getValue();
     }
 
     public static int randomColor(int minimumRarity)
     {
-        int rarity = -1;
-        Integer colorType = 0;
-        while (rarity < minimumRarity)
-        {
-            colorType = (Integer) MonsterplantPet.colorRarity.keySet().toArray()[random(0, MonsterplantPet.colorRarity.size(), 2.0)];
-            rarity = MonsterplantPet.colorRarity.get(colorType).getValue();
-        }
-
-        return colorType;
+        int randomRarity = random(Math.max(minimumRarity - 1, 0), MonsterplantPet.colorRarity.size(), 2.0);
+        return MonsterplantPet.colorRarity.get(MonsterplantPet.colorRarity.keySet().toArray()[randomRarity]).getValue();
     }
 
     public static int random(int low, int high, double bias)

@@ -6,8 +6,8 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class PetBreedingCompleted extends MessageComposer
 {
-    public final int type;
-    public final int race;
+    private final int type;
+    private final int race;
 
     public PetBreedingCompleted(int type, int race)
     {

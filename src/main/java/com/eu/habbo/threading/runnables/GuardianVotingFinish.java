@@ -5,7 +5,7 @@ import com.eu.habbo.habbohotel.guides.GuardianTicket;
 public class GuardianVotingFinish implements Runnable
 {
     private final GuardianTicket ticket;
-    private int checkSum = 0;
+    private int checkSum;
 
     public GuardianVotingFinish(GuardianTicket ticket)
     {
@@ -16,7 +16,7 @@ public class GuardianVotingFinish implements Runnable
     @Override
     public void run()
     {
-        if(!this.ticket.isFinished())
+        if(this.ticket.inProgress())
         {
             if(this.ticket.getCheckSum() == this.checkSum)
             {

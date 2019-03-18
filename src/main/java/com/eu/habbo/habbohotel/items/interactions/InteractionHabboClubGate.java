@@ -69,12 +69,16 @@ public class InteractionHabboClubGate extends InteractionGate
     @Override
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
-        if(this.canWalkOn(client.getHabbo().getRoomUnit(), room, null))
+        if (client != null)
         {
-            super.onClick(client, room, objects);
-        }
-        else
-        {
+            if (this.canWalkOn(client.getHabbo().getRoomUnit(), room, null))
+            {
+                super.onClick(client, room, objects);
+            }
+            else
+            {
+                client.sendResponse(new CustomNotificationComposer(CustomNotificationComposer.GATE_NO_HC));
+            }
         }
     }
     @Override

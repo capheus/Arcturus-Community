@@ -25,7 +25,6 @@ public class ModToolUserRoomVisitsComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.ModToolUserRoomVisitsComposer);
-
         this.response.appendInt(this.habbo.getHabboInfo().getId());
         this.response.appendString(this.habbo.getHabboInfo().getUsername());
         this.response.appendInt(this.roomVisits.size());
@@ -39,7 +38,6 @@ public class ModToolUserRoomVisitsComposer extends MessageComposer
             this.response.appendInt(cal.get(Calendar.HOUR));
             this.response.appendInt(cal.get(Calendar.MINUTE));
         }
-
         return this.response;
     }
 }

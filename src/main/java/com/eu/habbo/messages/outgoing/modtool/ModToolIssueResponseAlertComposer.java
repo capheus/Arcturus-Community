@@ -6,7 +6,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class ModToolIssueResponseAlertComposer extends MessageComposer
 {
-    private String message;
+    private final String message;
 
     public ModToolIssueResponseAlertComposer(String message)
     {

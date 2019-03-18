@@ -32,7 +32,7 @@ public class InteractionTeleportTile extends InteractionTeleport
     {
         if (roomUnit != null)
         {
-            if (roomUnit.getGoal().is(this.getX(), this.getY()) && canWalkOn(roomUnit, room, objects))
+            if (roomUnit.getGoal().is(this.getX(), this.getY()) && this.canWalkOn(roomUnit, room, objects))
             {
                 Habbo habbo = room.getHabbo(roomUnit);
 

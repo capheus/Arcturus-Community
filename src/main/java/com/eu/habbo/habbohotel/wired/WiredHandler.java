@@ -9,6 +9,7 @@ import com.eu.habbo.habbohotel.items.interactions.InteractionWiredExtra;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
 import com.eu.habbo.habbohotel.items.interactions.wired.WiredTriggerReset;
 import com.eu.habbo.habbohotel.items.interactions.wired.effects.WiredEffectGiveReward;
+import com.eu.habbo.habbohotel.items.interactions.wired.effects.WiredEffectTriggerStacks;
 import com.eu.habbo.habbohotel.items.interactions.wired.extra.WiredExtraRandom;
 import com.eu.habbo.habbohotel.items.interactions.wired.extra.WiredExtraUnseen;
 import com.eu.habbo.habbohotel.rooms.Room;
@@ -18,7 +19,7 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.catalog.PurchaseOKComposer;
-import com.eu.habbo.messages.outgoing.generic.alerts.WiredRewardAlertComposer;
+import com.eu.habbo.messages.outgoing.wired.WiredRewardAlertComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.users.AddUserBadgeComposer;
@@ -44,6 +45,8 @@ public class WiredHandler
 
     public static boolean handle(WiredTriggerType triggerType, RoomUnit roomUnit, Room room, Object[] stuff)
     {
+        if (triggerType == WiredTriggerType.CUSTOM) return false;
+
         boolean talked = false;
 
         if (!Emulator.isReady)
@@ -76,6 +79,46 @@ public class WiredHandler
                 if(triggerType.equals(WiredTriggerType.SAY_SOMETHING))
                     talked = true;
 
+                triggeredTiles.add(tile);
+            }
+        }
+
+        return talked;
+    }
+
+    public static boolean handleCustomTrigger(Class<? extends InteractionWiredTrigger> triggerType, RoomUnit roomUnit, Room room, Object[] stuff)
+    {
+        boolean talked = false;
+
+        if (!Emulator.isReady)
+            return false;
+
+        if (room == null)
+            return false;
+
+        if(!room.isLoaded())
+            return false;
+
+        if(room.getRoomSpecialTypes() == null)
+            return false;
+
+        THashSet<InteractionWiredTrigger> triggers =  room.getRoomSpecialTypes().getTriggers(WiredTriggerType.CUSTOM);
+
+        if(triggers == null || triggers.isEmpty())
+            return false;
+
+        List<RoomTile> triggeredTiles = new ArrayList<>();
+        for(InteractionWiredTrigger trigger : triggers)
+        {
+            if (trigger.getClass() != triggerType) continue;
+
+            RoomTile tile = room.getLayout().getTile(trigger.getX(), trigger.getY());
+
+            if (triggeredTiles.contains(tile))
+                continue;
+
+            if(handle(trigger, roomUnit, room, stuff))
+            {
                 triggeredTiles.add(tile);
             }
         }
@@ -188,7 +231,7 @@ public class WiredHandler
                         {
                             try
                             {
-                                effect.execute(roomUnit, room, stuff);
+                                if (!effect.execute(roomUnit, room, stuff)) return;
                             }
                             catch (Exception e)
                             {
@@ -214,12 +257,13 @@ public class WiredHandler
             {
                 THashSet<HabboItem> items = room.getItemsAt(tile);
 
-                long millis = System.currentTimeMillis();
+                long millis = room.getCycleTimestamp();
                 for(final HabboItem item : items)
                 {
-                    if(item instanceof InteractionWiredEffect)
+                    if(item instanceof InteractionWiredEffect && !(item instanceof WiredEffectTriggerStacks))
                     {
                         triggerEffect((InteractionWiredEffect) item, roomUnit, room, stuff, millis);
+                        ((InteractionWiredEffect) item).setCooldown(millis);
                     }
                 }
             }

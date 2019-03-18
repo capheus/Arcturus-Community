@@ -22,9 +22,9 @@ public class RentableSpaceInfoComposer extends MessageComposer
     public static final int CANT_RENT_GENERIC = 400;
     //:test 194 b:1 i:101 i:1 s:Admin i:10 i:10
 
-    private Habbo habbo;
-    private HabboItem item;
-    private int errorCode;
+    private final Habbo habbo;
+    private final HabboItem item;
+    private final int errorCode;
 
     public RentableSpaceInfoComposer(Habbo habbo, HabboItem item)
     {

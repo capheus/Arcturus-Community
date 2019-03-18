@@ -6,7 +6,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class PickMonthlyClubGiftNotificationComposer extends MessageComposer
 {
-    private int count;
+    private final int count;
 
     public PickMonthlyClubGiftNotificationComposer(int count)
     {

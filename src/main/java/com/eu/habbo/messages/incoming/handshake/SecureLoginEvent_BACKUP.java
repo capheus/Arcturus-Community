@@ -7,12 +7,12 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.friends.FriendsComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
+import com.eu.habbo.messages.outgoing.habboway.nux.NewUserIdentityComposer;
 import com.eu.habbo.messages.outgoing.handshake.DebugConsoleComposer;
 import com.eu.habbo.messages.outgoing.handshake.SecureLoginOKComposer;
 import com.eu.habbo.messages.outgoing.handshake.SessionRightsComposer;
 import com.eu.habbo.messages.outgoing.modtool.ModToolComposer;
 import com.eu.habbo.messages.outgoing.navigator.*;
-import com.eu.habbo.messages.outgoing.habboway.nux.NewUserIdentityComposer;
 import com.eu.habbo.messages.outgoing.users.*;
 import com.eu.habbo.plugin.events.users.UserLoginEvent;
 
@@ -53,7 +53,7 @@ public class SecureLoginEvent_BACKUP extends MessageHandler
                 messages.add(new UserHomeRoomComposer(this.client.getHabbo().getHabboInfo().getHomeRoom(), 0).compose());
                 messages.add(new UserPermissionsComposer(this.client.getHabbo()).compose());
                 messages.add(new UserClubComposer(this.client.getHabbo()).compose());
-                messages.add(new DebugConsoleComposer().compose());
+                messages.add(new DebugConsoleComposer(Emulator.debugging).compose());
                 messages.add(new UserAchievementScoreComposer(this.client.getHabbo()).compose());
                 messages.add(new NewUserIdentityComposer(habbo).compose());
                 messages.add(new UserPerksComposer(habbo).compose());

@@ -6,7 +6,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class HotelWillCloseInMinutesComposer extends MessageComposer
 {
-    private int minutes;
+    private final int minutes;
 
     public HotelWillCloseInMinutesComposer(int minutes)
     {

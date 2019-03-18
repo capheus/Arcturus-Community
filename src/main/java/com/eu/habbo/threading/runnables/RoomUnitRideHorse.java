@@ -30,7 +30,7 @@ public class RoomUnitRideHorse implements Runnable
             if(this.goalTile.x == this.pet.getRoomUnit().getX() && this.goalTile.y == this.pet.getRoomUnit().getY())
             {
                 this.habbo.getRoomUnit().setGoalLocation(this.pet.getRoomUnit().getCurrentLocation());
-                this.habbo.getHabboInfo().getCurrentRoom().giveEffect(this.habbo, 77);
+                this.habbo.getHabboInfo().getCurrentRoom().giveEffect(this.habbo, 77, -1);
                 this.habbo.getHabboInfo().setRiding(this.pet);
                 this.pet.setRider(this.habbo);
                 this.pet.setTask(PetTasks.RIDE);

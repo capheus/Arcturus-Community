@@ -30,7 +30,6 @@ public class RoomPickupItemEvent extends MessageHandler
         if (item.getUserId() == this.client.getHabbo().getHabboInfo().getId())
         {
             room.pickUpItem(item, this.client.getHabbo());
-            return;
         }
         else
         {

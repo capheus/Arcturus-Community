@@ -6,8 +6,8 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class HotelWillCloseInMinutesAndBackInComposer extends MessageComposer
 {
-    private int closeInMinutes;
-    private int reopenInMinutes;
+    private final int closeInMinutes;
+    private final int reopenInMinutes;
 
     public HotelWillCloseInMinutesAndBackInComposer(int closeInMinutes, int reopenInMinutes)
     {

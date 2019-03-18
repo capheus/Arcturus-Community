@@ -10,7 +10,6 @@ public class GiftReceiverNotFoundComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GiftReceiverNotFoundComposer);
-
         return this.response;
     }
 }

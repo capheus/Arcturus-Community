@@ -47,7 +47,7 @@ public class GiveRespect extends RCONMessage<GiveRespect.JSONGiveRespect>
         }
     }
 
-    public static class JSONGiveRespect
+    static class JSONGiveRespect
     {
 
         public int user_id;

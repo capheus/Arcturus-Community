@@ -78,7 +78,7 @@ public class WiredTriggerBotReachedHabbo extends InteractionWiredTrigger
     }
 
     @Override
-    protected String getWiredData()
+    public String getWiredData()
     {
         return this.botName;
     }

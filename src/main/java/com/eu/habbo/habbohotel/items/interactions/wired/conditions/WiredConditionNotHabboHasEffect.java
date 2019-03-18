@@ -30,6 +30,7 @@ public class WiredConditionNotHabboHasEffect extends InteractionWiredCondition
     @Override
     public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
     {
+        if (roomUnit == null) return false;
         return roomUnit.getEffectId() != this.effectId;
     }
 

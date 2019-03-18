@@ -84,7 +84,7 @@ public class WiredEffectGiveDiamonds extends InteractionWiredEffect
 
         try
         {
-            loadFromString(packet.readString());
+            this.loadFromString(packet.readString());
         }
         catch (Exception e)
         {
@@ -118,7 +118,7 @@ public class WiredEffectGiveDiamonds extends InteractionWiredEffect
     }
 
     @Override
-    protected String getWiredData()
+    public String getWiredData()
     {
         return this.getDelay() + "\t" + this.points + (this.pointsType == -1 ? "" : ":" + this.pointsType);
     }
@@ -136,11 +136,10 @@ public class WiredEffectGiveDiamonds extends InteractionWiredEffect
 
             try
             {
-                loadFromString(data[1]);
+                this.loadFromString(data[1]);
             }
             catch (Exception e)
             {
-                e.printStackTrace();
             }
         }
     }

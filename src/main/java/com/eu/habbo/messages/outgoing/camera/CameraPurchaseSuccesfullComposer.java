@@ -10,7 +10,6 @@ public class CameraPurchaseSuccesfullComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.CameraPurchaseSuccesfullComposer);
-
         return this.response;
     }
 }

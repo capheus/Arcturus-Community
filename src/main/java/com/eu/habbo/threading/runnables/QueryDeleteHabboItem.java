@@ -21,7 +21,7 @@ public class QueryDeleteHabboItem implements Runnable
     {
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM items WHERE id = ?"))
         {
-            statement.setInt(1, item.getId());
+            statement.setInt(1, this.item.getId());
             statement.execute();
         }
         catch (SQLException e)

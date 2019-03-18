@@ -24,18 +24,18 @@ public class TransformCommand extends Command
     {
         if (params.length == 1)
         {
-            String petNames = "";
-            petNames += (Emulator.getTexts().getValue("commands.generic.cmd_transform.title"));
-            petNames += "\r------------------------------------------------------------------------------\r";
+            StringBuilder petNames = new StringBuilder();
+            petNames.append(Emulator.getTexts().getValue("commands.generic.cmd_transform.title"));
+            petNames.append("\r------------------------------------------------------------------------------\r");
             ArrayList<PetData> petData = new ArrayList<>(Emulator.getGameEnvironment().getPetManager().getPetData());
             Collections.sort(petData);
             String line = Emulator.getTexts().getValue("commands.generic.cmd_transform.line");
             for (PetData p : petData)
             {
-                petNames += (line.replace("%id%", p.getType() + "").replace("%name%", p.getName())) + "\r";
+                petNames.append(line.replace("%id%", p.getType() + "").replace("%name%", p.getName())).append("\r");
             }
 
-            gameClient.sendResponse(new MessagesForYouComposer(new String[]{petNames}));
+            gameClient.sendResponse(new MessagesForYouComposer(new String[]{petNames.toString()}));
             return true;
         }
         else

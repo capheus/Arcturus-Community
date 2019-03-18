@@ -11,11 +11,11 @@ public class GuildForumUpdateSettingsEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        int guildId = packet.readInt();
-        int canRead = packet.readInt();
-        int postMessages = packet.readInt();
-        int postThreads = packet.readInt();
-        int modForum = packet.readInt();
+        int guildId = this.packet.readInt();
+        int canRead = this.packet.readInt();
+        int postMessages = this.packet.readInt();
+        int postThreads = this.packet.readInt();
+        int modForum = this.packet.readInt();
 
         Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(guildId);
 

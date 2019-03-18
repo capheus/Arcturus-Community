@@ -15,14 +15,14 @@ public class WordQuizCommand extends Command
     {
         if (!gameClient.getHabbo().getHabboInfo().getCurrentRoom().hasActiveWordQuiz())
         {
-            String question = "";
+            StringBuilder question = new StringBuilder();
             int duration = 60;
 
             if (params.length > 2)
             {
                 for (int i = 1; i < params.length - 1; i++)
                 {
-                    question += " " + params[i];
+                    question.append(" ").append(params[i]);
                 }
 
                 try
@@ -31,15 +31,15 @@ public class WordQuizCommand extends Command
                 }
                 catch (Exception e)
                 {
-                    question += " " + params[params.length -1];
+                    question.append(" ").append(params[params.length - 1]);
                 }
             }
             else
             {
-                question = params[1];
+                question = new StringBuilder(params[1]);
             }
 
-            gameClient.getHabbo().getHabboInfo().getCurrentRoom().startWordQuiz(question, duration * 1000);
+            gameClient.getHabbo().getHabboInfo().getCurrentRoom().startWordQuiz(question.toString(), duration * 1000);
         }
         return true;
     }

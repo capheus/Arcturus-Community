@@ -163,29 +163,26 @@ public class InteractionWater extends InteractionDefault
 
         if (pet != null)
         {
-            if(pet instanceof Pet)
-            {
-                pet.getRoomUnit().setStatus(RoomUnitStatus.DIP, "0");
-            }
+            pet.getRoomUnit().setStatus(RoomUnitStatus.DIP, "0");
         }
     }
 
     private void recalculate(Room room)
     {
-        THashMap<Integer, TIntArrayList> tiles = new THashMap<>();
+        THashMap<Short, TIntArrayList> tiles = new THashMap<>();
 
         for (HabboItem item : room.getRoomSpecialTypes().getItemsOfType(InteractionWater.class))
         {
-            for (int i = 0; i < item.getBaseItem().getLength(); i++)
+            for (short i = 0; i < item.getBaseItem().getLength(); i++)
             {
-                for (int j = 0; j < item.getBaseItem().getWidth(); j++)
+                for (short j = 0; j < item.getBaseItem().getWidth(); j++)
                 {
-                    if (!tiles.containsKey(item.getX() + i))
+                    if (!tiles.containsKey((short)(item.getX() + i)))
                     {
-                        tiles.put(item.getX() + i, new TIntArrayList());
+                        tiles.put((short)(item.getX() + i), new TIntArrayList());
                     }
 
-                    tiles.get(item.getX() + i).add(item.getY() + j);
+                    tiles.get((short)(item.getX() + i)).add(item.getY() + j);
                 }
             }
         }

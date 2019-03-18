@@ -7,8 +7,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class UserWardrobeComposer extends MessageComposer
 {
-
-    private WardrobeComponent wardrobeComponent;
+    private final WardrobeComponent wardrobeComponent;
 
     public UserWardrobeComposer(WardrobeComponent wardrobeComponent)
     {

@@ -33,7 +33,7 @@ public class RoomUnitTeleport implements Runnable
     @Override
     public void run()
     {
-        RoomTile t = this.room.getLayout().getTile((short) x, (short) y);
+        RoomTile t = this.room.getLayout().getTile((short) this.x, (short) this.y);
 
         HabboItem topItem = this.room.getTopItemAt(this.roomUnit.getCurrentLocation().x, this.roomUnit.getCurrentLocation().y);
         if (topItem != null)
@@ -54,14 +54,14 @@ public class RoomUnitTeleport implements Runnable
         this.roomUnit.setPreviousLocationZ(this.z);
         this.roomUnit.removeStatus(RoomUnitStatus.MOVE);
         this.room.sendComposer(new RoomUnitOnRollerComposer(this.roomUnit, null, t, this.room).compose());
-        Emulator.getThreading().run(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                room.giveEffect(roomUnit, newEffect);
-            }
-        }, 1000);
+
+
+
+
+
+
+
+
         this.room.updateHabbosAt(t.x, t.y);
     }
 }

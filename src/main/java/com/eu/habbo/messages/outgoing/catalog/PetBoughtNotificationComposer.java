@@ -7,8 +7,8 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class PetBoughtNotificationComposer extends MessageComposer
 {
-    private Pet pet;
-    private boolean gift;
+    private final Pet pet;
+    private final boolean gift;
 
     public PetBoughtNotificationComposer(Pet pet, boolean gift)
     {

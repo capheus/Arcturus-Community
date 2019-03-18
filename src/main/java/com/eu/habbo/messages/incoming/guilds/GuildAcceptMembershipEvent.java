@@ -32,7 +32,6 @@ public class GuildAcceptMembershipEvent extends MessageHandler
             if (habbo.getHabboStats().hasGuild(guild.getId()))
             {
                 this.client.sendResponse(new GuildAcceptMemberErrorComposer(guild.getId(), GuildAcceptMemberErrorComposer.ALREADY_ACCEPTED));
-                return;
             }
             else 
             {
@@ -41,7 +40,6 @@ public class GuildAcceptMembershipEvent extends MessageHandler
                 if(member == null || member.getRank().type != GuildRank.REQUESTED.type) 
                 {
                     this.client.sendResponse(new GuildAcceptMemberErrorComposer(guild.getId(), GuildAcceptMemberErrorComposer.NO_LONGER_MEMBER));
-                    return;
                 }
                 else 
                 {

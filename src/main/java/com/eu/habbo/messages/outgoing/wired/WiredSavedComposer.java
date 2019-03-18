@@ -10,7 +10,6 @@ public class WiredSavedComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.WiredSavedComposer);
-
         return this.response;
     }
 }

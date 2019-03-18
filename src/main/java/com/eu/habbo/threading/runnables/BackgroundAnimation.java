@@ -20,9 +20,9 @@ public class BackgroundAnimation implements Runnable
     @Override
     public void run()
     {
-        if(room.isLoaded() && !room.isPreLoaded())
+        if(this.room.isLoaded() && !this.room.isPreLoaded())
         {
-            this.toner.setExtradata("1:" + state + ":126:126");
+            this.toner.setExtradata("1:" + this.state + ":126:126");
             this.state = (this.state + 1) % 256;
             this.room.updateItem(this.toner);
 

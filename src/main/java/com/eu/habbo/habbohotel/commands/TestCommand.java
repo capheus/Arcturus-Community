@@ -91,7 +91,7 @@ public class TestCommand extends Command
 
         if (params[1].equals("ach"))
         {
-            AchievementManager.progressAchievement(gameClient.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("Jogger"), 1);
+            AchievementManager.progressAchievement(gameClient.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("Jogger"), 1000);
             return true;
         }
 
@@ -125,28 +125,26 @@ public class TestCommand extends Command
 
         if(params[1].equals("units"))
         {
-            String s = "";
+            StringBuilder s = new StringBuilder();
 
             for(Habbo habbo : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getHabbos())
             {
-                s += "Habbo ID: " + habbo.getHabboInfo().getId() + ", RoomUnit ID: " + habbo.getRoomUnit().getId() + "\r";
+                s.append("Habbo ID: ").append(habbo.getHabboInfo().getId()).append(", RoomUnit ID: ").append(habbo.getRoomUnit().getId()).append("\r");
             }
 
             for (Pet pet : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentPets().valueCollection())
             {
-                s += "Pet ID: " + pet.getId() + ", RoomUnit ID: " + pet.getRoomUnit().getId() + ", Name: " + pet.getName();
+                s.append("Pet ID: ").append(pet.getId()).append(", RoomUnit ID: ").append(pet.getRoomUnit().getId()).append(", Name: ").append(pet.getName());
 
                 if (pet instanceof MonsterplantPet)
                 {
-                    s += ", B:" + (((MonsterplantPet) pet).canBreed() ? "Y" : "N") +
-                            ", PB: " + (((MonsterplantPet)pet).isPubliclyBreedable() ? "Y" : "N" ) +
-                            ", D: " + (((MonsterplantPet) pet).isDead() ? "Y" : "N");
+                    s.append(", B:").append(((MonsterplantPet) pet).canBreed() ? "Y" : "N").append(", PB: ").append(((MonsterplantPet) pet).isPubliclyBreedable() ? "Y" : "N").append(", D: ").append(((MonsterplantPet) pet).isDead() ? "Y" : "N");
                 }
 
-                s += "\r";
+                s.append("\r");
             }
 
-            gameClient.sendResponse(new MessagesForYouComposer(new String[]{s}));
+            gameClient.sendResponse(new MessagesForYouComposer(new String[]{s.toString()}));
             return true;
         }
 
@@ -168,14 +166,14 @@ public class TestCommand extends Command
 
         if (params[1].equalsIgnoreCase("bots"))
         {
-            String message = "";
+            StringBuilder message = new StringBuilder();
 
             for (Bot bot : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentBots().valueCollection())
             {
-                message += "Name: " + bot.getName() + ", ID: " + bot.getId() + ", RID: " + bot.getRoomUnit().getId() + ", Rot: " + bot.getRoomUnit().getBodyRotation() + "\r";
+                message.append("Name: ").append(bot.getName()).append(", ID: ").append(bot.getId()).append(", RID: ").append(bot.getRoomUnit().getId()).append(", Rot: ").append(bot.getRoomUnit().getBodyRotation()).append("\r");
             }
 
-            gameClient.sendResponse(new MessagesForYouComposer(new String[]{message}));
+            gameClient.sendResponse(new MessagesForYouComposer(new String[]{message.toString()}));
             return true;
         }
 
@@ -220,9 +218,9 @@ public class TestCommand extends Command
         {
             Pet pet = gameClient.getHabbo().getHabboInfo().getCurrentRoom().getPet(Integer.valueOf(params[2]));
 
-            if(pet instanceof Pet)
+            if(pet != null)
             {
-                String a = "";
+                String a;
                 String b = "";
                 String c = "";
                 if(params[3] != null)
@@ -267,14 +265,14 @@ public class TestCommand extends Command
                 results.put(random, results.get(random) + 1);
             }
 
-            String result = "Results : " + params[2] + "<br/><br/>";
+            StringBuilder result = new StringBuilder("Results : " + params[2] + "<br/><br/>");
 
             for (Map.Entry<Integer, Integer> set : results.entrySet())
             {
-                result += set.getKey() + " -> " + set.getValue() + "<br/>";
+                result.append(set.getKey()).append(" -> ").append(set.getValue()).append("<br/>");
             }
 
-            gameClient.sendResponse(new GenericAlertComposer(result));
+            gameClient.sendResponse(new GenericAlertComposer(result.toString()));
         }
         else if (params[1].equalsIgnoreCase("threads"))
         {
@@ -403,7 +401,7 @@ public class TestCommand extends Command
         }
         else if (params[1].equals("datb"))
         {
-                    long millis = 1;
+                    long millis;
                     long diff = 1;
                     try(Connection conn = Emulator.getDatabase().getDataSource().getConnection())
                     {

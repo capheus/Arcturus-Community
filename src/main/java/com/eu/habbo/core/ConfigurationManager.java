@@ -21,40 +21,52 @@ public class ConfigurationManager
 
 
     private final Properties properties;
+
+    private final String configurationPath;
     
-    public ConfigurationManager(String path) throws Exception
+    public ConfigurationManager(String configurationPath) throws Exception
     {
         this.properties = new Properties();
-        
+        this.configurationPath = configurationPath;
         this.reload();
     }
 
 
-    public void reload() throws Exception
+    public void reload()
     {
         this.isLoading = true;
         this.properties.clear();
 
         InputStream input = null;
 
-        try {
-            File f = new File("config.ini");
+        try
+        {
+            File f = new File(this.configurationPath);
             input = new FileInputStream(f);
             this.properties.load(input);
 
-        } catch (IOException ex) {
-            Emulator.getLogging().logErrorLine("[CRITICAL] FAILED TO LOAD CONFIG.INI FILE!");
-        } finally {
-            if (input != null) {
-                try {
+        }
+        catch (IOException ex)
+        {
+            Emulator.getLogging().logErrorLine("[CRITICAL] FAILED TO LOAD CONFIG FILE! (" + this.configurationPath + ")");
+            ex.printStackTrace();
+        }
+        finally
+        {
+            if (input != null)
+            {
+                try
+                {
                     input.close();
-                } catch (IOException e) {
+                }
+                catch (IOException e)
+                {
                     e.printStackTrace();
                 }
             }
         }
 
-        if(loaded)
+        if(this.loaded)
         {
             this.loadFromDatabase();
         }
@@ -115,7 +127,7 @@ public class ConfigurationManager
 
     public String getValue(String key)
     {
-        return getValue(key, "");
+        return this.getValue(key, "");
     }
 
 
@@ -133,7 +145,7 @@ public class ConfigurationManager
 
     public boolean getBoolean(String key)
     {
-        return getBoolean(key, false);
+        return this.getBoolean(key, false);
     }
 
 
@@ -144,11 +156,11 @@ public class ConfigurationManager
 
         try
         {
-            return (getValue(key, "0").equals("1")) || (getValue(key, "false").equals("true"));
+            return (this.getValue(key, "0").equals("1")) || (this.getValue(key, "false").equals("true"));
         }
         catch (Exception e)
         {
-            Emulator.getLogging().logErrorLine("Failed to parse key " + key + " with value " + getValue(key) + " to type boolean.");
+            Emulator.getLogging().logErrorLine("Failed to parse key " + key + " with value " + this.getValue(key) + " to type boolean.");
         }
         return defaultValue;
     }
@@ -156,7 +168,7 @@ public class ConfigurationManager
 
     public int getInt(String key)
     {
-        return getInt(key, 0);
+        return this.getInt(key, 0);
     }
 
 
@@ -167,10 +179,10 @@ public class ConfigurationManager
 
         try
         {
-            return Integer.parseInt(getValue(key, defaultValue.toString()));
+            return Integer.parseInt(this.getValue(key, defaultValue.toString()));
         } catch (Exception e)
         {
-            Emulator.getLogging().logErrorLine("Failed to parse key " + key + " with value " + getValue(key) + " to type integer.");
+            Emulator.getLogging().logErrorLine("Failed to parse key " + key + " with value " + this.getValue(key) + " to type integer.");
         }
         return defaultValue;
     }
@@ -178,7 +190,7 @@ public class ConfigurationManager
 
     public double getDouble(String key)
     {
-        return getDouble(key, 0.0);
+        return this.getDouble(key, 0.0);
     }
 
 
@@ -189,11 +201,11 @@ public class ConfigurationManager
 
         try
         {
-            return Double.parseDouble(getValue(key, defaultValue.toString()));
+            return Double.parseDouble(this.getValue(key, defaultValue.toString()));
         }
         catch (Exception e)
         {
-            Emulator.getLogging().logErrorLine("Failed to parse key " + key + " with value " + getValue(key) + " to type double.");
+            Emulator.getLogging().logErrorLine("Failed to parse key " + key + " with value " + this.getValue(key) + " to type double.");
         }
 
         return defaultValue;

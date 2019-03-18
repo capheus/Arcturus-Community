@@ -6,13 +6,13 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class ClubCenterDataComposer extends MessageComposer
 {
-    public final int streakDuration;
-    public final String joinDate;
-    public final double percentage;
-    public final int creditsSpend;
-    public final int creditsBonus;
-    public final int spendBonus;
-    public final int delay;
+    private final int streakDuration;
+    private final String joinDate;
+    private final double percentage;
+    private final int creditsSpend;
+    private final int creditsBonus;
+    private final int spendBonus;
+    private final int delay;
 
     public ClubCenterDataComposer(int streakDuration, String joinDate, double percentage, int creditsSpend, int creditsBonus, int spendBonus, int delay)
     {

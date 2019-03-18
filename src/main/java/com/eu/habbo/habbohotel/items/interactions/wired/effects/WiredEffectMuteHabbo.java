@@ -78,7 +78,7 @@ public class WiredEffectMuteHabbo extends InteractionWiredEffect
 
             room.muteHabbo(habbo, 60);
 
-            habbo.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(message.replace("%user%", habbo.getHabboInfo().getUsername()).replace("%online_count%", Emulator.getGameEnvironment().getHabboManager().getOnlineCount() + "").replace("%room_count%", Emulator.getGameEnvironment().getRoomManager().getActiveRooms().size() + ""), habbo, habbo, RoomChatMessageBubbles.WIRED)));
+            habbo.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(this.message.replace("%user%", habbo.getHabboInfo().getUsername()).replace("%online_count%", Emulator.getGameEnvironment().getHabboManager().getOnlineCount() + "").replace("%room_count%", Emulator.getGameEnvironment().getRoomManager().getActiveRooms().size() + ""), habbo, habbo, RoomChatMessageBubbles.WIRED)));
         }
 
         return true;
@@ -87,7 +87,7 @@ public class WiredEffectMuteHabbo extends InteractionWiredEffect
     @Override
     public String getWiredData()
     {
-        return getDelay() + "\t" + this.length + "\t" + this.message;
+        return this.getDelay() + "\t" + this.length + "\t" + this.message;
     }
 
     @Override

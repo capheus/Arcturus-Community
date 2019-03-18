@@ -1,4 +1,4 @@
-package com.eu.habbo.messages.outgoing.unknown;
+package com.eu.habbo.messages.outgoing.catalog;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.catalog.ClubOffer;
@@ -40,7 +40,7 @@ public class ClubDataComposer extends MessageComposer
             this.response.appendInt(offer.getPointsType());
             this.response.appendBoolean(offer.isVip());
 
-            long seconds = offer.getDays() * 86400l;
+            long seconds = offer.getDays() * 86400L;
 
             long secondsTotal = seconds;
 
@@ -58,7 +58,7 @@ public class ClubDataComposer extends MessageComposer
             this.response.appendBoolean(false); //giftable
             this.response.appendInt((int) seconds);
 
-            int endTimestamp = habbo.getHabboStats().getClubExpireTimestamp();
+            int endTimestamp = this.habbo.getHabboStats().getClubExpireTimestamp();
 
             if (endTimestamp < Emulator.getIntUnixTimestamp())
             {
@@ -68,7 +68,7 @@ public class ClubDataComposer extends MessageComposer
             endTimestamp += secondsTotal;
 
             Calendar cal = Calendar.getInstance();
-            cal.setTimeInMillis(endTimestamp * 1000l);
+            cal.setTimeInMillis(endTimestamp * 1000L);
             this.response.appendInt(cal.get(Calendar.YEAR));
             this.response.appendInt(cal.get(Calendar.MONTH) + 1);
             this.response.appendInt(cal.get(Calendar.DAY_OF_MONTH));

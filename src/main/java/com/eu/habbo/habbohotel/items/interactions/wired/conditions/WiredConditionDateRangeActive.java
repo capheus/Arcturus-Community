@@ -60,7 +60,7 @@ public class WiredConditionDateRangeActive extends InteractionWiredCondition
     }
 
     @Override
-    protected String getWiredData()
+    public String getWiredData()
     {
         return "";
     }

@@ -73,10 +73,9 @@ public class HabboManager
 
     public Habbo loadHabbo(String sso)
     {
-        Habbo habbo = null;
-        ResultSet set = null;
-
+        Habbo habbo;
         int userId = 0;
+
         try(Connection connection = Emulator.getDatabase().getDataSource().getConnection();
             PreparedStatement statement = connection.prepareStatement("SELECT id FROM users WHERE auth_ticket = ? LIMIT 1"))
         {
@@ -95,10 +94,10 @@ public class HabboManager
             Emulator.getLogging().logSQLException(e);
         }
 
-        habbo = cloneCheck(userId);
+        habbo = this.cloneCheck(userId);
         if (habbo != null)
         {
-            habbo.getClient().sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("loggedin.elsewhere")));
+            habbo.alert(Emulator.getTexts().getValue("loggedin.elsewhere"));
             Emulator.getGameServer().getGameClientManager().disposeClient(habbo.getClient());
             habbo = null;
         }
@@ -109,12 +108,37 @@ public class HabboManager
             return null;
         }
 
+
         try(Connection connection = Emulator.getDatabase().getDataSource().getConnection();
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE auth_ticket LIKE ? LIMIT 1"))
         {
             statement.setString(1, sso);
-            set = statement.executeQuery();
+            try (ResultSet set = statement.executeQuery())
+            {
+                if (set.next())
+                {
+                    habbo = new Habbo(set);
 
+                    if (habbo.firstVisit)
+                    {
+                        Emulator.getPluginManager().fireEvent(new UserRegisteredEvent(habbo));
+                    }
+
+                    if (!Emulator.debugging)
+                    {
+                        try (PreparedStatement stmt = connection.prepareStatement("UPDATE users SET auth_ticket = ? WHERE auth_ticket LIKE ? AND id = ? LIMIT 1"))
+                        {
+                            stmt.setString(1, "");
+                            stmt.setString(2, sso);
+                            stmt.setInt(3, habbo.getHabboInfo().getId());
+                            stmt.execute();
+                        } catch (SQLException e)
+                        {
+                            Emulator.getLogging().logSQLException(e);
+                        }
+                    }
+                }
+            }
         }
         catch(SQLException e)
         {
@@ -123,36 +147,6 @@ public class HabboManager
         catch (Exception ex)
         {
             Emulator.getLogging().logErrorLine(ex);
-        }
-
-        try
-        {
-            if (set.next())
-            {
-                habbo = new Habbo(set);
-
-                if (habbo.firstVisit)
-                {
-                    Emulator.getPluginManager().fireEvent(new UserRegisteredEvent(habbo));
-                }
-
-                try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET auth_ticket = ? WHERE auth_ticket LIKE ? AND id = ? LIMIT 1"))
-                {
-                    statement.setString(1, null);
-                    statement.setString(2, sso);
-                    statement.setInt(3, habbo.getHabboInfo().getId());
-                }
-                catch (SQLException e)
-                {
-                    Emulator.getLogging().logSQLException(e);
-                }
-            }
-
-            set.close();
-        }
-        catch (SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
         }
 
         return habbo;
@@ -211,9 +205,7 @@ public class HabboManager
 
     public Habbo cloneCheck(int id)
     {
-        Habbo habbo = Emulator.getGameServer().getGameClientManager().getHabbo(id);
-
-        return habbo;
+        return Emulator.getGameServer().getGameClientManager().getHabbo(id);
     }
 
     public void sendPacketToHabbosWithPermission(ServerMessage message, String perm)
@@ -347,7 +339,7 @@ public class HabboManager
             habbo.getClient().sendResponse(new MarketplaceConfigComposer());
             habbo.getClient().sendResponse(new GiftConfigurationComposer());
             habbo.getClient().sendResponse(new RecyclerLogicComposer());
-            habbo.getClient().sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("commands.generic.cmd_give_rank.new_rank").replace("id", rank.getName())));
+            habbo.alert(Emulator.getTexts().getValue("commands.generic.cmd_give_rank.new_rank").replace("id", rank.getName()));
         }
         else
         {

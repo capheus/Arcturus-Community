@@ -7,7 +7,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 public class EpicPopupFrameComposer extends MessageComposer
 {
     public static final String LIBRARY_URL = "${image.library.url}";
-    private String assetURI;
+    private final String assetURI;
 
     public EpicPopupFrameComposer(String assetURI)
     {

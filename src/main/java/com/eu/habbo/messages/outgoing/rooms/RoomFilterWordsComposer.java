@@ -7,7 +7,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class RoomFilterWordsComposer extends MessageComposer
 {
-    private Room room;
+    private final Room room;
 
     public RoomFilterWordsComposer(Room room)
     {

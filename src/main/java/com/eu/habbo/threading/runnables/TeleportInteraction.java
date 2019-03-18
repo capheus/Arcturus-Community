@@ -37,7 +37,7 @@ class TeleportInteraction extends Thread
     {
         try
         {
-            if (state == 5)
+            if (this.state == 5)
             {
                 this.teleportTwo.setExtradata("1");
                 this.targetRoom.updateItem(this.teleportTwo);
@@ -49,7 +49,7 @@ class TeleportInteraction extends Thread
                 }
                 Emulator.getThreading().run(this.teleportTwo, 500);
                 Emulator.getThreading().run(this.teleportOne, 500);
-            } else if (state == 4)
+            } else if (this.state == 4)
             {
                 int[] data = Emulator.getGameEnvironment().getItemManager().getTargetTeleportRoomId(this.teleportOne);
                 if (data.length == 2 && data[0] != 0)
@@ -99,23 +99,23 @@ class TeleportInteraction extends Thread
                 this.state = 5;
 
                 Emulator.getThreading().run(this, 500);
-            } else if (state == 3)
+            } else if (this.state == 3)
             {
                 this.teleportOne.setExtradata("0");
                 this.room.updateItem(this.teleportOne);
                 this.state = 4;
                 Emulator.getThreading().run(this, 500);
-            } else if (state == 2)
+            } else if (this.state == 2)
             {
                 this.client.getHabbo().getRoomUnit().setGoalLocation(this.room.getLayout().getTile(this.teleportOne.getX(), this.teleportOne.getY()));
-                this.client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[newRotation(this.teleportOne.getRotation())]);
+                this.client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[this.newRotation(this.teleportOne.getRotation())]);
                 this.client.getHabbo().getRoomUnit().setStatus(RoomUnitStatus.MOVE, this.teleportOne.getX() + "," + this.teleportOne.getY() + "," + this.teleportOne.getZ());
                 //room.sendComposer(new RoomUserStatusComposer(this.client.getHabbo().getRoomUnit()));
 
-                state = 3;
+                this.state = 3;
 
                 Emulator.getThreading().run(this, 500);
-            } else if (state == 1)
+            } else if (this.state == 1)
             {
                 RoomTile loc = HabboItem.getSquareInFront(this.room.getLayout(), this.teleportOne);
 
@@ -131,7 +131,7 @@ class TeleportInteraction extends Thread
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            Emulator.getLogging().logErrorLine(e);
         }
     }
 

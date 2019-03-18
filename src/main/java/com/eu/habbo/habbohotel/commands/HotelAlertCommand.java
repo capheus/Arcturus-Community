@@ -20,9 +20,9 @@ public class HotelAlertCommand extends Command {
     public boolean handle(GameClient gameClient, String[] params)
     {
         if(params.length > 1) {
-            String message = "";
+            StringBuilder message = new StringBuilder();
             for (int i = 1; i < params.length; i++) {
-                message += params[i] + " ";
+                message.append(params[i]).append(" ");
             }
 
             ServerMessage msg = new StaffAlertWithLinkComposer(message + "\r\n-" + gameClient.getHabbo().getHabboInfo().getUsername(), "").compose();

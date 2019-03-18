@@ -7,13 +7,13 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class ModToolSanctionDataComposer extends MessageComposer
 {
-    private final int unknwonInt1;
+    private final int unknownInt1;
     private final int accountId;
     private final CFHSanction sanction;
 
-    public ModToolSanctionDataComposer(int unknwonInt1, int accountId, CFHSanction sanction)
+    public ModToolSanctionDataComposer(int unknownInt1, int accountId, CFHSanction sanction)
     {
-        this.unknwonInt1 = unknwonInt1;
+        this.unknownInt1 = unknownInt1;
         this.accountId = accountId;
         this.sanction = sanction;
     }
@@ -22,7 +22,7 @@ public class ModToolSanctionDataComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.ModToolSanctionDataComposer);
-        this.response.appendInt(this.unknwonInt1);
+        this.response.appendInt(this.unknownInt1);
         this.response.appendInt(this.accountId);
         this.sanction.serialize(this.response);
         return this.response;

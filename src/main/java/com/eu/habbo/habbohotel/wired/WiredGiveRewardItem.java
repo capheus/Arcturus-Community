@@ -28,11 +28,11 @@ public class WiredGiveRewardItem
     @Override
     public String toString()
     {
-        return this.id + "," + (this.badge ? 0 : 1) + "," + this.data + "," + probability;
+        return this.id + "," + (this.badge ? 0 : 1) + "," + this.data + "," + this.probability;
     }
 
     public String wiredString()
     {
-        return (this.badge ? 0 : 1) + "," + this.data + "," + probability;
+        return (this.badge ? 0 : 1) + "," + this.data + "," + this.probability;
     }
 }

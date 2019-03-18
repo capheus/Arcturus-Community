@@ -19,7 +19,7 @@ public class YoutubeRequestNextVideoEvent extends MessageHandler
         {
             HabboItem item = this.client.getHabbo().getHabboInfo().getCurrentRoom().getHabboItem(itemId);
 
-            if (item != null && item instanceof InteractionYoutubeTV)
+            if (item instanceof InteractionYoutubeTV)
             {
                 YoutubeManager.YoutubeItem video = Emulator.getGameEnvironment().getItemManager().getYoutubeManager().getVideo(item.getBaseItem(), next);
 

@@ -38,8 +38,7 @@ public class WiredConditionNotInTeam extends InteractionWiredCondition
         {
             if(habbo.getHabboInfo().getGamePlayer() != null)
             {
-                if(!habbo.getHabboInfo().getGamePlayer().getTeamColor().equals(this.teamColor))
-                    return true;
+                return !habbo.getHabboInfo().getGamePlayer().getTeamColor().equals(this.teamColor);
             }
         }
 

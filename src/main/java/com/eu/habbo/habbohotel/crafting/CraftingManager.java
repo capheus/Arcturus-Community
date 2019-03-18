@@ -105,7 +105,7 @@ public class CraftingManager
 
     public CraftingRecipe getRecipe(String recipeName)
     {
-		CraftingRecipe recipe = null;
+		CraftingRecipe recipe;
 		for (CraftingAltar altar : this.altars.values())
 		{
 			recipe = altar.getRecipe(recipeName);

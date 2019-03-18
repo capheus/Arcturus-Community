@@ -19,8 +19,8 @@ public class IPBanCommand extends Command
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
-        HabboInfo habbo = null;
-        String reason = "";
+        HabboInfo habbo;
+        StringBuilder reason = new StringBuilder();
         if (params.length >= 2)
         {
             Habbo h = Emulator.getGameEnvironment().getHabboManager().getHabbo(params[1]);
@@ -43,8 +43,8 @@ public class IPBanCommand extends Command
         {
             for (int i = 2; i < params.length; i++)
             {
-                reason += params[i];
-                reason += " ";
+                reason.append(params[i]);
+                reason.append(" ");
             }
         }
 
@@ -63,14 +63,14 @@ public class IPBanCommand extends Command
                 return true;
             }
 
-            Emulator.getGameEnvironment().getModToolManager().ban(habbo.getId(), gameClient.getHabbo(), reason, TEN_YEARS, ModToolBanType.IP, -1);
+            Emulator.getGameEnvironment().getModToolManager().ban(habbo.getId(), gameClient.getHabbo(), reason.toString(), TEN_YEARS, ModToolBanType.IP, -1);
             count++;
             for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithIP(habbo.getIpLogin()))
             {
                 if (h != null)
                 {
                     count++;
-                    Emulator.getGameEnvironment().getModToolManager().ban(h.getHabboInfo().getId(), gameClient.getHabbo(), reason, TEN_YEARS, ModToolBanType.IP, -1);
+                    Emulator.getGameEnvironment().getModToolManager().ban(h.getHabboInfo().getId(), gameClient.getHabbo(), reason.toString(), TEN_YEARS, ModToolBanType.IP, -1);
                 }
             }
         }

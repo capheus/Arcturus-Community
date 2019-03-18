@@ -22,16 +22,16 @@ public class CfhTopicsMessageComposer extends MessageComposer
             @Override
             public boolean execute(CfhCategory category)
             {
-                response.appendString(category.getName());
-                response.appendInt(category.getTopics().valueCollection().size());
+                CfhTopicsMessageComposer.this.response.appendString(category.getName());
+                CfhTopicsMessageComposer.this.response.appendInt(category.getTopics().valueCollection().size());
                 category.getTopics().forEachValue(new TObjectProcedure<CfhTopic>()
                 {
                     @Override
                     public boolean execute(CfhTopic topic)
                     {
-                        response.appendString(topic.name);
-                        response.appendInt(topic.id);
-                        response.appendString(topic.action.toString());
+                        CfhTopicsMessageComposer.this.response.appendString(topic.name);
+                        CfhTopicsMessageComposer.this.response.appendInt(topic.id);
+                        CfhTopicsMessageComposer.this.response.appendString(topic.action.toString());
                         return true;
                     }
                 });

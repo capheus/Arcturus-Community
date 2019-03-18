@@ -7,7 +7,7 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.guilds.GuildJoinErrorComposer;
-import com.eu.habbo.messages.outgoing.unknown.GuildMembershipRequestedComposer;
+import com.eu.habbo.messages.outgoing.guilds.GuildMembershipRequestedComposer;
 import gnu.trove.TCollections;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.TIntObjectMap;
@@ -321,7 +321,7 @@ public class GuildManager
                     if (guild.getState() == GuildState.LOCKED)
                     {
                         guild.increaseRequestCount();
-                        ServerMessage membershipRequestMessage = new GuildMembershipRequestedComposer(guild.getId(), client.getHabbo().getHabboInfo().getId()).compose();
+                        ServerMessage membershipRequestMessage = new GuildMembershipRequestedComposer(guild.getId(), client.getHabbo().getHabboInfo().getId(), client.getHabbo().getHabboInfo().getUsername(), client.getHabbo().getHabboInfo().getLook(), client.getHabbo().getHabboInfo().getGender()).compose();
                         for (GuildMember member : this.getOnlyAdmins(guild).values())
                         {
                             Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(member.getUserId());
@@ -417,7 +417,7 @@ public class GuildManager
 
     public GuildMember getGuildMember(Guild guild, Habbo habbo)
     {
-        return getGuildMember(guild.getId(), habbo.getHabboInfo().getId());
+        return this.getGuildMember(guild.getId(), habbo.getHabboInfo().getId());
     }
 
 
@@ -479,7 +479,7 @@ public class GuildManager
     {
         ArrayList<GuildMember> guildMembers = new ArrayList<>();
 
-        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.username, users.look, guilds_members.* FROM guilds_members INNER JOIN users ON guilds_members.user_id = users.id WHERE guilds_members.guild_id = ?  " + (rankQuery(levelId)) + " AND users.username LIKE ? ORDER BY level_id, member_since ASC LIMIT ?, ?"))
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.username, users.look, guilds_members.* FROM guilds_members INNER JOIN users ON guilds_members.user_id = users.id WHERE guilds_members.guild_id = ?  " + (this.rankQuery(levelId)) + " AND users.username LIKE ? ORDER BY level_id, member_since ASC LIMIT ?, ?"))
         {
             statement.setInt(1, guild.getId());
             statement.setString(2, "%" + query + "%");
@@ -507,7 +507,7 @@ public class GuildManager
     {
         THashMap<Integer, GuildMember> guildAdmins = new THashMap<>();
 
-        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.username, users.look, guilds_members.* FROM guilds_members INNER JOIN users ON guilds_members.user_id = users.id WHERE guilds_members.guild_id = ?  " + (rankQuery(1))))
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.username, users.look, guilds_members.* FROM guilds_members INNER JOIN users ON guilds_members.user_id = users.id WHERE guilds_members.guild_id = ?  " + (this.rankQuery(1))))
         {
             statement.setInt(1, guild.getId());
             try (ResultSet set = statement.executeQuery())
@@ -583,7 +583,7 @@ public class GuildManager
             {
                 while (set.next())
                 {
-                    Guild guild = getGuild(set.getInt("guild_id"));
+                    Guild guild = this.getGuild(set.getInt("guild_id"));
 
                     if (guild != null)
                     {

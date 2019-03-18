@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.items.interactions;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.messages.outgoing.generic.alerts.CustomNotificationComposer;
 
 import java.sql.ResultSet;
@@ -31,5 +32,11 @@ public class InteractionHabboClubHopper extends InteractionHopper
         {
             client.sendResponse(new CustomNotificationComposer(CustomNotificationComposer.HOPPER_NO_HC));
         }
+    }
+
+    @Override
+    protected boolean canUseTeleport(GameClient client, RoomTile front, Room room)
+    {
+        return super.canUseTeleport(client, front, room) && client.getHabbo().getHabboStats().hasActiveClub();
     }
 }

@@ -72,15 +72,8 @@ public class RequestNewNavigatorRoomsEvent extends MessageHandler
 
         try
         {
-            List<SearchResultList> resultLists = new ArrayList<>();
 
-            resultLists.addAll(filter.getResult(this.client.getHabbo(), field, part, category != null ? category.getId() : -1));
-
-            if (resultLists == null)
-            {
-                resultLists = new ArrayList<>();
-            }
-
+            List<SearchResultList> resultLists = new ArrayList<>(filter.getResult(this.client.getHabbo(), field, part, category != null ? category.getId() : -1));
             filter.filter(field.field, part, resultLists);
 
             Collections.sort(resultLists);
@@ -103,8 +96,7 @@ public class RequestNewNavigatorRoomsEvent extends MessageHandler
             {
                 if (result.filter)
                 {
-                    List<Room> rooms = new ArrayList<>();
-                    rooms.addAll(result.rooms.subList(0, result.rooms.size()));
+                    List<Room> rooms = new ArrayList<>(result.rooms.subList(0, result.rooms.size()));
                     filter.filterRooms(field.field, part, rooms);
 
                     if (!filteredRooms.containsKey(result.order))

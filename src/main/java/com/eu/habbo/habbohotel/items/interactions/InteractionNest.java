@@ -67,7 +67,7 @@ public class InteractionNest extends HabboItem
 
         Pet pet = room.getPet(roomUnit);
 
-        if(pet != null && pet instanceof Pet)
+        if(pet != null)
         {
             if(pet instanceof HorsePet)
             {

@@ -6,7 +6,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class CatalogModeComposer extends MessageComposer
 {
-    private int mode = 0;
+    private final int mode;
 
     public CatalogModeComposer(int mode)
     {

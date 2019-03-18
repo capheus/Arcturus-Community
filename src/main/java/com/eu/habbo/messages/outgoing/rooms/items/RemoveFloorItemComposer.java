@@ -7,7 +7,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class RemoveFloorItemComposer extends MessageComposer
 {
-
     private final HabboItem item;
     private final boolean noUser;
 

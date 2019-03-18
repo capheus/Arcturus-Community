@@ -27,34 +27,34 @@ public class BotSettingsComposer extends MessageComposer
         {
             case 1: this.response.appendString(""); break;
             case 2:
-                String data = "";
+                StringBuilder data = new StringBuilder();
 
                 if (this.bot.hasChat())
                 {
                     for (String s : this.bot.getChatLines())
                     {
-                        data += s + "\r";
+                        data.append(s).append("\r");
                     }
                 }
                 else
                 {
-                    data += Bot.NO_CHAT_SET;
+                    data.append(Bot.NO_CHAT_SET);
                 }
 
 
-                data += ";#;" + (this.bot.isChatAuto() ? "true" : "false");
-                data += ";#;" + this.bot.getChatDelay();
-                data += ";#;" + (this.bot.isChatRandom() ? "true" : "false");
-                this.response.appendString(data);
+                data.append(";#;").append(this.bot.isChatAuto() ? "true" : "false");
+                data.append(";#;").append(this.bot.getChatDelay());
+                data.append(";#;").append(this.bot.isChatRandom() ? "true" : "false");
+                this.response.appendString(data.toString());
                 break;
             case 3: this.response.appendString(""); break;
             case 4: this.response.appendString(""); break;
             case 5:
-                this.response.appendString(bot.getName());
+                this.response.appendString(this.bot.getName());
                 break;
             case 6: this.response.appendString(""); break;
             case 9:
-                this.response.appendString(bot.getMotto());
+                this.response.appendString(this.bot.getMotto());
                 break;
         }
         return this.response;

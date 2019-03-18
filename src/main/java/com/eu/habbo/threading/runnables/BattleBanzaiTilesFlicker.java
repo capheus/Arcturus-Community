@@ -9,9 +9,9 @@ import gnu.trove.set.hash.THashSet;
 
 public class BattleBanzaiTilesFlicker implements Runnable
 {
-    private THashSet<HabboItem> items;
-    private GameTeamColors color;
-    private Room room;
+    private final THashSet<HabboItem> items;
+    private final GameTeamColors color;
+    private final Room room;
 
     private boolean on = false;
     private int count = 0;
@@ -30,14 +30,14 @@ public class BattleBanzaiTilesFlicker implements Runnable
             return;
 
         int state = 0;
-        if(on)
+        if(this.on)
         {
-            state = (color.type * 3) + 5;
-            on = false;
+            state = (this.color.type * 3) + 5;
+            this.on = false;
         }
         else
         {
-            on = true;
+            this.on = true;
         }
 
         for(HabboItem item : this.items)

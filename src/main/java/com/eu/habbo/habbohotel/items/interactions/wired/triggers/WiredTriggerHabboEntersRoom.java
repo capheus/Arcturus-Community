@@ -35,13 +35,9 @@ public class WiredTriggerHabboEntersRoom extends InteractionWiredTrigger
 
         if(habbo != null)
         {
-            if(username.length() > 0)
+            if(this.username.length() > 0)
             {
-                if(habbo.getHabboInfo().getUsername().equalsIgnoreCase(this.username))
-                {
-                    return true;
-                }
-                return false;
+                return habbo.getHabboInfo().getUsername().equalsIgnoreCase(this.username);
             }
 
             return true;

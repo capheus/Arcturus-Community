@@ -18,12 +18,12 @@ public class InfoPetsLayout extends CatalogPage
     {
         message.appendString("info_pets");
         message.appendInt(2);
-        message.appendString(getHeaderImage());
-        message.appendString(getTeaserImage());
+        message.appendString(this.getHeaderImage());
+        message.appendString(this.getTeaserImage());
         message.appendInt(3);
-        message.appendString(getTextOne());
+        message.appendString(this.getTextOne());
         message.appendString("");
-        message.appendString(getTextTeaser());
+        message.appendString(this.getTextTeaser());
         message.appendInt(0);
     }
 }

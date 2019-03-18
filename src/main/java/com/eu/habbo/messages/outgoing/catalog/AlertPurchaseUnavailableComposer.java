@@ -9,7 +9,7 @@ public class AlertPurchaseUnavailableComposer extends MessageComposer
     public final static int ILLEGAL = 0;
     public final static int REQUIRES_CLUB = 1;
 
-    private int code;
+    private final int code;
 
     public AlertPurchaseUnavailableComposer(int code)
     {

@@ -55,7 +55,7 @@ public class WiredEffectLeaveTeam extends InteractionWiredEffect
     @Override
     public String getWiredData()
     {
-        return getDelay() + "";
+        return this.getDelay() + "";
     }
 
     @Override

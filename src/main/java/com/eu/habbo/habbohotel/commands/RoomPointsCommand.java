@@ -16,7 +16,7 @@ public class RoomPointsCommand extends Command
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
         int type = Emulator.getConfig().getInt("seasonal.primary.type");
-        String amountString = "";
+        String amountString;
         if(params.length == 3)
         {
             try
@@ -72,11 +72,9 @@ public class RoomPointsCommand extends Command
         {
             final String message = Emulator.getTexts().getValue("commands.generic.cmd_points.received").replace("%amount%", amount + "").replace("%type%", Emulator.getTexts().getValue("seasonal.name." + type));
 
-            final int finalType = type;
-            final int finalAmount = amount;
             for (Habbo habbo : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getHabbos())
             {
-                habbo.givePoints(finalType, finalAmount);
+                habbo.givePoints(type, amount);
                 habbo.whisper(message, RoomChatMessageBubbles.ALERT);
             }
         }

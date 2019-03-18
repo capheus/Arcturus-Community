@@ -26,7 +26,7 @@ public class HTTPPostError implements Runnable
 
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
-            stackTrace.printStackTrace(pw);
+            this.stackTrace.printStackTrace(pw);
             String url = "http://arcturus.pw/callback/error.php";
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -47,7 +47,6 @@ public class HTTPPostError implements Runnable
         catch (Exception e)
         {
         }
-        return;
     }
 
     @Override

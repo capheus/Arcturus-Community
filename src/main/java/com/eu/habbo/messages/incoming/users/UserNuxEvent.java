@@ -13,17 +13,17 @@ public class UserNuxEvent extends MessageHandler
     public static Map<Integer, String> keys = new HashMap<Integer, String>()
     {
         {
-            put(1, "BOTTOM_BAR_RECEPTION");
-            put(2, "BOTTOM_BAR_NAVIGATOR");
-            put(3, "CHAT_INPUT");
-            put(4, "CHAT_HISTORY_BUTTON");
-            put(5, "MEMENU_CLOTHES");
-            put(6, "BOTTOM_BAR_CATALOGUE");
-            put(7, "CREDITS_BUTTON");
-            put(8, "DUCKETS_BUTTON");
-            put(9, "DIAMONDS_BUTTON");
-            put(10, "FRIENDS_BAR_ALL_FRIENDS");
-            put(11, "BOTTOM_BAR_NAVIGATOR");
+            this.put(1, "BOTTOM_BAR_RECEPTION");
+            this.put(2, "BOTTOM_BAR_NAVIGATOR");
+            this.put(3, "CHAT_INPUT");
+            this.put(4, "CHAT_HISTORY_BUTTON");
+            this.put(5, "MEMENU_CLOTHES");
+            this.put(6, "BOTTOM_BAR_CATALOGUE");
+            this.put(7, "CREDITS_BUTTON");
+            this.put(8, "DUCKETS_BUTTON");
+            this.put(9, "DIAMONDS_BUTTON");
+            this.put(10, "FRIENDS_BAR_ALL_FRIENDS");
+            this.put(11, "BOTTOM_BAR_NAVIGATOR");
         }
     };
     @Override

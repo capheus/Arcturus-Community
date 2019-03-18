@@ -17,18 +17,13 @@ public class GuideSessionStartedComposer extends MessageComposer
     @Override
     public ServerMessage compose()
     {
-        //:test 3048 i:1 s:Admin s:b i:2 s:Derp s:d
         this.response.init(Outgoing.GuideSessionStartedComposer);
-
-        //Help Requester
-        this.response.appendInt(this.tour.getNoob().getHabboInfo().getId()); //UserID 1?
-        this.response.appendString(this.tour.getNoob().getHabboInfo().getUsername()); //UserName 1?
-        this.response.appendString(this.tour.getNoob().getHabboInfo().getLook()); //Look 1?
-
-        //Being helped by.
-        this.response.appendInt(this.tour.getHelper().getHabboInfo().getId()); //UserID 2?
-        this.response.appendString(this.tour.getHelper().getHabboInfo().getUsername()); //UserName 2?
-        this.response.appendString(this.tour.getHelper().getHabboInfo().getLook()); //Look 2?
+        this.response.appendInt(this.tour.getNoob().getHabboInfo().getId());
+        this.response.appendString(this.tour.getNoob().getHabboInfo().getUsername());
+        this.response.appendString(this.tour.getNoob().getHabboInfo().getLook());
+        this.response.appendInt(this.tour.getHelper().getHabboInfo().getId());
+        this.response.appendString(this.tour.getHelper().getHabboInfo().getUsername());
+        this.response.appendString(this.tour.getHelper().getHabboInfo().getLook());
         return this.response;
     }
 }

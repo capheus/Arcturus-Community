@@ -1,4 +1,4 @@
-package com.eu.habbo.messages.outgoing.unknown;
+package com.eu.habbo.messages.outgoing.hotelview;
 
 import com.eu.habbo.habbohotel.catalog.CatalogPage;
 import com.eu.habbo.messages.ServerMessage;

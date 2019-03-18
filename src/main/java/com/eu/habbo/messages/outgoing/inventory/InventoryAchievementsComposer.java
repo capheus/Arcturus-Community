@@ -26,13 +26,13 @@ public class InventoryAchievementsComposer extends MessageComposer
                 @Override
                 public boolean execute(Achievement achievement)
                 {
-                    response.appendString((achievement.name.startsWith("ACH_") ? achievement.name.replace("ACH_", "") : achievement.name));
-                    response.appendInt(achievement.levels.size());
+                    InventoryAchievementsComposer.this.response.appendString((achievement.name.startsWith("ACH_") ? achievement.name.replace("ACH_", "") : achievement.name));
+                    InventoryAchievementsComposer.this.response.appendInt(achievement.levels.size());
 
                     for (AchievementLevel level : achievement.levels.values())
                     {
-                        response.appendInt(level.level);
-                        response.appendInt(level.progress);
+                        InventoryAchievementsComposer.this.response.appendInt(level.level);
+                        InventoryAchievementsComposer.this.response.appendInt(level.progress);
                     }
 
                     return true;

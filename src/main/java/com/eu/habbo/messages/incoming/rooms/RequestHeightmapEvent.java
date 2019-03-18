@@ -16,7 +16,6 @@ public class RequestHeightmapEvent extends MessageHandler {
             {
                 Emulator.getGameEnvironment().getRoomManager().enterRoom(this.client.getHabbo(), room);
 
-                return;
             }
         }
     }

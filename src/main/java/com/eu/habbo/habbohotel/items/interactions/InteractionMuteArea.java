@@ -12,10 +12,14 @@ public class InteractionMuteArea extends InteractionCustomValues
 {
     public static THashMap<String, String> defaultValues = new THashMap<String, String>()
     {
-        {put("tilesLeft",  "0");}
-        {put("tilesRight", "0");}
-        {put("tilesFront", "0");}
-        {put("tilesBack",  "0");}
+        {
+            this.put("tilesLeft",  "0");}
+        {
+            this.put("tilesRight", "0");}
+        {
+            this.put("tilesFront", "0");}
+        {
+            this.put("tilesBack",  "0");}
     };
 
     public InteractionMuteArea(ResultSet set, Item baseItem) throws SQLException

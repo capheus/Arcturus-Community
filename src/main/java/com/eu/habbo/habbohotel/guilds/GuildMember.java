@@ -31,17 +31,17 @@ public class GuildMember implements Comparable
 
     public int getUserId()
     {
-        return userId;
+        return this.userId;
     }
 
     public String getUsername()
     {
-        return username;
+        return this.username;
     }
 
     public String getLook()
     {
-        return look;
+        return this.look;
     }
 
     public void setLook(String look)
@@ -51,7 +51,7 @@ public class GuildMember implements Comparable
 
     public int getJoinDate()
     {
-        return joinDate;
+        return this.joinDate;
     }
 
     public void setJoinDate(int joinDate)
@@ -61,7 +61,7 @@ public class GuildMember implements Comparable
 
     public GuildRank getRank()
     {
-        return rank;
+        return this.rank;
     }
 
     public void setRank(GuildRank rank)

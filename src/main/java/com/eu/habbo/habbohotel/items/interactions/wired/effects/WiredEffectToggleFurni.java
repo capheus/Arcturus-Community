@@ -2,7 +2,6 @@ package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
-import com.eu.habbo.habbohotel.games.Game;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionCrackable;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
@@ -138,8 +137,7 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
 		{
 			if (stuff[0] instanceof HabboItem)
 			{
-				triggerItem = (HabboItem) stuff[0];
-			}
+            }
 		}
 
 		THashSet<HabboItem> itemsToRemove = new THashSet<>();
@@ -155,15 +153,6 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
 			{
 				if (item.getBaseItem().getStateCount() > 1 || item instanceof InteractionGameTimer)
 				{
-					if (item instanceof InteractionGameTimer)
-					{
-						Game game = room.getGame(((InteractionGameTimer)item).getGameType());
-						if (game == null || game.isRunning)
-						{
-							continue;
-						}
-					}
-
 					item.onClick(habbo != null ? habbo.getClient() : null, room, new Object[]{item.getExtradata().length() == 0 ? 0 : Integer.valueOf(item.getExtradata()), this.getType()});
 				}
 			}
@@ -181,17 +170,17 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
     @Override
     public String getWiredData()
     {
-        String wiredData = this.getDelay() + "\t";
+        StringBuilder wiredData = new StringBuilder(this.getDelay() + "\t");
 
-		if(items != null && !items.isEmpty())
+		if(this.items != null && !this.items.isEmpty())
 		{
 			for (HabboItem item : this.items)
 			{
-				wiredData += item.getId() + ";";
+				wiredData.append(item.getId()).append(";");
 			}
 		}
 
-        return wiredData;
+        return wiredData.toString();
     }
 
     @Override

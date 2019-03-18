@@ -31,7 +31,7 @@ public class OpenGift implements Runnable
         {
             HabboItem inside = null;
 
-            THashSet<HabboItem> items = ((InteractionGift) item).loadItems();
+            THashSet<HabboItem> items = ((InteractionGift) this.item).loadItems();
             for (HabboItem i : items)
             {
                 if(inside == null)
@@ -54,7 +54,7 @@ public class OpenGift implements Runnable
 
 
             Emulator.getThreading().run(new QueryDeleteHabboItem(this.item));
-            Emulator.getThreading().run(new RemoveFloorItemTask(this.room, this.item), item.getBaseItem().getName().contains("present_wrap") ? 5000 : 0);
+            Emulator.getThreading().run(new RemoveFloorItemTask(this.room, this.item), this.item.getBaseItem().getName().contains("present_wrap") ? 5000 : 0);
 
             if (inside != null)
             {
@@ -63,7 +63,7 @@ public class OpenGift implements Runnable
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            Emulator.getLogging().logErrorLine(e);
         }
     }
 }

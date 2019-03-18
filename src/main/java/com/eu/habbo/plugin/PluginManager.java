@@ -42,6 +42,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class PluginManager
 {
@@ -62,12 +63,10 @@ public class PluginManager
             }
         }
 
-        for (File file : loc.listFiles(new FileFilter() {
-            public boolean accept(File file) {return file.getPath().toLowerCase().endsWith(".jar");}
-        }))
+        for (File file : Objects.requireNonNull(loc.listFiles(file -> file.getPath().toLowerCase().endsWith(".jar"))))
         {
-            URLClassLoader urlClassLoader = null;
-            InputStream stream            = null;
+            URLClassLoader urlClassLoader;
+            InputStream stream;
             try
             {
                 urlClassLoader = URLClassLoader.newInstance(new URL[]{file.toURI().toURL()});
@@ -108,7 +107,7 @@ public class PluginManager
             }
             catch (Exception e)
             {
-                e.printStackTrace();
+                Emulator.getLogging().logErrorLine(e);
             }
         }
     }
@@ -185,7 +184,6 @@ public class PluginManager
                             {
                                 Emulator.getLogging().logErrorLine("Could not pass event " + event.getClass().getName() + " to " + plugin.configuration.name);
                                 Emulator.getLogging().logErrorLine(e);
-                                e.printStackTrace();
                             }
                         }
                     }
@@ -294,8 +292,6 @@ public class PluginManager
     {
         try
         {
-            this.methods.add(FreezeGame.class.getMethod("onUserWalkEvent", UserTakeStepEvent.class));
-            this.methods.add(BattleBanzaiGame.class.getMethod("onUserWalkEvent", UserTakeStepEvent.class));
             this.methods.add(RoomTrashing.class.getMethod("onUserWalkEvent", UserTakeStepEvent.class));
             this.methods.add(Easter.class.getMethod("onUserChangeMotto", UserSavedMottoEvent.class));
             this.methods.add(TagGame.class.getMethod("onUserLookAtPoint", RoomUnitLookAtPointEvent.class));

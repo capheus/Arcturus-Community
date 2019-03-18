@@ -11,10 +11,10 @@ public class GuildForumModerateMessageEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        int guildId = packet.readInt();
-        int threadId = packet.readInt();
-        int messageId = packet.readInt();
-        int state = packet.readInt();
+        int guildId = this.packet.readInt();
+        int threadId = this.packet.readInt();
+        int messageId = this.packet.readInt();
+        int state = this.packet.readInt();
 
         Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(guildId);
         if(guild == null || guild.getOwnerId() != this.client.getHabbo().getHabboInfo().getId())

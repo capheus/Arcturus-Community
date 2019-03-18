@@ -33,7 +33,7 @@ public class HTTPVersionCheck implements Runnable
             int responseCode = con.getResponseCode();
             if (responseCode == 102)
             {
-                String text = "";
+                StringBuilder text = new StringBuilder();
                 InputStreamReader in = new InputStreamReader((InputStream) con.getContent());
                 BufferedReader buff = new BufferedReader(in);
                 String line;
@@ -42,14 +42,14 @@ public class HTTPVersionCheck implements Runnable
 
                     if (line != null)
                     {
-                        text += (line + "\n");
+                        text.append(line).append("\n");
                     }
                 } while (line != null);
                 buff.close();
                 in.close();
 
-                Emulator.getLogging().logStart(text);
-                Emulator.getGameServer().getGameClientManager().sendBroadcastResponse(new GenericAlertComposer(text));
+                Emulator.getLogging().logStart(text.toString());
+                Emulator.getGameServer().getGameClientManager().sendBroadcastResponse(new GenericAlertComposer(text.toString()));
             }
             wr.close();
             con.disconnect();
@@ -58,7 +58,6 @@ public class HTTPVersionCheck implements Runnable
         {
             e.printStackTrace();
         }
-        return;
     }
 
     @Override

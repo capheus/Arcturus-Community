@@ -24,7 +24,7 @@ public class ModToolPickTicketEvent extends MessageHandler
                 if(issue.state == ModToolTicketState.PICKED)
                 {
                     this.client.sendResponse(new ModToolIssueInfoComposer(issue));
-                    this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("support.ticket.picked.failed")));
+                    this.client.getHabbo().alert(Emulator.getTexts().getValue("support.ticket.picked.failed"));
 
                     return;
                 }
@@ -34,7 +34,7 @@ public class ModToolPickTicketEvent extends MessageHandler
             }
             else
             {
-                this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("support.ticket.picked.failed")));
+                this.client.getHabbo().alert(Emulator.getTexts().getValue("support.ticket.picked.failed"));
             }
         }
         else

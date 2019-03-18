@@ -28,10 +28,10 @@ public class UserClothesComposer extends MessageComposer
                 {
                     for (Integer j : item.setId)
                     {
-                        idList.add(j);
+                        UserClothesComposer.this.idList.add(j);
                     }
 
-                    nameList.add(item.name);
+                    UserClothesComposer.this.nameList.add(item.name);
                 }
 
                 return true;
@@ -43,15 +43,10 @@ public class UserClothesComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.UserClothesComposer);
-
         this.response.appendInt(this.idList.size());
-
         this.idList.forEach(this.response::appendInt);
-
         this.response.appendInt(this.nameList.size());
-
         this.nameList.forEach(this.response::appendString);
-
         return this.response;
     }
 }

@@ -31,7 +31,7 @@ public class CatalogLimitedConfiguration implements Runnable
             int num = this.limitedNumbers.pop();
             if(this.limitedNumbers.isEmpty())
             {
-                Emulator.getGameEnvironment().getCatalogManager().moveCatalogItem(Emulator.getGameEnvironment().getCatalogManager().getCatalogItem(itemId), Emulator.getConfig().getInt("catalog.ltd.page.soldout"));
+                Emulator.getGameEnvironment().getCatalogManager().moveCatalogItem(Emulator.getGameEnvironment().getCatalogManager().getCatalogItem(this.itemId), Emulator.getConfig().getInt("catalog.ltd.page.soldout"));
             }
             return num;
         }

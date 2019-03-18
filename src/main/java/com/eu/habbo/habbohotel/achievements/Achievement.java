@@ -22,9 +22,9 @@ public class Achievement
 
     public Achievement(ResultSet set) throws SQLException
     {
-        levels = new THashMap<>();
+        this.levels = new THashMap<>();
 
-        id = set.getInt("id");
+        this.id = set.getInt("id");
         this.name = set.getString("name");
         this.category = AchievementCategories.valueOf(set.getString("category").toUpperCase());
 

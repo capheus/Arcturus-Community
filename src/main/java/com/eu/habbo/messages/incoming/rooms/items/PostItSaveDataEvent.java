@@ -46,7 +46,7 @@ public class PostItSaveDataEvent extends MessageHandler
 
         HabboItem item = room.getHabboItem(itemId);
 
-        if(item == null || !(item instanceof InteractionPostIt))
+        if(!(item instanceof InteractionPostIt))
             return;
 
         if(!color.equalsIgnoreCase(PostItColor.YELLOW.hexColor) && !room.hasRights(this.client.getHabbo())&& item.getUserId() != this.client.getHabbo().getHabboInfo().getId())

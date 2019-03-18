@@ -16,7 +16,7 @@ public class RequestReportUserBullyingEvent extends MessageHandler
 
         if(ticket != null)
         {
-            if(!ticket.isFinished())
+            if(ticket.inProgress())
             {
                 this.client.sendResponse(new BullyReportRequestComposer(BullyReportRequestComposer.ONGOING_HELPER_CASE, 1));
                 return;

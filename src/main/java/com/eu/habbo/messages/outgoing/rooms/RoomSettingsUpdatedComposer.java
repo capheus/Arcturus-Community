@@ -13,6 +13,7 @@ public class RoomSettingsUpdatedComposer extends MessageComposer
     {
         this.room = room;
     }
+
     @Override
     public ServerMessage compose()
     {

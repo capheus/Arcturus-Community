@@ -16,7 +16,7 @@ public class FootballGateSaveLookEvent extends MessageHandler
             return;
 
         HabboItem item = room.getHabboItem(this.packet.readInt());
-        if(item == null || !(item instanceof InteractionFootballGate))
+        if(!(item instanceof InteractionFootballGate))
             return;
 
         String gender = this.packet.readString();

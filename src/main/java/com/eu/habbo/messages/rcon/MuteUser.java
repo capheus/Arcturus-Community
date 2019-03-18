@@ -44,12 +44,12 @@ public class MuteUser extends RCONMessage<MuteUser.JSON>
             }
             catch (SQLException e)
             {
-                e.printStackTrace();
+                Emulator.getLogging().logSQLException(e);
             }
         }
     }
 
-    public static class JSON
+    static class JSON
     {
 
         public int user_id;

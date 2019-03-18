@@ -26,7 +26,7 @@ public class ChangeRoomOwner extends RCONMessage<ChangeRoomOwner.JSON>
         }
     }
 
-    public static class JSON
+    static class JSON
     {
 
         public int room_id;

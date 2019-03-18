@@ -16,58 +16,58 @@ import java.util.HashMap;
 public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem>
 {
 
-    protected int id;
+    int id;
 
 
-    protected int pageId;
+    private int pageId;
 
 
-    protected String itemId;
+    private String itemId;
 
 
-    protected String name;
+    private String name;
 
 
-    protected int credits;
+    private int credits;
 
 
-    protected int points;
+    private int points;
 
 
-    protected short pointsType;
+    private short pointsType;
 
 
-    protected int amount;
+    private int amount;
 
 
-    protected boolean allowGift = false;
+    private boolean allowGift = false;
 
 
-    protected int limitedStack;
+    int limitedStack;
 
 
-    protected int limitedSells;
+    private int limitedSells;
 
 
-    protected String extradata;
+    private String extradata;
 
 
-    protected boolean clubOnly;
+    private boolean clubOnly;
 
 
-    protected boolean haveOffer;
+    private boolean haveOffer;
 
 
-    protected int offerId;
+    private int offerId;
 
 
-    protected boolean needsUpdate;
+    private boolean needsUpdate;
 
 
-    protected int orderNumber;
+    private int orderNumber;
 
 
-    protected HashMap<Integer, Integer> bundle;
+    private HashMap<Integer, Integer> bundle;
 
     public CatalogItem(ResultSet set) throws SQLException
     {
@@ -213,7 +213,7 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
     }
 
 
-    public int getOrderNumber()
+    private int getOrderNumber()
     {
         return this.orderNumber;
     }
@@ -252,7 +252,7 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
                     itemId = itemId.split(":")[0];
                 }
 
-                int identifier = 0;
+                int identifier;
                 try
                 {
 
@@ -320,10 +320,11 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
                         }
                     }
                 }
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
-                Emulator.getLogging().logDebugLine("Failed to load " + itemId);
-                e.printStackTrace();
+                Emulator.getLogging().logDebugLine("Failed to load " + this.itemId);
+                Emulator.getLogging().logErrorLine(e);
             }
         }
         else
@@ -482,9 +483,6 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
                 return false;
         }
 
-        if(item.getName().toLowerCase().startsWith("rentable_bot_"))
-            return false;
-
-        return true;
+        return !item.getName().toLowerCase().startsWith("rentable_bot_");
     }
 }

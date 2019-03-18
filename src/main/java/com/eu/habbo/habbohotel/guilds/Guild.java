@@ -246,7 +246,7 @@ public class Guild implements Runnable
 
     public int getDateCreated()
     {
-        return dateCreated;
+        return this.dateCreated;
     }
 
     public int getMemberCount()

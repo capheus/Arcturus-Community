@@ -54,7 +54,7 @@ public class PetInformationComposer extends MessageComposer
         this.response.appendInt(this.pet.getRespect());
         this.response.appendInt(this.pet.getUserId());
         this.response.appendInt((int) days + 1);
-        this.response.appendString(this.room.getFurniOwnerName(pet.getUserId())); //Owner name
+        this.response.appendString(this.room.getFurniOwnerName(this.pet.getUserId())); //Owner name
 
         this.response.appendInt(this.pet instanceof MonsterplantPet ? ((MonsterplantPet) this.pet).getRarity() : 0);
         this.response.appendBoolean(this.pet instanceof HorsePet && ((HorsePet) this.pet).hasSaddle());

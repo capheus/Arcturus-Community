@@ -1,4 +1,4 @@
-package com.eu.habbo.messages.outgoing.handshake;
+package com.eu.habbo.messages.outgoing.guilds.forums;
 
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;

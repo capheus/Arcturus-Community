@@ -10,7 +10,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class MarketplaceOwnItemsComposer extends MessageComposer
 {
-    private Habbo habbo;
+    private final Habbo habbo;
 
     public MarketplaceOwnItemsComposer(Habbo habbo)
     {
@@ -21,10 +21,10 @@ public class MarketplaceOwnItemsComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.MarketplaceOwnItemsComposer);
-        this.response.appendInt(habbo.getInventory().getSoldPriceTotal());
-        this.response.appendInt(habbo.getInventory().getMarketplaceItems().size());
+        this.response.appendInt(this.habbo.getInventory().getSoldPriceTotal());
+        this.response.appendInt(this.habbo.getInventory().getMarketplaceItems().size());
 
-        for(MarketPlaceOffer offer : habbo.getInventory().getMarketplaceItems())
+        for(MarketPlaceOffer offer : this.habbo.getInventory().getMarketplaceItems())
         {
             try
             {
@@ -68,7 +68,7 @@ public class MarketplaceOwnItemsComposer extends MessageComposer
             }
             catch (Exception e)
             {
-                e.printStackTrace();
+                Emulator.getLogging().logErrorLine(e);
             }
         }
 

@@ -40,15 +40,14 @@ public class FootballGame extends Game
         if(this.room == null || !this.room.isLoaded())
             return;
 
-        Habbo habbo = room.getHabbo(kicker);
+        Habbo habbo = this.room.getHabbo(kicker);
         if(habbo != null)
         {
             AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("FootballGoalScored"));
-        }
-
-        if (habbo.getHabboInfo().getId() != this.room.getOwnerId())
-        {
-            AchievementManager.progressAchievement(this.room.getOwnerId(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("FootballGoalScoredInRoom"));
+            if (habbo.getHabboInfo().getId() != this.room.getOwnerId())
+            {
+                AchievementManager.progressAchievement(this.room.getOwnerId(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("FootballGoalScoredInRoom"));
+            }
         }
 
         this.room.sendComposer(new RoomUserActionComposer(kicker, RoomUserAction.WAVE).compose());
@@ -58,5 +57,4 @@ public class FootballGame extends Game
            scoreBoard.getValue().changeScore(1);
         }
     }
-
 }

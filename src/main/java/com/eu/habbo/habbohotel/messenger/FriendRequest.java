@@ -25,16 +25,16 @@ public class FriendRequest
 
     public int getId()
     {
-        return id;
+        return this.id;
     }
 
     public String getUsername()
     {
-        return username;
+        return this.username;
     }
 
     public String getLook()
     {
-        return look;
+        return this.look;
     }
 }

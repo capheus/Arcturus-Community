@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.camera.CameraPurchaseSuccesfullComposer;
+import com.eu.habbo.messages.outgoing.catalog.NotEnoughPointsTypeComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.plugin.events.users.UserPurchasePictureEvent;
@@ -14,6 +15,11 @@ public class CameraPurchaseEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
+        if (this.client.getHabbo().getHabboInfo().getCredits() < Emulator.getConfig().getInt("camera.price.credits") || this.client.getHabbo().getHabboInfo().getCurrencyAmount(0) < Emulator.getConfig().getInt("camera.price.points"))
+        {
+            this.client.sendResponse(new NotEnoughPointsTypeComposer(this.client.getHabbo().getHabboInfo().getCredits() < Emulator.getConfig().getInt("camera.price.credits"), this.client.getHabbo().getHabboInfo().getCurrencyAmount(0) < Emulator.getConfig().getInt("camera.price.points"), 0));
+            return;
+        }
         if (this.client.getHabbo().getHabboInfo().getPhotoTimestamp() != 0)
         {
             if (!this.client.getHabbo().getHabboInfo().getPhotoJSON().isEmpty())

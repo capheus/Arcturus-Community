@@ -55,10 +55,7 @@ public class WiredTriggerFurniStateToggled extends InteractionWiredTrigger
                 
                 if (stuff[0] instanceof HabboItem)
                 {
-                    if(items.contains(stuff[0]))
-                    {
-                        return true;
-                    }
+                    return this.items.contains(stuff[0]);
                 }
             }
         }
@@ -68,21 +65,21 @@ public class WiredTriggerFurniStateToggled extends InteractionWiredTrigger
     @Override
     public String getWiredData()
     {
-        String wiredData = super.getDelay() + ":\t:";
+        StringBuilder wiredData = new StringBuilder(super.getDelay() + ":\t:");
 
-        if(items != null)
+        if(this.items != null)
         {
-            if (!items.isEmpty())
+            if (!this.items.isEmpty())
             {
                 for (HabboItem item : this.items)
                 {
-                    wiredData += item.getId() + ";";
+                    wiredData.append(item.getId()).append(";");
                 }
             } else
-                wiredData += "\t";
+                wiredData.append("\t");
         }
 
-        return wiredData;
+        return wiredData.toString();
     }
 
     @Override

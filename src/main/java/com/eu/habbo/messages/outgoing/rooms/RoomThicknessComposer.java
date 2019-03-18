@@ -7,7 +7,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class RoomThicknessComposer extends MessageComposer
 {
-
     private final Room room;
 
     public RoomThicknessComposer(Room room)

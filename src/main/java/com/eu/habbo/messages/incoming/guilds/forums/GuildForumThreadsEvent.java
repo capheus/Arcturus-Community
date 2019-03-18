@@ -10,8 +10,8 @@ public class GuildForumThreadsEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        int groupdId = packet.readInt();
-        int index = packet.readInt();
+        int groupdId = this.packet.readInt();
+        int index = this.packet.readInt();
 
         this.client.sendResponse(new GuildForumThreadsComposer(Emulator.getGameEnvironment().getGuildForumManager().getGuildForum(groupdId), index));
         this.client.sendResponse(new GuildForumDataComposer(Emulator.getGameEnvironment().getGuildForumManager().getGuildForum(groupdId), this.client.getHabbo()));

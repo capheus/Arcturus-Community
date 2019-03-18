@@ -66,9 +66,11 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
                 }
 
                 int oldRotation = item.getRotation();
+                boolean slideAnimation = true;
                 if(this.direction)
                 {
                     item.setRotation(setting.rotation);
+                    slideAnimation = false;
                 }
 
                 //room.sendComposer(new ItemStateComposer(item).compose());
@@ -82,7 +84,15 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
                     {
                         if (t.state != RoomTileState.INVALID)
                         {
-                            if (!room.hasHabbosAt(t.x, t.y))
+                            boolean canMove = true;
+
+                            if (t.x == item.getX() && t.y == item.getY())
+                            {
+                                canMove = !(room.getTopItemAt(t.x, t.y) == item);
+                                slideAnimation = false;
+                            }
+
+                            if (canMove && !room.hasHabbosAt(t.x, t.y))
                             {
                                 THashSet<RoomTile> tiles = room.getLayout().getTilesAt(t, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), setting.rotation);
                                 double highestZ = -1d;
@@ -114,6 +124,13 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
                                     double offsetZ = highestZ - item.getZ();
 
                                     tilesToUpdate.addAll(room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), oldRotation));
+
+                                    if (!slideAnimation)
+                                    {
+                                        item.setX(t.x);
+                                        item.setY(t.y);
+                                    }
+
                                     room.sendComposer(new FloorItemOnRollerComposer(item, null, t, offsetZ, room).compose());
                                 }
                             }
@@ -135,11 +152,11 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
     {
         this.refresh();
 
-        String data = this.settings.size() + ":";
+        StringBuilder data = new StringBuilder(this.settings.size() + ":");
 
         if(this.settings.isEmpty())
         {
-            data += ";";
+            data.append(";");
         }
         else
         {
@@ -147,7 +164,7 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
 
             for (WiredMatchFurniSetting item : this.settings)
             {
-                HabboItem i = null;
+                HabboItem i;
 
                 if (room != null)
                 {
@@ -155,15 +172,15 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
 
                     if (i != null)
                     {
-                        data += item.toString(this.checkForWiredResetPermission && i.allowWiredResetState()) + ";";
+                        data.append(item.toString(this.checkForWiredResetPermission && i.allowWiredResetState())).append(";");
                     }
                 }
             }
         }
 
-        data += ":" + (this.state ? 1 : 0) + ":" + (this.direction ? 1 : 0) + ":" + (this.position ? 1 : 0) + ":" + getDelay();
+        data.append(":").append(this.state ? 1 : 0).append(":").append(this.direction ? 1 : 0).append(":").append(this.position ? 1 : 0).append(":").append(this.getDelay());
 
-        return data;
+        return data.toString();
     }
 
     @Override
@@ -175,7 +192,7 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
 
         String[] items = data[1].split(";");
 
-        for(int i = 0; i < itemCount; i++)
+        for(int i = 0; i < items.length; i++)
         {
             try
             {
@@ -190,8 +207,7 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
             }
             catch (Exception e)
             {
-                System.out.println(set.getString("wired_data"));
-                e.printStackTrace();
+                Emulator.getLogging().logErrorLine(e);
             }
         }
 

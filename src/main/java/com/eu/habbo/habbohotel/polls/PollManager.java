@@ -86,7 +86,7 @@ public class PollManager
             statement.setInt(2, habbo.getHabboInfo().getId());
             try (ResultSet set = statement.executeQuery())
             {
-                while (set.next())
+                if (set.isBeforeFirst())
                 {
                    return true;
                 }

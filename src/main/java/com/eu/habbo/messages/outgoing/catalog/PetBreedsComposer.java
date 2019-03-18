@@ -20,7 +20,7 @@ public class PetBreedsComposer extends MessageComposer
     @Override
     public ServerMessage compose()
     {
-        if(petRaces == null)
+        if(this.petRaces == null)
             return null;
         this.response.init(Outgoing.PetBreedsComposer);
         this.response.appendString(this.petName);

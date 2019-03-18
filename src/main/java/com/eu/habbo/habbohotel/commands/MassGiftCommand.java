@@ -26,75 +26,76 @@ public class MassGiftCommand extends Command
     {
         if(params.length >= 2)
         {
+            int itemId;
+
             try
             {
-                int itemId = Integer.valueOf(params[1]);
-
-                if(itemId < 0)
-                {
-                    gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_gift.not_a_number"), RoomChatMessageBubbles.ALERT);
-                    return true;
-                }
-
-                final Item baseItem = Emulator.getGameEnvironment().getItemManager().getItem(itemId);
-
-                if(baseItem == null)
-                {
-                    gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_gift.not_found").replace("%itemid%", itemId + ""), RoomChatMessageBubbles.ALERT);
-                    return true;
-                }
-
-                String message = "";
-
-                if(params.length > 2)
-                {
-                    for (int i = 2; i < params.length; i++)
-                    {
-                        message += params[i] + " ";
-                    }
-                }
-
-                final String finalMessage = message;
-
-                THashMap<String, String> keys = new THashMap<>();
-                keys.put("display", "BUBBLE");
-                keys.put("image", "${image.library.url}notifications/gift.gif");
-                keys.put("message", Emulator.getTexts().getValue("generic.gift.received.anonymous"));
-                ServerMessage giftNotificiationMessage = new BubbleAlertComposer(BubbleAlertKeys.RECEIVED_BADGE.key, keys).compose();
-
-                Emulator.getThreading().run(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        for(Map.Entry<Integer, Habbo> set : Emulator.getGameEnvironment().getHabboManager().getOnlineHabbos().entrySet())
-                        {
-                            Habbo habbo = set.getValue();
-
-                            HabboItem item = Emulator.getGameEnvironment().getItemManager().createItem(0, baseItem, 0, 0, "");
-
-                            Item giftItem = Emulator.getGameEnvironment().getItemManager().getItem((Integer) Emulator.getGameEnvironment().getCatalogManager().giftFurnis.values().toArray()[Emulator.getRandom().nextInt(Emulator.getGameEnvironment().getCatalogManager().giftFurnis.size())]);
-
-                            String extraData = "1\t" + item.getId();
-                            extraData += "\t0\t0\t0\t"+ finalMessage +"\t0\t0";
-
-                            Emulator.getGameEnvironment().getItemManager().createGift(habbo.getHabboInfo().getUsername(), giftItem, extraData, 0, 0);
-
-                            habbo.getClient().sendResponse(new InventoryRefreshComposer());
-                            habbo.getClient().sendResponse(giftNotificiationMessage);
-                        }
-                    }
-                });
-
-
-                return true;
+                itemId = Integer.valueOf(params[1]);
             }
             catch (Exception e)
             {
-                e.printStackTrace();
                 gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_gift.not_a_number"), RoomChatMessageBubbles.ALERT);
                 return true;
             }
+
+            if(itemId <= 0)
+            {
+                gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_gift.not_a_number"), RoomChatMessageBubbles.ALERT);
+                return true;
+            }
+
+            final Item baseItem = Emulator.getGameEnvironment().getItemManager().getItem(itemId);
+
+            if(baseItem == null)
+            {
+                gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_gift.not_found").replace("%itemid%", itemId + ""), RoomChatMessageBubbles.ALERT);
+                return true;
+            }
+
+            StringBuilder message = new StringBuilder();
+
+            if(params.length > 2)
+            {
+                for (int i = 2; i < params.length; i++)
+                {
+                    message.append(params[i]).append(" ");
+                }
+            }
+
+            final String finalMessage = message.toString();
+
+            THashMap<String, String> keys = new THashMap<>();
+            keys.put("display", "BUBBLE");
+            keys.put("image", "${image.library.url}notifications/gift.gif");
+            keys.put("message", Emulator.getTexts().getValue("generic.gift.received.anonymous"));
+            ServerMessage giftNotificiationMessage = new BubbleAlertComposer(BubbleAlertKeys.RECEIVED_BADGE.key, keys).compose();
+
+            Emulator.getThreading().run(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    for(Map.Entry<Integer, Habbo> set : Emulator.getGameEnvironment().getHabboManager().getOnlineHabbos().entrySet())
+                    {
+                        Habbo habbo = set.getValue();
+
+                        HabboItem item = Emulator.getGameEnvironment().getItemManager().createItem(0, baseItem, 0, 0, "");
+
+                        Item giftItem = Emulator.getGameEnvironment().getItemManager().getItem((Integer) Emulator.getGameEnvironment().getCatalogManager().giftFurnis.values().toArray()[Emulator.getRandom().nextInt(Emulator.getGameEnvironment().getCatalogManager().giftFurnis.size())]);
+
+                        String extraData = "1\t" + item.getId();
+                        extraData += "\t0\t0\t0\t"+ finalMessage +"\t0\t0";
+
+                        Emulator.getGameEnvironment().getItemManager().createGift(habbo.getHabboInfo().getUsername(), giftItem, extraData, 0, 0);
+
+                        habbo.getClient().sendResponse(new InventoryRefreshComposer());
+                        habbo.getClient().sendResponse(giftNotificiationMessage);
+                    }
+                }
+            });
+
+
+            return true;
         }
 
         return false;

@@ -20,16 +20,16 @@ public class HotelAlertLinkCommand extends Command
         }
 
         String url = params[1];
-        String message = "";
+        StringBuilder message = new StringBuilder();
         for (int i = 2; i < params.length; i++)
         {
-            message += params[i];
-            message += " ";
+            message.append(params[i]);
+            message.append(" ");
         }
 
-        message += "\r\r-<b>" + gameClient.getHabbo().getHabboInfo().getUsername() + "</b>";
+        message.append("\r\r-<b>").append(gameClient.getHabbo().getHabboInfo().getUsername()).append("</b>");
 
-        Emulator.getGameServer().getGameClientManager().sendBroadcastResponse(new StaffAlertWithLinkComposer(message, url).compose());
+        Emulator.getGameServer().getGameClientManager().sendBroadcastResponse(new StaffAlertWithLinkComposer(message.toString(), url).compose());
         return true;
     }
 }

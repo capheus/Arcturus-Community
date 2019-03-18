@@ -69,8 +69,8 @@ public class InteractionVendingMachine extends HabboItem
                         Emulator.getThreading().run(this, 1000);
                         Emulator.getThreading().run(new RoomUnitGiveHanditem(client.getHabbo().getRoomUnit(), room, this.getBaseItem().getRandomVendingItem()));
 
-                        if (this.getBaseItem().getEffectM() > 0 && client.getHabbo().getHabboInfo().getGender() == HabboGender.M) room.giveEffect(client.getHabbo(), this.getBaseItem().getEffectM());
-                        if (this.getBaseItem().getEffectF() > 0 && client.getHabbo().getHabboInfo().getGender() == HabboGender.F) room.giveEffect(client.getHabbo(), this.getBaseItem().getEffectF());
+                        if (this.getBaseItem().getEffectM() > 0 && client.getHabbo().getHabboInfo().getGender() == HabboGender.M) room.giveEffect(client.getHabbo(), this.getBaseItem().getEffectM(), -1);
+                        if (this.getBaseItem().getEffectF() > 0 && client.getHabbo().getHabboInfo().getGender() == HabboGender.F) room.giveEffect(client.getHabbo(), this.getBaseItem().getEffectF(), -1);
                     }
                 }
                 else

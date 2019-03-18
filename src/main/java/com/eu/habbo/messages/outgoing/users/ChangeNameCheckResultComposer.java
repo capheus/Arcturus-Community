@@ -31,9 +31,9 @@ public class ChangeNameCheckResultComposer extends MessageComposer
     {
         this.response.init(Outgoing.UnknownComposer_2698);
         this.response.appendInt(this.status);
-        this.response.appendString(name);
+        this.response.appendString(this.name);
         this.response.appendInt(this.suggestions.size());
-        for (String suggestion : suggestions)
+        for (String suggestion : this.suggestions)
         {
             this.response.appendString(suggestion);
         }

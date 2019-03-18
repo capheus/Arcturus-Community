@@ -22,7 +22,7 @@ public class ExecuteCommand extends RCONMessage<ExecuteCommand.JSONExecuteComman
 
             if (habbo == null)
             {
-                status = HABBO_NOT_FOUND;
+                this.status = HABBO_NOT_FOUND;
                 return;
             }
 
@@ -31,12 +31,12 @@ public class ExecuteCommand extends RCONMessage<ExecuteCommand.JSONExecuteComman
         }
         catch (Exception e)
         {
-            status = STATUS_ERROR;
+            this.status = STATUS_ERROR;
             Emulator.getLogging().logErrorLine(e);
         }
     }
 
-    public static class JSONExecuteCommand
+    static class JSONExecuteCommand
     {
 
         public int user_id;

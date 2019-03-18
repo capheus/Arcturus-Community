@@ -34,10 +34,10 @@ public abstract class CatalogPage implements Comparable<CatalogPage>, ISerialize
     protected String textTwo;
     protected String textDetails;
     protected String textTeaser;
-    protected TIntArrayList offerIds = new TIntArrayList();
-    protected THashMap<Integer, CatalogPage> childPages = new THashMap<>();;
-    private TIntObjectMap<CatalogItem> catalogItems = TCollections.synchronizedMap(new TIntObjectHashMap<>());
-    private ArrayList<Integer> included = new ArrayList<>();
+    protected final TIntArrayList offerIds = new TIntArrayList();
+    protected final THashMap<Integer, CatalogPage> childPages = new THashMap<>();
+    private final TIntObjectMap<CatalogItem> catalogItems = TCollections.synchronizedMap(new TIntObjectHashMap<>());
+    private final ArrayList<Integer> included = new ArrayList<>();
 
     public CatalogPage(ResultSet set) throws SQLException
     {

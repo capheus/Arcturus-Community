@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.rooms;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.games.GameTeamColors;
 import com.eu.habbo.habbohotel.items.ICycleable;
+import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.*;
 import com.eu.habbo.habbohotel.items.interactions.games.InteractionGameGate;
 import com.eu.habbo.habbohotel.items.interactions.games.InteractionGameScoreboard;
@@ -24,6 +25,9 @@ import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public class RoomSpecialTypes
@@ -98,12 +102,26 @@ public class RoomSpecialTypes
         }
     }
 
-    public InteractionBattleBanzaiTeleporter getRandomTeleporter()
+    public InteractionBattleBanzaiTeleporter getRandomTeleporter(Item baseItem, InteractionBattleBanzaiTeleporter exclude)
     {
-        synchronized (this.banzaiTeleporters)
+        List<InteractionBattleBanzaiTeleporter> teleporterList = new ArrayList<>();
+        for (InteractionBattleBanzaiTeleporter teleporter : this.banzaiTeleporters.values())
         {
-            return (InteractionBattleBanzaiTeleporter) this.banzaiTeleporters.values().toArray()[Emulator.getRandom().nextInt(this.banzaiTeleporters.size())];
+            if (teleporter.getBaseItem() == baseItem)
+            {
+                teleporterList.add(teleporter);
+            }
         }
+
+        teleporterList.remove(exclude);
+
+        if (!teleporterList.isEmpty())
+        {
+            Collections.shuffle(teleporterList);
+            return teleporterList.get(0);
+        }
+
+        return null;
     }
 
 
@@ -241,7 +259,7 @@ public class RoomSpecialTypes
 
     public THashMap<Integer, InteractionRoller> getRollers()
     {
-        return rollers;
+        return this.rollers;
     }
 
 
@@ -536,7 +554,7 @@ public class RoomSpecialTypes
     {
         synchronized (this.wiredExtras)
         {
-            this.wiredExtras.remove(extra);
+            this.wiredExtras.remove(extra.getId());
         }
     }
 

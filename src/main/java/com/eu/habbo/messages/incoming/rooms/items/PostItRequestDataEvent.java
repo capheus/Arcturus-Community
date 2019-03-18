@@ -21,7 +21,7 @@ public class PostItRequestDataEvent extends MessageHandler
 
             if(item instanceof InteractionPostIt)
             {
-                this.client.sendResponse(new PostItDataComposer((InteractionPostIt) item, room.hasRights(this.client.getHabbo())));
+                this.client.sendResponse(new PostItDataComposer((InteractionPostIt) item));
             }
         }
     }

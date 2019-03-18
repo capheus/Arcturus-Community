@@ -23,7 +23,7 @@ public class RoomPromotionMessageComposer extends MessageComposer
 
         this.response.init(Outgoing.RoomEventMessageComposer);
 
-        if (room == null || roomPromotion == null)
+        if (this.room == null || this.roomPromotion == null)
         {
 
             this.response.appendInt(-1);
@@ -46,15 +46,15 @@ public class RoomPromotionMessageComposer extends MessageComposer
         }
         else
         {
-            this.response.appendInt(room.getId());
-            this.response.appendInt(room.getOwnerId());
-            this.response.appendString(room.getOwnerName());
+            this.response.appendInt(this.room.getId());
+            this.response.appendInt(this.room.getOwnerId());
+            this.response.appendString(this.room.getOwnerName());
 
             this.response.appendInt(1);
             this.response.appendInt(1);
 
-            this.response.appendString(roomPromotion.getTitle());
-            this.response.appendString(roomPromotion.getDescription());
+            this.response.appendString(this.roomPromotion.getTitle());
+            this.response.appendString(this.roomPromotion.getDescription());
             this.response.appendInt(0);
             this.response.appendInt(0);
             this.response.appendInt(0);

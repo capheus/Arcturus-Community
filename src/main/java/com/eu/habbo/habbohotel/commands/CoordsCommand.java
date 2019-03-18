@@ -21,7 +21,7 @@ public class CoordsCommand extends Command {
 
         if (params.length == 1)
         {
-            gameClient.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("commands.generic.cmd_coords.title") + "\r\n" +
+            gameClient.getHabbo().alert(Emulator.getTexts().getValue("commands.generic.cmd_coords.title") + "\r\n" +
                     "x: " + gameClient.getHabbo().getRoomUnit().getX() + "\r" +
                     "y: " + gameClient.getHabbo().getRoomUnit().getY() + "\r" +
                     "z: " + (gameClient.getHabbo().getRoomUnit().hasStatus(RoomUnitStatus.SIT) ? gameClient.getHabbo().getRoomUnit().getStatus(RoomUnitStatus.SIT) : gameClient.getHabbo().getRoomUnit().getZ()) + "\r" +
@@ -31,7 +31,7 @@ public class CoordsCommand extends Command {
                     "Tile State: " + gameClient.getHabbo().getHabboInfo().getCurrentRoom().getLayout().getTile(gameClient.getHabbo().getRoomUnit().getX(), gameClient.getHabbo().getRoomUnit().getY()).state.name() + "\r" +
                     "Tile Walkable: " + gameClient.getHabbo().getHabboInfo().getCurrentRoom().getLayout().getTile(gameClient.getHabbo().getRoomUnit().getX(), gameClient.getHabbo().getRoomUnit().getY()).isWalkable() + "\r" +
                     "Tile relative height: " + gameClient.getHabbo().getHabboInfo().getCurrentRoom().getLayout().getTile(gameClient.getHabbo().getRoomUnit().getX(), gameClient.getHabbo().getRoomUnit().getY()).relativeHeight() + "\r" +
-                    "Tile stack height: " + gameClient.getHabbo().getHabboInfo().getCurrentRoom().getLayout().getTile(gameClient.getHabbo().getRoomUnit().getX(), gameClient.getHabbo().getRoomUnit().getY()).getStackHeight()));
+                    "Tile stack height: " + gameClient.getHabbo().getHabboInfo().getCurrentRoom().getLayout().getTile(gameClient.getHabbo().getRoomUnit().getX(), gameClient.getHabbo().getRoomUnit().getY()).getStackHeight());
 
         }
         else
@@ -40,14 +40,14 @@ public class CoordsCommand extends Command {
 
             if (tile != null)
             {
-                gameClient.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("commands.generic.cmd_coords.title") + "\r\n" +
+                gameClient.getHabbo().alert(Emulator.getTexts().getValue("commands.generic.cmd_coords.title") + "\r\n" +
                 "x: " + tile.x + "\r" +
                 "y: " + tile.y + "\r" +
                 "z: " + tile.z + "\r" +
                 "Tile State: " + tile.state.name() + "\r" +
                 "Tile Relative Height: " + tile.relativeHeight() + "\r" +
                 "Tile Stack Height: " + tile.getStackHeight() + "\r" +
-                "Tile Walkable: " + (tile.isWalkable() ? "Yes" : "No") + "\r"));
+                "Tile Walkable: " + (tile.isWalkable() ? "Yes" : "No") + "\r");
             }
             else
             {

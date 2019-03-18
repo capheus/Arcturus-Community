@@ -52,7 +52,7 @@ public class RoomSettingsSaveEvent extends MessageHandler
 
                 int usersMax = this.packet.readInt();
                 int categoryId = this.packet.readInt();
-                String tags = "";
+                StringBuilder tags = new StringBuilder();
                 int count = Math.min(this.packet.readInt(), 2);
                 for(int i = 0; i < count; i++)
                 {
@@ -63,21 +63,21 @@ public class RoomSettingsSaveEvent extends MessageHandler
                         this.client.sendResponse(new RoomEditSettingsErrorComposer(room.getId(), RoomEditSettingsErrorComposer.TAGS_TOO_LONG, ""));
                         return;
                     }
-                    tags += tag + ";";
+                    tags.append(tag).append(";");
                 }
 
-                if (!Emulator.getGameEnvironment().getWordFilter().filter(tags, this.client.getHabbo()).equals(tags))
+                if (!Emulator.getGameEnvironment().getWordFilter().filter(tags.toString(), this.client.getHabbo()).equals(tags.toString()))
                 {
                     this.client.sendResponse(new RoomEditSettingsErrorComposer(room.getId(), RoomEditSettingsErrorComposer.ROOM_TAGS_BADWWORDS, ""));
                     return;
                 }
 
 
-                if (!tags.isEmpty())
+                if (tags.length() > 0)
                 {
                     for (String s : Emulator.getConfig().getValue("hotel.room.tags.staff").split(";"))
                     {
-                        if (tags.contains(s))
+                        if (tags.toString().contains(s))
                         {
                             this.client.sendResponse(new RoomEditSettingsErrorComposer(room.getId(), RoomEditSettingsErrorComposer.RESTRICTED_TAGS, "1"));
                             return;
@@ -98,15 +98,15 @@ public class RoomSettingsSaveEvent extends MessageHandler
                 {
                     RoomCategory category = Emulator.getGameEnvironment().getRoomManager().getCategory(categoryId);
 
-                    String message = "";
+                    String message;
 
                     if(category == null)
                     {
-                        message = Emulator.getTexts().getValue("scripter.warning.roomsettings.category.nonexisting").replace("%username%", client.getHabbo().getHabboInfo().getUsername());
+                        message = Emulator.getTexts().getValue("scripter.warning.roomsettings.category.nonexisting").replace("%username%", this.client.getHabbo().getHabboInfo().getUsername());
                     }
                     else
                     {
-                        message = Emulator.getTexts().getValue("scripter.warning.roomsettings.category.permission").replace("%username%", client.getHabbo().getHabboInfo().getUsername()).replace("%category%", Emulator.getGameEnvironment().getRoomManager().getCategory(categoryId) + "");
+                        message = Emulator.getTexts().getValue("scripter.warning.roomsettings.category.permission").replace("%username%", this.client.getHabbo().getHabboInfo().getUsername()).replace("%category%", Emulator.getGameEnvironment().getRoomManager().getCategory(categoryId) + "");
                     }
 
                     Emulator.getGameEnvironment().getModToolManager().quickTicket(this.client.getHabbo(), "Scripter", message);
@@ -114,7 +114,7 @@ public class RoomSettingsSaveEvent extends MessageHandler
                 }
 
 
-                room.setTags(tags);
+                room.setTags(tags.toString());
                 room.setTradeMode(this.packet.readInt());
                 room.setAllowPets(this.packet.readBoolean());
                 room.setAllowPetsEat(this.packet.readBoolean());

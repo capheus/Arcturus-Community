@@ -16,7 +16,7 @@ public class HabnamCommand extends Command
         {
             if (gameClient.getHabbo().getHabboInfo().getCurrentRoom() != null)
             {
-                gameClient.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(gameClient.getHabbo(), 140);
+                gameClient.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(gameClient.getHabbo(), 140, 30);
                 return true;
             }
         }

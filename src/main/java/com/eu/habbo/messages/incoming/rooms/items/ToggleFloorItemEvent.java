@@ -65,20 +65,20 @@ public class ToggleFloorItemEvent extends MessageHandler
 
                         if (totemLeg.getExtradata().equals("2") && totemHead.getExtradata().equals("5"))
                         {
-                            room.giveEffect(this.client.getHabbo(), 23);
+                            room.giveEffect(this.client.getHabbo(), 23, -1);
                             return;
                         }
 
                         if (totemLeg.getExtradata().equals("10") && totemHead.getExtradata().equals("9"))
                         {
-                            room.giveEffect(this.client.getHabbo(), 26);
+                            room.giveEffect(this.client.getHabbo(), 26, -1);
                             return;
                         }
                     } else if(item.getExtradata().equals("0"))
                     {
                         if(totemLeg.getExtradata().equals("7") && totemHead.getExtradata().equals("10"))
                         {
-                            room.giveEffect(this.client.getHabbo(), 24);
+                            room.giveEffect(this.client.getHabbo(), 24, -1);
                             return;
                         }
 
@@ -87,7 +87,7 @@ public class ToggleFloorItemEvent extends MessageHandler
                     {
                         if(totemLeg.getExtradata().equals("9") && totemHead.getExtradata().equals("12"))
                         {
-                            room.giveEffect(this.client.getHabbo(), 25);
+                            room.giveEffect(this.client.getHabbo(), 25, -1);
                             return;
                         }
                     }
@@ -98,7 +98,18 @@ public class ToggleFloorItemEvent extends MessageHandler
             if(item instanceof InteractionMonsterPlantSeed)
             {
                 Emulator.getThreading().run(new QueryDeleteHabboItem(item));
-                MonsterplantPet pet = Emulator.getGameEnvironment().getPetManager().createMonsterplant(room, this.client.getHabbo(), item.getBaseItem().getName().contains("rare"), room.getLayout().getTile(item.getX(), item.getY()));
+                int rarity = 0;
+                if (item.getExtradata().isEmpty()) rarity = InteractionMonsterPlantSeed.randomRarityLevel();
+                else
+                {
+                    try
+                    {
+                        rarity = Integer.valueOf(item.getExtradata()) - 1;
+                    }
+                    catch (Exception e)
+                    {}
+                }
+                MonsterplantPet pet = Emulator.getGameEnvironment().getPetManager().createMonsterplant(room, this.client.getHabbo(), item.getBaseItem().getName().contains("rare"), room.getLayout().getTile(item.getX(), item.getY()), rarity);
                 room.sendComposer(new RemoveFloorItemComposer(item, true).compose());
                 room.removeHabboItem(item);
                 room.updateTile(room.getLayout().getTile(item.getX(), item.getY()));
@@ -129,7 +140,7 @@ public class ToggleFloorItemEvent extends MessageHandler
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+            Emulator.getLogging().logErrorLine(e);
         }
     }
 }

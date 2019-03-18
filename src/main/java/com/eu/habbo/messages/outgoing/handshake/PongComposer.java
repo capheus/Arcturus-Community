@@ -6,7 +6,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class PongComposer extends MessageComposer
 {
-    private int id;
+    private final int id;
 
     public PongComposer(int id)
     {

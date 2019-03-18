@@ -1,15 +1,20 @@
 package com.eu.habbo.habbohotel.items.interactions.games.battlebanzai;
 
+import com.eu.habbo.habbohotel.games.GameState;
 import com.eu.habbo.habbohotel.games.battlebanzai.BattleBanzaiGame;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
+import gnu.trove.set.hash.THashSet;
+import org.apache.commons.math3.util.Pair;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class InteractionBattleBanzaiTile extends HabboItem
 {
@@ -78,35 +83,10 @@ public class InteractionBattleBanzaiTile extends HabboItem
             if(game == null)
                 return;
 
-            if(!game.isRunning)
+            if(!game.state.equals(GameState.RUNNING))
                 return;
 
-
-            int check = state - (habbo.getHabboInfo().getGamePlayer().getTeamColor().type * 3);
-            if(check == 3 || check == 4)
-            {
-                state++;
-
-                if(state % 3 == 2)
-                {
-                    habbo.getHabboInfo().getGamePlayer().addScore(BattleBanzaiGame.POINTS_LOCK_TILE);
-                    game.tileLocked(habbo.getHabboInfo().getGamePlayer().getTeamColor(), this, habbo);
-                }
-                else
-                {
-                    habbo.getHabboInfo().getGamePlayer().addScore(BattleBanzaiGame.POINTS_FILL_TILE);
-                }
-            }
-            else
-            {
-                state = (habbo.getHabboInfo().getGamePlayer().getTeamColor().type * 3) + 3;
-
-                habbo.getHabboInfo().getGamePlayer().addScore(BattleBanzaiGame.POINTS_HIJACK_TILE);
-            }
-
-            game.refreshCounters(habbo.getHabboInfo().getGamePlayer().getTeamColor());
-            this.setExtradata(state + "");
-            room.updateItem(this);
+            game.markTile(habbo, this, state);
         }
 
     }
@@ -117,5 +97,16 @@ public class InteractionBattleBanzaiTile extends HabboItem
             return false;
 
         return Integer.valueOf(this.getExtradata()) % 3 == 2;
+    }
+
+    @Override
+    public boolean canStackAt(Room room, List<Pair<RoomTile, THashSet<HabboItem>>> itemsAtLocation)
+    {
+        for (Pair<RoomTile, THashSet<HabboItem>> set : itemsAtLocation)
+        {
+            if (set.getValue() != null && !set.getValue().isEmpty()) return false;
+        }
+
+        return super.canStackAt(room, itemsAtLocation);
     }
 }

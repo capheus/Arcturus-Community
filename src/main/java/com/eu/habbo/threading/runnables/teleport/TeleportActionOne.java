@@ -44,6 +44,6 @@ public class TeleportActionOne implements Runnable
             this.client.getHabbo().getRoomUnit().setLocation(this.room.getLayout().getTile(this.currentTeleport.getX(), this.currentTeleport.getY()));
         }
 
-        Emulator.getThreading().run(new TeleportActionTwo(currentTeleport, room, client), delay);
+        Emulator.getThreading().run(new TeleportActionTwo(this.currentTeleport, this.room, this.client), delay);
     }
 }

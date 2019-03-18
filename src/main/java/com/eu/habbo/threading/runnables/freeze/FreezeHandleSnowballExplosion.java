@@ -55,46 +55,63 @@ class FreezeHandleSnowballExplosion implements Runnable
 
             THashSet<InteractionFreezeTile> freezeTiles = new THashSet<>();
 
-            for (RoomTile t : tiles)
+            for (RoomTile roomTile : tiles)
             {
-                THashSet<HabboItem> items = this.thrownData.room.getItemsAt(t);
+                THashSet<HabboItem> items = this.thrownData.room.getItemsAt(roomTile);
 
-                for (HabboItem i : items)
+                for (HabboItem freezeTile : items)
                 {
-                    if (i instanceof InteractionFreezeTile)
+                    if (freezeTile instanceof InteractionFreezeTile || freezeTile instanceof InteractionFreezeBlock)
                     {
-                        i.setExtradata("11000");
-                        freezeTiles.add((InteractionFreezeTile) i);
-                        this.thrownData.room.updateItem(i);
-                        i.setExtradata("0");
-
-                        THashSet<Habbo> habbos = new THashSet<>();
-                        habbos.addAll(this.thrownData.room.getHabbosAt(i.getX(), i.getY()));
-
-                        for (Habbo habbo : habbos)
+                        int distance = 0;
+                        if (freezeTile.getX() != this.thrownData.targetTile.getX() && freezeTile.getY() != this.thrownData.targetTile.getY())
                         {
-                            if (habbo.getHabboInfo().getGamePlayer() != null && habbo.getHabboInfo().getGamePlayer() instanceof FreezeGamePlayer)
+                            distance = Math.abs(freezeTile.getX() - this.thrownData.targetTile.getX());
+                        }
+                        else
+                        {
+                            distance = (int)Math.ceil(this.thrownData.room.getLayout().getTile(this.thrownData.targetTile.getX(), this.thrownData.targetTile.getY()).distance(roomTile));
+                        }
+
+                        if (freezeTile instanceof InteractionFreezeTile)
+                        {
+                            freezeTile.setExtradata("11" + String.format("%03d", distance * 100)); //TODO Investigate this further. Probably height dependent or something.
+                            freezeTiles.add((InteractionFreezeTile) freezeTile);
+                            this.thrownData.room.updateItem(freezeTile);
+
+
+                            THashSet<Habbo> habbos = new THashSet<>();
+                            habbos.addAll(this.thrownData.room.getHabbosAt(freezeTile.getX(), freezeTile.getY()));
+
+                            for (Habbo habbo : habbos)
                             {
-                                FreezeGamePlayer hPlayer = (FreezeGamePlayer) habbo.getHabboInfo().getGamePlayer();
-                                if(!hPlayer.canGetFrozen())
-                                    continue;
+                                if (habbo.getHabboInfo().getGamePlayer() != null && habbo.getHabboInfo().getGamePlayer() instanceof FreezeGamePlayer)
+                                {
+                                    FreezeGamePlayer hPlayer = (FreezeGamePlayer) habbo.getHabboInfo().getGamePlayer();
+                                    if (!hPlayer.canGetFrozen())
+                                        continue;
 
-                                if (hPlayer.getTeamColor().equals(player.getTeamColor()))
-                                    player.addScore(-FreezeGame.FREEZE_LOOSE_POINTS);
-                                else
-                                    player.addScore(FreezeGame.FREEZE_LOOSE_POINTS);
+                                    if (hPlayer.getTeamColor().equals(player.getTeamColor()))
+                                        player.addScore(-FreezeGame.FREEZE_LOOSE_POINTS);
+                                    else
+                                        player.addScore(FreezeGame.FREEZE_LOOSE_POINTS);
 
-                                ((FreezeGamePlayer)habbo.getHabboInfo().getGamePlayer()).freeze();
+                                    ((FreezeGamePlayer) habbo.getHabboInfo().getGamePlayer()).freeze();
 
-                                AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("EsA"));
+                                    if (this.thrownData.habbo != habbo)
+                                    {
+                                        AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("EsA"));
+                                    }
+                                }
                             }
                         }
-                    } else if (i instanceof InteractionFreezeBlock)
-                    {
-                        if (i.getExtradata().equalsIgnoreCase("0"))
+                        else if (freezeTile instanceof InteractionFreezeBlock)
                         {
-                            game.explodeBox((InteractionFreezeBlock) i);
-                            player.addScore(FreezeGame.DESTROY_BLOCK_POINTS);
+                            if (freezeTile.getExtradata().equalsIgnoreCase("0"))
+                            {
+                                game.explodeBox((InteractionFreezeBlock) freezeTile, distance * 100);
+                                player.addScore(FreezeGame.DESTROY_BLOCK_POINTS);
+                            }
                         }
                     }
                 }

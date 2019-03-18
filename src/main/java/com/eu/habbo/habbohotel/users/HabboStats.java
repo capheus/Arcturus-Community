@@ -71,9 +71,9 @@ public class HabboStats implements Runnable
     private final TIntArrayList ignoredUsers;
     public final TIntArrayList secretRecipes;
 
-    public int citizenshipLevel = -1;
-    public int helpersLevel = -1;
-    public boolean perkTrade = false;
+    public int citizenshipLevel;
+    public int helpersLevel;
+    public boolean perkTrade;
 
     public final HabboNavigatorWindowSettings navigatorWindowSettings;
     public final THashMap<String, Object> cache;
@@ -82,25 +82,25 @@ public class HabboStats implements Runnable
     public int chatCounter;
     public long lastChat;
     public long lastUsersSearched;
-    public boolean nux = false;
-    public boolean nuxReward = false;
+    public boolean nux;
+    public boolean nuxReward;
     public int nuxStep = 1;
 
-    private int muteEndTime = 0;
+    private int muteEndTime;
     public int mutedCount = 0;
     public boolean mutedBubbleTracker = false;
 
     public String changeNameChecked = "";
-    public TIntArrayList calendarRewardsClaimed;
+    public final TIntArrayList calendarRewardsClaimed;
 
-    public boolean allowNameChange = false;
+    public boolean allowNameChange;
     public boolean isPurchasingFurniture = false;
 
     public THashMap<Integer, List<Integer>> ltdPurchaseLog = new THashMap<>(0);
     public long lastTradeTimestamp = Emulator.getIntUnixTimestamp();
     public long lastPurchaseTimestamp = Emulator.getIntUnixTimestamp();
     public long lastGiftTimestamp = Emulator.getIntUnixTimestamp();
-    public TIntObjectMap<HabboOfferPurchase> offerCache = new TIntObjectHashMap<>();
+    public final TIntObjectMap<HabboOfferPurchase> offerCache = new TIntObjectHashMap<>();
 
     private HabboStats(ResultSet set, Habbo habbo) throws SQLException
     {
@@ -148,7 +148,7 @@ public class HabboStats implements Runnable
         this.muteEndTime = set.getInt("mute_end_timestamp");
         this.allowNameChange = set.getString("allow_name_change").equalsIgnoreCase("1");
         this.perkTrade = set.getString("perk_trade").equalsIgnoreCase("1");
-        this.nuxReward = nux;
+        this.nuxReward = this.nux;
 
         try (PreparedStatement statement = set.getStatement().getConnection().prepareStatement("SELECT * FROM user_window_settings WHERE user_id = ? LIMIT 1"))
         {
@@ -508,9 +508,9 @@ public class HabboStats implements Runnable
         this.rentedItemId = rentedItemId;
     }
 
-    public boolean canRentSpace()
+    public boolean isRentingSpace()
     {
-        return this.rentedTimeEnd < Emulator.getIntUnixTimestamp();
+        return this.rentedTimeEnd >= Emulator.getIntUnixTimestamp();
     }
 
     public int getClubExpireTimestamp()
@@ -564,7 +564,7 @@ public class HabboStats implements Runnable
         if (Emulator.getConfig().getInt("hotel.rooms.max.favorite") <= this.favoriteRooms.size())
             return false;
 
-        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO users_favorite_rooms (user_id, room_id) VALUES (?, ?)");)
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO users_favorite_rooms (user_id, room_id) VALUES (?, ?)"))
         {
             statement.setInt(1, this.habbo.getHabboInfo().getId());
             statement.setInt(2, roomId);
@@ -656,7 +656,7 @@ public class HabboStats implements Runnable
 
     public int addMuteTime(int seconds)
     {
-        if (remainingMuteTime() == 0)
+        if (this.remainingMuteTime() == 0)
         {
             this.muteEndTime = Emulator.getIntUnixTimestamp();
         }
@@ -664,7 +664,7 @@ public class HabboStats implements Runnable
         this.mutedBubbleTracker = true;
         this.muteEndTime += seconds;
 
-        return remainingMuteTime();
+        return this.remainingMuteTime();
     }
 
     public int remainingMuteTime()

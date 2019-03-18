@@ -77,7 +77,7 @@ public class UserProfileComposer extends MessageComposer
         }
         this.response.appendInt(achievementScore);
         this.response.appendInt(Messenger.getFriendCount(this.habboInfo.getId()));
-        this.response.appendBoolean(viewer.getHabbo().getMessenger().getFriends().containsKey(this.habboInfo.getId())); //Friend
+        this.response.appendBoolean(this.viewer.getHabbo().getMessenger().getFriends().containsKey(this.habboInfo.getId())); //Friend
         this.response.appendBoolean(Messenger.friendRequested(this.viewer.getHabbo().getHabboInfo().getId(), this.habboInfo.getId())); //Friend Request Send
         this.response.appendBoolean(this.habboInfo.isOnline());
 
@@ -121,7 +121,7 @@ public class UserProfileComposer extends MessageComposer
             this.response.appendString(guild.getBadge());
             this.response.appendString(Emulator.getGameEnvironment().getGuildManager().getSymbolColor(guild.getColorOne()).valueA);
             this.response.appendString(Emulator.getGameEnvironment().getGuildManager().getSymbolColor(guild.getColorTwo()).valueA);
-            this.response.appendBoolean(habbo != null && guild.getId() == this.habbo.getHabboStats().guild);
+            this.response.appendBoolean(this.habbo != null && guild.getId() == this.habbo.getHabboStats().guild);
             this.response.appendInt(guild.getOwnerId());
             this.response.appendBoolean(guild.getOwnerId() == this.habboInfo.getId());
         }

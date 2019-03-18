@@ -23,7 +23,7 @@ public class CameraRenderImageComposer extends CameraOutgoingMessage
         this.backgroundColor = backgroundColor;
         this.width = width;
         this.height = height;
-        JSON = json;
+        this.JSON = json;
     }
 
     @Override

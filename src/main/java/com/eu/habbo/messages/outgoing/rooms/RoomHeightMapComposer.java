@@ -7,7 +7,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class RoomHeightMapComposer extends MessageComposer
 {
-
     private final Room room;
 
     public RoomHeightMapComposer(Room room)

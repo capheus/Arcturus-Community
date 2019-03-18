@@ -8,6 +8,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 public class ModToolIssueInfoComposer extends MessageComposer
 {
     private final ModToolIssue issue;
+
     public ModToolIssueInfoComposer(ModToolIssue issue)
     {
         this.issue = issue;

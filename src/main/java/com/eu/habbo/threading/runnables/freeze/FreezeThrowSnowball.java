@@ -26,9 +26,9 @@ public class FreezeThrowSnowball implements Runnable
     @Override
     public void run()
     {
-        ((FreezeGamePlayer)habbo.getHabboInfo().getGamePlayer()).takeSnowball();
-        targetTile.setExtradata((this.radius + 1) * 1000 + "");
-        room.updateItem(this.targetTile);
+        ((FreezeGamePlayer) this.habbo.getHabboInfo().getGamePlayer()).takeSnowball();
+        this.targetTile.setExtradata((this.radius + 1) * 1000 + "");
+        this.room.updateItem(this.targetTile);
         Emulator.getThreading().run(new FreezeHandleSnowballExplosion(this), 2000);
         Emulator.getThreading().run(new HabboItemNewState(this.targetTile, this.room, "11000"), 2000);
         Emulator.getThreading().run(new HabboItemNewState(this.targetTile, this.room, "0"), 3000);

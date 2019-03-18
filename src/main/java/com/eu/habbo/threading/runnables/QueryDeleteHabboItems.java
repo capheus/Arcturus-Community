@@ -22,7 +22,7 @@ public class QueryDeleteHabboItems implements Runnable
     {
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM items WHERE id = ?"))
         {
-            for (HabboItem item : items.valueCollection())
+            for (HabboItem item : this.items.valueCollection())
             {
                 if (item.getRoomId() > 0)
                     continue;

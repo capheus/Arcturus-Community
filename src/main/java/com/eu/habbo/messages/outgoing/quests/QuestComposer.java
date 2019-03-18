@@ -1,4 +1,4 @@
-package com.eu.habbo.messages.outgoing.unknown;
+package com.eu.habbo.messages.outgoing.quests;
 
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
@@ -17,7 +17,7 @@ public class QuestComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.QuestComposer);
-        this.response.append(quest);
+        this.response.append(this.quest);
         return this.response;
     }
 }

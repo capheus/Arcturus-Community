@@ -6,8 +6,8 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class PetBreedingFailedComposer extends MessageComposer
 {
-    public final int anInt1;
-    public final int anInt2;
+    private final int anInt1;
+    private final int anInt2;
 
     public PetBreedingFailedComposer(int anInt1, int anInt2)
     {

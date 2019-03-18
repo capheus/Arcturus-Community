@@ -53,7 +53,7 @@ public class InteractionDefault extends HabboItem
     @Override
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
-        if(room != null && (client == null || canToggle(client.getHabbo(), room) || (objects.length >= 2 && objects[1] instanceof WiredEffectType && objects[1] == WiredEffectType.TOGGLE_STATE)))
+        if(room != null && (client == null || this.canToggle(client.getHabbo(), room) || (objects.length >= 2 && objects[1] instanceof WiredEffectType && objects[1] == WiredEffectType.TOGGLE_STATE)))
         {
             super.onClick(client, room, objects);
 
@@ -110,14 +110,13 @@ public class InteractionDefault extends HabboItem
                     {
                         if (habbo.getHabboInfo().getGender().equals(HabboGender.M) && this.getBaseItem().getEffectM() > 0 && habbo.getRoomUnit().getEffectId() != this.getBaseItem().getEffectM())
                         {
-                            room.giveEffect(habbo, this.getBaseItem().getEffectM());
+                            room.giveEffect(habbo, this.getBaseItem().getEffectM(), -1);
                             return;
                         }
 
                         if (habbo.getHabboInfo().getGender().equals(HabboGender.F) && this.getBaseItem().getEffectF() > 0 && habbo.getRoomUnit().getEffectId() != this.getBaseItem().getEffectF())
                         {
-                            room.giveEffect(habbo, this.getBaseItem().getEffectF());
-                            return;
+                            room.giveEffect(habbo, this.getBaseItem().getEffectF(), -1);
                         }
                     }
                 }
@@ -129,13 +128,12 @@ public class InteractionDefault extends HabboItem
                     {
                         if (bot.getGender().equals(HabboGender.M) && this.getBaseItem().getEffectM() > 0 && roomUnit.getEffectId() != this.getBaseItem().getEffectM())
                         {
-                            room.giveEffect(bot.getRoomUnit(), this.getBaseItem().getEffectM());
+                            room.giveEffect(bot.getRoomUnit(), this.getBaseItem().getEffectM(), -1);
                             return;
                         }
                         if (bot.getGender().equals(HabboGender.F) && this.getBaseItem().getEffectF() > 0 && roomUnit.getEffectId() != this.getBaseItem().getEffectF())
                         {
-                            room.giveEffect(bot.getRoomUnit(), this.getBaseItem().getEffectF());
-                            return;
+                            room.giveEffect(bot.getRoomUnit(), this.getBaseItem().getEffectF(), -1);
                         }
                     }
                 }
@@ -175,14 +173,13 @@ public class InteractionDefault extends HabboItem
 
                         if (habbo.getHabboInfo().getGender().equals(HabboGender.M) && this.getBaseItem().getEffectM() > 0)
                         {
-                            room.giveEffect(habbo, 0);
+                            room.giveEffect(habbo, 0, -1);
                             return;
                         }
 
                         if (habbo.getHabboInfo().getGender().equals(HabboGender.F) && this.getBaseItem().getEffectF() > 0)
                         {
-                            room.giveEffect(habbo, 0);
-                            return;
+                            room.giveEffect(habbo, 0, -1);
                         }
                     }
                 }
@@ -194,14 +191,13 @@ public class InteractionDefault extends HabboItem
                     {
                         if (bot.getGender().equals(HabboGender.M) && this.getBaseItem().getEffectM() > 0)
                         {
-                            room.giveEffect(roomUnit, 0);
+                            room.giveEffect(roomUnit, 0, -1);
                             return;
                         }
 
                         if (bot.getGender().equals(HabboGender.F) && this.getBaseItem().getEffectF() > 0)
                         {
-                            room.giveEffect(roomUnit, 0);
-                            return;
+                            room.giveEffect(roomUnit, 0, -1);
                         }
                     }
                 }

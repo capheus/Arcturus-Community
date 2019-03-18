@@ -18,12 +18,12 @@ public class HotelViewManager
 
     public HallOfFame getHallOfFame()
     {
-        return hallOfFame;
+        return this.hallOfFame;
     }
 
     public NewsList getNewsList()
     {
-        return newsList;
+        return this.newsList;
     }
 
     public void dispose()

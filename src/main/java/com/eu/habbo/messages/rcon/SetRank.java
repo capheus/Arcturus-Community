@@ -36,7 +36,7 @@ public class SetRank extends RCONMessage<SetRank.JSONSetRank>
         }
     }
 
-    public static class JSONSetRank
+    static class JSONSetRank
     {
 
         public int user_id;

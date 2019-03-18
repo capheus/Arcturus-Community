@@ -34,7 +34,7 @@ public class WiredExtraUnseen extends InteractionWiredExtra
     }
 
     @Override
-    protected String getWiredData()
+    public String getWiredData()
     {
         return null;
     }

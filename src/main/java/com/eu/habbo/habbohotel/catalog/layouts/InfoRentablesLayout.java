@@ -16,10 +16,10 @@ public class InfoRentablesLayout extends CatalogPage
     @Override
     public void serialize(ServerMessage message)
     {
-        String[] data = getTextOne().split("\\|\\|");
+        String[] data = this.getTextOne().split("\\|\\|");
         message.appendString("info_rentables");
         message.appendInt(1);
-        message.appendString(getHeaderImage());
+        message.appendString(this.getHeaderImage());
         message.appendInt(data.length);
         for (String d : data) {
             message.appendString(d);

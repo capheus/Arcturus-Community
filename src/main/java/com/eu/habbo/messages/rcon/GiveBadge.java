@@ -63,7 +63,7 @@ public class GiveBadge extends RCONMessage<GiveBadge.GiveBadgeJSON>
             {
                 for (String badgeCode : json.badge.split(";"))
                 {
-                    boolean found = false;
+                    boolean found;
                     try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(slot_id) FROM users_badges INNER JOIN users ON users.id = user_id WHERE users.id = ? AND badge_code = ? LIMIT 1"))
                     {
                         statement.setInt(1, json.user_id);
@@ -100,7 +100,7 @@ public class GiveBadge extends RCONMessage<GiveBadge.GiveBadgeJSON>
         }
     }
 
-    public static class GiveBadgeJSON
+    static class GiveBadgeJSON
     {
 
         public int user_id = -1;

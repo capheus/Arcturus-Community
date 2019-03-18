@@ -6,8 +6,8 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class HotelClosedAndOpensComposer extends MessageComposer
 {
-    private int hour;
-    private int minute;
+    private final int hour;
+    private final int minute;
 
     public HotelClosedAndOpensComposer(int hour, int minute)
     {

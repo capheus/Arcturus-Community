@@ -4,7 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserEffectComposer;
 import gnu.trove.map.hash.THashMap;
 
 import java.sql.ResultSet;
@@ -14,7 +13,8 @@ public class InteractionTileEffectProvider extends InteractionCustomValues
 {
     public static THashMap<String, String> defaultValues = new THashMap<String, String>()
     {
-            {put("effectId", "0");}
+            {
+                this.put("effectId", "0");}
     };
 
     public InteractionTileEffectProvider(ResultSet set, Item baseItem) throws SQLException
@@ -65,7 +65,6 @@ public class InteractionTileEffectProvider extends InteractionCustomValues
             }
         }, 500);
 
-        roomUnit.setEffectId(effectId);
-        room.sendComposer(new RoomUserEffectComposer(roomUnit).compose());
+        room.giveEffect(roomUnit, effectId, -1);
     }
 }

@@ -43,7 +43,7 @@ public class GivePixels extends RCONMessage<GivePixels.JSONGivePixels>
         }
     }
 
-    public static class JSONGivePixels
+    static class JSONGivePixels
     {
 
         public int user_id;

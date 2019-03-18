@@ -50,7 +50,7 @@ public abstract class TagGame extends Game
 
         THashSet<HabboItem> poles = room.getRoomSpecialTypes().getItemsOfType(this.getTagPole());
         InteractionTagPole pole = this.taggers.get(tagger);
-        room.giveEffect(tagged, this.getTaggedEffect(tagged));
+        room.giveEffect(tagged, this.getTaggedEffect(tagged), -1);
 
         if (poles.size() > this.taggers.size())
         {
@@ -61,7 +61,7 @@ public abstract class TagGame extends Game
 
             for (HabboItem item : poles)
             {
-                tagged.getHabboInfo().getCurrentRoom().giveEffect(tagged, getTaggedEffect(tagged));
+                tagged.getHabboInfo().getCurrentRoom().giveEffect(tagged, this.getTaggedEffect(tagged), -1);
                 this.taggers.put(tagged, (InteractionTagPole) item);
             }
         }
@@ -69,7 +69,7 @@ public abstract class TagGame extends Game
         {
             if (tagger != null)
             {
-                room.giveEffect(tagger, this.getEffect(tagger));
+                room.giveEffect(tagger, this.getEffect(tagger), -1);
                 this.taggers.remove(tagger);
             }
 
@@ -104,7 +104,7 @@ public abstract class TagGame extends Game
                 if ((iterator.hasNext()))
                 {
                     HabboItem item = iterator.next();
-                    habbo.getHabboInfo().getCurrentRoom().giveEffect(habbo, getTaggedEffect(habbo));
+                    habbo.getHabboInfo().getCurrentRoom().giveEffect(habbo, this.getTaggedEffect(habbo), -1);
                     this.taggers.put(habbo, (InteractionTagPole) item);
                     return true;
                 }
@@ -114,13 +114,13 @@ public abstract class TagGame extends Game
         {
             if (this.taggers.isEmpty())
             {
-                habbo.getHabboInfo().getCurrentRoom().giveEffect(habbo, getTaggedEffect(habbo));
+                habbo.getHabboInfo().getCurrentRoom().giveEffect(habbo, this.getTaggedEffect(habbo), -1);
                 this.taggers.put(habbo, null);
                 return true;
             }
         }
 
-        habbo.getHabboInfo().getCurrentRoom().giveEffect(habbo, getEffect(habbo));
+        habbo.getHabboInfo().getCurrentRoom().giveEffect(habbo, this.getEffect(habbo), -1);
 
         return true;
     }
@@ -130,7 +130,7 @@ public abstract class TagGame extends Game
     {
         super.removeHabbo(habbo);
         this.taggers.remove(habbo);
-        habbo.getHabboInfo().getCurrentRoom().giveEffect(habbo, 0);
+        habbo.getHabboInfo().getCurrentRoom().giveEffect(habbo, 0, -1);
     }
 
     @Override

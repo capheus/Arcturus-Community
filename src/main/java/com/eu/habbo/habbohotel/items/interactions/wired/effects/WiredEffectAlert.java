@@ -29,10 +29,10 @@ public class WiredEffectAlert extends WiredEffectWhisper
 
         if (habbo != null)
         {
-            habbo.getClient().sendResponse(new GenericAlertComposer(this.message
+            habbo.alert(this.message
                     .replace("%online%", Emulator.getGameEnvironment().getHabboManager().getOnlineCount() + "")
                     .replace("%username%", habbo.getHabboInfo().getUsername())
-                    .replace("%roomsloaded%", Emulator.getGameEnvironment().getRoomManager().loadedRoomsCount() + "")));
+                    .replace("%roomsloaded%", Emulator.getGameEnvironment().getRoomManager().loadedRoomsCount() + ""));
             return true;
         }
 

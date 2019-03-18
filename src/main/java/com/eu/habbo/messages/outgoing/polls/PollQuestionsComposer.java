@@ -8,7 +8,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class PollQuestionsComposer extends MessageComposer
 {
-    private Poll poll;
+    private final Poll poll;
 
     public PollQuestionsComposer(Poll poll)
     {

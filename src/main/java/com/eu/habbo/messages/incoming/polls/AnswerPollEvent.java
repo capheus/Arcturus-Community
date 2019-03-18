@@ -4,7 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.polls.Poll;
 import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.generic.alerts.WiredRewardAlertComposer;
+import com.eu.habbo.messages.outgoing.wired.WiredRewardAlertComposer;
 import com.eu.habbo.messages.outgoing.users.AddUserBadgeComposer;
 
 import java.sql.Connection;
@@ -20,19 +20,19 @@ public class AnswerPollEvent extends MessageHandler
         int questionId = this.packet.readInt();
         int count = this.packet.readInt();
 
-        String answer = "";
+        StringBuilder answer = new StringBuilder();
         for(int i = 0; i < count; i++)
         {
-            answer += ":" + this.packet.readString();
+            answer.append(":").append(this.packet.readString());
         }
 
         if (pollId == 0 && questionId <= 0)
         {
-            this.client.getHabbo().getHabboInfo().getCurrentRoom().handleWordQuiz(this.client.getHabbo(), answer);
+            this.client.getHabbo().getHabboInfo().getCurrentRoom().handleWordQuiz(this.client.getHabbo(), answer.toString());
             return;
         }
 
-        answer = answer.substring(1);
+        answer = new StringBuilder(answer.substring(1));
 
         Poll poll = Emulator.getGameEnvironment().getPollManager().getPoll(pollId);
 
@@ -43,7 +43,7 @@ public class AnswerPollEvent extends MessageHandler
                 statement.setInt(1, pollId);
                 statement.setInt(2, this.client.getHabbo().getHabboInfo().getId());
                 statement.setInt(3, questionId);
-                statement.setString(4, answer);
+                statement.setString(4, answer.toString());
                 statement.execute();
             }
             catch (SQLException e)

@@ -17,23 +17,6 @@ import java.sql.SQLException;
 public class Logging
 {
 
-    private static File packets;
-
-
-    private static File packetsUndefined;
-
-
-    private static File errorsPackets;
-
-
-    private static File errorsSQL;
-
-
-    private static File errorsRuntime;
-
-
-    private static File debugFile;
-
     private static PrintWriter packetsWriter;
     private static PrintWriter packetsUndefinedWriter;
     private static PrintWriter errorsPacketsWriter;
@@ -63,21 +46,27 @@ public class Logging
     public static final String ANSI_WHITE = "\u001B[37m";
 
 
-    private final THashSet<Loggable> errorLogs = new THashSet<>();
+    private final THashSet<Loggable> errorLogs = new THashSet<>(100);
 
 
-    private final THashSet<Loggable> commandLogs = new THashSet<>();
+    private final THashSet<Loggable> commandLogs = new THashSet<>(100);
 
     private ConcurrentSet<Loggable> chatLogs = new ConcurrentSet<>();
 
     public Logging()
     {
-        packets          = new File("logging//packets//defined.txt");
-        packetsUndefined = new File("logging//packets//packets.txt");
-        errorsPackets    = new File("logging//errors//packets.txt");
-        errorsSQL        = new File("logging//errors//sql.txt");
-        errorsRuntime    = new File("logging//errors//runtime.txt");
-        debugFile        = new File("logging//debug.txt");
+
+        File packets = new File("logging//packets//defined.txt");
+
+        File packetsUndefined = new File("logging//packets//packets.txt");
+
+        File errorsPackets = new File("logging//errors//packets.txt");
+
+        File errorsSQL = new File("logging//errors//sql.txt");
+
+        File errorsRuntime = new File("logging//errors//runtime.txt");
+
+        File debugFile = new File("logging//debug.txt");
 
         try
         {
@@ -172,7 +161,7 @@ public class Logging
     {
         if(Emulator.getConfig().getBoolean("logging.debug"))
         {
-            write(debugFileWriter, line.toString());
+            this.write(debugFileWriter, line.toString());
         }
         System.out.println("[" + Logging.ANSI_BRIGHT + Logging.ANSI_GREEN + "SHUTDOWN" + Logging.ANSI_RESET + "] " + line.toString());
     }
@@ -181,7 +170,7 @@ public class Logging
     {
         if(Emulator.getConfig().getBoolean("logging.debug"))
         {
-            write(debugFileWriter, line.toString());
+            this.write(debugFileWriter, line.toString());
         }
 
         if (Emulator.getConfig().getBoolean("debug.show.users"))
@@ -194,7 +183,7 @@ public class Logging
     {
         if (line instanceof Throwable)
         {
-            logErrorLine(line);
+            this.logErrorLine(line);
             return;
         }
         if (Emulator.getConfig().getBoolean("debug.mode")) {
@@ -203,7 +192,7 @@ public class Logging
 
         if(Emulator.getConfig().getBoolean("logging.debug"))
         {
-            write(debugFileWriter, line.toString());
+            this.write(debugFileWriter, line.toString());
         }
     }
     
@@ -215,7 +204,7 @@ public class Logging
 
         if(Emulator.getConfig().getBoolean("logging.packets"))
         {
-            write(packetsWriter, line.toString());
+            this.write(packetsWriter, line.toString());
         }
     }
     
@@ -228,7 +217,7 @@ public class Logging
 
         if (Emulator.getConfig().getBoolean("logging.packets.undefined"))
         {
-            write(packetsUndefinedWriter, line.toString());
+            this.write(packetsUndefinedWriter, line.toString());
         }
     }
     
@@ -241,7 +230,7 @@ public class Logging
 
         if (Emulator.getConfig().loaded && Emulator.getConfig().getBoolean("logging.errors.runtime"))
         {
-            write(errorsRuntimeWriter, line);
+            this.write(errorsRuntimeWriter, line);
         }
 
         if(line instanceof Throwable)
@@ -267,7 +256,7 @@ public class Logging
         if(Emulator.getConfig().getBoolean("logging.errors.sql"))
         {
             e.printStackTrace();
-            write(errorsSQLWriter, e);
+            this.write(errorsSQLWriter, e);
 
             Emulator.getThreading().run(new HTTPPostError(e));
         }
@@ -280,7 +269,7 @@ public class Logging
             if(e instanceof Throwable)
                 ((Exception) e).printStackTrace();
 
-            write(errorsPacketsWriter, e);
+            this.write(errorsPacketsWriter, e);
         }
 
         if(e instanceof Throwable)

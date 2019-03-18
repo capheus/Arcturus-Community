@@ -31,19 +31,22 @@ public abstract class Game implements Runnable
     protected final THashMap<GameTeamColors, GameTeam> teams = new THashMap<>();
 
 
-    protected Room room;
+    protected final Room room;
 
 
-    protected boolean countsAchievements;
+    protected final boolean countsAchievements;
 
 
     protected int startTime;
 
 
+    protected int pauseTime;
+
+
     protected int endTime;
 
 
-    public boolean isRunning;
+    public GameState state = GameState.IDLE;
 
     public Game(Class<? extends GameTeam> gameTeamClazz, Class<? extends GamePlayer> gamePlayerClazz, Room room, boolean countsAchievements)
     {
@@ -137,14 +140,14 @@ public abstract class Game implements Runnable
 
         if (deleteGame)
         {
-            room.deleteGame(this);
+            this.room.deleteGame(this);
         }
     }
 
 
     public void start()
     {
-        this.isRunning = true;
+        this.state = GameState.RUNNING;
         this.startTime = Emulator.getIntUnixTimestamp();
 
         if(Emulator.getPluginManager().isRegistered(GameStartedEvent.class, true))
@@ -158,17 +161,34 @@ public abstract class Game implements Runnable
         for (HabboItem item : this.room.getRoomSpecialTypes().getItemsOfType(WiredBlob.class))
         {
             item.setExtradata("0");
-            room.updateItem(item);
+            this.room.updateItem(item);
         }
     }
 
 
     public abstract void run();
 
+    public void pause()
+    {
+        if (this.state.equals(GameState.RUNNING))
+        {
+            this.state = GameState.PAUSED;
+            this.pauseTime = Emulator.getIntUnixTimestamp();
+        }
+    }
+
+    public void unpause()
+    {
+        if (this.state.equals(GameState.PAUSED))
+        {
+            this.state = GameState.RUNNING;
+            this.endTime = Emulator.getIntUnixTimestamp() + (this.endTime - this.pauseTime);
+        }
+    }
 
     public void stop()
     {
-        this.isRunning = false;
+        this.state = GameState.IDLE;
         this.endTime = Emulator.getIntUnixTimestamp();
 
         this.saveScores();

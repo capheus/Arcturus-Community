@@ -6,8 +6,8 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class RoomInviteComposer extends MessageComposer
 {
-    private int userId;
-    private String message;
+    private final int userId;
+    private final String message;
 
     public RoomInviteComposer(int userId, String message)
     {

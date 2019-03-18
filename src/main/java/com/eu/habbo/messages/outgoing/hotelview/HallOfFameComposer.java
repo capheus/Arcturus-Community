@@ -13,19 +13,23 @@ import java.util.List;
 
 public class HallOfFameComposer extends MessageComposer
 {
+    private final HallOfFame hallOfFame;
+
+    public HallOfFameComposer(HallOfFame hallOfFame)
+    {
+        this.hallOfFame = hallOfFame;
+    }
 
     @Override
     public ServerMessage compose()
     {
         this.response.init(Outgoing.HallOfFameComposer);
-        HallOfFame hallOfFame = Emulator.getGameEnvironment().getHotelViewManager().getHallOfFame();
-
-        this.response.appendString(hallOfFame.getCompetitionName());
-        this.response.appendInt(hallOfFame.getWinners().size());
+        this.response.appendString(this.hallOfFame.getCompetitionName());
+        this.response.appendInt(this.hallOfFame.getWinners().size());
 
         int count = 1;
 
-        List<HallOfFameWinner> winners = new ArrayList(hallOfFame.getWinners().values());
+        List<HallOfFameWinner> winners = new ArrayList<>(this.hallOfFame.getWinners().values());
         Collections.sort(winners);
         for(HallOfFameWinner winner : winners)
         {

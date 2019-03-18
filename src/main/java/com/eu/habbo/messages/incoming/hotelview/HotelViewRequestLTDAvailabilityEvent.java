@@ -17,7 +17,7 @@ public class HotelViewRequestLTDAvailabilityEvent extends MessageHandler
     {
         if (ENABLED)
         {
-            int timeremaining = Math.max(TIMESTAMP - Emulator.getIntUnixTimestamp(), 0);
+            int timeremaining = Math.max(TIMESTAMP - Emulator.getIntUnixTimestamp(), -1);
             this.client.sendResponse(new HotelViewNextLTDAvailableComposer(
                     timeremaining,
                     timeremaining > 0 ? - 1 : ITEM_ID,

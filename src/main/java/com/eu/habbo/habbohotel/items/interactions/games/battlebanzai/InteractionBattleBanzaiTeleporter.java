@@ -63,24 +63,18 @@ public class InteractionBattleBanzaiTeleporter extends HabboItem
     public void onWalkOn(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
     {
         super.onWalkOn(roomUnit, room, objects);
-        Habbo habbo = room.getHabbo(roomUnit);
+        HabboItem target = room.getRoomSpecialTypes().getRandomTeleporter(this.getBaseItem(), this);
 
-        if (habbo != null)
-        {
-            this.setExtradata("1");
-            roomUnit.removeStatus(RoomUnitStatus.MOVE);
-            HabboItem target = room.getRoomSpecialTypes().getRandomTeleporter();
+        if (target == null) return;
 
-            while (target == this && room.getRoomSpecialTypes().getBanzaiTeleporters().size() > 1)
-                target = room.getRoomSpecialTypes().getRandomTeleporter();
-
-            target.setExtradata("1");
-            room.updateItem(this);
-            room.updateItem(target);
-            roomUnit.setGoalLocation(room.getLayout().getTile(roomUnit.getX(), roomUnit.getY()));
-            roomUnit.setCanWalk(false);
-            Emulator.getThreading().run(new BanzaiRandomTeleport(this, target, habbo, room), 500);
-        }
+        this.setExtradata("1");
+        roomUnit.removeStatus(RoomUnitStatus.MOVE);
+        target.setExtradata("1");
+        room.updateItem(this);
+        room.updateItem(target);
+        roomUnit.setGoalLocation(room.getLayout().getTile(roomUnit.getX(), roomUnit.getY()));
+        roomUnit.setCanWalk(false);
+        Emulator.getThreading().run(new BanzaiRandomTeleport(this, target, roomUnit, room), 500);
     }
 
     @Override

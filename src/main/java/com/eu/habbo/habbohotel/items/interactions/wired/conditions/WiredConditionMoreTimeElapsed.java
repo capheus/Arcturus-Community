@@ -52,7 +52,6 @@ public class WiredConditionMoreTimeElapsed extends InteractionWiredCondition
         }
         catch (Exception e)
         {
-            return;
         }
     }
 

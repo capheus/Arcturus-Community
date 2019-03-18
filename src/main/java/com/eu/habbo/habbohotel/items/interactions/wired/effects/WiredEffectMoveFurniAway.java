@@ -140,17 +140,17 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
     @Override
     public String getWiredData()
     {
-        String wiredData = this.getDelay() + "\t";
+        StringBuilder wiredData = new StringBuilder(this.getDelay() + "\t");
 
         if(this.items != null && !this.items.isEmpty())
         {
             for (HabboItem item : this.items)
             {
-                wiredData += item.getId() + ";";
+                wiredData.append(item.getId()).append(";");
             }
         }
 
-        return wiredData;
+        return wiredData.toString();
     }
 
     @Override

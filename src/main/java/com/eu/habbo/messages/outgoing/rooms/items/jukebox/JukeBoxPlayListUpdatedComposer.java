@@ -22,7 +22,7 @@ public class JukeBoxPlayListUpdatedComposer extends MessageComposer
 
         int length = 0;
 
-        for(SoundTrack track : tracks)
+        for(SoundTrack track : this.tracks)
         {
             length += track.getLength();
         }

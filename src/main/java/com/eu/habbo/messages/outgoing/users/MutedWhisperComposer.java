@@ -6,7 +6,7 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class MutedWhisperComposer extends MessageComposer
 {
-    private int seconds;
+    private final int seconds;
 
     public MutedWhisperComposer(int seconds)
     {

@@ -38,7 +38,7 @@ public class PixelScheduler extends Scheduler
     {
         super.run();
 
-        Habbo habbo = null;
+        Habbo habbo;
         for(Map.Entry<Integer, Habbo> map : Emulator.getGameEnvironment().getHabboManager().getOnlineHabbos().entrySet())
         {
             habbo = map.getValue();
@@ -95,7 +95,7 @@ public class PixelScheduler extends Scheduler
 
     public boolean isDisposed()
     {
-        return disposed;
+        return this.disposed;
     }
 
     public void setDisposed(boolean disposed)

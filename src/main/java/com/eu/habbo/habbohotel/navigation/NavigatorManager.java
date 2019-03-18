@@ -27,13 +27,13 @@ public class NavigatorManager
     public NavigatorManager()
     {
         long millis = System.currentTimeMillis();
-        loadNavigator();
+        this.loadNavigator();
 
-        filters.put(NavigatorPublicFilter.name, new NavigatorPublicFilter());
-        filters.put(NavigatorHotelFilter.name, new NavigatorHotelFilter());
-        filters.put(NavigatorRoomAdsFilter.name, new NavigatorRoomAdsFilter());
-        filters.put(NavigatorUserFilter.name, new NavigatorUserFilter());
-        filters.put(NavigatorFavoriteFilter.name, new NavigatorFavoriteFilter());
+        this.filters.put(NavigatorPublicFilter.name, new NavigatorPublicFilter());
+        this.filters.put(NavigatorHotelFilter.name, new NavigatorHotelFilter());
+        this.filters.put(NavigatorRoomAdsFilter.name, new NavigatorRoomAdsFilter());
+        this.filters.put(NavigatorUserFilter.name, new NavigatorUserFilter());
+        this.filters.put(NavigatorFavoriteFilter.name, new NavigatorFavoriteFilter());
 
         Emulator.getLogging().logStart("Navigator Manager -> Loaded! (" + (System.currentTimeMillis() - millis) + " MS)");
     }
@@ -105,7 +105,7 @@ public class NavigatorManager
                                 }
                                 catch (Exception e)
                                 {
-                                    e.printStackTrace();
+                                    Emulator.getLogging().logErrorLine(e);
                                     break;
                                 }
                             }
@@ -118,6 +118,7 @@ public class NavigatorManager
                             }
                             catch (Exception e)
                             {
+                                Emulator.getLogging().logErrorLine(e);
                                 continue;
                             }
                         }

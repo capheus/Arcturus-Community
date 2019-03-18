@@ -11,24 +11,24 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 
 public class CameraClient
 {
-    public static final String host = "arcturus.pw";
-    public static final int port = 1232;
+    private static final String host = "arcturus.pw";
+    private static final int port = 1232;
     public static ChannelFuture channelFuture;
-    public static Channel channel;
+    private static Channel channel;
     public static boolean isLoggedIn = false;
     public static boolean attemptReconnect = true;
 
-    private Bootstrap bootstrap = new Bootstrap();
-    private EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
+    private final Bootstrap bootstrap = new Bootstrap();
 
     public CameraClient()
     {
 
-        bootstrap.group(eventLoopGroup);
-        bootstrap.channel(NioSocketChannel.class);
-        bootstrap.option(ChannelOption.TCP_NODELAY, true);
-        bootstrap.option(ChannelOption.SO_KEEPALIVE, false);
-        bootstrap.handler(new ChannelInitializer<SocketChannel>()
+        EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
+        this.bootstrap.group(eventLoopGroup);
+        this.bootstrap.channel(NioSocketChannel.class);
+        this.bootstrap.option(ChannelOption.TCP_NODELAY, true);
+        this.bootstrap.option(ChannelOption.SO_KEEPALIVE, false);
+        this.bootstrap.handler(new ChannelInitializer<SocketChannel>()
         {
             @Override
             public void initChannel(SocketChannel ch) throws Exception
@@ -37,10 +37,10 @@ public class CameraClient
                 ch.pipeline().addLast(new CameraHandler());
             }
         });
-        bootstrap.option(ChannelOption.SO_RCVBUF, 5120);
-        bootstrap.option(ChannelOption.SO_REUSEADDR, true);
-        bootstrap.option(ChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(5120));
-        bootstrap.option(ChannelOption.ALLOCATOR, new UnpooledByteBufAllocator(false));
+        this.bootstrap.option(ChannelOption.SO_RCVBUF, 5120);
+        this.bootstrap.option(ChannelOption.SO_REUSEADDR, true);
+        this.bootstrap.option(ChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(5120));
+        this.bootstrap.option(ChannelOption.ALLOCATOR, new UnpooledByteBufAllocator(false));
     }
 
     public void connect()
@@ -56,7 +56,7 @@ public class CameraClient
             CameraClient.attemptReconnect = false;
             CameraClient.channel = channelFuture.channel();
             System.out.println("[" + Logging.ANSI_GREEN + "CAMERA" + Logging.ANSI_RESET + "] Connected to the Camera Server. Attempting to login...");
-            sendMessage(new CameraLoginComposer());
+            this.sendMessage(new CameraLoginComposer());
         }
         else
         {
