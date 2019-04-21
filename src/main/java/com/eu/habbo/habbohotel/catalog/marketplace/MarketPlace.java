@@ -397,7 +397,7 @@ public class MarketPlace
                 "SELECT items_base.sprite_id\n" +
                 "FROM items_base\n" +
                 "WHERE items_base.id = ? LIMIT 1)\n" +
-                "ORDER BY price DESC\n" +
+                "ORDER BY price ASC\n" +
                 "LIMIT 1"))
         {
             statement.setInt(1, baseItemId);

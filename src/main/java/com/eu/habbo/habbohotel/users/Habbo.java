@@ -8,9 +8,7 @@ import com.eu.habbo.habbohotel.messenger.Messenger;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.habbohotel.users.inventory.BadgesComponent;
-import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
-import com.eu.habbo.messages.outgoing.generic.alerts.MessagesForYouComposer;
-import com.eu.habbo.messages.outgoing.generic.alerts.StaffAlertWithLinkComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.*;
 import com.eu.habbo.messages.outgoing.inventory.*;
 import com.eu.habbo.messages.outgoing.rooms.FloodCounterComposer;
 import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
@@ -74,7 +72,7 @@ public class Habbo implements Runnable
     void update()
     {
         this.update = true;
-        Emulator.getThreading().run(this);
+        this.run();
     }
 
     void needsUpdate(boolean value)
@@ -417,6 +415,13 @@ public class Habbo implements Runnable
             HabboBadge badge = BadgesComponent.createBadge(code, this);
             this.habboInventory.getBadgesComponent().addBadge(badge);
             this.client.sendResponse(new AddUserBadgeComposer(badge));
+
+            THashMap<String, String> keys = new THashMap<>();
+            keys.put("display", "BUBBLE");
+            keys.put("image", "${image.library.url}album1584/" + badge.getCode() + ".gif");
+            keys.put("message", Emulator.getTexts().getValue("commands.generic.cmd_badge.received"));
+            this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.RECEIVED_BADGE.key, keys));
+
             return true;
         }
 
@@ -426,9 +431,12 @@ public class Habbo implements Runnable
 
     public void deleteBadge(HabboBadge badge)
     {
-        this.habboInventory.getBadgesComponent().removeBadge(badge);
-        BadgesComponent.deleteBadge(this.getHabboInfo().getUsername(), badge);
-        this.client.sendResponse(new InventoryBadgesComposer(this));
+        if (badge != null)
+        {
+            this.habboInventory.getBadgesComponent().removeBadge(badge);
+            BadgesComponent.deleteBadge(this.getHabboInfo().getId(), badge.getCode());
+            this.client.sendResponse(new InventoryBadgesComposer(this));
+        }
     }
 
     public void mute(int seconds)

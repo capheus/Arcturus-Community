@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.modtool.ModToolBan;
 import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.permissions.Rank;
+import com.eu.habbo.habbohotel.users.inventory.BadgesComponent;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.catalog.*;
 import com.eu.habbo.messages.outgoing.catalog.marketplace.MarketplaceConfigComposer;
@@ -23,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ScheduledFuture;
 
 public class HabboManager
 {
@@ -229,33 +229,33 @@ public class HabboManager
 
     public synchronized void dispose()
     {
-        Object[] toDisconnect = this.onlineHabbos.values().toArray();
-        List<ScheduledFuture> scheduledFutures = new ArrayList<>();
-        this.onlineHabbos.clear();
-        for (Object habbo : toDisconnect)
-        {
-            scheduledFutures.add(Emulator.getThreading().run(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    ((Habbo) habbo).disconnect();
-                }
-            }));
-        }
 
-        while (!scheduledFutures.isEmpty())
-        {
-            List<ScheduledFuture> toRemove = new ArrayList<>();
-            for (ScheduledFuture future : scheduledFutures)
-            {
-                if (future.isDone())
-                {
-                    toRemove.add(future);
-                }
-            }
-            scheduledFutures.removeAll(toRemove);
-        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+
+
+
+
+
+
+
+
+
+
+
+
         Emulator.getLogging().logShutdownLine("Habbo Manager -> Disposed!");
     }
 
@@ -319,11 +319,23 @@ public class HabboManager
         {
             throw new Exception("Rank ID (" + rankId + ") does not exist");
         }
-        Rank rank = Emulator.getGameEnvironment().getPermissionsManager().getRank(rankId);
-
+        Rank newRank = Emulator.getGameEnvironment().getPermissionsManager().getRank(rankId);
         if(habbo != null && habbo.getHabboStats() != null)
         {
-            habbo.getHabboInfo().setRank(rank);
+            Rank oldRank = habbo.getHabboInfo().getRank();
+            if (!oldRank.getBadge().isEmpty())
+            {
+                habbo.deleteBadge(habbo.getInventory().getBadgesComponent().getBadge(oldRank.getBadge()));
+                BadgesComponent.deleteBadge(userId, oldRank.getBadge());
+            }
+
+            habbo.getHabboInfo().setRank(newRank);
+
+            if (!newRank.getBadge().isEmpty())
+            {
+                habbo.addBadge(newRank.getBadge());
+            }
+
             habbo.getClient().sendResponse(new UserPermissionsComposer(habbo));
             habbo.getClient().sendResponse(new UserPerksComposer(habbo));
 
@@ -339,11 +351,11 @@ public class HabboManager
             habbo.getClient().sendResponse(new MarketplaceConfigComposer());
             habbo.getClient().sendResponse(new GiftConfigurationComposer());
             habbo.getClient().sendResponse(new RecyclerLogicComposer());
-            habbo.alert(Emulator.getTexts().getValue("commands.generic.cmd_give_rank.new_rank").replace("id", rank.getName()));
+            habbo.alert(Emulator.getTexts().getValue("commands.generic.cmd_give_rank.new_rank").replace("id", newRank.getName()));
         }
         else
         {
-            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET rank = ? WHERE id = ? LIMIT 1"))
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET `rank` = ? WHERE id = ? LIMIT 1"))
             {
                 statement.setInt(1, rankId);
                 statement.setInt(2, userId);

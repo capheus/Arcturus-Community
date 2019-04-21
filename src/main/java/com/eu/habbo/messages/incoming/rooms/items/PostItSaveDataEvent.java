@@ -16,11 +16,11 @@ public class PostItSaveDataEvent extends MessageHandler
         String color = this.packet.readString();
         String text = this.packet.readString();
 
-        if (text.length() > 366)
+        if (text.length() > Emulator.getConfig().getInt("postit.charlimit"))
         {
             Emulator.getGameEnvironment().getModToolManager().quickTicket(this.client.getHabbo(), "Scripter", Emulator.getTexts().getValue("scripter.warning.sticky.size").replace("%username%", this.client.getHabbo().getHabboInfo().getUsername()).replace("%amount%", text.length() + "").replace("%limit%", "366"));
 
-            if (text.length() >= 400)
+            if (text.length() >= Emulator.getConfig().getInt("postit.charlimit") + 50)
             {
                 this.client.getHabbo().alert("8=====D~~~~~<br><br>Computer Says:<b><u>NO</u></b>");
             }

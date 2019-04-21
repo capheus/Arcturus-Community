@@ -69,7 +69,7 @@ public class WiredTriggerGameStarts extends InteractionWiredTrigger
         message.appendString("");
         message.appendInt(0);
         message.appendInt(0);
-        message.appendInt(this.getType().code);
+        message.appendInt(this.type.code);
 
         if (!this.isTriggeredByRoomUnit())
         {

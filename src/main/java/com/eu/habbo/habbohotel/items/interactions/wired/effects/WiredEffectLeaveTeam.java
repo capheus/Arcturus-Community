@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.games.Game;
+import com.eu.habbo.habbohotel.games.wired.WiredGame;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
@@ -43,13 +44,19 @@ public class WiredEffectLeaveTeam extends InteractionWiredEffect
             {
                 Game game = room.getGame(habbo.getHabboInfo().getCurrentGame());
 
+                if (game == null)
+                {
+                    game = room.getGame(WiredGame.class);
+                }
+
                 if (game != null)
                 {
                     game.removeHabbo(habbo);
+                    return true;
                 }
             }
         }
-        return true;
+        return false;
     }
 
     @Override

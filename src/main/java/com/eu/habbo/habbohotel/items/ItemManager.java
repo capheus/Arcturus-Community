@@ -173,6 +173,8 @@ public class ItemManager
         this.interactionsList.add(new ItemInteraction("crackable_monster",      InteractionMonsterCrackable.class));
         this.interactionsList.add(new ItemInteraction("snowboard_slope",        InteractionSnowboardSlope.class));
         this.interactionsList.add(new ItemInteraction("timer",                  InteractionGameTimer.class));
+        this.interactionsList.add(new ItemInteraction("pressureplate_group",    InteractionGroupPressurePlate.class));
+        this.interactionsList.add(new ItemInteraction("effect_tile_group",      InteractionEffectTile.class));
 
 
 
@@ -196,6 +198,8 @@ public class ItemManager
             this.interactionsList.add(new ItemInteraction("wf_trg_unidles",             WiredTriggerHabboUnidle.class));
             this.interactionsList.add(new ItemInteraction("wf_trg_starts_dancing",      WiredTriggerHabboStartsDancing.class));
             this.interactionsList.add(new ItemInteraction("wf_trg_stops_dancing",       WiredTriggerHabboStopsDancing.class));
+            this.interactionsList.add(new ItemInteraction("wf_trg_game_team_win",       WiredTriggerTeamWins.class));
+            this.interactionsList.add(new ItemInteraction("wf_trg_game_team_lose",      WiredTriggerTeamLoses.class));
 
 
             this.interactionsList.add(new ItemInteraction("wf_act_toggle_state",        WiredEffectToggleFurni.class));
@@ -237,6 +241,8 @@ public class ItemManager
             this.interactionsList.add(new ItemInteraction("wf_act_give_handitem",       WiredEffectGiveHandItem.class));
             this.interactionsList.add(new ItemInteraction("wf_act_match_to_sshot2",     WiredEffectMatchFurniStaff.class));
             this.interactionsList.add(new ItemInteraction("wf_act_give_effect",         WiredEffectGiveEffect.class));
+            this.interactionsList.add(new ItemInteraction("wf_act_open_habbo_pages",    WiredEffectOpenHabboPages.class));
+            this.interactionsList.add(new ItemInteraction("wf_act_give_achievement",    WiredEffectGiveAchievement.class));
 
 
             this.interactionsList.add(new ItemInteraction("wf_cnd_has_furni_on",     WiredConditionFurniHaveFurni.class));
@@ -445,7 +451,8 @@ public class ItemManager
                 }
                 catch (Exception e)
                 {
-                    Emulator.getLogging().logErrorLine("Failed to load items_crackable item_id = " + set.getInt("ïtem_id"));
+                    Emulator.getLogging().logErrorLine("Failed to load items_crackable item_id = " + set.getInt("item_id"));
+                    Emulator.getLogging().logErrorLine(e);
                     continue;
                 }
                 this.crackableRewards.put(set.getInt("item_id"), reward);

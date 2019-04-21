@@ -40,6 +40,11 @@ class TeleportActionThree implements Runnable
         if(targetRoom == null)
             return;
 
+        if (targetRoom.isPreLoaded())
+        {
+            targetRoom.loadData();
+        }
+
         targetTeleport = targetRoom.getHabboItem(((InteractionTeleport) this.currentTeleport).getTargetId());
 
         if(targetTeleport == null)

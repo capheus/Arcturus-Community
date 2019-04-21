@@ -457,7 +457,7 @@ public class HabboInfo implements Runnable
     {
         this.saveCurrencies();
 
-        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET motto = ?, online = ?, look = ?, gender = ?, credits = ?, last_login = ?, last_online = ?, home_room = ?, ip_current = ?, rank = ?, machine_id = ?, username = ? WHERE id = ?"))
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET motto = ?, online = ?, look = ?, gender = ?, credits = ?, last_login = ?, last_online = ?, home_room = ?, ip_current = ?, `rank` = ?, machine_id = ?, username = ? WHERE id = ?"))
         {
             statement.setString(1, this.motto);
             statement.setString(2, this.online ? "1" : "0");

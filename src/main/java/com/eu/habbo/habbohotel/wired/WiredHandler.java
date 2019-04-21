@@ -232,6 +232,7 @@ public class WiredHandler
                             try
                             {
                                 if (!effect.execute(roomUnit, room, stuff)) return;
+                                effect.setCooldown(millis);
                             }
                             catch (Exception e)
                             {
@@ -396,7 +397,7 @@ public class WiredHandler
             }
         }
 
-        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) as rows, wired_rewards_given.* FROM wired_rewards_given WHERE user_id = ? AND wired_item = ? ORDER BY timestamp DESC LIMIT ?"))
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) as row_count, wired_rewards_given.* FROM wired_rewards_given WHERE user_id = ? AND wired_item = ? ORDER BY timestamp DESC LIMIT ?"))
         {
             statement.setInt(1, habbo.getHabboInfo().getId());
             statement.setInt(2, wiredBox.getId());
@@ -406,7 +407,7 @@ public class WiredHandler
             {
                 if (set.first())
                 {
-                    if (set.getInt("rows") >= 1)
+                    if (set.getInt("row_count") >= 1)
                     {
                         if (wiredBox.rewardTime == WiredEffectGiveReward.LIMIT_ONCE)
                         {
@@ -429,7 +430,7 @@ public class WiredHandler
 
                         if (wiredBox.uniqueRewards)
                         {
-                            if (set.getInt("rows") == wiredBox.rewardItems.size())
+                            if (set.getInt("row_count") == wiredBox.rewardItems.size())
                             {
                                 habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.REWARD_ALL_COLLECTED));
                                 return false;

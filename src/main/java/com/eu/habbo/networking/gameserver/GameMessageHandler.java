@@ -55,8 +55,6 @@ public class GameMessageHandler extends ChannelInboundHandlerAdapter
         ctx.channel().close();
     }
 
-
-
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
     {

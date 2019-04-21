@@ -126,6 +126,7 @@ public class CommandHandler
         addCommand(new UnbanCommand());
         addCommand(new UnloadRoomCommand());
         addCommand(new UnmuteCommand());
+        addCommand(new UpdateAchievements());
         addCommand(new UpdateBotsCommand());
         addCommand(new UpdateCatalogCommand());
         addCommand(new UpdateConfigCommand());

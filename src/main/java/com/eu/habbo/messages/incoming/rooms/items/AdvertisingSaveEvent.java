@@ -2,6 +2,7 @@ package com.eu.habbo.messages.incoming.rooms.items;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.InteractionCustomValues;
+import com.eu.habbo.habbohotel.items.interactions.InteractionRoomAds;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
@@ -12,16 +13,21 @@ public class AdvertisingSaveEvent extends MessageHandler
     public void handle() throws Exception
     {
         Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
-        if(room == null)
+        if (room == null)
             return;
 
-        if(!room.hasRights(this.client.getHabbo()))
+        if (!room.hasRights(this.client.getHabbo()))
             return;
 
         HabboItem item = room.getHabboItem(this.packet.readInt());
-        if(item == null)
+        if (item == null)
             return;
 
+        if (item instanceof InteractionRoomAds && !this.client.getHabbo().hasPermission("acc_ads_background"))
+        {
+            this.client.getHabbo().alert(Emulator.getTexts().getValue("hotel.error.roomads.nopermission"));
+            return;
+        }
         if(item instanceof InteractionCustomValues)
         {
             int count = this.packet.readInt();

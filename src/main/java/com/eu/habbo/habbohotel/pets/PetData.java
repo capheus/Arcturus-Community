@@ -93,26 +93,7 @@ public class PetData implements Comparable<PetData>
         this.actionsTired = set.getString("tired_actions").split(";");
         this.actionsRandom = set.getString("random_actions").split(";");
 
-        this.petCommands = new ArrayList<>();
-        this.nestItems = new ArrayList<>();
-        this.foodItems = new ArrayList<>();
-        this.drinkItems = new ArrayList<>();
-        this.toyItems = new ArrayList<>();
-
-        this.petVocals = new THashMap<>();
-
-        for(PetVocalsType type : PetVocalsType.values())
-        {
-            this.petVocals.put(type, new THashSet<>());
-        }
-
-        if(PetData.generalPetVocals.isEmpty())
-        {
-            for(PetVocalsType type : PetVocalsType.values())
-            {
-                PetData.generalPetVocals.put(type, new THashSet<>());
-            }
-        }
+        this.reset();
     }
 
     public void setPetCommands(List<PetCommand> petCommands)
@@ -351,5 +332,29 @@ public class PetData implements Comparable<PetData>
     public int compareTo(PetData o)
     {
         return this.getType() - o.getType();
+    }
+
+    public void reset()
+    {
+        this.petCommands = new ArrayList<>();
+        this.nestItems = new ArrayList<>();
+        this.foodItems = new ArrayList<>();
+        this.drinkItems = new ArrayList<>();
+        this.toyItems = new ArrayList<>();
+
+        this.petVocals = new THashMap<>();
+
+        for(PetVocalsType type : PetVocalsType.values())
+        {
+            this.petVocals.put(type, new THashSet<>());
+        }
+
+        if(PetData.generalPetVocals.isEmpty())
+        {
+            for(PetVocalsType type : PetVocalsType.values())
+            {
+                PetData.generalPetVocals.put(type, new THashSet<>());
+            }
+        }
     }
 }

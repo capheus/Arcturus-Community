@@ -1,6 +1,8 @@
 package com.eu.habbo.habbohotel.messenger;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.achievements.Achievement;
+import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboInfo;
 import com.eu.habbo.habbohotel.users.HabboManager;
@@ -22,6 +24,7 @@ public class Messenger
     //Configuration. Loaded from database & updated accordingly.
     public static boolean SAVE_PRIVATE_CHATS = false;
     public static int MAXIMUM_FRIENDS = 200;
+    public static int MAXIMUM_FRIENDS_HC = 500;
 
     private final ConcurrentHashMap<Integer, MessengerBuddy> friends;
     private final THashSet<FriendRequest> friendRequests;
@@ -470,4 +473,42 @@ public class Messenger
 		}
 	}
 
+    public static int friendLimit(Habbo habbo)
+    {
+        if (habbo.hasPermission("acc_infinite_friends"))
+        {
+            return Integer.MAX_VALUE;
+        }
+
+        if (habbo.getHabboStats().hasActiveClub())
+        {
+            return MAXIMUM_FRIENDS_HC;
+        }
+
+        return MAXIMUM_FRIENDS;
+    }
+
+    public static void checkFriendSizeProgress(Habbo habbo)
+    {
+        int progress = habbo.getHabboStats().getAchievementProgress(Emulator.getGameEnvironment().getAchievementManager().getAchievement("FriendListSize"));
+
+        int toProgress = 1;
+
+        Achievement achievement = Emulator.getGameEnvironment().getAchievementManager().getAchievement("FriendListSize");
+
+        if(achievement == null)
+            return;
+
+        if (progress > 0)
+        {
+            toProgress = habbo.getMessenger().getFriends().size() - progress;
+
+            if(toProgress < 0)
+            {
+                return;
+            }
+        }
+
+        AchievementManager.progressAchievement(habbo, achievement, toProgress);
+    }
 }

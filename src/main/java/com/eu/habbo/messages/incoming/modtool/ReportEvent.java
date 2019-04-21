@@ -77,7 +77,7 @@ public class ReportEvent extends MessageHandler
 
                     Emulator.getGameEnvironment().getModToolManager().addTicket(issue);
                     Emulator.getGameEnvironment().getModToolManager().updateTicketToMods(issue);
-                    this.client.sendResponse(new ModToolReportReceivedAlertComposer(ModToolReportReceivedAlertComposer.REPORT_RECEIVED));
+                    this.client.sendResponse(new ModToolReportReceivedAlertComposer(ModToolReportReceivedAlertComposer.REPORT_RECEIVED, cfhTopic.reply));
 
                     if (cfhTopic != null)
                     {
@@ -112,7 +112,7 @@ public class ReportEvent extends MessageHandler
             issue.category = topic;
             new InsertModToolIssue(issue).run();
 
-            this.client.sendResponse(new ModToolReportReceivedAlertComposer(ModToolReportReceivedAlertComposer.REPORT_RECEIVED));
+            this.client.sendResponse(new ModToolReportReceivedAlertComposer(ModToolReportReceivedAlertComposer.REPORT_RECEIVED, message));
             Emulator.getGameEnvironment().getModToolManager().addTicket(issue);
             Emulator.getGameEnvironment().getModToolManager().updateTicketToMods(issue);
 

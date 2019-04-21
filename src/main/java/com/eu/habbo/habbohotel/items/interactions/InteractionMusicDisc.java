@@ -1,5 +1,6 @@
 package com.eu.habbo.habbohotel.items.interactions;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
@@ -21,9 +22,16 @@ public class InteractionMusicDisc extends HabboItem
 
         String[] stuff = this.getExtradata().split("\n");
 
-        if(stuff.length >= 7)
+        if(stuff.length >= 7 && !stuff[6].isEmpty())
         {
-            this.songId = Integer.valueOf(stuff[6]);
+            try
+            {
+                this.songId = Integer.valueOf(stuff[6]);
+            }
+            catch (Exception e)
+            {
+                Emulator.getLogging().logErrorLine("Warning: Item " + this.getId() + " has an invalid song id set for its music disk!");
+            }
         }
     }
 
@@ -33,9 +41,15 @@ public class InteractionMusicDisc extends HabboItem
 
         String[] stuff = this.getExtradata().split("\n");
 
-        if(stuff.length >= 7)
+        if(stuff.length >= 7 && !stuff[6].isEmpty())
         {
-            this.songId = Integer.valueOf(stuff[6]);
+            try
+            {
+                this.songId = Integer.valueOf(stuff[6]);
+            } catch (Exception e)
+            {
+                Emulator.getLogging().logErrorLine("Warning: Item " + this.getId() + " has an invalid song id set for its music disk!");
+            }
         }
     }
 

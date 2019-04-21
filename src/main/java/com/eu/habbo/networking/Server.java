@@ -10,6 +10,8 @@ import io.netty.channel.FixedRecvByteBufAllocator;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
+import java.util.concurrent.TimeUnit;
+
 public abstract class Server
 {
     private final String name;
@@ -66,8 +68,8 @@ public abstract class Server
         Emulator.getLogging().logShutdownLine("Stopping " + this.name);
         try
         {
-            this.workerGroup.shutdownGracefully().sync();
-            this.bossGroup.shutdownGracefully().sync();
+            this.workerGroup.shutdownGracefully(0, 0, TimeUnit.MILLISECONDS).sync();
+            this.bossGroup.shutdownGracefully(0, 0, TimeUnit.MILLISECONDS).sync();
         }
         catch (Exception e)
         {

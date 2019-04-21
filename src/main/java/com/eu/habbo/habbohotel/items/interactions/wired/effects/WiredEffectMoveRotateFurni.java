@@ -60,35 +60,47 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
 
 		for (HabboItem item : this.items)
 		{
+            //Handle rotation
+            int rotationToAdd = 0;
 			if (this.rotation > 0)
 			{
 				tilesToUpdate.addAll(room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
 				if (this.rotation == 1)
 				{
-					item.setRotation(item.getRotation() + 2);
+                    rotationToAdd = 2;
 				}
 				else if (this.rotation == 2)
 				{
-					item.setRotation(item.getRotation() + 6);
+                    rotationToAdd = 6;
 				}
+                //Random rotation
 				else if (this.rotation == 3)
 				{
 					if (Emulator.getRandom().nextInt(2) == 1)
 					{
-						item.setRotation(item.getRotation() + 2);
+                        rotationToAdd = 2;
 					}
 					else
 					{
-						item.setRotation(item.getRotation() + 6);
+                        rotationToAdd = 6;
 					}
 				}
 
-				if (this.direction == 0)
-				{
-					tilesToUpdate.addAll(room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
-					room.sendComposer(new FloorItemUpdateComposer(item).compose());
-				}
 			}
+
+            int newRotation = ((item.getRotation() + rotationToAdd) % 8) % (item.getBaseItem().getWidth() > 1 || item.getBaseItem().getLength() > 1 ? 4 : 8);
+
+            //Verify if rotation result in a valid position
+            if (rotationToAdd > 0 && room.furnitureFitsAt(room.getLayout().getTile(item.getX(), item.getY()), item, newRotation).equals(FurnitureMovementError.NONE))//room.canPlaceFurnitureAt(item, null, room.getLayout().getTile(item.getX(), item.getY()), item.getRotation() + rotationToAdd))
+            {
+                item.setRotation(newRotation);
+
+                if (this.direction == 0)
+                {
+                    tilesToUpdate.addAll(room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
+                    room.sendComposer(new FloorItemUpdateComposer(item).compose());
+                }
+            }
 
 			if (this.direction > 0)
             {

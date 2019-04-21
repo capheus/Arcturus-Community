@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.rooms.RoomUnitStatus;
 import com.eu.habbo.habbohotel.users.HabboItem;
+import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUnitOnRollerComposer;
 
 import java.util.LinkedList;
@@ -53,7 +54,9 @@ public class RoomUnitTeleport implements Runnable
         this.roomUnit.setZ(this.z);
         this.roomUnit.setPreviousLocationZ(this.z);
         this.roomUnit.removeStatus(RoomUnitStatus.MOVE);
-        this.room.sendComposer(new RoomUnitOnRollerComposer(this.roomUnit, null, t, this.room).compose());
+        ServerMessage teleportMessage = new RoomUnitOnRollerComposer(this.roomUnit, t, this.room).compose();
+        this.roomUnit.setLocation(t);
+        this.room.sendComposer(teleportMessage);
 
 
 

@@ -45,13 +45,13 @@ public class GuildInfoComposer extends MessageComposer
         this.response.appendBoolean(this.client.getHabbo().getHabboStats().guild == this.guild.getId()); //favorite group
         this.response.appendString(new SimpleDateFormat("dd-MM-yyyy").format(new Date(this.guild.getDateCreated() * 1000L)));
         this.response.appendBoolean(adminPermissions || (this.guild.getOwnerId() == this.client.getHabbo().getHabboInfo().getId()));
-        this.response.appendBoolean(adminPermissions || (this.member != null && (this.member.getRank().equals(GuildRank.ADMIN)))); //Is admin. //this.member.getRank().equals(GuildRank.MOD) ||
+        this.response.appendBoolean(adminPermissions || (this.member != null && (this.member.getRank().equals(GuildRank.MOD) || this.member.getRank().equals(GuildRank.ADMIN)))); //Is admin. //this.member.getRank().equals(GuildRank.MOD) ||
         //Habbo owner = Emulator.getGameEnvironment().getHabboManager().getHabbo(this.guild.getOwnerId());
 
         this.response.appendString(this.guild.getOwnerName());
         this.response.appendBoolean(this.newWindow);
-        this.response.appendBoolean(this.guild.getRights() == 0); //User can place furni.
-        this.response.appendInt((adminPermissions || this.guild.getOwnerId() == this.client.getHabbo().getHabboInfo().getId()) ? this.guild.getRequestCount() : 0); //Guild invites count.
+        this.response.appendBoolean(this.guild.getRights() == 0); //User can place furni. this.guild.getRights() == 0
+        this.response.appendInt((adminPermissions || (this.member != null && (this.member.getRank().equals(GuildRank.MOD) || this.guild.getOwnerId() == this.client.getHabbo().getHabboInfo().getId()))) ? this.guild.getRequestCount() : 0); //Guild invites count.
         this.response.appendBoolean(true); //Unknown
         return this.response;
     }

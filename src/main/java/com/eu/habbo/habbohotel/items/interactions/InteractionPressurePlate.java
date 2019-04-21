@@ -1,5 +1,6 @@
 package com.eu.habbo.habbohotel.items.interactions;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
@@ -61,21 +62,14 @@ public class InteractionPressurePlate extends HabboItem
     {
         super.onWalkOn(roomUnit, room, objects);
 
-        this.setExtradata("1");
-
-        if (this.getBaseItem().getWidth() > 1 || this.getBaseItem().getLength() > 1)
+        Emulator.getThreading().run(new Runnable()
         {
-            for (RoomTile tile : room.getLayout().getTilesAt(room.getLayout().getTile(this.getX(), this.getY()), this.getBaseItem().getWidth(), this.getBaseItem().getLength(), this.getRotation()))
+            @Override
+            public void run()
             {
-                if (!room.hasHabbosAt(tile.x, tile.y) && !roomUnit.getGoal().is(tile.x, tile.y))
-                {
-                    this.setExtradata("0");
-                    break;
-                }
+                updateState(room);
             }
-        }
-
-        room.updateItemState(this);
+        }, 100);
     }
 
     @Override
@@ -83,8 +77,14 @@ public class InteractionPressurePlate extends HabboItem
     {
         super.onWalkOff(roomUnit, room, objects);
 
-        this.setExtradata("0");
-        room.updateItemState(this);
+        Emulator.getThreading().run(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                updateState(room);
+            }
+        }, 100);
     }
 
     @Override
@@ -92,11 +92,30 @@ public class InteractionPressurePlate extends HabboItem
     {
         super.onMove(room, oldLocation, newLocation);
 
-        if (oldLocation != newLocation && oldLocation.getStackHeight() != newLocation.getStackHeight() && !room.hasHabbosAt(newLocation.x, newLocation.y))
+        updateState(room);
+    }
+
+    public void updateState(Room room)
+    {
+        boolean occupied = false;
+
+        for (RoomTile tile : room.getLayout().getTilesAt(room.getLayout().getTile(this.getX(), this.getY()), this.getBaseItem().getWidth(), this.getBaseItem().getLength(), this.getRotation()))
         {
-            this.setExtradata("0");
-            room.updateItemState(this);
+            boolean hasHabbos = room.hasHabbosAt(tile.x, tile.y);
+            if (!hasHabbos && this.requiresAllTilesOccupied())
+            {
+                occupied = false;
+                break;
+            }
+
+            if (hasHabbos)
+            {
+                occupied = true;
+            }
         }
+
+        this.setExtradata(occupied ? "1" : "0");
+        room.updateItem(this);
     }
 
     @Override
@@ -105,5 +124,9 @@ public class InteractionPressurePlate extends HabboItem
         return true;
     }
 
+    public boolean requiresAllTilesOccupied()
+    {
+        return false;
+    }
 
 }

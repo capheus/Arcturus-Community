@@ -21,7 +21,7 @@ public class InteractionGameTimer extends HabboItem
     private int baseTime = 0;
     private int lastToggle = 0;
 
-    protected InteractionGameTimer(ResultSet set, Item baseItem) throws SQLException
+    public InteractionGameTimer(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
 
@@ -38,7 +38,7 @@ public class InteractionGameTimer extends HabboItem
         }
     }
 
-    protected InteractionGameTimer(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
+    public InteractionGameTimer(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
     {
         super(id, userId, item, extradata, limitedStack, limitedSells);
     }

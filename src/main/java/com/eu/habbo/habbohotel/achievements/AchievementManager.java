@@ -45,7 +45,10 @@ public class AchievementManager
         long millis = System.currentTimeMillis();
         synchronized (this.achievements)
         {
-            this.achievements.clear();
+            for (Achievement achievement : this.achievements.values())
+            {
+                achievement.clearLevels();
+            }
 
             try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
             {
@@ -294,6 +297,11 @@ public class AchievementManager
 
             habbo.getHabboStats().addAchievementScore(newLevel.points);
 
+            if (newLevel.rewardAmount > 0)
+            {
+                habbo.givePoints(newLevel.rewardType, newLevel.rewardAmount);
+            }
+            
             if (habbo.getHabboInfo().getCurrentRoom() != null)
             {
                 habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserDataComposer(habbo).compose());

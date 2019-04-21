@@ -298,7 +298,8 @@ public class RoomLayout
                             (currentAdj.state == RoomTileState.BLOCKED) ||
                             ((currentAdj.state == RoomTileState.SIT || currentAdj.state == RoomTileState.LAY) && !currentAdj.equals(goalLocation)))
                     {
-                        closedList.add(currentAdj);openList.remove(currentAdj);
+                        closedList.add(currentAdj);
+                        openList.remove(currentAdj);
                         continue;
                     }
                     ////if (!room.getLayout().tileWalkable((short) currentAdj.x, (short) currentAdj.y)) continue;
@@ -376,7 +377,7 @@ public class RoomLayout
         RoomTile curr = goal;
         while (curr != null)
         {
-            path.addFirst(curr);
+            path.addFirst(this.getTile(curr.x, curr.y));
             curr = curr.getPrevious();
             if ((curr != null) && (curr.equals(start))) {
                 return path;
@@ -614,11 +615,10 @@ public class RoomLayout
         RoomTile previous = tile;
         for (int i = 0; i < amount; i++)
         {
-            RoomTile t = this.getTileInFront(previous, rotation, 1);
+            RoomTile t = this.getTileInFront(previous, rotation, i);
 
             if (t != null)
             {
-                previous = t;
                 tiles.add(t);
             }
             else

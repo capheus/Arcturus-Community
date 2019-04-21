@@ -25,10 +25,10 @@ public class RequestGuildMembersEvent extends MessageHandler
             if (!isAdmin && this.client.getHabbo().getHabboStats().hasGuild(g.getId()))
             {
                 GuildMember member = Emulator.getGameEnvironment().getGuildManager().getGuildMember(g, this.client.getHabbo());
-                isAdmin = member != null && member.getRank().equals(GuildRank.ADMIN);
+                isAdmin = member != null && (member.getRank().equals(GuildRank.ADMIN) || member.getRank().equals(GuildRank.MOD) && levelId == 2);
             }
 
-            this.client.sendResponse(new GuildMembersComposer(g, Emulator.getGameEnvironment().getGuildManager().getGuildMembers(g, pageId, levelId, query), pageId, levelId, query, isAdmin));
+            this.client.sendResponse(new GuildMembersComposer(g, Emulator.getGameEnvironment().getGuildManager().getGuildMembersCount(g, levelId, query), Emulator.getGameEnvironment().getGuildManager().getGuildMembers(g, pageId, levelId, query), pageId, levelId, query, isAdmin));
         }
     }
 }

@@ -18,6 +18,9 @@ public class Rank
     private String name;
 
 
+    private String badge;
+
+
     private final THashMap<String, Permission> permissions;
 
 
@@ -52,6 +55,7 @@ public class Rank
     {
         ResultSetMetaData meta = set.getMetaData();
         this.name = set.getString("rank_name");
+        this.badge = set.getString("badge");
         this.roomEffect = set.getInt("room_effect");
         this.logCommands = set.getString("log_commands").equals("1");
         this.prefix = set.getString("prefix");
@@ -100,6 +104,11 @@ public class Rank
     public String getName()
     {
         return this.name;
+    }
+
+    public String getBadge()
+    {
+        return this.badge;
     }
 
     public THashMap<String, Permission> getPermissions()

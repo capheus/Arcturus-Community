@@ -447,6 +447,7 @@ public class PacketManager
         this.registerHandler(Incoming.YoutubeRequestVideoDataEvent,             YoutubeRequestVideoDataEvent.class);
         this.registerHandler(Incoming.RoomFavoriteEvent,                        RoomFavoriteEvent.class);
         this.registerHandler(Incoming.LoveLockStartConfirmEvent,                LoveLockStartConfirmEvent.class);
+        this.registerHandler(Incoming.RoomUnFavoriteEvent,                      RoomUnFavoriteEvent.class);
     }
 
     void registerPolls() throws Exception

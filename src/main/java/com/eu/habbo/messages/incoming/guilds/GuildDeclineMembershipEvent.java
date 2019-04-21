@@ -29,7 +29,7 @@ public class GuildDeclineMembershipEvent extends MessageHandler
             {
                 guild.decreaseRequestCount();
                 Emulator.getGameEnvironment().getGuildManager().removeMember(guild, userId);
-                this.client.sendResponse(new GuildMembersComposer(guild, Emulator.getGameEnvironment().getGuildManager().getGuildMembers(guild, 0, 0, ""), 0, 0, "", true));
+                this.client.sendResponse(new GuildMembersComposer(guild, Emulator.getGameEnvironment().getGuildManager().getGuildMembersCount(guild, 2, ""), Emulator.getGameEnvironment().getGuildManager().getGuildMembers(guild, 0, 2, ""), 0, 2, "", true));
                 this.client.sendResponse(new GuildRefreshMembersListComposer(guild));
 
                 Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(userId);

@@ -83,4 +83,9 @@ public class Achievement
     {
         return this.levels.get(1);
     }
+
+    public void clearLevels()
+    {
+        this.levels.clear();
+    }
 }

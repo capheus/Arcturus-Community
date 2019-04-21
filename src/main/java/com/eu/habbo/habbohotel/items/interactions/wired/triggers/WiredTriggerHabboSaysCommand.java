@@ -43,7 +43,7 @@ public class WiredTriggerHabboSaysCommand  extends InteractionWiredTrigger
             {
                 if (stuff[0] instanceof String)
                 {
-                    if (((String) stuff[0]).equalsIgnoreCase(this.key))
+                    if (((String) stuff[0]).replace(":", "").startsWith(this.key + " "))
                     {
                         if (this.ownerOnly && room.getOwnerId() != habbo.getHabboInfo().getId())
                             return false;
@@ -72,7 +72,7 @@ public class WiredTriggerHabboSaysCommand  extends InteractionWiredTrigger
         if(data.length == 2)
         {
             this.ownerOnly = data[0].equalsIgnoreCase("1");
-            this.key = data[1];
+            this.setKey(data[1]);
         }
     }
 
@@ -110,9 +110,20 @@ public class WiredTriggerHabboSaysCommand  extends InteractionWiredTrigger
     {
         packet.readInt();
         this.ownerOnly = packet.readInt() == 1;
-        this.key = packet.readString();
+        setKey(packet.readString());
+
 
         return true;
+    }
+
+    private void setKey(String key)
+    {
+        if (key.contains(":"))
+        {
+            key = key.replaceAll(":", "");
+        }
+
+        this.key = key;
     }
 
     @Override

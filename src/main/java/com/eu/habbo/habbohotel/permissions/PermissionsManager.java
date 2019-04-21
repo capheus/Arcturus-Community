@@ -3,21 +3,27 @@ package com.eu.habbo.habbohotel.permissions;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.plugin.HabboPlugin;
+import gnu.trove.map.hash.THashMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class PermissionsManager
 {
     private final TIntObjectHashMap<Rank> ranks;
     private final TIntIntHashMap enables;
+    private final THashMap<String, List<Rank>> badges;
 
     public PermissionsManager()
     {
         long millis  = System.currentTimeMillis();
         this.ranks   = new TIntObjectHashMap<>();
         this.enables = new TIntIntHashMap();
+        this.badges = new THashMap<String, List<Rank>>();
 
         this.reload();
 
@@ -32,18 +38,33 @@ public class PermissionsManager
 
     private void loadPermissions()
     {
+        this.badges.clear();
+
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM permissions ORDER BY id ASC"))
         {
             try (ResultSet set = statement.executeQuery())
             {
                 while (set.next())
                 {
+                    Rank rank = null;
                     if (!this.ranks.containsKey(set.getInt("id")))
                     {
-                        this.ranks.put(set.getInt("id"), new Rank(set));
+                        rank = new Rank(set);
+                        this.ranks.put(set.getInt("id"), rank);
                     } else
                     {
-                        this.ranks.get(set.getInt("id")).load(set);
+                        rank = this.ranks.get(set.getInt("id"));
+                        rank.load(set);
+                    }
+
+                    if (rank != null && !rank.getBadge().isEmpty())
+                    {
+                        if (!this.badges.containsKey(rank.getBadge()))
+                        {
+                            this.badges.put(rank.getBadge(), new ArrayList<Rank>());
+                        }
+
+                        this.badges.get(rank.getBadge()).add(rank);
                     }
                 }
             }
@@ -133,5 +154,15 @@ public class PermissionsManager
     public boolean hasPermission(Rank rank, String permission, boolean withRoomRights)
     {
         return rank.hasPermission(permission, withRoomRights);
+    }
+
+    public Set<String> getStaffBadges()
+    {
+        return this.badges.keySet();
+    }
+
+    public List<Rank> getRanks(String code)
+    {
+        return this.badges.get(code);
     }
 }

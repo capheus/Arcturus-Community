@@ -127,11 +127,7 @@ public class PetManager
 
             for(PetData data : this.petData.values())
             {
-                data.getDrinkItems().clear();
-                data.getFoodItems().clear();
-                data.getToyItems().clear();
-                data.getNests().clear();
-                data.petVocals.clear();
+                data.reset();
             }
 
             this.loadPetItems(connection);

@@ -4,10 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
-import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.rooms.RoomTile;
-import com.eu.habbo.habbohotel.rooms.RoomTileState;
-import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredEffectType;
@@ -15,7 +12,7 @@ import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.messages.outgoing.rooms.items.FloorItemOnRollerComposer;
+import com.eu.habbo.util.pathfinding.Rotation;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.ResultSet;
@@ -54,35 +51,56 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
 
         for(HabboItem item : this.items)
         {
-            RoomTile t = room.getLayout().getTile(item.getX(), item.getY());
+            RoomTile furniLocation = room.getLayout().getTile(item.getX(), item.getY());
 
             boolean collided = false;
-            double shortest = 4;
+            double shortest = 3 + Math.max(item.getBaseItem().getWidth(), item.getBaseItem().getLength());
             Habbo target = null;
+            THashSet<RoomTile> tiles = room.getLayout().getTilesAt(furniLocation, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
             for (Habbo habbo : room.getHabbos())
             {
-                if (habbo.getRoomUnit().getCurrentLocation().x == t.x || habbo.getRoomUnit().getCurrentLocation().y == t.y)
+                RoomTile currentLocation = habbo.getRoomUnit().getCurrentLocation();
+                for (RoomTile t : tiles)
                 {
-                    double distance = t.distance(habbo.getRoomUnit().getCurrentLocation());
-                    if (distance == 1)
+                    if (currentLocation.x == t.x || currentLocation.y == t.y)
                     {
-                        Emulator.getThreading().run(new Runnable()
+                        double distance = t.distance(habbo.getRoomUnit().getCurrentLocation());
+                        if (distance == 1)
                         {
-                            @Override
-                            public void run()
+                            Emulator.getThreading().run(new Runnable()
                             {
-                                WiredHandler.handle(WiredTriggerType.COLLISION, habbo.getRoomUnit(), room, new Object[]{item});
+                                @Override
+                                public void run()
+                                {
+                                    WiredHandler.handle(WiredTriggerType.COLLISION, habbo.getRoomUnit(), room, new Object[]{item});
+                                }
+                            });
+
+                            collided = true;
+                            break;
+                        }
+
+                        boolean valid = true;
+                        for (RoomTile tile : room.getLayout().getTilesInFront(habbo.getRoomUnit().getCurrentLocation(), Rotation.Calculate(currentLocation.x, currentLocation.y, t.x, t.y), (int) Math.ceil(distance)))
+                        {
+                            if (tile.state == RoomTileState.INVALID)
+                            {
+                                valid = false;
+                                break;
                             }
-                        });
 
-                        collided = true;
-                        break;
-                    }
+                            if (tile == t)
+                            {
+                                //Do not look further in  case of rounding error.
+                                break;
+                            }
+                        }
 
-                    if (distance <= shortest)
-                    {
-                        target = habbo;
-                        shortest = distance;
+                        if (valid && distance <= shortest)
+                        {
+                            target = habbo;
+                            shortest = distance;
+                        }
                     }
                 }
             }
@@ -96,30 +114,38 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
             int y = 0;
             if(target != null)
             {
-                if (target.getRoomUnit().getX() == item.getX())
+                for (RoomTile tile : tiles)
                 {
-                    if (item.getY() < target.getRoomUnit().getY())
-                        y++;
-                    else
-                        y--;
-                } else if (target.getRoomUnit().getY() == item.getY())
-                {
-                    if (item.getX() < target.getRoomUnit().getX())
-                        x++;
-                    else
-                        x--;
-                } else if (target.getRoomUnit().getX() - item.getX() > target.getRoomUnit().getY() - item.getY())
-                {
-                    if (target.getRoomUnit().getX() - item.getX() > 0)
-                        x++;
-                    else
-                        x--;
-                } else
-                {
-                    if (target.getRoomUnit().getY() - item.getY() > 0)
-                        y++;
-                    else
-                        y--;
+                    if (target.getRoomUnit().getX() == tile.x)
+                    {
+                        if (tile.y < target.getRoomUnit().getY())
+                            y++;
+                        else
+                            y--;
+
+                        break;
+                    } else if (target.getRoomUnit().getY() == tile.y)
+                    {
+                        if (tile.x < target.getRoomUnit().getX())
+                            x++;
+                        else
+                            x--;
+                        break;
+                    } else if (target.getRoomUnit().getX() - tile.x > target.getRoomUnit().getY() - tile.y)
+                    {
+                        if (target.getRoomUnit().getX() - tile.x > 0)
+                            x++;
+                        else
+                            x--;
+                        break;
+                    } else
+                    {
+                        if (target.getRoomUnit().getY() - tile.y > 0)
+                            y++;
+                        else
+                            y--;
+                        break;
+                    }
                 }
             }
             else
@@ -135,24 +161,13 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
 
             RoomTile newTile = room.getLayout().getTile((short) (item.getX() + x), (short) (item.getY() + y));
 
-            if (newTile != null && newTile.state == RoomTileState.OPEN && newTile.isWalkable())
+            if (newTile != null && ((newTile.state == RoomTileState.OPEN && newTile.isWalkable()) || newTile.state == RoomTileState.BLOCKED && room.getTopItemAt(newTile.x, newTile.y) == item) && room.furnitureFitsAt(newTile, item, item.getRotation()) == FurnitureMovementError.NONE)
             {
                 if (room.getLayout().tileExists(newTile.x, newTile.y))
                 {
-                    HabboItem topItem = room.getTopItemAt(newTile.x, newTile.y);
-
-                    if (topItem == null || topItem.getBaseItem().allowStack())
-                    {
-                        double offsetZ = 0;
-
-                        if (topItem != null)
-                            offsetZ = topItem.getZ() + topItem.getBaseItem().getHeight() - item.getZ();
-
-                        room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, offsetZ, room).compose());
-                    }
+                    room.slideFurniTo(item, newTile, item.getRotation());
                 }
             }
-
         }
 
         return true;

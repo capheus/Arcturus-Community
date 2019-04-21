@@ -4,6 +4,8 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredHighscore;
 import com.eu.habbo.habbohotel.items.interactions.wired.extra.WiredBlob;
+import com.eu.habbo.habbohotel.items.interactions.wired.triggers.WiredTriggerTeamLoses;
+import com.eu.habbo.habbohotel.items.interactions.wired.triggers.WiredTriggerTeamWins;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -192,6 +194,33 @@ public abstract class Game implements Runnable
         this.endTime = Emulator.getIntUnixTimestamp();
 
         this.saveScores();
+
+        GameTeam winningTeam = null;
+        for (GameTeam team : this.teams.values())
+        {
+            if (winningTeam == null || team.getTotalScore() > winningTeam.getTotalScore())
+            {
+                winningTeam = team;
+            }
+        }
+
+        if (winningTeam != null)
+        {
+            for (GamePlayer player : winningTeam.getMembers())
+            {
+                WiredHandler.handleCustomTrigger(WiredTriggerTeamWins.class, player.getHabbo().getRoomUnit(), this.room, new Object[]{this});
+            }
+
+            for (GameTeam team : this.teams.values())
+            {
+                if (team == winningTeam) continue;
+
+                for (GamePlayer player : winningTeam.getMembers())
+                {
+                    WiredHandler.handleCustomTrigger(WiredTriggerTeamLoses.class, player.getHabbo().getRoomUnit(), this.room, new Object[]{this});
+                }
+            }
+        }
 
         if(Emulator.getPluginManager().isRegistered(GameStoppedEvent.class, true))
         {

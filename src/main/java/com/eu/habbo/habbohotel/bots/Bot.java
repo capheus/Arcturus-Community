@@ -163,7 +163,7 @@ public class Bot implements Runnable
     {
         if(this.needsUpdate)
         {
-            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE bots SET name = ?, motto = ?, figure = ?, gender = ?, user_id = ?, room_id = ?, x = ?, y = ?, z = ?, rot = ?, dance = ?, freeroam = ?, chat_lines = ?, chat_auto = ?, chat_random = ?, chat_delay = ? WHERE id = ?"))
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE bots SET name = ?, motto = ?, figure = ?, gender = ?, user_id = ?, room_id = ?, x = ?, y = ?, z = ?, rot = ?, dance = ?, freeroam = ?, chat_lines = ?, chat_auto = ?, chat_random = ?, chat_delay = ?, effect = ? WHERE id = ?"))
             {
                 statement.setString(1, this.name);
                 statement.setString(2, this.motto);
@@ -186,7 +186,8 @@ public class Bot implements Runnable
                 statement.setString(14, this.chatAuto ? "1" : "0");
                 statement.setString(15, this.chatRandom ? "1" : "0");
                 statement.setInt(16, this.chatDelay);
-                statement.setInt(17, this.id);
+                statement.setInt(17, this.effect);
+                statement.setInt(18, this.id);
                 statement.execute();
                 this.needsUpdate = false;
             }
@@ -290,7 +291,10 @@ public class Bot implements Runnable
 
     public void onPlace(Habbo habbo, Room room)
     {
-
+        if (this.roomUnit != null)
+        {
+            room.giveEffect(this.roomUnit, this.effect, -1);
+        }
     }
 
 

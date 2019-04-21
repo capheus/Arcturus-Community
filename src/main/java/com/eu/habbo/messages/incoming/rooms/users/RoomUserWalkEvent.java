@@ -74,11 +74,11 @@ public class RoomUserWalkEvent extends MessageHandler
                     else
                     {
                         RoomTile t = habbo.getHabboInfo().getCurrentRoom().getLayout().getTile((short) x, (short) y);
-                        habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomUnitOnRollerComposer(roomUnit, null, t, habbo.getHabboInfo().getCurrentRoom()).compose());
+                        habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomUnitOnRollerComposer(roomUnit, t, habbo.getHabboInfo().getCurrentRoom()).compose());
 
                         if (habbo.getHabboInfo().getRiding() != null)
                         {
-                            habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomUnitOnRollerComposer(habbo.getHabboInfo().getRiding().getRoomUnit(), null, t, habbo.getHabboInfo().getCurrentRoom()).compose());
+                            habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomUnitOnRollerComposer(habbo.getHabboInfo().getRiding().getRoomUnit(), t, habbo.getHabboInfo().getCurrentRoom()).compose());
                         }
                     }
                 }

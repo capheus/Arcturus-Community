@@ -12,6 +12,7 @@ import com.eu.habbo.habbohotel.games.freeze.FreezeGame;
 import com.eu.habbo.habbohotel.games.tag.TagGame;
 import com.eu.habbo.habbohotel.items.ItemManager;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPostIt;
+import com.eu.habbo.habbohotel.items.interactions.InteractionRoller;
 import com.eu.habbo.habbohotel.items.interactions.games.football.InteractionFootballGate;
 import com.eu.habbo.habbohotel.messenger.Messenger;
 import com.eu.habbo.habbohotel.modtool.WordFilter;
@@ -338,6 +339,7 @@ public class PluginManager
         BotManager.MAXIMUM_CHAT_SPEED = Emulator.getConfig().getInt("hotel.bot.max.chatdelay");
         HabboInventory.MAXIMUM_ITEMS = Emulator.getConfig().getInt("hotel.inventory.max.items");
         Messenger.MAXIMUM_FRIENDS = Emulator.getConfig().getInt("hotel.max.friends");
+        Messenger.MAXIMUM_FRIENDS_HC = Emulator.getConfig().getInt("hotel.max.friends.hc");
         Room.MAXIMUM_BOTS = Emulator.getConfig().getInt("hotel.max.bots.room");
         Room.MAXIMUM_PETS = Emulator.getConfig().getInt("hotel.pets.max.room");
         Room.HAND_ITEM_TIME = Emulator.getConfig().getInt("hotel.rooms.handitem.time");
@@ -380,5 +382,7 @@ public class PluginManager
         CatalogManager.PURCHASE_COOLDOWN = Emulator.getConfig().getInt("hotel.catalog.purchase.cooldown");
         CatalogManager.SORT_USING_ORDERNUM = Emulator.getConfig().getBoolean("hotel.catalog.items.display.ordernum");
         AchievementManager.TALENTTRACK_ENABLED = Emulator.getConfig().getBoolean("hotel.talenttrack.enabled");
+        InteractionRoller.NO_RULES = Emulator.getConfig().getBoolean("hotel.room.rollers.norules");
+        RoomManager.SHOW_PUBLIC_IN_POPULAR_TAB = Emulator.getConfig().getBoolean("hotel.navigator.populartab.publics");
     }
 }

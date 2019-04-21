@@ -33,10 +33,10 @@ public final class Emulator
     public final static int MAJOR = 1;
 
 
-    public final static int MINOR = 15;
+    public final static int MINOR = 16;
 
 
-    public final static int BUILD = 2;
+    public final static int BUILD = 0;
 
 
     public static final String version = "Version: " + MAJOR + "." + MINOR + "." + BUILD;
@@ -198,6 +198,7 @@ public final class Emulator
 
     private static void dispose()
     {
+        Emulator.getThreading().setCanAdd(false);
         Emulator.isShuttingDown = true;
         Emulator.isReady = false;
         Emulator.getLogging().logShutdownLine("Stopping Arcturus Emulator " + version + "...");
@@ -339,10 +340,12 @@ public final class Emulator
         return pluginManager;
     }
 
+
     public static Random getRandom()
     {
         return random;
     }
+
 
     public static BadgeImager getBadgeImager()
     {
@@ -359,9 +362,16 @@ public final class Emulator
         cameraClient = client;
     }
 
+
     public static int getTimeStarted()
     {
         return timeStarted;
+    }
+
+
+    public static int getOnlineTime()
+    {
+        return getIntUnixTimestamp() - timeStarted;
     }
 
     public static void prepareShutdown()

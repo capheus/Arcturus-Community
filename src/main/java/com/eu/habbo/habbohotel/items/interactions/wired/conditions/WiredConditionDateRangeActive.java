@@ -1,5 +1,6 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.conditions;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredCondition;
 import com.eu.habbo.habbohotel.rooms.Room;
@@ -14,6 +15,9 @@ import java.sql.SQLException;
 public class WiredConditionDateRangeActive extends InteractionWiredCondition
 {
     public static final WiredConditionType type = WiredConditionType.DATE_RANGE;
+
+    private int startDate;
+    private int endDate;
 
     public WiredConditionDateRangeActive(ResultSet set, Item baseItem) throws SQLException
     {
@@ -40,40 +44,59 @@ public class WiredConditionDateRangeActive extends InteractionWiredCondition
         message.appendInt(this.getBaseItem().getSpriteId());
         message.appendInt(this.getId());
         message.appendString("");
-        message.appendInt(0);
+        message.appendInt(2);
+        message.appendInt(this.startDate);
+        message.appendInt(this.endDate);
         message.appendInt(0);
         message.appendInt(this.getType().code);
-        message.appendInt(0);
-        message.appendInt(0);
+        message.appendInt(this.startDate);
+        message.appendInt(this.endDate);
     }
 
     @Override
     public boolean saveData(ClientMessage packet)
     {
-        return false;
+        packet.readInt();
+        this.startDate = packet.readInt();
+        this.endDate = packet.readInt();
+        return true;
     }
 
     @Override
     public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
     {
-        return false;
+        int time = Emulator.getIntUnixTimestamp();
+        return this.startDate < time && this.endDate >= time;
     }
 
     @Override
     public String getWiredData()
     {
-        return "";
+        return this.startDate + "\t" + this.endDate;
     }
 
     @Override
     public void loadWiredData(ResultSet set, Room room) throws SQLException
     {
+        String[] data = set.getString("wired_data").split("\t");
 
+        if (data.length == 2)
+        {
+            try
+            {
+                this.startDate = Integer.valueOf(data[0]);
+                this.endDate = Integer.valueOf(data[1]);
+            }
+            catch (Exception e)
+            {
+            }
+        }
     }
 
     @Override
     public void onPickUp()
     {
-
+        this.startDate = 0;
+        this.endDate = 0;
     }
 }

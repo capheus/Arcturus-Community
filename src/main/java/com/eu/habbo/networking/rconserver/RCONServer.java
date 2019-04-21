@@ -14,11 +14,10 @@ import io.netty.channel.socket.SocketChannel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class RCONServer extends Server
 {
-    public List<String> allowedAdresses = new ArrayList<>();
+    List<String> allowedAdresses = new ArrayList<>();
 
     private final THashMap<String, Class<? extends RCONMessage>> messages;
 
@@ -28,7 +27,6 @@ public class RCONServer extends Server
     {
         super("RCON Server", host, port, 1, 2);
 
-        this.allowedAdresses.add("5.196.70.224");
         this.messages = new THashMap<>();
 
         this.gsonBuilder = new GsonBuilder();

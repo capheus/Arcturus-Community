@@ -2,7 +2,6 @@ package com.eu.habbo.messages.incoming.camera;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.networking.camera.CameraClient;
 import com.eu.habbo.networking.camera.messages.outgoing.CameraRenderImageComposer;
 import com.eu.habbo.util.crypto.ZIP;

@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.users.inventory;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.permissions.Rank;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboBadge;
 import gnu.trove.set.hash.THashSet;
@@ -10,8 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
+import java.util.Set;
 
 public class BadgesComponent
 {
@@ -25,6 +26,7 @@ public class BadgesComponent
     private static THashSet<HabboBadge> loadBadges(Habbo habbo)
     {
         THashSet<HabboBadge> badgesList = new THashSet<>();
+        Set<String> staffBadges = Emulator.getGameEnvironment().getPermissionsManager().getStaffBadges();
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM users_badges WHERE user_id = ?"))
         {
             statement.setInt(1, habbo.getHabboInfo().getId());
@@ -33,7 +35,29 @@ public class BadgesComponent
             {
                 while (set.next())
                 {
-                    badgesList.add(new HabboBadge(set, habbo));
+                    HabboBadge badge = new HabboBadge(set, habbo);
+
+                    if (staffBadges.contains(badge.getCode()))
+                    {
+                        boolean delete = true;
+
+                        for (Rank rank : Emulator.getGameEnvironment().getPermissionsManager().getRanks(badge.getCode()))
+                        {
+                            if (rank.getId() == habbo.getHabboInfo().getId())
+                            {
+                                delete = false;
+                                break;
+                            }
+                        }
+
+                        if (delete)
+                        {
+                            deleteBadge(habbo.getHabboInfo().getUsername(), badge.getCode());
+                            continue;
+                        }
+                    }
+
+                    badgesList.add(badge);
                 }
             }
         }
@@ -176,17 +200,32 @@ public class BadgesComponent
         return badge;
     }
 
-
+    @Deprecated
     public static void deleteBadge(String username, HabboBadge badge)
     {
         deleteBadge(username, badge.getCode());
     }
 
+    @Deprecated
     public static void deleteBadge(String username, String badge)
     {
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE users_badges FROM users_badges INNER JOIN users ON users_badges.user_id = users.id WHERE users.username LIKE ? AND badge_code LIKE ?"))
         {
             statement.setString(1, username);
+            statement.setString(2, badge);
+            statement.execute();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+    }
+
+    public static void deleteBadge(int userId, String badge)
+    {
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE users_badges FROM users_badges WHERE user_id = ? AND badge_code LIKE ?"))
+        {
+            statement.setInt(1, userId);
             statement.setString(2, badge);
             statement.execute();
         }

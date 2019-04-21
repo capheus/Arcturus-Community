@@ -1,5 +1,6 @@
 package com.eu.habbo.habbohotel.items.interactions;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
@@ -16,6 +17,7 @@ import java.util.List;
 
 public class InteractionRoller extends HabboItem
 {
+    public static boolean NO_RULES = false;
     public InteractionRoller(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
@@ -75,6 +77,7 @@ public class InteractionRoller extends HabboItem
     @Override
     public boolean canStackAt(Room room, List<Pair<RoomTile, THashSet<HabboItem>>> itemsAtLocation)
     {
+        if (NO_RULES) return true;
         if (itemsAtLocation.isEmpty()) return false;
 
         for (Pair<RoomTile, THashSet<HabboItem>> set : itemsAtLocation)

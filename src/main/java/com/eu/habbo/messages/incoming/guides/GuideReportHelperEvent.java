@@ -39,7 +39,7 @@ public class GuideReportHelperEvent extends MessageHandler
 
             Emulator.getGameEnvironment().getModToolManager().addTicket(issue);
             Emulator.getGameEnvironment().getModToolManager().updateTicketToMods(issue);
-            this.client.sendResponse(new ModToolReportReceivedAlertComposer(ModToolReportReceivedAlertComposer.REPORT_RECEIVED));
+            this.client.sendResponse(new ModToolReportReceivedAlertComposer(ModToolReportReceivedAlertComposer.REPORT_RECEIVED, message));
 
             this.client.sendResponse(new GuideSessionDetachedComposer());
             this.client.sendResponse(new GuideSessionEndedComposer(GuideSessionEndedComposer.HELP_CASE_CLOSED));

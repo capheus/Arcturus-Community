@@ -13,16 +13,18 @@ import java.util.TimeZone;
 
 public class GuildMembersComposer extends MessageComposer
 {
-    private final ArrayList<GuildMember> members;
     private final Guild guild;
+    private final int totalResults;
+    private final ArrayList<GuildMember> members;
     private final int pageId;
     private final int level;
     private final String searchValue;
     private final boolean isAdmin;
 
-    public GuildMembersComposer(Guild guild, ArrayList<GuildMember> members, int pageId, int level, String searchValue, boolean isAdmin)
+    public GuildMembersComposer(Guild guild, int totalResults, ArrayList<GuildMember> members, int pageId, int level, String searchValue, boolean isAdmin)
     {
         this.guild = guild;
+        this.totalResults = totalResults;
         this.members = members;
         this.pageId = pageId;
         this.level = level;
@@ -38,7 +40,7 @@ public class GuildMembersComposer extends MessageComposer
         this.response.appendString(this.guild.getName());
         this.response.appendInt(this.guild.getRoomId());
         this.response.appendString(this.guild.getBadge());
-        this.response.appendInt(this.guild.getMemberCount());
+        this.response.appendInt(this.totalResults);
         this.response.appendInt(this.members.size());
 
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());

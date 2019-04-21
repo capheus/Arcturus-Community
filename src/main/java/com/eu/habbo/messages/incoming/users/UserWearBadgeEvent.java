@@ -16,6 +16,7 @@ public class UserWearBadgeEvent extends MessageHandler
         BadgesComponent.resetSlots(this.client.getHabbo());
 
         ArrayList<HabboBadge> updatedBadges = new ArrayList<>();
+        ArrayList<Integer> usedSlots = new ArrayList<>();
         for(int i = 0; i < 5; i++)
         {
             int slot = this.packet.readInt();
@@ -28,8 +29,9 @@ public class UserWearBadgeEvent extends MessageHandler
                 continue;
 
             HabboBadge badge = this.client.getHabbo().getInventory().getBadgesComponent().getBadge(badgeId);
-            if(badge != null)
+            if(badge != null && !updatedBadges.contains(badge) && !usedSlots.contains(slot))
             {
+                usedSlots.add(slot);
                 badge.setSlot(slot);
                 badge.needsUpdate(true);
                 Emulator.getThreading().run(badge);

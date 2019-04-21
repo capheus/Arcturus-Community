@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.incoming.handshake;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.messenger.Messenger;
 import com.eu.habbo.habbohotel.permissions.Permission;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboManager;
@@ -83,6 +84,12 @@ public class SecureLoginEvent extends MessageHandler
                         Emulator.getGameServer().getGameClientManager().disposeClient(this.client);
                         return;
                     }
+
+                    if (this.client.getHabbo().getHabboInfo().getRank() == null)
+                    {
+                        throw new NullPointerException(habbo.getHabboInfo().getUsername() + " has a NON EXISTING RANK!");
+                    }
+
                     Emulator.getThreading().run(habbo);
                     Emulator.getGameEnvironment().getHabboManager().addHabbo(habbo);
                 }
@@ -156,6 +163,8 @@ public class SecureLoginEvent extends MessageHandler
                         }
                     }, Emulator.getConfig().getInt("hotel.welcome.alert.delay", 5000));
                 }
+
+                Messenger.checkFriendSizeProgress(habbo);
             }
             else
             {

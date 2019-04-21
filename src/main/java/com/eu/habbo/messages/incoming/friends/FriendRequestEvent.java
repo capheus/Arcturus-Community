@@ -81,7 +81,7 @@ public class FriendRequestEvent extends MessageHandler
                 return;
             }
 
-            if(this.client.getHabbo().getMessenger().getFriends().values().size() >= Messenger.MAXIMUM_FRIENDS && !this.client.getHabbo().hasPermission("acc_infinite_friends"))
+            if(this.client.getHabbo().getMessenger().getFriends().values().size() >= Messenger.friendLimit(this.client.getHabbo()) && !this.client.getHabbo().hasPermission("acc_infinite_friends"))
             {
                 this.client.sendResponse(new FriendRequestErrorComposer(FriendRequestErrorComposer.FRIEND_LIST_OWN_FULL));
                 return;

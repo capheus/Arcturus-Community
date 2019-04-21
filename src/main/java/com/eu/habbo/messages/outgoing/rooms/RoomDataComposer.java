@@ -62,7 +62,7 @@ public class RoomDataComposer extends MessageComposer
             this.response.appendInt(0);
         }
 
-        int base = 32;
+        int base = 0;
 
         if(this.room.getGuildId() > 0)
         {
@@ -79,7 +79,7 @@ public class RoomDataComposer extends MessageComposer
             base = base | 4;
         }
 
-        if (this.room.isAllowPets())
+        if(this.room.isAllowPets())
         {
             base = base | 16;
         }
@@ -110,31 +110,22 @@ public class RoomDataComposer extends MessageComposer
             this.response.appendInt((this.room.getPromotion().getEndTimestamp() - Emulator.getIntUnixTimestamp()) / 60);
         }
 
-        this.response.appendBoolean(true); //forwarded
-        this.response.appendBoolean(false); //staffpick
-        this.response.appendBoolean(false); //_isGroupMember
+        this.response.appendBoolean(this.publicRoom);
+        this.response.appendBoolean(this.room.isStaffPromotedRoom()); //staffpicked
+        this.response.appendBoolean(this.room.isPublicRoom()); //ispublicroom
         this.response.appendBoolean(this.room.isMuted()); //isroommuted
 
         this.response.appendInt(this.room.getMuteOption());
         this.response.appendInt(this.room.getKickOption());
         this.response.appendInt(this.room.getBanOption());
 
-        this.response.appendBoolean(this.room.hasRights(this.habbo)); //canMute
-
+        this.response.appendBoolean(this.room.hasRights(this.habbo)); //mute all button
 
         this.response.appendInt(this.room.getChatMode());
         this.response.appendInt(this.room.getChatWeight());
         this.response.appendInt(this.room.getChatSpeed());
         this.response.appendInt(this.room.getChatDistance());
         this.response.appendInt(this.room.getChatProtection());
-
-
-
-
-
-
-         //mute all button
-
 
 
         return this.response;

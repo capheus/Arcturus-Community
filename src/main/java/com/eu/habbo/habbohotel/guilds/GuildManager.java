@@ -502,6 +502,30 @@ public class GuildManager
         return guildMembers;
     }
 
+    public int getGuildMembersCount(Guild guild, int levelId, String query)
+    {
+        int rows = 0;
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) as row_count FROM guilds_members INNER JOIN users ON guilds_members.user_id = users.id WHERE guilds_members.guild_id = ?  " + (this.rankQuery(levelId)) + " AND users.username LIKE ? ORDER BY level_id, member_since"))
+        {
+            statement.setInt(1, guild.getId());
+            statement.setString(2, "%" + query + "%");
+
+            try (ResultSet set = statement.executeQuery())
+            {
+                if (set.next())
+                {
+                    rows = set.getInt("row_count");
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
+        return rows;
+    }
+
 
     public THashMap<Integer, GuildMember> getOnlyAdmins(Guild guild)
     {

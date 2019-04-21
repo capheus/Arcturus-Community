@@ -596,19 +596,28 @@ public class Pet implements ISerialize, Runnable
 
     public void randomHappyAction()
     {
-        this.roomUnit.setStatus(RoomUnitStatus.fromString(this.petData.actionsHappy[Emulator.getRandom().nextInt(this.petData.actionsHappy.length)]), "");
+        if (this.petData.actionsHappy.length > 0)
+        {
+            this.roomUnit.setStatus(RoomUnitStatus.fromString(this.petData.actionsHappy[Emulator.getRandom().nextInt(this.petData.actionsHappy.length)]), "");
+        }
     }
 
 
     public void randomSadAction()
     {
-        this.roomUnit.setStatus(RoomUnitStatus.fromString(this.petData.actionsTired[Emulator.getRandom().nextInt(this.petData.actionsTired.length)]), "");
+        if (this.petData.actionsTired.length > 0)
+        {
+            this.roomUnit.setStatus(RoomUnitStatus.fromString(this.petData.actionsTired[Emulator.getRandom().nextInt(this.petData.actionsTired.length)]), "");
+        }
     }
 
 
     public void randomAction()
     {
-        this.roomUnit.setStatus(RoomUnitStatus.fromString(this.petData.actionsRandom[Emulator.getRandom().nextInt(this.petData.actionsRandom.length)]), "");
+        if (this.petData.actionsRandom.length > 0)
+        {
+            this.roomUnit.setStatus(RoomUnitStatus.fromString(this.petData.actionsRandom[Emulator.getRandom().nextInt(this.petData.actionsRandom.length)]), "");
+        }
     }
 
 
@@ -633,11 +642,11 @@ public class Pet implements ISerialize, Runnable
         if (this.level >= PetManager.experiences.length)
             return;
 
-        this.level++;
         if (this.experience < PetManager.experiences[this.level])
         {
             this.experience = PetManager.experiences[this.level];
         }
+        this.level++;
         this.say(this.petData.randomVocal(PetVocalsType.LEVEL_UP));
         this.addHappyness(100);
         this.roomUnit.setStatus(RoomUnitStatus.GESTURE, "exp");

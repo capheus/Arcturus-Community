@@ -65,7 +65,6 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
 
             if(target != null)
             {
-
                 if(RoomLayout.tilesAdjecent(target.getRoomUnit().getCurrentLocation(), room.getLayout().getTile(item.getX(), item.getY())) && (target.getRoomUnit().getX() == item.getX() || target.getRoomUnit().getY() == item.getY()))
                 {
                     final Habbo finalTarget = target;

@@ -18,7 +18,6 @@ import com.eu.habbo.messages.outgoing.catalog.*;
 import com.eu.habbo.messages.outgoing.events.calendar.AdventCalendarProductComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
-import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddBotComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddPetComposer;
@@ -799,6 +798,7 @@ public class CatalogManager
 
         item.setPageId(pageId);
 
+        item.run();
         return true;
     }
 

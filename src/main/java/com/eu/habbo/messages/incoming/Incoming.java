@@ -299,6 +299,7 @@ public class Incoming
     public static final int AdventCalendarForceOpenEvent = 3889;
     public static final int CameraPurchaseEvent = 2408;
     public static final int RoomFavoriteEvent = 3817;
+    public static final int RoomUnFavoriteEvent = 309;
 
     public static final int YoutubeRequestPlayListEvent = 336;
     public static final int YoutubeRequestNextVideoEvent = 3005;

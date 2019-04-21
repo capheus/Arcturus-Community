@@ -29,6 +29,13 @@ public class ThreadPooling
             {
                 return this.run(run, 0);
             }
+            else
+            {
+                if (Emulator.isShuttingDown)
+                {
+                    run.run();
+                }
+            }
         }
         catch (Exception e)
         {
@@ -72,11 +79,14 @@ public class ThreadPooling
     public void shutDown()
     {
         this.canAdd = false;
-
         this.scheduledPool.shutdownNow();
-        while(!this.scheduledPool.isTerminated());
 
         Emulator.getLogging().logShutdownLine("Threading -> Disposed!");
+    }
+
+    public void setCanAdd(boolean canAdd)
+    {
+        this.canAdd = canAdd;
     }
 
     public ScheduledExecutorService getService()

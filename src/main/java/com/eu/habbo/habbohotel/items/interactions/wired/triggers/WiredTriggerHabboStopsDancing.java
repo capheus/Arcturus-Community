@@ -1,6 +1,8 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.triggers;
 
 import com.eu.habbo.habbohotel.items.Item;
+import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 
 import java.sql.ResultSet;
@@ -22,5 +24,11 @@ public class WiredTriggerHabboStopsDancing extends WiredTriggerCollision
     public WiredTriggerType getType()
     {
         return WiredTriggerType.STOPS_DANCING;
+    }
+
+    @Override
+    public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
+    {
+        return true;
     }
 }

@@ -4,11 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.habbohotel.users.HabboBadge;
-import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
-import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
-import com.eu.habbo.messages.outgoing.users.AddUserBadgeComposer;
-import gnu.trove.map.hash.THashMap;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -42,26 +37,15 @@ public class BadgeCommand extends Command
 
             if(habbo != null)
             {
-                if(habbo.getInventory().getBadgesComponent().hasBadge(params[2]))
+                if (habbo.addBadge(params[2]))
+                {
+                    gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_badge.given").replace("%user%", params[1]).replace("%badge%", params[2]), RoomChatMessageBubbles.ALERT);
+                }
+                else
                 {
                     gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_badge.already_owned").replace("%user%", params[1]).replace("%badge%", params[2]), RoomChatMessageBubbles.ALERT);
-                    return true;
                 }
 
-                HabboBadge badge = new HabboBadge(0, params[2], 0, habbo);
-
-                badge.run();
-
-                habbo.getInventory().getBadgesComponent().addBadge(badge);
-                habbo.getClient().sendResponse(new AddUserBadgeComposer(badge));
-
-                gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_badge.given").replace("%user%", params[1]).replace("%badge%", params[2]), RoomChatMessageBubbles.ALERT);
-
-                THashMap<String, String> keys = new THashMap<>();
-                keys.put("display", "BUBBLE");
-                keys.put("image", "${image.library.url}album1584/" + badge.getCode() + ".gif");
-                keys.put("message", Emulator.getTexts().getValue("commands.generic.cmd_badge.received"));
-                habbo.getClient().sendResponse(new BubbleAlertComposer(BubbleAlertKeys.RECEIVED_BADGE.key, keys));
                 return true;
             }
             else
@@ -70,7 +54,7 @@ public class BadgeCommand extends Command
                 {
                     boolean found;
 
-                    try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(slot_id) FROM users_badges INNER JOIN users ON users.id = user_id WHERE users.username = ? AND badge_code = ? LIMIT 1"))
+                    try (PreparedStatement statement = connection.prepareStatement("SELECT badge_code FROM users_badges INNER JOIN users ON users.id = user_id WHERE users.username = ? AND badge_code = ? LIMIT 1"))
                     {
                         statement.setString(1, params[1]);
                         statement.setString(2, params[2]);

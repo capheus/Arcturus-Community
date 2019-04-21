@@ -11,10 +11,12 @@ public class ModToolReportReceivedAlertComposer extends MessageComposer
     public static final int REPORT_ABUSIVE = 2;
 
     private final int errorCode;
+    private final String message;
 
-    public ModToolReportReceivedAlertComposer(int errorCode)
+    public ModToolReportReceivedAlertComposer(int errorCode, String message)
     {
         this.errorCode = errorCode;
+        this.message = message;
     }
 
     @Override
@@ -22,6 +24,7 @@ public class ModToolReportReceivedAlertComposer extends MessageComposer
     {
         this.response.init(Outgoing.ModToolReportReceivedAlertComposer);
         this.response.appendInt(this.errorCode);
-        return null;
+        this.response.appendString(this.message);
+        return this.response;
     }
 }

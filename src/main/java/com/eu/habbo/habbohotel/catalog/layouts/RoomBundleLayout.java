@@ -75,6 +75,12 @@ public class RoomBundleLayout extends SingleBundle
             }
         });
 
+        if (this.room.isPreLoaded())
+        {
+            this.room.loadData();
+            this.room.preventUncaching = true;
+            this.room.preventUnloading = true;
+        }
         if(item[0] != null)
         {
             item[0].getBundle().clear();

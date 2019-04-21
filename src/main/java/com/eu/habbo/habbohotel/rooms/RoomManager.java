@@ -52,6 +52,7 @@ public class RoomManager
     public static int MAXIMUM_ROOMS_USER = 25;
     public static int MAXIMUM_ROOMS_VIP = 35;
     public static int HOME_ROOM_ID = 0;
+    public static boolean SHOW_PUBLIC_IN_POPULAR_TAB = false;
 
     private final THashMap<Integer, RoomCategory> roomCategories;
     private final List<String> mapNames;
@@ -319,15 +320,23 @@ public class RoomManager
 
     public Room loadRoom(int id)
     {
+        return loadRoom(id, false);
+    }
+
+    public Room loadRoom(int id, boolean loadData)
+    {
         Room room = null;
 
         if(this.activeRooms.containsKey(id))
         {
             room = this.activeRooms.get(id);
 
-            if (room.isPreLoaded() && !room.isLoaded())
+            if (loadData)
             {
-                room.loadData();
+                if (room.isPreLoaded() && !room.isLoaded())
+                {
+                    room.loadData();
+                }
             }
 
             return room;
@@ -342,7 +351,10 @@ public class RoomManager
                 while (set.next())
                 {
                     room = new Room(set);
-                    room.loadData();
+                    if (loadData)
+                    {
+                        room.loadData();
+                    }
                 }
             }
 
@@ -564,7 +576,7 @@ public class RoomManager
 
     public void enterRoom(Habbo habbo, int roomId, String password, boolean overrideChecks, RoomTile doorLocation)
     {
-        Room room = this.loadRoom(roomId);
+        Room room = this.loadRoom(roomId, true);
 
         if(room == null)
             return;
@@ -1155,8 +1167,10 @@ public class RoomManager
 
         for (Room room : this.activeRooms.values())
         {
-            if (!room.isPublicRoom() && room.getUserCount() > 0)
+            if (room.getUserCount() > 0)
             {
+                if (!RoomManager.SHOW_PUBLIC_IN_POPULAR_TAB && room.isPublicRoom()) continue;
+
                 rooms.add(room);
             }
         }
@@ -1437,10 +1451,15 @@ public class RoomManager
             @Override
             public boolean execute(int value)
             {
-                Room room = RoomManager.this.loadRoom(value);
+                Room room = RoomManager.this.getRoom(value);
 
                 if (room != null)
                 {
+                    if (room.getState() == RoomState.INVISIBLE)
+                    {
+                        room.loadData();
+                        if (!room.hasRights(habbo)) return true;
+                    }
                     rooms.add(room);
                 }
                 return true;
